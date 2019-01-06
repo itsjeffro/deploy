@@ -1,0 +1,13 @@
+.breadcrumbs {
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.16);
+    padding: 8px 0;
+
+    .heading {
+        display: inline-block;
+        margin: 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+    }
+}

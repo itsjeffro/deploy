@@ -1,0 +1,37 @@
+.project-name {
+    margin: 5px 0;
+}
+
+.status-text {
+    color: #636b6f;
+
+    &:hover {
+        color: #636b6f;
+        text-decoration: none;
+    }
+}
+
+.status-circle {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: #efefef;
+
+    &.text-warning {
+        background: $brand-warning;
+    }
+    &.text-danger {
+        background: $brand-danger;
+    }
+    &.text-success {
+        background: $brand-success;
+    }
+}
+
+.checkbox {
+    input[type="checkbox"] {
+        margin-top: -4px;
+        top: 50%;
+    }
+}

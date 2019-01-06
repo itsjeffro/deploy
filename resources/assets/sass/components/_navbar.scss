@@ -1,0 +1,40 @@
+.navbar-default {
+    background-color: #339bd5;
+    border: 0;
+    margin: 0;
+
+    .navbar-brand {
+        color: #fff;
+        &:hover {
+            color: #fff;
+        }
+    }
+
+    .navbar-nav {
+        &> li > a {
+            color: #fff;
+            &:hover {
+                color: #fff;
+            }
+        }
+        &> .open > a,
+        &> .open > a:hover,
+        &> .open > a:focus {
+            background-color: #278ac1;
+            color: #fff;
+        }
+    }
+
+    .navbar-toggle {
+        border-color: #339bd5;
+
+        .icon-bar {
+            background-color: #fff;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: rgba(0,0,0,.12);
+        }
+    }
+}

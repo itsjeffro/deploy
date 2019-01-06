@@ -1,0 +1,20 @@
+.panel-heading {
+    font-weight: 600;
+    font-size: 15px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+.panel-default {
+    border: 0;
+    box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    &> .panel-heading {
+        background-color: #fdfdfd;
+    }
+}
+
+.panel-body {
+    .table {
+        margin-bottom: 0;
+    }
+}
