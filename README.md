@@ -18,8 +18,8 @@ Deploy\DeployServiceProvider::class
 
 Publish the package's config and assets:
 ```
-php artisan vendor:publish --tags=deploy-config
-php artisan vendor:publish --tags=deploy-assets
+php artisan vendor:publish --tag=deploy-config
+php artisan vendor:publish --tag=deploy-assets
 ```
 
 Run the package's migrations:
