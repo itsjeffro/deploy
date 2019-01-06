@@ -47,6 +47,7 @@ class DeployServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group([
+            'prefix' => config('deploy.path'),
             'namespace' => 'Deploy\Http\Controllers',
             'middleware' => 'web',
         ], function () {
