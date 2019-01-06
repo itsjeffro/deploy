@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('deploy::layouts.app')
 
 @section('content')
     <div id="dashboard"></div>

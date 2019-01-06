@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('app.css', 'vendor/deploy') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -27,7 +27,7 @@
                     </button>
 
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        Deployment manager
+                        Deployment Manager
                     </a>
                 </div>
 
@@ -76,10 +76,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://browser.sentry-cdn.com/4.1.1/bundle.min.js" crossorigin="anonymous"></script>
-    <script>
-    Sentry.init({ dsn: 'https://396a1390842e4e4a823ae8b10ac437d6@sentry.io/1238277' });
-    </script>
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('app.js', 'vendor/deploy') }}"></script>
 </body>
 </html>
