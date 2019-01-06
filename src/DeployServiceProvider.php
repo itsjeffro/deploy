@@ -97,6 +97,10 @@ class DeployServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../config/deploy.php' => config_path('deploy.php'),
             ], 'deploy-config');
+            
+            $this->publishes([
+                __DIR__ . '/../public' => public_path('vendor/deploy'),
+            ], 'deploy-assets');
         }
     }
 }
