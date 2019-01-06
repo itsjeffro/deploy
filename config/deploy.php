@@ -2,7 +2,21 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Route Prefix
+    |--------------------------------------------------------------------------
+    */
+
     'path' => 'deploy',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Route Middleware
+    |--------------------------------------------------------------------------
+    */
+
+    'middleware' => ['web'],
 
     /*
     |--------------------------------------------------------------------------
@@ -19,7 +33,7 @@ return [
 
         'path' => storage_path('app/keys'),
         'bit' => 4096,
-        'comment' => 'deploy@itsjeffro.com',
+        'comment' => 'deploy@domain.com',
 
     ],
 
@@ -51,8 +65,6 @@ return [
         'bitbucket' => [
             'oauth'         => Deploy\ProviderOauth\Bitbucket\BitbucketOauth::class,
             'repository'    => Deploy\ProviderRepository\Bitbucket\Bitbucket::class,
-            'friendly_name' => 'bitbucket',
-            'name'          => 'Bitbucket',
             'key'           => env('BITBUCKET_OAUTH_KEY', ''),
             'secret'        => env('BITBUCKET_OAUTH_SECRET', ''),
         ],
@@ -60,8 +72,6 @@ return [
         'github' => [
             'oauth'         => Deploy\ProviderOauth\Github\GithubOauth::class,
             'repository'    => Deploy\ProviderRepository\Github\Github::class,
-            'friendly_name' => 'github',
-            'name'          => 'Github',
             'key'           => env('GITHUB_OAUTH_KEY', ''),
             'secret'        => env('GITHUB_OAUTH_SECRET', ''),
         ]

@@ -9,12 +9,20 @@ Include the repository link within your composer.json and run composer to instal
 composer install
 ```
 
-Publish the package's assets:
+Next, you will need to register the package's service provider class under the providers array 
+in the config/app.php congifuration file.
+
 ```
-php artisan vendor:publish --tags=deploy-config
+Deploy\DeployServiceProvider::class
 ```
 
-Run the package's migrations
+Publish the package's config and assets:
+```
+php artisan vendor:publish --tags=deploy-config
+php artisan vendor:publish --tags=deploy-assets
+```
+
+Run the package's migrations:
 ```
 php artisan migrate
 ```
