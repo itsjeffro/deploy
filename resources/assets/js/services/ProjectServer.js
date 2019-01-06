@@ -1,10 +1,11 @@
 import '../bootstrap';
+import { Deploy } from '../config';
 
 export default class ProjectServer {
     create(project_id, data) {
         return axios.request({
             method: 'POST',
-            url: '/api/projects/' + project_id + '/servers',
+            url: Deploy.path + '/api/projects/' + project_id + '/servers',
             responseType: 'json',
             data: data,
         });
@@ -13,7 +14,7 @@ export default class ProjectServer {
     get(project_id, server_id) {
         return axios.request({
             method: 'GET',
-            url: '/api/projects/' + project_id + '/servers/' + server_id,
+            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id,
             responseType: 'json'
         });
     }
@@ -21,7 +22,7 @@ export default class ProjectServer {
     put(project_id, server_id, data) {
         return axios.request({
             method: 'PUT',
-            url: '/api/projects/' + project_id + '/servers/' + server_id,
+            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id,
             responseType: 'json',
             data: data
         });
@@ -30,7 +31,7 @@ export default class ProjectServer {
     delete(project_id, server_id) {
         return axios.request({
             method: 'POST',
-            url: '/api/projects/' + project_id + '/servers/' + server_id,
+            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id,
             data: {
                 '_method' : 'DELETE'
             },

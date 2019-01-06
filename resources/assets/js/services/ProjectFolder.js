@@ -1,10 +1,11 @@
 import '../bootstrap';
+import { Deploy } from '../config';
 
 export default class ProjectFolder {
     list(project_id) {
         return axios.request({
             method: 'GET',
-            url: '/api/projects/' + project_id + '/folders',
+            url: Deploy.path + '/api/projects/' + project_id + '/folders',
             responseType: 'json'
         });
     }
@@ -12,7 +13,7 @@ export default class ProjectFolder {
     delete(project_id, folder_id) {
         return axios.request({
             method: 'POST',
-            url: '/api/projects/' + project_id + '/folders/' + folder_id,
+            url: Deploy.path + '/api/projects/' + project_id + '/folders/' + folder_id,
             data: {
                 '_method' : 'DELETE'
             },
@@ -23,7 +24,7 @@ export default class ProjectFolder {
     create(project_id, data) {
         return axios.request({
             method: 'POST',
-            url: '/api/projects/' + project_id + '/folders',
+            url: Deploy.path + '/api/projects/' + project_id + '/folders',
             data: data,
             responseType: 'json'
         });
