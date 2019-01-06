@@ -1,10 +1,11 @@
 import '../bootstrap';
+import { Deploy } from '../config';
 
 export default class Project {
     get(project_id) {
         return axios.request({
             method: 'GET',
-            url: '/api/projects/' + project_id,
+            url: Deploy.path + '/api/projects/' + project_id,
             responseType: 'json'
         });
     }
@@ -12,7 +13,7 @@ export default class Project {
     post(data) {
         return axios.request({
             method: 'POST',
-            url: '/api/projects',
+            url: Deploy.path + '/api/projects',
             data: data,
             responseType: 'json'
         });
@@ -21,7 +22,7 @@ export default class Project {
     index() {
         return axios.request({
             method: 'GET',
-            url: '/api/projects',
+            url: Deploy.path + '/api/projects',
             responseType: 'json'
         });
     }
@@ -29,7 +30,7 @@ export default class Project {
     update(project_id, data) {
         return axios.request({
             method: 'PUT',
-            url: '/api/projects/' + project_id,
+            url: Deploy.path + '/api/projects/' + project_id,
             data: data,
             responseType: 'json'
         });
@@ -38,7 +39,7 @@ export default class Project {
     delete(project_id) {
         return axios.request({
             method: 'DELETE',
-            url: '/api/projects/' + project_id,
+            url: Deploy.path + '/api/projects/' + project_id,
             responseType: 'json'
         });
     }

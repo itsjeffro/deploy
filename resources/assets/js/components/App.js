@@ -20,19 +20,19 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={DashboardPage} />
-          <Route path="/projects/:project_id/actions/:action_id" component={ProjectActionPage} />
-          <Route path="/projects/:project_id/deployment-hooks" component={ProjectDeploymentHookPage} />
-          <Route path="/projects/:project_id/servers/create" component={ProjectServerCreatePage} />
-          <Route path="/projects/:project_id/servers/:server_id/edit" component={ProjectServerEditPage} />
-          <Route path="/projects/:project_id/environment-unlock" component={ProjectEnvironmentUnlockPage} />
-          <Route path="/projects/:project_id/environment-reset" component={ProjectEnvironmentResetPage} />
-          <Route path="/projects/:project_id/deployments/:deployment_id" component={ProjectDeploymentPage} />
-          <Route path="/projects/:project_id/source-control/edit" component={ProjectSourceControlEditPage} />
-          <Route path="/projects/:project_id/folders/create" component={ProjectLinkedFolderCreatePage} />
-          <Route path="/projects/:project_id/folders" component={ProjectLinkedFolderPage} />
-          <Route path="/projects/:project_id/edit" component={ProjectEditPage} />
-          <Route path="/projects/:project_id" component={ProjectPage} />
+          <Route exact path="/deploy/" component={DashboardPage} />
+          <Route path="/deploy/projects/:project_id/actions/:action_id" component={ProjectActionPage} />
+          <Route path="/deploy/projects/:project_id/deployment-hooks" component={ProjectDeploymentHookPage} />
+          <Route path="/deploy/projects/:project_id/servers/create" component={ProjectServerCreatePage} />
+          <Route path="/deploy/projects/:project_id/servers/:server_id/edit" component={ProjectServerEditPage} />
+          <Route path="/deploy/projects/:project_id/environment-unlock" component={ProjectEnvironmentUnlockPage} />
+          <Route path="/deploy/projects/:project_id/environment-reset" component={ProjectEnvironmentResetPage} />
+          <Route path="/deploy/projects/:project_id/deployments/:deployment_id" component={ProjectDeploymentPage} />
+          <Route path="/deploy/projects/:project_id/source-control/edit" component={ProjectSourceControlEditPage} />
+          <Route path="/deploy/projects/:project_id/folders/create" component={ProjectLinkedFolderCreatePage} />
+          <Route path="/deploy/projects/:project_id/folders" component={ProjectLinkedFolderPage} />
+          <Route path="/deploy/projects/:project_id/edit" component={ProjectEditPage} />
+          <Route path="/deploy/projects/:project_id" component={ProjectPage} />
         </Switch>
       </Router>
     )
