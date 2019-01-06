@@ -10,7 +10,7 @@ composer install
 ```
 
 Next, you will need to register the package's service provider class under the providers array 
-in the config/app.php congifuration file.
+in the config/app.php configuration file.
 
 ```
 Deploy\DeployServiceProvider::class
