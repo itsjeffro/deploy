@@ -2,23 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::post('deploy/{key}', 'DeploymentWebHookController@store')->name('deployment-webhook.store');
-
-// Dashboard
-Route::get('/', 'DashboardController@index')->name('home');
-
-// Account
-Route::get('account', 'AccountController@show')->name('account');
-Route::put('account', 'AccountController@update');
-
-// Account's password
-Route::put('account-password', 'AccountPasswordController@update')->name('account-password');
-
-// Provider auth
-Route::get('authorize/{provider}', 'ProviderAuthController@authorizeUser')->name('authorize.get');
-Route::get('authorize/{provider}/access', 'ProviderAuthController@providerAccessToken');
-Route::get('authorize/{provider}/refresh', 'ProviderAuthController@providerRefreshToken');
-
 Route::group(['prefix' => 'api'], function() {
     // Projects
     Route::get('projects', 'ProjectController@index')->name('projects.index');
@@ -37,10 +20,6 @@ Route::group(['prefix' => 'api'], function() {
 
     // Project deployment's process
     Route::get('projects/{project}/deployments/{deployment}/process/{process}', 'ProjectDeploymentProcessController@show')->name('project-deployment-process.show');
-
-    // Project's source control
-    Route::get('projects/{project}/source-control/edit', 'ProjectSourceControlController@edit')->name('project.edit.source-control');
-    Route::put('projects/{project}/source-control', 'ProjectSourceControlController@update')->name('project-source-control.update');
 
     // Project's actions
     Route::get('projects/{project}/actions', 'ProjectActionsController@index')->name('project-actions.index');
@@ -87,3 +66,22 @@ Route::group(['prefix' => 'api'], function() {
     // Repository
     Route::get('repositories/branches-tags', 'RepositoryBranchesTagsController@index')->name('repository-branches-tags.get');
 });
+
+// Webhook
+Route::post('webhook/{key}', 'DeploymentWebHookController@store')->name('webhook.store');
+
+// Account
+Route::get('account', 'AccountController@show')->name('account');
+Route::put('account', 'AccountController@update');
+
+// Account's password
+Route::put('account-password', 'AccountPasswordController@update')->name('account-password');
+
+// Provider auth
+Route::get('authorize/{provider}', 'ProviderAuthController@authorizeUser')->name('authorize.get');
+Route::get('authorize/{provider}/access', 'ProviderAuthController@providerAccessToken');
+Route::get('authorize/{provider}/refresh', 'ProviderAuthController@providerRefreshToken');
+
+// Dashboard
+Route::get('/{view?}', 'DashboardController@index')->where('view', '(.*)')->name('home');
+    
