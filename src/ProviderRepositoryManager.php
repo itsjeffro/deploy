@@ -3,7 +3,7 @@
 namespace Deploy;
 
 use InvalidArgumentException;
-use GuzzleHttp\Client; 
+use GuzzleHttp\Client;
 
 class ProviderRepositoryManager
 {
