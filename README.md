@@ -1,5 +1,9 @@
 # Deploy
 
+<p align="center">
+  <a href="https://travis-ci.org/itsjeffro/deploy"><img src="https://travis-ci.org/itsjeffro/deploy.svg?branch=master" alt="Build Status"></a>
+</p>
+
 ## Introduction
 Deploy provides zero-downtime deployment for existing Laravel applications.
 
