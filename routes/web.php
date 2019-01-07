@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'api'], function() {
     // Projects
     Route::get('projects', 'ProjectController@index')->name('projects.index');
-    Route::post('projects', 'ProjectController@store')->name('project-store');
+    Route::post('projects', 'ProjectController@store')->name('project.store');
     Route::get('projects/{project}', 'ProjectController@show')->name('projects.show');
     Route::delete('projects/{project}', 'ProjectController@destroy')->name('projects.destroy');
     Route::put('projects/{project}', 'ProjectController@update')->name('project.update');
@@ -15,7 +15,7 @@ Route::group(['prefix' => 'api'], function() {
 
     // Project's deployments
     Route::get('projects/{project}/deployments', 'ProjectDeploymentsController@index')->name('project-deployments.index');
-    Route::get('projects/{project}/deployments/{deployment}', 'ProjectDeploymentsController@show')->name('project-deployments.get');
+    Route::get('projects/{project}/deployments/{deployment}', 'ProjectDeploymentsController@show')->name('project-deployments.show');
     Route::post('projects/{project}/deployments', 'ProjectDeploymentsController@store')->name('project-deployments.store');
 
     // Project deployment's process
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('projects/{project}/servers/{server}/public-key', 'ProjectServerPublicKeyController@show')->name('project-server-public-key.show');
 
     // Project's server test connection
-    Route::get('projects/{project}/servers/{server}/test-connection', 'ProjectServerTestConnectionController@show')->name('project-server-test-connection.get');
+    Route::get('projects/{project}/servers/{server}/test-connection', 'ProjectServerTestConnectionController@show')->name('project-server-test-connection.show');
 
     // Project's folders
     Route::get('projects/{project}/folders', 'ProjectFoldersController@index')->name('project-folders.index');
@@ -64,23 +64,23 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('account-providers', 'AccountProviderController@index')->name('account-providers.index');
 
     // Repository
-    Route::get('repositories/branches-tags', 'RepositoryBranchesTagsController@index')->name('repository-branches-tags.get');
+    Route::get('repositories/branches-tags', 'RepositoryBranchesTagsController@index')->name('repository-branches-tags.index');
 });
 
 // Webhook
 Route::post('webhook/{key}', 'DeploymentWebHookController@store')->name('webhook.store');
 
 // Account
-Route::get('account', 'AccountController@show')->name('account');
-Route::put('account', 'AccountController@update');
+Route::get('account', 'AccountController@show')->name('account.show');
+Route::put('account', 'AccountController@update')->name('account.update');
 
 // Account's password
-Route::put('account-password', 'AccountPasswordController@update')->name('account-password');
+Route::put('account-password', 'AccountPasswordController@update')->name('account-password.update');
 
 // Provider auth
-Route::get('authorize/{provider}', 'ProviderAuthController@authorizeUser')->name('authorize.get');
-Route::get('authorize/{provider}/access', 'ProviderAuthController@providerAccessToken');
-Route::get('authorize/{provider}/refresh', 'ProviderAuthController@providerRefreshToken');
+Route::get('authorize/{provider}', 'ProviderAuthController@authorizeUser')->name('provider-authorize.get');
+Route::get('authorize/{provider}/access', 'ProviderAuthController@providerAccessToken')->name('provider-access-token.get');
+Route::get('authorize/{provider}/refresh', 'ProviderAuthController@providerRefreshToken')->name('provider-refresh-token.get');
 
 // Dashboard
 Route::get('/{view?}', 'DashboardController@index')->where('view', '(.*)')->name('home');
