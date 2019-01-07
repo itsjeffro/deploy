@@ -10,7 +10,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Deploy\\": "Deploy/src/"
+      "Deploy\\": "src/"
     }
   },
   "autoload-dev": {
@@ -20,7 +20,8 @@
   },
   "require": {
     "symfony/process": "^3.4",
-    "laravel/framework": "5.4.*"
+    "laravel/framework": "5.4.*",
+    "guzzlehttp/guzzle": "^6.3"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0"
