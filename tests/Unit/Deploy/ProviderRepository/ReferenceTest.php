@@ -1,6 +1,6 @@
 <?php
 
-namespace Deploy\Tests\ProviderRepository;
+namespace Deploy\Tests\Unit\ProviderRepository;
 
 use PHPUnit\Framework\TestCase;
 use Deploy\ProviderRepository\Reference;
@@ -18,7 +18,7 @@ class ReferenceTest extends TestCase
         $this->assertEquals($referenceTag->getReference(), Reference::TAG_TYPE);
     }
 
-    public function test_invalid_reference_type()
+    public function testInvalidReferenceType()
     {
         $this->expectException(\InvalidArgumentException::class);
 
