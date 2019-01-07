@@ -51,7 +51,7 @@ class DeployServiceProvider extends ServiceProvider
         Route::group([
             'prefix' => config('deploy.path'),
             'namespace' => 'Deploy\Http\Controllers',
-            'middleware' => 'web',
+            'middleware' => config('deploy.middleware'),
         ], function () {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         });
