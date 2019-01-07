@@ -3,12 +3,13 @@
 namespace Deploy;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class DeployServiceProvider extends ServiceProvider
 {
-    use EventMap;
+    use EventMap, PolicyMap;
 
     /**
      * Register bindings in the container.
@@ -21,6 +22,7 @@ class DeployServiceProvider extends ServiceProvider
         $this->registerEvents();
         $this->registerResources();
         $this->registerMigrations();
+        $this->registerPolicies();
     }
     
     /**
@@ -74,6 +76,18 @@ class DeployServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        }
+    }
+    
+    /**
+     * Register the package's policies.
+     *
+     * @return void
+     */
+    protected function registerPolicies()
+    {
+        foreach ($this->policies as $key => $value) {
+            Gate::policy($key, $value);
         }
     }
 
