@@ -16,8 +16,8 @@ class CreateDeploymentsTable extends Migration
         Schema::create('deployments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('project_id')->unsigned();
-            $table->string('commiter')->nullable();
-            $table->string('commiter_avatar')->nullable();
+            $table->string('committer')->nullable();
+            $table->string('committer_avatar')->nullable();
             $table->string('repository')->nullable();
             $table->string('reference')->nullable();
             $table->string('branch')->nullable();

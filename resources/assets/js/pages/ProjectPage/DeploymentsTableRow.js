@@ -14,8 +14,8 @@ const DeploymentsTableRow = props => {
     let commit = <span>-- ({deployment.branch})</span>;
     let status = <span>Queued</span>;
 
-    if (deployment.commiter) {
-        committer = <span><img className="avatar" src={deployment.commiter_avatar} height="30" width="30"/> {deployment.commiter}</span>;
+    if (deployment.committer) {
+        committer = <span><img className="avatar" src={deployment.committer_avatar} height="30" width="30"/> {deployment.committer}</span>;
     }
 
     if (deployment.commit) {

@@ -41,8 +41,8 @@ class Deployment extends Model
     public $fillable = [
         'project_id',
         'status',
-        'commiter',
-        'commiter_avatar',
+        'committer',
+        'committer_avatar',
         'commit',
         'commit_url',
         'raw_output',

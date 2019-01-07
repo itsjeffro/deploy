@@ -160,8 +160,8 @@ class DeploymentProcessor extends AbstractProcessor
         $commitData = $commit->getByProject($project);
         
         $deployment->fill([
-            'commiter' => $commitData['display_name'],
-            'commiter_avatar' => $commitData['avatar_link'],
+            'committer' => $commitData['display_name'],
+            'committer_avatar' => $commitData['avatar_link'],
             'commit' => $commitData['hash'],
             'commit_url' => $commitData['commit_url'],
         ]);
