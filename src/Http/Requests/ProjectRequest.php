@@ -3,8 +3,8 @@
 namespace Deploy\Http\Requests;
 
 use Deploy\Models\Provider;
-use Deploy\ProviderOauth;
-use Deploy\ProviderRepository;
+use Deploy\ProviderOauthManager;
+use Deploy\ProviderRepositoryManager;
 use Exception;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Log;
@@ -65,8 +65,8 @@ class ProjectRequest extends FormRequest
         $response = [];
 
         try {
-            $providerOauth = new ProviderOauth($provider, $user);
-            $providerRepository = new ProviderRepository();
+            $providerOauth = new ProviderOauthManager($provider, $user);
+            $providerRepository = new ProviderRepositoryManager();
             $diver = $providerRepository->driver($provider->friendly_name, $providerOauth->getAccessToken());
             $response = $diver->repository($repository);
         } catch (Exception $e) {
