@@ -26,7 +26,7 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ route('deploy') }}">
                         Deployment Manager
                     </a>
                 </div>

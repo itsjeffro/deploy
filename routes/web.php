@@ -83,5 +83,5 @@ Route::get('authorize/{provider}/access', 'ProviderAuthController@providerAccess
 Route::get('authorize/{provider}/refresh', 'ProviderAuthController@providerRefreshToken')->name('provider-refresh-token.get');
 
 // Dashboard
-Route::get('/{view?}', 'DashboardController@index')->where('view', '(.*)')->name('home');
+Route::get('/{view?}', 'DashboardController@index')->where('view', '(.*)')->name('deploy');
     
