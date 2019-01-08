@@ -34,7 +34,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     @if (!Auth::guest())
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('/') }}">Dashboard</a></li>
+                        <li><a href="{{ route('deploy') }}">Dashboard</a></li>
                     </ul>
                     @endif
 
@@ -49,7 +49,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ url('account') }}">
+                                        <a href="{{ route('account.show') }}">
                                             Account
                                         </a>
                                     </li>

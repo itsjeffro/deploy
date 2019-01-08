@@ -48,7 +48,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Change password</div>
             <div class="panel-body">
-                <form method="POST" action="{{ route('account-password') }}">
+                <form method="POST" action="{{ route('account-password.update') }}">
                     <input type="hidden" name="_method" value="PUT">
                     {{ csrf_field() }}
 
@@ -84,7 +84,7 @@
             <div class="panel-body">
                 @foreach($providers as $provider)
                     <a class="btn btn-primary"
-                        href="{{ route('authorize.get', ['provider' => $provider->friendly_name]) }}"
+                        href="{{ route('provider-authorize.get', ['provider' => $provider->friendly_name]) }}"
                         title="Integrate with {{ $provider->name }}"
                     ><i class="fa fa-{{ $provider->friendly_name }}"></i> {{ $provider->name }}</a>
                 @endforeach
