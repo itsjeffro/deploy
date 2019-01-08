@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 import ProjectServerService from '../../services/ProjectServer';
@@ -64,7 +65,7 @@ class ProjectServerCreatePage extends React.Component {
         } = this.state;
         
         if (isCreated) {
-            return <Redirect to={'/projects/' + project.id} />
+            return <Redirect to={Deploy.path + '/projects/' + project.id} />
         }
 
         return (
@@ -73,7 +74,7 @@ class ProjectServerCreatePage extends React.Component {
                     <div className="container">
                         <div className="pull-left">
                             <span className="heading">
-                                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Add Server
+                                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Add Server
                             </span>
                         </div>
                     </div>

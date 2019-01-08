@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
@@ -174,7 +175,7 @@ class ProjectDeploymentPage extends React.Component {
         <div className="breadcrumbs">
           <div className="container">
             <span className="heading">
-              <Link to={'/projects/' + project.id}>
+              <Link to={Deploy.path + '/projects/' + project.id}>
                 {project.name}
               </Link>{' '}
               <Icon iconName="angle-double-right" /> Deployment Info

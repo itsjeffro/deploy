@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AceEditor from 'react-ace';
+import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 import ProjectActionService from '../../services/ProjectAction';
@@ -211,7 +212,7 @@ class ProjectActionPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" />
+                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" />
                 <span className="hidden-xs"> Deployment Hooks <Icon iconName="angle-double-right" /></span> {action.name}
               </span>
             </div>

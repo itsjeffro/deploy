@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 import ProjectEnvironmentUnlockService from '../../services/ProjectEnvironmentUnlock';
@@ -122,7 +123,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                 <div className="container">
                     <div className="pull-left">
                         <span className="heading">
-                            <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Environment
+                            <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Environment
                         </span>
                     </div>
                 </div>
@@ -218,7 +219,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                                 >Unlock Environment</Button>
                             </div>
                             <Link 
-                                to={'/projects/' + project.id + '/environment-reset'}
+                                to={Deploy.path + '/projects/' + project.id + '/environment-reset'}
                             >Need to reset your key?</Link>
                         </PanelBody>
                     </Panel>

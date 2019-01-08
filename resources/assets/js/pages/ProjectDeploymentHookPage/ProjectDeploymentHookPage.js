@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
@@ -69,7 +70,7 @@ class ProjectDeploymentHookPage extends React.Component {
                   <td className="text-right">
                     <Link
                       className="btn btn-default"
-                      to={'/projects/' + project.id + '/actions/' + action.id}
+                      to={Deploy.path + '/projects/' + project.id + '/actions/' + action.id}
                     >Manage</Link>
                   </td>
                 </tr>
@@ -94,7 +95,7 @@ class ProjectDeploymentHookPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Deployment Hooks
+                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Deployment Hooks
               </span>
             </div>
           </div>

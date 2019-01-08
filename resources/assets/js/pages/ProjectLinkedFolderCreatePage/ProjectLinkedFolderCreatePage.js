@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 import ProjectFolderService from '../../services/ProjectFolder';
@@ -63,7 +64,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
         const { isCreated,folder } = this.state;
         
         if (isCreated) {
-            return <Redirect to={'/projects/' + project.id + '/folders'} />
+            return <Redirect to={Deploy.path + '/projects/' + project.id + '/folders'} />
         }
 
         return (
@@ -72,7 +73,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                     <div className="container">
                         <div className="pull-left">
                             <span className="heading">
-                                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Add Linked Folder
+                                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Add Linked Folder
                             </span>
                         </div>
                     </div>

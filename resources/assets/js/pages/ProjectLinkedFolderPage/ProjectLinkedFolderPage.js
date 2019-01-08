@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { Deploy } from '../../config';
+
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Button from '../../components/Button';
@@ -107,7 +109,7 @@ class ProjectLinkedFolderPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Linked Folders
+                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Linked Folders
               </span>
             </div>
           </div>
@@ -117,7 +119,7 @@ class ProjectLinkedFolderPage extends React.Component {
           <div className="form-group pull-right">
             <Link
                 className="btn btn-default"
-                to={'/projects/' + project.id + '/folders/create'}
+                to={Deploy.path + '/projects/' + project.id + '/folders/create'}
               ><Icon iconName="plus" /> Add Linked Folder</Link>
           </div>
           
