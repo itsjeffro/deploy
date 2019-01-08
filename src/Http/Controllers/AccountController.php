@@ -32,8 +32,8 @@ class AccountController extends Controller
         $user->fill($request->except(['password']));
         $user->save();
 
-        return redirect('account')->with([
-            'message' => 'Successfully updated account details.'
-        ]);
+        return redirect()
+            ->route('account.show')
+            ->with(['message' => 'Successfully updated account details.']);
     }
 }
