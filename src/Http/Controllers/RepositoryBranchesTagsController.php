@@ -12,7 +12,8 @@ class RepositoryBranchesTagsController extends Controller
     /**
      * Return repository's branch list.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -31,14 +32,15 @@ class RepositoryBranchesTagsController extends Controller
 
         return response()->json([
             'branches' => $driver->branches($repository),
-            'tags' => $driver->tags($repository),
+            'tags'     => $driver->tags($repository),
         ]);
     }
 
     /**
      * Retrieve access token.
      *
-     * @param  \Deploy\Models\Provider $provider
+     * @param \Deploy\Models\Provider $provider
+     *
      * @return string
      */
     protected function accessToken($provider)

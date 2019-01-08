@@ -11,8 +11,9 @@ class ProjectServerTestConnectionController extends Controller
     /**
      * Get server connection status.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Project $project
+     * @param \Deploy\Models\Server  $server
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Project $project, Server $server)

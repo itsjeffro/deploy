@@ -4,13 +4,11 @@ namespace Deploy\Events;
 
 use Deploy\Models\Deployment;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class DeploymentFinished implements ShouldBroadcastNow
 {
@@ -38,6 +36,6 @@ class DeploymentFinished implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('project.' . $this->deployment->project_id);
+        return new PrivateChannel('project.'.$this->deployment->project_id);
     }
 }

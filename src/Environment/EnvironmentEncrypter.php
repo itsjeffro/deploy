@@ -14,14 +14,15 @@ class EnvironmentEncrypter
     /**
      * Instantiate EnvironmentEncrypter.
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return \Illuminate\Encryption\Encrypter
      */
     public function __construct($key)
     {
         $length = mb_strlen($key);
         $remainingLength = 32 - ($length > 0 ? $length : 0);
-        $key = str_repeat('0', $remainingLength) . $key;
+        $key = str_repeat('0', $remainingLength).$key;
 
         $this->encrypter = new Encrypter($key, config('app.cipher'));
     }
@@ -29,7 +30,8 @@ class EnvironmentEncrypter
     /**
      * Encrypt value.
      *
-     * @param  string $value
+     * @param string $value
+     *
      * @return string
      */
     public function encrypt($value)
@@ -40,7 +42,8 @@ class EnvironmentEncrypter
     /**
      * Decrypt value.
      *
-     * @param  string $value
+     * @param string $value
+     *
      * @return string
      */
     public function decrypt($value)

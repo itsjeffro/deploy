@@ -7,22 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class Process extends Model
 {
     /**
-     * @param integer
+     * @param int
      */
     const FINISHED = 1;
 
     /**
-     * @param integer
+     * @param int
      */
     const FAILED = 2;
 
     /**
-     * @param integer
+     * @param int
      */
     const RUNNING = 3;
 
     /**
-     * @param integer
+     * @param int
      */
     const CANCELLED = 4;
 

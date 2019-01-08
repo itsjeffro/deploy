@@ -14,15 +14,15 @@ class DeployRefreshToken extends Model
     protected $table = 'deploy_refresh_tokens';
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $incrementing = false;
-    
+
     /**
      * @var array
      */
     public $fillable = [
-        'id', 
+        'id',
         'deploy_access_token_id',
         'revoked',
         'expires_at',
@@ -35,4 +35,3 @@ class DeployRefreshToken extends Model
      */
     public $timestamps = false;
 }
-

@@ -44,7 +44,7 @@ class Scripts
             tar --strip-components=1 -zxf release.tar.gz
             rm release.tar.gz
 
-            ' . $this->linkFolders($this->project->folders) . '
+            '.$this->linkFolders($this->project->folders).'
         ';
     }
 
@@ -89,7 +89,8 @@ class Scripts
     /**
      * Return script to link project folders.
      *
-     * @param  array $folders
+     * @param array $folders
+     *
      * @return string
      */
     protected function linkFolders($folders)
@@ -105,9 +106,9 @@ class Scripts
 
                 cd {{ release }}
 
-                echo "Linking [{{ release }}/' . $folder->from . '] to [{{ project }}/' . $folder->to . ']";
+                echo "Linking [{{ release }}/'.$folder->from.'] to [{{ project }}/'.$folder->to.']";
 
-                {{ symlink }} {{ project }}/' . $folder->to . ' ' . $folder->from . '
+                {{ symlink }} {{ project }}/'.$folder->to.' '.$folder->from.'
 
             ';
         }

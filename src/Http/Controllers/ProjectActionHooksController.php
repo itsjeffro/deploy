@@ -2,19 +2,20 @@
 
 namespace Deploy\Http\Controllers;
 
+use Deploy\Http\Requests\HookRequest;
 use Deploy\Models\Action;
 use Deploy\Models\Hook;
 use Deploy\Models\Project;
-use Deploy\Http\Requests\HookRequest;
 
 class ProjectActionHooksController extends Controller
 {
     /**
      * Show deployment hook.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Action $action
-     * @param  \Deploy\Models\Hook $hook
+     * @param \Deploy\Models\Project $project
+     * @param \Deploy\Models\Action  $action
+     * @param \Deploy\Models\Hook    $hook
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Project $project, Action $action, Hook $hook)
@@ -31,9 +32,10 @@ class ProjectActionHooksController extends Controller
     /**
      * Add hook to action.
      *
-     * @param  \Deploy\Http\Requests\HookRequest $request
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Action $action
+     * @param \Deploy\Http\Requests\HookRequest $request
+     * @param \Deploy\Models\Project            $project
+     * @param \Deploy\Models\Action             $action
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(HookRequest $request, Project $project, Action $action)
@@ -42,7 +44,7 @@ class ProjectActionHooksController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $hook = new Hook;
+        $hook = new Hook();
         $hook->fill($request->all());
         $hook->save();
 
@@ -52,10 +54,11 @@ class ProjectActionHooksController extends Controller
     /**
      * Update deployment hook.
      *
-     * @param  \Deploy\Http\Requests\HookRequest $request
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Action $action
-     * @param  \Deploy\Models\Hook $hook
+     * @param \Deploy\Http\Requests\HookRequest $request
+     * @param \Deploy\Models\Project            $project
+     * @param \Deploy\Models\Action             $action
+     * @param \Deploy\Models\Hook               $hook
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(HookRequest $request, Project $project, Action $action, Hook $hook)
@@ -72,9 +75,10 @@ class ProjectActionHooksController extends Controller
     /**
      * Delete deployment hook.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Action $action
-     * @param  \Deploy\Models\Hook $hook
+     * @param \Deploy\Models\Project $project
+     * @param \Deploy\Models\Action  $action
+     * @param \Deploy\Models\Hook    $hook
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Project $project, Action $action, Hook $hook)

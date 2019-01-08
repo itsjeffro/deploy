@@ -2,19 +2,20 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Models\Project;
-use Deploy\Models\Deployment;
+use Deploy\DeploymentManager;
 use Deploy\Http\Requests\DeploymentRequest;
 use Deploy\Jobs\DeployJob;
+use Deploy\Models\Deployment;
+use Deploy\Models\Project;
 use Deploy\ProviderRepository\Reference;
-use Deploy\DeploymentManager;
 
 class ProjectDeploymentsController extends Controller
 {
     /**
      * List deployments.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Project $project)
@@ -33,8 +34,9 @@ class ProjectDeploymentsController extends Controller
     /**
      * Show deployment.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Deployment $deployment
+     * @param \Deploy\Models\Project    $project
+     * @param \Deploy\Models\Deployment $deployment
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Project $project, Deployment $deployment)
@@ -45,9 +47,9 @@ class ProjectDeploymentsController extends Controller
 
         $this->authorize('view', $deployment);
 
-        $deployment = Deployment::with(['project', 'processes' => function($query) {
-                return $query->orderBy('sequence', 'ASC');
-            }])
+        $deployment = Deployment::with(['project', 'processes' => function ($query) {
+            return $query->orderBy('sequence', 'ASC');
+        }])
             ->find($deployment->id);
 
         return response()->json($deployment);
@@ -56,8 +58,9 @@ class ProjectDeploymentsController extends Controller
     /**
      * Create deployment and dispatch queue.
      *
-     * @param  \Deploy\Http\Requests\DeploymentRequest $request
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Http\Requests\DeploymentRequest $request
+     * @param \Deploy\Models\Project                  $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(DeploymentRequest $request, Project $project)

@@ -3,9 +3,9 @@
 namespace Deploy\ProviderRepository;
 
 use Deploy\Models\Project;
-use InvalidArgumentException;
 use Deploy\ProviderOauthManager;
 use Deploy\ProviderRepositoryManager;
+use InvalidArgumentException;
 
 class Commit
 {
@@ -22,7 +22,7 @@ class Commit
      * @var string
      */
     public $referenceValue;
-    
+
     /**
      * @var \Deploy\Contracts\ProviderRepository\ProviderRepositoryInterface
      */
@@ -31,27 +31,30 @@ class Commit
     /**
      * Instantiate.
      *
-     * @param  string $referenceType
-     * @param  string $referenceValue
+     * @param string $referenceType
+     * @param string $referenceValue
+     *
      * @return void
      */
     public function __construct($referenceType, $referenceValue)
     {
         $this->referenceType = $referenceType;
-        $this->referenceValue = $referenceValue; 
+        $this->referenceValue = $referenceValue;
     }
 
     /**
      * Returns commit data.
      *
-     * @param  \Deploy\Models\Project $project
-     * @return array
+     * @param \Deploy\Models\Project $project
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     public function getByProject(Project $project)
     {
         $this->providerRepositoryManager = $this->getRepositoryManager($project);
-        
+
         if ($this->referenceType === Reference::BRANCH_TYPE) {
             return $this->dataFromBranch($project->repository, $this->referenceValue);
         }
@@ -64,14 +67,15 @@ class Commit
             return $this->dataFromTag($project->repository, $this->referenceValue);
         }
 
-        throw new InvalidArgumentException('Invalid [' . $this->referenceType . '] reference type.');
+        throw new InvalidArgumentException('Invalid ['.$this->referenceType.'] reference type.');
     }
 
     /**
      * Get data from repository branch.
      *
-     * @param  string $repository
-     * @param  string $branch
+     * @param string $repository
+     * @param string $branch
+     *
      * @return array
      */
     public function dataFromBranch($repository, $branch)
@@ -82,8 +86,9 @@ class Commit
     /**
      * Get data from repository commit.
      *
-     * @param  string $repository
-     * @param  string $commit
+     * @param string $repository
+     * @param string $commit
+     *
      * @return array
      */
     public function dataFromCommit($repository, $commit)
@@ -94,8 +99,9 @@ class Commit
     /**
      * Get data from repository tag.
      *
-     * @param  string $repository
-     * @param  string $tagName
+     * @param string $repository
+     * @param string $tagName
+     *
      * @return array
      */
     public function dataFromTag($repository, $tagName)
@@ -111,10 +117,12 @@ class Commit
     /**
      * Return tag commit hash if there is a matching tag name in the tags list.
      *
-     * @param  array $tags
-     * @param  string $tagName
-     * @return string
+     * @param array  $tags
+     * @param string $tagName
+     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function getCommitHashFromtag(array $tags, $tagName)
     {
@@ -123,14 +131,15 @@ class Commit
                 return $tag['commit'];
             }
         }
-        
-        throw InvalidArgumentException('Cannot retrieve tag\'s commit hash from invalid [' . $tagName . '] tag.');
+
+        throw InvalidArgumentException('Cannot retrieve tag\'s commit hash from invalid ['.$tagName.'] tag.');
     }
 
     /**
      * Get instance of ProviderRepositoryManager using the specified provider.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Deploy\Contracts\ProviderRepository\ProviderRepositoryInterface
      */
     protected function getRepositoryManager(Project $project)
@@ -138,8 +147,7 @@ class Commit
         $oauth = new ProviderOauthManager($project->provider, $project->user);
 
         $providerRepository = new ProviderRepositoryManager();
-        
-        return $providerRepository->driver($project->provider->friendly_name, $oauth->getAccessToken());
 
+        return $providerRepository->driver($project->provider->friendly_name, $oauth->getAccessToken());
     }
 }

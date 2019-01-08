@@ -11,8 +11,9 @@ class ProjectServerPublicKeyController extends Controller
     /**
      * Display public key for project server.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Server  $server
+     * @param \Deploy\Models\Project $project
+     * @param \Deploy\Models\Server  $server
+     *
      * @return \Illuminate\Http\JsonResponse;
      */
     public function show(Project $project, Server $server)
@@ -23,7 +24,7 @@ class ProjectServerPublicKeyController extends Controller
 
         $this->authorize('view', $server);
 
-        $publicKey = Storage::get('keys/' . $server->id . '/id_rsa.pub');
+        $publicKey = Storage::get('keys/'.$server->id.'/id_rsa.pub');
 
         return response()->json(['public_key' => $publicKey]);
     }

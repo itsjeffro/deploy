@@ -2,8 +2,8 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Models\Provider;
 use Deploy\Http\Requests\AccountRequest;
+use Deploy\Models\Provider;
 
 class AccountController extends Controller
 {
@@ -15,7 +15,7 @@ class AccountController extends Controller
     public function show()
     {
         return view('deploy::account.show', [
-            'user' => auth()->user(),
+            'user'      => auth()->user(),
             'providers' => Provider::get(),
         ]);
     }
@@ -23,7 +23,8 @@ class AccountController extends Controller
     /**
      * Update account details of the current user that is logged in.
      *
-     * @param  \Deploy\Http\Requests\AccountRequest $request
+     * @param \Deploy\Http\Requests\AccountRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(AccountRequest $request)

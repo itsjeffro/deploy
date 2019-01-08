@@ -21,7 +21,7 @@ class ApiClient extends AbstractApiClient
      */
     public function request($method, $endpoint)
     {
-        return $this->client->request($method, $this->getApiUrl() . '/' . $endpoint, [
+        return $this->client->request($method, $this->getApiUrl().'/'.$endpoint, [
             'headers' => $this->getHeaders(),
         ]);
     }
@@ -33,13 +33,14 @@ class ApiClient extends AbstractApiClient
      */
     protected function getHeaders()
     {
-        return empty($this->accessToken) ? [] : ['Authorization' => 'Bearer ' . $this->accessToken];
+        return empty($this->accessToken) ? [] : ['Authorization' => 'Bearer '.$this->accessToken];
     }
 
     /**
      * Store fields to return in request.
      *
-     * @param  array $fields
+     * @param array $fields
+     *
      * @return $this
      */
     public function fields(array $fields = [])
@@ -64,7 +65,7 @@ class ApiClient extends AbstractApiClient
             }
         }
 
-        return '?' . implode('&', $endpointParams);
+        return '?'.implode('&', $endpointParams);
     }
 
     /**
@@ -82,7 +83,7 @@ class ApiClient extends AbstractApiClient
 
         $queryEndpoint = $this->buildEndpointParams();
 
-        $response = json_decode($this->request('GET', $this->endpoint . $queryEndpoint));
+        $response = json_decode($this->request('GET', $this->endpoint.$queryEndpoint));
 
         return (!empty($response)) ? $response->values[0] : [];
     }

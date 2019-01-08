@@ -23,7 +23,7 @@ class SourceControlRequest extends ProjectRequest
     {
         return [
             'provider_id' => 'required',
-            'repository' => 'required',
+            'repository'  => 'required',
         ];
     }
 }

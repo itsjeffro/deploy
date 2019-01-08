@@ -5,8 +5,9 @@ namespace Deploy\ProviderRepository;
 class ResourceCollection
 {
     /**
-     * @param  array $resources
-     * @param  string $transformer
+     * @param array  $resources
+     * @param string $transformer
+     *
      * @return array
      */
     public function toArray(array $resources, $transformer)

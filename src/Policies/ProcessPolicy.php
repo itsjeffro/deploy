@@ -23,8 +23,9 @@ class ProcessPolicy
     /**
      * Show deploymentStepProgress belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User              $user
      * @param \Deploy\Models\Process $process
+     *
      * @return bool
      */
     public function view(User $user, Process $process)

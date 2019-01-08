@@ -54,7 +54,8 @@ abstract class AbstractProviderOauth
     /**
      * Retrieve the access token from the provider.
      *
-     * @param  string $code
+     * @param string $code
+     *
      * @return \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface
      */
     abstract public function requestAccessToken($code);
@@ -63,7 +64,8 @@ abstract class AbstractProviderOauth
      * Use the refresh token that was provided with the access token to refresh the
      * access token. A new access token is provided when the refresh token is used.
      *
-     * @param  string $refreshToken
+     * @param string $refreshToken
+     *
      * @return array
      */
     abstract public function refreshAccessToken($refreshToken);

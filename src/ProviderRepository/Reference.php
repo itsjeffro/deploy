@@ -56,9 +56,11 @@ class Reference
     /**
      * Set reference type.
      *
-     * @param  string $reference
-     * @return string
+     * @param string $reference
+     *
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function setReference($reference)
     {
@@ -69,7 +71,7 @@ class Reference
         } elseif ($reference === self::TAG_TYPE) {
             $this->reference = self::TAG_TYPE;
         } else {
-            throw new InvalidArgumentException('The following [' . $reference . '] is not a valid reference type.');
+            throw new InvalidArgumentException('The following ['.$reference.'] is not a valid reference type.');
         }
     }
 
@@ -86,7 +88,8 @@ class Reference
     /**
      * Set reference id.
      *
-     * @param  string $id
+     * @param string $id
+     *
      * @return void
      */
     public function setId($id)

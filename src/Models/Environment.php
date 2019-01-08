@@ -9,21 +9,21 @@ class Environment extends Model
     /**
      * When a environment is syncing.
      *
-     * @var integer
+     * @var int
      */
     const SYNCING = 0;
 
     /**
      * When a environment has successfully synced.
      *
-     * @var integer
+     * @var int
      */
     const SYNCED = 1;
 
     /**
      * When an environment has failed syncing.
      *
-     * @var integer
+     * @var int
      */
     const FAILED_SYNC = 2;
 
@@ -53,7 +53,7 @@ class Environment extends Model
     }
 
     /**
-     * Servers that belong to the environment
+     * Servers that belong to the environment.
      */
     public function servers()
     {

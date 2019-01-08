@@ -2,13 +2,13 @@
 
 namespace Deploy\Processors;
 
+use Deploy\Environment\EnvironmentEncrypter;
 use Deploy\Events\EnvironmentSynced;
 use Deploy\Events\EnvironmentSyncing;
 use Deploy\Models\Environment;
 use Deploy\Models\Project;
 use Deploy\Models\Server;
 use Deploy\Ssh\Client;
-use Deploy\Environment\EnvironmentEncrypter;
 use Illuminate\Support\Facades\Log;
 
 class WriteEnvironmentProcessor extends AbstractProcessor
@@ -31,9 +31,10 @@ class WriteEnvironmentProcessor extends AbstractProcessor
     /**
      * Instantiate EnvironmentProcessor.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Environment $environment
-     * @param  string $key
+     * @param \Deploy\Models\Project     $project
+     * @param \Deploy\Models\Environment $environment
+     * @param string                     $key
+     *
      * @return void
      */
     public function __construct(Project $project, Environment $environment, $key)
@@ -44,7 +45,7 @@ class WriteEnvironmentProcessor extends AbstractProcessor
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function fire()
     {
@@ -58,7 +59,7 @@ class WriteEnvironmentProcessor extends AbstractProcessor
                 $this->getHost($server),
                 $this->script($server, $this->encrypter->decrypt($this->environment->contents))
             );
-            
+
             $processors[] = $client->getProcess();
         }
 
@@ -71,7 +72,7 @@ class WriteEnvironmentProcessor extends AbstractProcessor
 
         // Get the exit codes for each processor after completion.
         foreach ($processors as $processor) {
-            Log::debug('Exit code: ' . $processor->getExitCode());
+            Log::debug('Exit code: '.$processor->getExitCode());
         }
 
         event(new EnvironmentSynced($this->environment));
@@ -80,12 +81,13 @@ class WriteEnvironmentProcessor extends AbstractProcessor
     /**
      * Return script to create .env with it's contents.
      *
-     * @param  \Deploy\Models\Server $server
-     * @param  string $contents
+     * @param \Deploy\Models\Server $server
+     * @param string                $contents
+     *
      * @return string
      */
     public function script(Server $server, $contents)
     {
-        return 'cd ' . $server->project_path . ' && echo "' . $contents . '" > .env';
+        return 'cd '.$server->project_path.' && echo "'.$contents.'" > .env';
     }
 }

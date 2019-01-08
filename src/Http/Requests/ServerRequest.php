@@ -24,10 +24,10 @@ class ServerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'ip_address' => 'required|ip',
-            'port' => 'required|integer',
-            'connect_as' => 'required',
+            'name'         => 'required',
+            'ip_address'   => 'required|ip',
+            'port'         => 'required|integer',
+            'connect_as'   => 'required',
             'project_path' => 'required',
         ];
     }

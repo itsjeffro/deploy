@@ -23,8 +23,9 @@ class ProjectPolicy
     /**
      * Show project belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User              $user
      * @param \Deploy\Models\Project $project
+     *
      * @return bool
      */
     public function view(User $user, Project $project)
@@ -35,8 +36,9 @@ class ProjectPolicy
     /**
      * Update project belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User              $user
      * @param \Deploy\Models\Project $project
+     *
      * @return bool
      */
     public function update(User $user, Project $project)
@@ -47,8 +49,9 @@ class ProjectPolicy
     /**
      * Delete project belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User              $user
      * @param \Deploy\Models\Project $project
+     *
      * @return bool
      */
     public function delete(User $user, Project $project)

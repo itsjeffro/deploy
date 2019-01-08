@@ -4,10 +4,10 @@ namespace Deploy\Jobs;
 
 use Deploy\Processors\DeploymentProcessor;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class DeployJob implements ShouldQueue
 {
@@ -19,7 +19,7 @@ class DeployJob implements ShouldQueue
      * @var int
      */
     public $tries = 5;
-    
+
     /**
      * @var \Deploy\Processors\DeploymentProcessor
      */
@@ -27,7 +27,7 @@ class DeployJob implements ShouldQueue
 
     /**
      * Instantiate constructor.
-     * 
+     *
      * @return void
      */
     public function __construct($deployment, $project)

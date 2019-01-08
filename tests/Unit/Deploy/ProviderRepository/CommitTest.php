@@ -2,9 +2,9 @@
 
 namespace Deploy\Tests\Unit\ProviderRepository;
 
-use PHPUnit\Framework\TestCase;
 use Deploy\ProviderRepository\Commit;
 use Deploy\ProviderRepository\Reference;
+use PHPUnit\Framework\TestCase;
 
 class CommitTest extends TestCase
 {
@@ -16,7 +16,7 @@ class CommitTest extends TestCase
         ];
 
         $commit = new Commit(Reference::TAG_TYPE, $tagName);
-        
+
         $this->assertEquals('abc123', $commit->getCommitHashFromtag($tags, $tagName));
     }
 }

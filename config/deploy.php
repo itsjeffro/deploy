@@ -9,7 +9,7 @@ return [
     */
 
     'path' => 'deploy',
-    
+
     /*
     |--------------------------------------------------------------------------
     | Route Middleware
@@ -24,15 +24,15 @@ return [
     |--------------------------------------------------------------------------
     |
     | This provides the app the ability to generate keys and provide keys
-    | to ssh into a server. Given that the target server has added 
+    | to ssh into a server. Given that the target server has added
     | the generated public key to their authorized_keys file.
     |
     */
 
     'ssh_key' => [
 
-        'path' => storage_path('app/keys'),
-        'bit' => 4096,
+        'path'    => storage_path('app/keys'),
+        'bit'     => 4096,
         'comment' => 'deploy@domain.com',
 
     ],
@@ -42,7 +42,7 @@ return [
     | SSH Multiplexing
     |--------------------------------------------------------------------------
     |
-    | By setting SSH multiplexing to true, will allow for 
+    | By setting SSH multiplexing to true, will allow for
     | multiple sessions over a single TCP connection.
     |
     */
@@ -74,7 +74,7 @@ return [
             'repository'    => Deploy\ProviderRepository\Github\Github::class,
             'key'           => env('GITHUB_OAUTH_KEY', ''),
             'secret'        => env('GITHUB_OAUTH_SECRET', ''),
-        ]
+        ],
 
     ],
 

@@ -20,14 +20,15 @@ class CommandParser
     /**
      * Parse commands into theor correct value specified from the constructor.
      *
-     * @param  array $script
+     * @param array $script
+     *
      * @return string
      */
     public function parseScript($script)
     {
         $pattern = '/{{\s*(.+?)\s*}}(\r?\n)?/s';
 
-        $callback = function($matches) {
+        $callback = function ($matches) {
             $whitespace = empty($matches[2]) ? '' : $matches[2].$matches[2];
             $variable = str_replace('$', '', $matches[1]);
             $commandValue = $this->resolveCommand($variable);
@@ -41,8 +42,10 @@ class CommandParser
     /**
      * Parse commands into theor correct value specified from the constructor.
      *
-     * @param  string $command
+     * @param string $command
+     *
      * @throws \Exception
+     *
      * @return string
      */
     public function resolveCommand($command)

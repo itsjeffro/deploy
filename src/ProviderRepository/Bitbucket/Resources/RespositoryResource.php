@@ -4,7 +4,7 @@ namespace Deploy\ProviderRepository\Bitbucket\Resources;
 
 use Deploy\ProviderRepository\Resource;
 
-class RepositoryResource extends Resource
+class RespositoryResource extends Resource
 {
     /**
      * @return array

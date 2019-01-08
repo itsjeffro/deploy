@@ -15,11 +15,12 @@ class Resource
     {
         $this->resource = $resource;
     }
-    
+
     /**
      * Dynamically call properties from the resources property.
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)

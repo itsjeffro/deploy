@@ -11,7 +11,8 @@ class ProjectFoldersController extends Controller
     /**
      * List folders from project.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Project $project)
@@ -29,15 +30,16 @@ class ProjectFoldersController extends Controller
     /**
      * Store folder link.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Deploy\Models\Project $project
+     * @param \Illuminate\Http\Request $request
+     * @param \Deploy\Models\Project   $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request, Project $project)
     {
         $this->authorize('view', $project);
 
-        $folder = new Folder;
+        $folder = new Folder();
         $folder->project_id = $project->id;
         $folder->from = $request->get('from');
         $folder->to = $request->get('to');
@@ -49,9 +51,10 @@ class ProjectFoldersController extends Controller
     /**
      * Delete folder link.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Folder $folder
+     * @param \Illuminate\Http\Request $request
+     * @param \Deploy\Models\Project   $project
+     * @param \Deploy\Models\Folder    $folder
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Project $project, Folder $folder)

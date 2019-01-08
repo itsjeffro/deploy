@@ -3,18 +3,19 @@
 namespace Deploy\Http\Controllers;
 
 use Deploy\Http\Requests\ServerRequest;
-use Deploy\Models\Project;
-use Deploy\Models\Server;
 use Deploy\Jobs\CreateServerKeysJob;
 use Deploy\Jobs\DeleteServerKeysJob;
+use Deploy\Models\Project;
+use Deploy\Models\Server;
 
 class ProjectServerController extends Controller
 {
     /**
      * Get server.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Project $project
+     * @param \Deploy\Models\Server  $server
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Project $project, Server $server)
@@ -31,8 +32,9 @@ class ProjectServerController extends Controller
     /**
      * Save server.
      *
-     * @param  \Deploy\Http\Requests\ServerRequest $request
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Http\Requests\ServerRequest $request
+     * @param \Deploy\Models\Project              $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(ServerRequest $request, Project $project)
@@ -67,8 +69,9 @@ class ProjectServerController extends Controller
     /**
      * Update server.
      *
-     * @param  \Deploy\Http\Requests\ServerRequest $request
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Http\Requests\ServerRequest $request
+     * @param \Deploy\Models\Server               $server
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(ServerRequest $request, Project $project, Server $server)
@@ -89,7 +92,8 @@ class ProjectServerController extends Controller
      * Delete server and queue to remove private key.
      *
      * @param  \App\Project
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Server $server
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Project $project, Server $server)

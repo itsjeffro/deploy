@@ -15,7 +15,7 @@ class Server extends Model
      * @var string
      */
     protected $table = 'servers';
-    
+
     /**
      * @var array
      */
@@ -29,7 +29,7 @@ class Server extends Model
         'project_path',
         'public_key',
     ];
-    
+
     /**
      * Belongs to one project.
      *

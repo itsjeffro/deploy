@@ -4,7 +4,7 @@ namespace Deploy\Contracts\ProviderOauth;
 
 interface ProviderOauthInterface
 {
-   /**
+    /**
      * @return string
      */
     public function getClientId();
@@ -25,13 +25,15 @@ interface ProviderOauthInterface
     public function getAuthorizeUrl();
 
     /**
-     * @param  string $code
+     * @param string $code
+     *
      * @return \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface
      */
     public function requestAccessToken($code);
 
     /**
-     * @param  string $refreshToken
+     * @param string $refreshToken
+     *
      * @return array
      */
     public function refreshAccessToken($refreshToken);

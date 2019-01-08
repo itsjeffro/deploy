@@ -19,7 +19,7 @@ class ServerPolicy
     {
         //
     }
-    
+
     /* Show server belonging to user.
      *
      * @param \App\User $user
@@ -30,24 +30,26 @@ class ServerPolicy
     {
         return $user->id === $server->project->user_id;
     }
-    
+
     /**
      * Update server belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User             $user
      * @param \Deploy\Models\Server $server
+     *
      * @return bool
      */
     public function update(User $user, Server $server)
     {
         return $user->id === $server->project->user_id;
     }
-    
+
     /**
      * Delete server belonging to user.
      *
-     * @param  \App\User $user
-     * @param  \Deploy\Models\Server $server
+     * @param \App\User             $user
+     * @param \Deploy\Models\Server $server
+     *
      * @return bool
      */
     public function delete(User $user, Server $server)

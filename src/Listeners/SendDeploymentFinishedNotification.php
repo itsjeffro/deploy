@@ -3,8 +3,6 @@
 namespace Deploy\Listeners;
 
 use Deploy\Events\DeploymentFinished;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendDeploymentFinishedNotification
 {
@@ -21,7 +19,8 @@ class SendDeploymentFinishedNotification
     /**
      * Handle the event.
      *
-     * @param  DeploymentFinished  $event
+     * @param DeploymentFinished $event
+     *
      * @return void
      */
     public function handle(DeploymentFinished $event)

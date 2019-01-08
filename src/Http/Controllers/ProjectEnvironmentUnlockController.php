@@ -2,10 +2,10 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Http\Requests\EnvironmentRequest;
-use Deploy\Models\Project;
-use Deploy\Models\Environment;
 use Deploy\Environment\EnvironmentEncrypter;
+use Deploy\Http\Requests\EnvironmentRequest;
+use Deploy\Models\Environment;
+use Deploy\Models\Project;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -14,8 +14,9 @@ class ProjectEnvironmentUnlockController extends Controller
     /**
      * Unlock environment.
      *
-     * @param  \Deploy\Http\Requests\EnvironmentRequest $request
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Http\Requests\EnvironmentRequest $request
+     * @param \Deploy\Models\Project                   $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(EnvironmentRequest $request, Project $project)
@@ -43,8 +44,8 @@ class ProjectEnvironmentUnlockController extends Controller
 
             return response()->json(
                 ['key' => [
-                    'Invalid environment key.'
-                ]
+                    'Invalid environment key.',
+                ],
             ], 422);
         }
     }

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'api'], function() {
+Route::group(['prefix' => 'api'], function () {
     // Projects
     Route::get('projects', 'ProjectController@index')->name('projects.index');
     Route::post('projects', 'ProjectController@store')->name('project.store');
@@ -84,4 +84,3 @@ Route::get('authorize/{provider}/refresh', 'ProviderAuthController@providerRefre
 
 // Dashboard
 Route::get('/{view?}', 'DashboardController@index')->where('view', '(.*)')->name('deploy');
-    

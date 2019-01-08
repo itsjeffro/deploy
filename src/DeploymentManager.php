@@ -2,16 +2,16 @@
 
 namespace Deploy;
 
-use Deploy\Models\Action;
-use Deploy\Models\Project;
-use Deploy\Models\Deployment;
 use Deploy\Deployment\Processes;
+use Deploy\Models\Action;
+use Deploy\Models\Deployment;
+use Deploy\Models\Project;
 use Deploy\ProviderRepository\Reference;
 
 class DeploymentManager
 {
     /**
-     * @var \Deploy\Models\Project $project
+     * @var \Deploy\Models\Project
      */
     protected $project;
 
@@ -23,7 +23,7 @@ class DeploymentManager
     /**
      * Instantiate.
      *
-     * @param \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project               $project
      * @param \Deploy\ProviderRepository\Reference $reference
      */
     public function __construct(Project $project, Reference $reference)
@@ -35,7 +35,8 @@ class DeploymentManager
     /**
      * Create deployment record from project.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Deploy\Models\Deployment
      */
     public function create()
@@ -50,7 +51,7 @@ class DeploymentManager
         ]);
         $deployment->save();
 
-        $action = new Action;
+        $action = new Action();
         $actionHooks = $action->getHooksByProject($this->project)->get();
 
         $processes = new Processes($deployment, $this->project, $actionHooks);

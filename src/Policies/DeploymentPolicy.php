@@ -19,12 +19,13 @@ class DeploymentPolicy
     {
         //
     }
-    
+
     /**
      * Show deployment belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User                 $user
      * @param \Deploy\Models\Deployment $deployment
+     *
      * @return bool
      */
     public function view(User $user, Deployment $deployment)

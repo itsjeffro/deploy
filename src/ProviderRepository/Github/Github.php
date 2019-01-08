@@ -3,17 +3,17 @@
 namespace Deploy\ProviderRepository\Github;
 
 use Deploy\Contracts\ProviderRepository\ProviderRepositoryInterface;
-use Deploy\ProviderRepository\ResourceCollection;
+use Deploy\ProviderRepository\Github\Resources\BranchesResource;
 use Deploy\ProviderRepository\Github\Resources\BranchResource;
 use Deploy\ProviderRepository\Github\Resources\CommitResource;
-use Deploy\ProviderRepository\Github\Resources\TagsResource;
 use Deploy\ProviderRepository\Github\Resources\RepositoryResource;
-use Deploy\ProviderRepository\Github\Resources\BranchesResource;
+use Deploy\ProviderRepository\Github\Resources\TagsResource;
+use Deploy\ProviderRepository\ResourceCollection;
 
 class Github extends ApiClient implements ProviderRepositoryInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getApiUrl()
     {
@@ -21,40 +21,40 @@ class Github extends ApiClient implements ProviderRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function branches($repository)
     {
-        $response = $this->request('GET', 'repos/' . $repository . '/branches');
+        $response = $this->request('GET', 'repos/'.$repository.'/branches');
         $branches = json_decode($response->getBody());
 
         return (new ResourceCollection())->toArray($branches, BranchesResource::class);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function branch($repository, $branch)
     {
-        $response = $this->request('GET', 'repos/' . $repository . '/branches/'. $branch);
+        $response = $this->request('GET', 'repos/'.$repository.'/branches/'.$branch);
         $branch = json_decode($response->getBody());
 
         return (new BranchResource($branch))->toArray();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function commit($repository, $commit)
     {
-        $response = $this->request('GET', 'repos/' . $repository . '/commits/'. $commit);
+        $response = $this->request('GET', 'repos/'.$repository.'/commits/'.$commit);
         $commit = json_decode($response->getBody());
 
         return (new CommitResource($commit))->toArray();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function commits($repository, $branch = '')
     {
@@ -62,22 +62,22 @@ class Github extends ApiClient implements ProviderRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function repository($userRepo)
     {
-        $response = $this->request('GET', 'repos/' . $userRepo);
+        $response = $this->request('GET', 'repos/'.$userRepo);
         $repository = json_decode($response->getBody());
-        
+
         return (new RepositoryResource($repository))->toArray();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function tags($repository)
     {
-        $response = $this->request('GET', 'repos/' . $repository . '/tags');
+        $response = $this->request('GET', 'repos/'.$repository.'/tags');
         $tags = json_decode($response->getBody());
 
         return (new ResourceCollection())->toArray($tags, TagsResource::class);

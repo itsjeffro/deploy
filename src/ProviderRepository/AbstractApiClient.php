@@ -10,7 +10,7 @@ abstract class AbstractApiClient
      * @var string
      */
     protected $accessToken;
-    
+
     /**
      * @var \GuzzleHttp\Client
      */
@@ -20,19 +20,20 @@ abstract class AbstractApiClient
      * Instantiate AbstractApiClient.
      *
      * @param \GuzzleHttp\Client $client
-     * @param string $accessToken
+     * @param string             $accessToken
      */
     public function __construct(Client $client, $accessToken = '')
     {
         $this->client = $client;
         $this->accessToken = $accessToken;
     }
-    
+
     /**
      * Send http request.
      *
-     * @param  string $method
-     * @param  string $endpoint
+     * @param string $method
+     * @param string $endpoint
+     *
      * @return object
      */
     abstract public function request($method, $endpoint);

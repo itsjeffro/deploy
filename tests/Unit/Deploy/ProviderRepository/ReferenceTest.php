@@ -2,8 +2,8 @@
 
 namespace Deploy\Tests\Unit\ProviderRepository;
 
-use PHPUnit\Framework\TestCase;
 use Deploy\ProviderRepository\Reference;
+use PHPUnit\Framework\TestCase;
 
 class ReferenceTest extends TestCase
 {

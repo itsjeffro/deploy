@@ -24,7 +24,7 @@ class DeployServiceProvider extends ServiceProvider
         $this->registerMigrations();
         $this->registerPolicies();
     }
-    
+
     /**
      * Regsiter package's events and listeners.
      *
@@ -40,7 +40,7 @@ class DeployServiceProvider extends ServiceProvider
             }
         }
     }
-    
+
     /**
      * Regsiter package's routes.
      *
@@ -49,14 +49,14 @@ class DeployServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group([
-            'prefix' => config('deploy.path'),
-            'namespace' => 'Deploy\Http\Controllers',
+            'prefix'     => config('deploy.path'),
+            'namespace'  => 'Deploy\Http\Controllers',
             'middleware' => config('deploy.middleware'),
         ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
     }
-    
+
     /**
      * Regsiter package's resources.
      *
@@ -64,9 +64,9 @@ class DeployServiceProvider extends ServiceProvider
      */
     protected function registerResources()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'deploy');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'deploy');
     }
-    
+
     /**
      * Register the package's migrations.
      *
@@ -75,10 +75,10 @@ class DeployServiceProvider extends ServiceProvider
     protected function registerMigrations()
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
     }
-    
+
     /**
      * Register the package's policies.
      *
@@ -100,7 +100,7 @@ class DeployServiceProvider extends ServiceProvider
     {
         $this->offerPublishing();
     }
-    
+
     /**
      * Setup the resource publishing groups for the package.
      *
@@ -110,11 +110,11 @@ class DeployServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/deploy.php' => config_path('deploy.php'),
+                __DIR__.'/../config/deploy.php' => config_path('deploy.php'),
             ], 'deploy-config');
-            
+
             $this->publishes([
-                __DIR__ . '/../public' => public_path('vendor/deploy'),
+                __DIR__.'/../public' => public_path('vendor/deploy'),
             ], 'deploy-assets');
         }
     }

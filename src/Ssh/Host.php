@@ -13,7 +13,7 @@ class Host
      * @var string
      */
     private $host;
-    
+
     /**
      * @var string
      */
@@ -39,15 +39,16 @@ class Host
      */
     public function __toString()
     {
-        $user = empty($this->user) ? '' : $this->user . '@';
+        $user = empty($this->user) ? '' : $this->user.'@';
 
-        return $user . $this->host;
+        return $user.$this->host;
     }
 
     /**
      * Set user.
      *
-     * @param  string $user
+     * @param string $user
+     *
      * @return self
      */
     public function user($user)
@@ -60,7 +61,8 @@ class Host
     /**
      * Set port.
      *
-     * @param  string $port
+     * @param string $port
+     *
      * @return self
      */
     public function port($port)
@@ -75,7 +77,8 @@ class Host
     /**
      * The path of the identify file on the server performing the ssh.
      *
-     * @param  string $identityFile
+     * @param string $identityFile
+     *
      * @return self
      */
     public function identityFile($identityFile)
@@ -86,7 +89,7 @@ class Host
     }
 
     /**
-     * Return ssh arguments
+     * Return ssh arguments.
      *
      * @return string
      */
@@ -98,8 +101,9 @@ class Host
     /**
      * Add ssh option.
      *
-     * @param  string $option
-     * @param  string $value
+     * @param string $option
+     * @param string $value
+     *
      * @return self
      */
     public function addSshOption($option, $value)
@@ -117,9 +121,9 @@ class Host
      */
     public function setFlag($flag, $value)
     {
-        array_push($this->arguments, $flag . ' ' . $value);
+        array_push($this->arguments, $flag.' '.$value);
     }
-    
+
     /**
      * Return options for multiplexing.
      *
@@ -127,13 +131,13 @@ class Host
      */
     public function withMultiplexing()
     {
-        $user = $this->user ? $this->user . '@' : '';
-        $port = $this->port ? ':' . $this->port : '';
-        $userHost = $user . $this->host . $port;
-        
+        $user = $this->user ? $this->user.'@' : '';
+        $port = $this->port ? ':'.$this->port : '';
+        $userHost = $user.$this->host.$port;
+
         return $this
             ->addSshOption('ControlMaster', 'auto')
             ->addSshOption('ControlPersist', '2m')
-            ->addSshOption('ControlPath', '~/.ssh/sockets/' . $userHost);
+            ->addSshOption('ControlPath', '~/.ssh/sockets/'.$userHost);
     }
 }

@@ -5,17 +5,17 @@ namespace Deploy\Deployment;
 class HookActions
 {
     /**
-     * @var integer
+     * @var int
      */
     const ACTION_CLONE_RELEASE_ID = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     const ACTION_ACTIVATE_RELEASE_ID = 2;
 
     /**
-     * @var integer
+     * @var int
      */
     const ACTION_CLEAN_UP_ID = 3;
 
@@ -48,21 +48,21 @@ class HookActions
     {
         return [
             [
-                'id' => self::ACTION_CLONE_RELEASE_ID,
-                'name' => self::ACTION_CLONE_RELEASE_NAME,
-                'servers' => $this->getServers(),
+                'id'             => self::ACTION_CLONE_RELEASE_ID,
+                'name'           => self::ACTION_CLONE_RELEASE_NAME,
+                'servers'        => $this->getServers(),
                 'deploy_hook_id' => null,
             ],
             [
-                'id' => self::ACTION_ACTIVATE_RELEASE_ID,
-                'name' => self::ACTION_ACTIVATE_RELEASE_NAME,
-                'servers' => $this->getServers(),
+                'id'             => self::ACTION_ACTIVATE_RELEASE_ID,
+                'name'           => self::ACTION_ACTIVATE_RELEASE_NAME,
+                'servers'        => $this->getServers(),
                 'deploy_hook_id' => null,
             ],
             [
-                'id' => self::ACTION_CLEAN_UP_ID,
-                'name' => self::ACTION_CLEAN_UP_NAME,
-                'servers' => $this->getServers(),
+                'id'             => self::ACTION_CLEAN_UP_ID,
+                'name'           => self::ACTION_CLEAN_UP_NAME,
+                'servers'        => $this->getServers(),
                 'deploy_hook_id' => null,
             ],
         ];
@@ -76,6 +76,7 @@ class HookActions
     public function setServers($servers)
     {
         $this->servers = $servers;
+
         return $this;
     }
 

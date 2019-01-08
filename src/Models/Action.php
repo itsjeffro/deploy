@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Action extends Model
 {
     /**
-     * @var integer
+     * @var int
      */
     const BEFORE_POSITION = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     const AFTER_POSITION = 2;
 
@@ -22,7 +22,7 @@ class Action extends Model
      * @var string
      */
     protected $table = 'actions';
-    
+
     /**
      * Fillable table column.
      *
@@ -52,18 +52,19 @@ class Action extends Model
     /**
      * Get before and after hooks by project.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function getHooksByProject($project)
     {
         return $this->with([
-            'beforeHooks' => function($query) use ($project) {
+            'beforeHooks' => function ($query) use ($project) {
                 $query->where('project_id', $project->id);
             },
-            'afterHooks' => function($query) use ($project) {
+            'afterHooks' => function ($query) use ($project) {
                 $query->where('project_id', $project->id);
-            }
+            },
         ]);
     }
 }

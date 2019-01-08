@@ -7,27 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 class Hook extends Model
 {
     /**
-     * @var integer
+     * @var int
      */
     const ACTION_CLONE_RELEASE = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     const ACTION_ACTIVATE_NEW_RELEASE = 2;
 
     /**
-     * @var integer
+     * @var int
      */
     const ACTION_CLEAN_UP = 3;
 
     /**
-     * @var integer
+     * @var int
      */
     const POSITION_BEFORE = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     const POSITION_AFTER = 2;
 
@@ -64,6 +64,7 @@ class Hook extends Model
      * Scope query to only include hooks created for before actions.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeBeforeAction($query)
@@ -75,6 +76,7 @@ class Hook extends Model
      * Scope query to only include hooks created for before actions.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAfterAction($query)

@@ -23,8 +23,9 @@ class FolderPolicy
     /**
      * Show project's folder belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User             $user
      * @param \Deploy\Models\Folder $folder
+     *
      * @return bool
      */
     public function view(User $user, Folder $folder)
@@ -35,8 +36,9 @@ class FolderPolicy
     /**
      * Update project's folder belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User             $user
      * @param \Deploy\Models\Folder $folder
+     *
      * @return bool
      */
     public function update(User $user, Folder $folder)
@@ -47,8 +49,9 @@ class FolderPolicy
     /**
      * Delete project's folder belonging to user.
      *
-     * @param \App\User $user
+     * @param \App\User             $user
      * @param \Deploy\Models\Folder $folder
+     *
      * @return bool
      */
     public function delete(User $user, Folder $folder)

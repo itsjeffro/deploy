@@ -12,7 +12,7 @@ class BitbucketOauth extends AbstractProviderOauth
      */
     public function getAuthorizeUrl()
     {
-        return 'https://bitbucket.org/site/oauth2/authorize?client_id=' . $this->getClientId() . '&response_type=code';
+        return 'https://bitbucket.org/site/oauth2/authorize?client_id='.$this->getClientId().'&response_type=code';
     }
 
     /**
@@ -45,8 +45,8 @@ class BitbucketOauth extends AbstractProviderOauth
             ],
             'form_params' => [
                 'grant_type' => 'authorization_code',
-                'code' => $code,
-            ]
+                'code'       => $code,
+            ],
         ]);
 
         return new BitbucketOauthResource(json_decode($response->getBody()));
@@ -59,15 +59,15 @@ class BitbucketOauth extends AbstractProviderOauth
     {
         $client = new Client();
 
-        $response = $client->request('POST', $this->getApiUrl() . '/access_token', [
+        $response = $client->request('POST', $this->getApiUrl().'/access_token', [
             'auth' => [
                 $this->clientId(),
                 $this->clientSecret(),
             ],
             'form_params' => [
-                'grant_type' => 'refresh_token',
+                'grant_type'    => 'refresh_token',
                 'refresh_token' => $refreshToken,
-            ]
+            ],
         ]);
 
         return json_decode($response->getBody());

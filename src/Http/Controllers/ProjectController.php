@@ -2,12 +2,12 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Http\Requests\ProjectRequest;
 use Deploy\Http\Requests\ProjectGeneralRequest;
-use Deploy\Models\Project;
+use Deploy\Http\Requests\ProjectRequest;
 use Deploy\Models\Deployment;
-use Deploy\Models\Server;
 use Deploy\Models\Environment;
+use Deploy\Models\Project;
+use Deploy\Models\Server;
 
 class ProjectController extends Controller
 {
@@ -26,19 +26,20 @@ class ProjectController extends Controller
     /**
      * Create project.
      *
-     * @param  \Deploy\Http\Requests\ProjectRequest $request
+     * @param \Deploy\Http\Requests\ProjectRequest $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(ProjectRequest $request)
     {
         $project = new Project();
         $project->fill([
-            'key'=> str_random(40),
-            'user_id' => auth()->id(),
-            'name'=> $request->get('name'),
+            'key'         => str_random(40),
+            'user_id'     => auth()->id(),
+            'name'        => $request->get('name'),
             'provider_id' => $request->get('provider_id'),
-            'repository' => $request->get('repository'),
-            'branch' => Project::MASTER_BRANCH,
+            'repository'  => $request->get('repository'),
+            'branch'      => Project::MASTER_BRANCH,
         ]);
         $project->save();
 
@@ -50,7 +51,8 @@ class ProjectController extends Controller
     /**
      * Display project details and server setup.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Project $project)
@@ -63,7 +65,7 @@ class ProjectController extends Controller
                 },
                 'deployments as weekly_deployments' => function ($query) {
                     $query->byDaysAgo(7);
-                }
+                },
             ])
             ->find($project->id);
 
@@ -73,8 +75,9 @@ class ProjectController extends Controller
     /**
      * Update project.
      *
-     * @param  \Deploy\Http\Requests\ProjectGeneralRequest $request
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Http\Requests\ProjectGeneralRequest $request
+     * @param \Deploy\Models\Project                      $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(ProjectGeneralRequest $request, Project $project)
@@ -90,7 +93,8 @@ class ProjectController extends Controller
     /**
      * Delete project.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Project $project)
@@ -100,7 +104,7 @@ class ProjectController extends Controller
         Server::where('project_id', $project->id)->delete();
         Environment::where('project_id', $project->id)->delete();
         Deployment::where('project_id', $project->id)->delete();
-        
+
         $project->delete();
 
         return response()->json(null, 204);

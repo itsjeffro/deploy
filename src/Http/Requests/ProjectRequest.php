@@ -29,9 +29,9 @@ class ProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name'        => 'required',
             'provider_id' => 'required',
-            'repository' => 'required',
+            'repository'  => 'required',
         ];
     }
 
@@ -39,6 +39,7 @@ class ProjectRequest extends FormRequest
      * Configure the validator instance.
      *
      * @param \Illuminate\Validation\Validator $validator
+     *
      * @return void
      */
     public function withValidator($validator)
@@ -53,7 +54,7 @@ class ProjectRequest extends FormRequest
     /**
      * Check if the provided repository is valid or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function isInvalidRepository()
     {
@@ -70,7 +71,7 @@ class ProjectRequest extends FormRequest
             $diver = $providerRepository->driver($provider->friendly_name, $providerOauth->getAccessToken());
             $response = $diver->repository($repository);
         } catch (Exception $e) {
-             Log::info($e->getMessage());
+            Log::info($e->getMessage());
         }
 
         return empty($response);

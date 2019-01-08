@@ -20,7 +20,7 @@ class Provider extends Model
      */
     const GITHUB_PROVIDER = 'github';
 
-   /**
+    /**
      * The table associated with the model.
      *
      * @var string

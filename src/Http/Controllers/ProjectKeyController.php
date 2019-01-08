@@ -10,8 +10,9 @@ class ProjectKeyController extends Controller
     /**
      * Refreshes the key used for authenticating the deployments webhook trigger.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Deploy\Models\Project $project
+     * @param \Illuminate\Http\Request $request
+     * @param \Deploy\Models\Project   $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Project $project)

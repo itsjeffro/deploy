@@ -3,8 +3,6 @@
 namespace Deploy\Listeners;
 
 use Deploy\Events\EnvironmentSynced;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EnvironmentSyncedNotification
 {
@@ -21,7 +19,8 @@ class EnvironmentSyncedNotification
     /**
      * Handle the event.
      *
-     * @param  EnvironmentSynced  $event
+     * @param EnvironmentSynced $event
+     *
      * @return void
      */
     public function handle(EnvironmentSynced $event)

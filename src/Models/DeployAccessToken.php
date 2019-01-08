@@ -14,7 +14,7 @@ class DeployAccessToken extends Model
     protected $table = 'deploy_access_tokens';
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $incrementing = false;
 

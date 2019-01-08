@@ -2,8 +2,8 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Models\Project;
 use Deploy\Models\Action;
+use Deploy\Models\Project;
 
 class ProjectActionsController extends Controller
 {
@@ -13,7 +13,7 @@ class ProjectActionsController extends Controller
     protected $action;
 
     /**
-     * Instantiate ProjectActionsController
+     * Instantiate ProjectActionsController.
      *
      * @param \Deploy\Models\Action $action
      */
@@ -25,7 +25,8 @@ class ProjectActionsController extends Controller
     /**
      * List actions.
      *
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Models\Project $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Project $project)
@@ -42,8 +43,9 @@ class ProjectActionsController extends Controller
     /**
      * List hooks belonging to specified project's actions.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Action $action
+     * @param \Deploy\Models\Project $project
+     * @param \Deploy\Models\Action  $action
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Project $project, Action $action)

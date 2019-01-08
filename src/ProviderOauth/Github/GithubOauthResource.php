@@ -54,7 +54,7 @@ class GithubOauthResource implements ProviderOauthResourceInterface
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getExpiration()
     {

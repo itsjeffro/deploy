@@ -3,8 +3,6 @@
 namespace Deploy\Listeners;
 
 use Deploy\Events\ServerConnectionTested;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendSeverConnectionNotification
 {
@@ -21,7 +19,8 @@ class SendSeverConnectionNotification
     /**
      * Handle the event.
      *
-     * @param  ServerConnectionTested  $event
+     * @param ServerConnectionTested $event
+     *
      * @return void
      */
     public function handle(ServerConnectionTested $event)

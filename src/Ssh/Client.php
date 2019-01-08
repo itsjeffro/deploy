@@ -10,7 +10,7 @@ class Client
      * @var \Deploy\Ssh\Host
      */
     public $host;
-    
+
     /**
      * @var string
      */
@@ -19,22 +19,22 @@ class Client
     /**
      * The time seconds that the client should attempt to connect before timing out.
      *
-     * @var integer
+     * @var int
      */
     public $timeout = 300;
-    
+
     /**
      * Instantiate.
      *
      * @param \use Deploy\Ssh\Host $host
-     * @param string $script
+     * @param string               $script
      */
     public function __construct(Host $host, $script = '')
     {
         $this->host = $host;
         $this->script = $script;
     }
-    
+
     /**
      * Get host instance.
      *
@@ -44,7 +44,7 @@ class Client
     {
         return $this->host;
     }
-    
+
     /**
      * Get script for processor to run.
      *
@@ -83,7 +83,8 @@ class Client
     /**
      * Sets the time in seconds for timeout.
      *
-     * @param  integer $seconds
+     * @param int $seconds
+     *
      * @return self
      */
     public function setTimeout($seconds)
@@ -92,11 +93,12 @@ class Client
 
         return $this;
     }
-    
+
     /**
      * Initialize multiplexing.
      *
-     * @param  Host $host
+     * @param Host $host
+     *
      * @return string
      */
     public function initializeMultiplexing(Host $host)
@@ -118,12 +120,13 @@ class Client
 
         return $sshArguments;
     }
-    
+
     /**
      * Check of there is an open master connection being persisted.
      *
-     * @param  Host $host
-     * @param  string $sshArguments
+     * @param Host   $host
+     * @param string $sshArguments
+     *
      * @return bool
      */
     public function isMultiplexingInitialized(Host $host, $sshArguments)
@@ -135,7 +138,7 @@ class Client
 
         return $isMasterRunning;
     }
-    
+
     /**
      * Get value for ssh_multiplexing from the deploy config.
      *

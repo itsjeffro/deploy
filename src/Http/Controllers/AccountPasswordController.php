@@ -9,7 +9,8 @@ class AccountPasswordController extends Controller
     /**
      * Update the password of the current user that is logged in.
      *
-     * @param  \Deploy\Http\Requests\UpdatePasswordRequest $request
+     * @param \Deploy\Http\Requests\UpdatePasswordRequest $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdatePasswordRequest $request)
@@ -19,7 +20,7 @@ class AccountPasswordController extends Controller
         $user->save();
 
         return redirect('account')->with([
-            'message' => 'Successfully updated password.'
+            'message' => 'Successfully updated password.',
         ]);
     }
 }

@@ -4,12 +4,12 @@ namespace Deploy\Jobs;
 
 use Deploy\Models\Server;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class DeleteServerKeysJob implements ShouldQueue
 {
@@ -30,7 +30,8 @@ class DeleteServerKeysJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Server $server
+     *
      * @return void
      */
     public function __construct(Server $server)
@@ -51,19 +52,20 @@ class DeleteServerKeysJob implements ShouldQueue
     /**
      * Delete server private and public key.
      *
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Server $server
+     *
      * @return void
      */
     protected function deleteKeys(Server $server)
     {
-        $keyPath = 'keys/' . $server->id;
+        $keyPath = 'keys/'.$server->id;
 
-        if (is_dir(storage_path('app/' . $keyPath))) {
+        if (is_dir(storage_path('app/'.$keyPath))) {
             Storage::deleteDirectory($keyPath);
 
-            Log::info('Removed directory ' . storage_path('app/' . $keyPath));
+            Log::info('Removed directory '.storage_path('app/'.$keyPath));
         } else {
-            Log::info('Could not find directory ' . storage_path('app/' . $keyPath));
+            Log::info('Could not find directory '.storage_path('app/'.$keyPath));
         }
     }
 }

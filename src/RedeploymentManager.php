@@ -2,9 +2,9 @@
 
 namespace Deploy;
 
+use Deploy\Deployment\Processes;
 use Deploy\Models\Action;
 use Deploy\Models\Deployment;
-use Deploy\Deployment\Processes;
 
 class RedeploymentManager
 {
@@ -44,7 +44,7 @@ class RedeploymentManager
         ]);
         $deployment->save();
 
-        $action = new Action;
+        $action = new Action();
         $actionHooks = $action->getHooksByProject($deployment->project)->get();
 
         $processes = new Processes($deployment, $deployment->project, $actionHooks);

@@ -2,9 +2,9 @@
 
 namespace Deploy;
 
+use DateTime;
 use Deploy\Models\DeployAccessToken;
 use Deploy\Models\DeployRefreshToken;
-use DateTime;
 use Deployer\Exception\Exception;
 
 class ProviderOauthManager
@@ -34,8 +34,9 @@ class ProviderOauthManager
     /**
      * Return provider access token.
      *
-     * @return string
      * @throws Exception
+     *
+     * @return string
      */
     public function getAccessToken()
     {
@@ -45,9 +46,10 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * [description].
      *
-     * @param  string $code
+     * @param string $code
+     *
      * @return \Deploy\Models\DeployAccessToken
      */
     public function requestAccessToken($code)
@@ -68,10 +70,11 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * [description].
      *
-     * @param  \Deploy\Models\Provider $provider
-     * @param  \App\User $user
+     * @param \Deploy\Models\Provider $provider
+     * @param \App\User               $user
+     *
      * @return \Deploy\Models\DeployAccessToken
      */
     public function getDeployAccessToken($provider, $user)
@@ -93,9 +96,10 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * [description].
      *
-     * @param  \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface $requestedToken
+     * @param \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface $requestedToken
+     *
      * @return \Deploy\Models\DeployAccessToken
      */
     public function storeAccessToken($requestedToken)
@@ -138,18 +142,19 @@ class ProviderOauthManager
 
         $refreshToken = new DeployRefreshToken();
         $refreshToken->fill([
-            'id' => $requestedToken->getAccessToken(),
+            'id'                     => $requestedToken->getAccessToken(),
             'deploy_access_token_id' => $requestedToken->getAccessToken(),
-            'revoked' => 0,
-            'expires_at' => date('Y-m-d H:i:s'),
+            'revoked'                => 0,
+            'expires_at'             => date('Y-m-d H:i:s'),
         ]);
         $refreshToken->save();
     }
 
     /**
-     * [description]
+     * [description].
      *
-     * @param  \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface $requestedToken
+     * @param \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface $requestedToken
+     *
      * @return string|null
      */
     protected function formatExpirationDateTime($requestedToken)
@@ -161,14 +166,13 @@ class ProviderOauthManager
             return $dateTime->setTimestamp($timestamp)
                 ->format('Y-m-d H:i:s');
         }
-
-        return null;
     }
 
     /**
-     * [description]
+     * [description].
      *
-     * @param  \Deploy\Models\DeployAccessToken $token
+     * @param \Deploy\Models\DeployAccessToken $token
+     *
      * @return bool
      */
     protected function isAccessTokenExpired($token)
@@ -177,7 +181,7 @@ class ProviderOauthManager
             return false;
         }
 
-        $dateTime = new DateTime;
+        $dateTime = new DateTime();
 
         return $dateTime->format('Y-m-d H:i:s') >= $token->expires_at;
     }
@@ -191,9 +195,9 @@ class ProviderOauthManager
     {
         $providerName = $this->provider->friendly_name;
 
-        $provider = config('deploy.providers.' . $providerName . '.oauth');
-        $clientId = config('deploy.providers.' . $providerName . '.key');
-        $clientSecret = config('deploy.providers.' . $providerName . '.secret');
+        $provider = config('deploy.providers.'.$providerName.'.oauth');
+        $clientId = config('deploy.providers.'.$providerName.'.key');
+        $clientSecret = config('deploy.providers.'.$providerName.'.secret');
 
         return new $provider($clientId, $clientSecret);
     }

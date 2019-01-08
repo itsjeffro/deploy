@@ -2,19 +2,20 @@
 
 namespace Deploy\Http\Controllers;
 
+use Deploy\Environment\EnvironmentEncrypter;
 use Deploy\Http\Requests\EnvironmentRequest;
 use Deploy\Jobs\WriteEnvironmemtJob;
-use Deploy\Models\Project;
 use Deploy\Models\Environment;
-use Deploy\Environment\EnvironmentEncrypter;
+use Deploy\Models\Project;
 
 class ProjectEnvironmentController extends Controller
 {
     /**
      * Update environment.
      *
-     * @param  \Deploy\Http\Requests\EnvironmentRequest $request
-     * @param  \Deploy\Models\Project $project
+     * @param \Deploy\Http\Requests\EnvironmentRequest $request
+     * @param \Deploy\Models\Project                   $project
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(EnvironmentRequest $request, Project $project)

@@ -24,9 +24,9 @@ class HookRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'script' => 'required',
-            'order' => 'integer',
+            'name'     => 'required',
+            'script'   => 'required',
+            'order'    => 'integer',
             'position' => 'integer',
         ];
     }

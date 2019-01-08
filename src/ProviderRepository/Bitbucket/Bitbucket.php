@@ -3,18 +3,18 @@
 namespace Deploy\ProviderRepository\Bitbucket;
 
 use Deploy\Contracts\ProviderRepository\ProviderRepositoryInterface;
-use Deploy\ProviderRepository\ResourceCollection;
 use Deploy\ProviderRepository\Bitbucket\Resources\BranchesResource;
 use Deploy\ProviderRepository\Bitbucket\Resources\BranchResource;
-use Deploy\ProviderRepository\Bitbucket\Resources\CommitsResource;
-use Deploy\ProviderRepository\Bitbucket\Resources\TagsResource;
-use Deploy\ProviderRepository\Bitbucket\Resources\RepositoryResource;
 use Deploy\ProviderRepository\Bitbucket\Resources\CommitResource;
+use Deploy\ProviderRepository\Bitbucket\Resources\CommitsResource;
+use Deploy\ProviderRepository\Bitbucket\Resources\RepositoryResource;
+use Deploy\ProviderRepository\Bitbucket\Resources\TagsResource;
+use Deploy\ProviderRepository\ResourceCollection;
 
 class Bitbucket extends ApiClient implements ProviderRepositoryInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getApiUrl()
     {
@@ -22,70 +22,70 @@ class Bitbucket extends ApiClient implements ProviderRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function branches($userRepo)
     {
-        $response = $this->request('GET', 'repositories/' . $userRepo . '/refs/branches');
+        $response = $this->request('GET', 'repositories/'.$userRepo.'/refs/branches');
         $branches = json_decode($response->getBody());
-        
+
         return (new ResourceCollection())->toArray($branches->values, BranchesResource::class);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function branch($userRepo, $branch)
     {
-        $response = $this->request('GET', 'repositories/' . $userRepo . '/refs/branches/' . $branch);
+        $response = $this->request('GET', 'repositories/'.$userRepo.'/refs/branches/'.$branch);
         $branch = json_decode($response->getBody());
-        
+
         return (new BranchResource($branch))->toArray();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function commits($userRepo, $branch = '')
     {
-        $branch = $branch ? '/'. $branch : '';
+        $branch = $branch ? '/'.$branch : '';
 
-        $response = $this->request('GET', 'repositories/' . $userRepo . '/commits' . $branch);
+        $response = $this->request('GET', 'repositories/'.$userRepo.'/commits'.$branch);
         $commits = json_decode($response->getBody());
-        
+
         return (new ResourceCollection())->toArray($commits->values, CommitsResource::class);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function commit($userRepo, $node)
     {
-        $response = $this->request('GET', 'repositories/' . $userRepo . '/commit/' . $node);
+        $response = $this->request('GET', 'repositories/'.$userRepo.'/commit/'.$node);
         $commit = json_decode($response->getBody());
-        
+
         return (new CommitResource($commit))->toArray();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function repository($userRepo)
     {
-        $response = $this->request('GET', 'repositories/' . $userRepo);
+        $response = $this->request('GET', 'repositories/'.$userRepo);
         $repository = json_decode($response->getBody());
-        
+
         return (new RepositoryResource($repository))->toArray();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function tags($userRepo)
     {
-        $response = $this->request('GET', 'repositories/' . $userRepo . '/refs/tags');
+        $response = $this->request('GET', 'repositories/'.$userRepo.'/refs/tags');
         $tags = json_decode($response->getBody());
-        
+
         return (new ResourceCollection())->toArray($tags->values, TagsResource::class);
     }
 }

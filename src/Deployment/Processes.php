@@ -2,9 +2,9 @@
 
 namespace Deploy\Deployment;
 
-use Deploy\Models\Project;
 use Deploy\Models\Deployment;
 use Deploy\Models\Process;
+use Deploy\Models\Project;
 
 class Processes
 {
@@ -26,9 +26,10 @@ class Processes
     /**
      * Instantiate DeploymentProcesses.
      *
-     * @param  \Deploy\Models\Deployment $deployment
-     * @param  \Deploy\Models\Project $project
-     * @param  array $actions
+     * @param \Deploy\Models\Deployment $deployment
+     * @param \Deploy\Models\Project    $project
+     * @param array                     $actions
+     *
      * @return void
      */
     public function __construct(Deployment $deployment, Project $project, $actions)
@@ -39,7 +40,7 @@ class Processes
     }
 
     /**
-     * Create deployment processes
+     * Create deployment processes.
      *
      * @return array
      */
@@ -53,10 +54,10 @@ class Processes
             foreach ($this->project->servers as $server) {
                 $processes[] = array_merge($sequence, [
                     'deployment_id' => $this->deployment->id,
-                    'project_id' => $server->project->id,
-                    'server_id' => $server->id,
-                    'server_name' => $server->name,
-                    'sequence' => $sequenceNumber,
+                    'project_id'    => $server->project->id,
+                    'server_id'     => $server->id,
+                    'server_name'   => $server->name,
+                    'sequence'      => $sequenceNumber,
                 ]);
             }
             $sequenceNumber++;
@@ -68,7 +69,8 @@ class Processes
     /**
      * Get list of processes.
      *
-     * @param  array $actions
+     * @param array $actions
+     *
      * @return array
      */
     public function getSequences($actions)
@@ -79,37 +81,37 @@ class Processes
             foreach ($action->beforeHooks as $beforeHook) {
                 $sequences[] = [
                     'deployment_id' => null,
-                    'project_id' => null,
-                    'server_id' =>  null,
-                    'server_name' =>  null,
-                    'sequence' => null,
-                    'name' => $beforeHook->name,
-                    'action_id' => null,
-                    'hook_id' =>  $beforeHook->id,
+                    'project_id'    => null,
+                    'server_id'     => null,
+                    'server_name'   => null,
+                    'sequence'      => null,
+                    'name'          => $beforeHook->name,
+                    'action_id'     => null,
+                    'hook_id'       => $beforeHook->id,
                 ];
             }
 
             $sequences[] = [
                 'deployment_id' => null,
-                'project_id' => null,
-                'server_id' => null,
-                'server_name' => null,
-                'sequence' => null,
-                'name' => $action->name,
-                'action_id' => $action->id,
-                'hook_id' => null,
+                'project_id'    => null,
+                'server_id'     => null,
+                'server_name'   => null,
+                'sequence'      => null,
+                'name'          => $action->name,
+                'action_id'     => $action->id,
+                'hook_id'       => null,
             ];
 
             foreach ($action->afterHooks as $afterHook) {
                 $sequences[] = [
                     'deployment_id' => null,
-                    'project_id' => null,
-                    'server_id' =>  null,
-                    'server_name' =>  null,
-                    'sequence' => null,
-                    'name' => $afterHook->name,
-                    'action_id' => null,
-                    'hook_id' =>  $afterHook->id,
+                    'project_id'    => null,
+                    'server_id'     => null,
+                    'server_name'   => null,
+                    'sequence'      => null,
+                    'name'          => $afterHook->name,
+                    'action_id'     => null,
+                    'hook_id'       => $afterHook->id,
                 ];
             }
         }

@@ -18,7 +18,7 @@ class ServerConnectionProcessor extends AbstractProcessor
 
     /**
      * Instantiate.
-     * 
+     *
      * @return void
      */
     public function __construct(Server $server)
@@ -27,35 +27,35 @@ class ServerConnectionProcessor extends AbstractProcessor
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function fire()
     {
         $successful = false;
-        
+
         try {
             $client = new Client($this->getHost($this->server));
             $client = $client
                 ->setTimeout(30)
                 ->getProcess();
-            
+
             $client->run();
-            
+
             if (!$client->isSuccessful()) {
                 throw new ProcessFailedException($client);
             }
-            
+
             $successful = true;
         } catch (ProcessFailedException $e) {
             Log::error($e->getMessage());
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
-        
+
         $server = Server::find($this->server->id);
         $server->connection_status = $successful;
         $server->save();
-        
+
         event(new ServerConnectionTested($server));
     }
 }

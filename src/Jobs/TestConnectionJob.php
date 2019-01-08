@@ -4,10 +4,10 @@ namespace Deploy\Jobs;
 
 use Deploy\Processors\ServerConnectionProcessor;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class TestConnectionJob implements ShouldQueue
 {
@@ -21,7 +21,8 @@ class TestConnectionJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Server $server
+     *
      * @return void
      */
     public function __construct($server)
