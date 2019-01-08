@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 import ProjectEnvironmentResetService from '../../services/ProjectEnvironmentReset';
@@ -66,7 +67,7 @@ export default class ProjectEnvironmentResetPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Reset Environment Key
+                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Reset Environment Key
               </span>
             </div>
           </div>
@@ -94,7 +95,7 @@ export default class ProjectEnvironmentResetPage extends React.Component {
                 >Reset Environment Key</Button>
               </div>
               <Link
-                to={'/projects/' + project.id + '/environment-unlock'}
+                to={Deploy.path + '/projects/' + project.id + '/environment-unlock'}
               >Update Environment</Link>
             </PanelBody>
           </Panel>

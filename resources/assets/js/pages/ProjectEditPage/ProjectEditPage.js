@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 
@@ -94,7 +95,7 @@ class ProjectEditPage extends React.Component {
         <div className="breadcrumbs">
           <div className="container">
             <span className="heading">
-              <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> General Settings
+              <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> General Settings
             </span>
           </div>
         </div>
@@ -108,8 +109,8 @@ class ProjectEditPage extends React.Component {
                 </PanelHeading>
 
                 <div className="list-group">
-                  <Link to={'/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
-                  <Link to={'/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
+                  <Link to={Deploy.path + '/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
+                  <Link to={Deploy.path + '/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
                 </div>
               </Panel>
             </div>
