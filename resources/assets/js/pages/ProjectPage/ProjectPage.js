@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Deploy } from '../../config';
 
 import { projectSuccess } from '../../actions/project';
 
@@ -349,7 +350,7 @@ class ProjectPage extends React.Component {
             <div className="pull-right">
               <Link
                 className="btn btn-default"
-                to={'/projects/' + project.id + '/edit'}
+                to={Deploy.path + '/projects/' + project.id + '/edit'}
               >
                 <Icon iconName="gear" /> Settings
               </Link>
@@ -392,7 +393,7 @@ class ProjectPage extends React.Component {
             <div className="panel-body text-right">
               <Link
                 className="btn btn-default"
-                to={'/projects/' + project.id + '/servers/create'}
+                to={Deploy.path + '/projects/' + project.id + '/servers/create'}
               ><Icon iconName="plus" /> Add Server</Link>
             </div>
             {this.renderServers(servers)}

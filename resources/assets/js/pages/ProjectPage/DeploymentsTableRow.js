@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
@@ -54,7 +55,7 @@ const DeploymentsTableRow = props => {
                 <Link
                     style={{marginLeft: 5}}
                     className="btn btn-default"
-                    to={'/projects/' + deployment.project_id + '/deployments/' + deployment.id}
+                    to={Deploy.path + '/projects/' + deployment.project_id + '/deployments/' + deployment.id}
                     style={{marginLeft: 5}}
                 ><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</Link>
             </td>

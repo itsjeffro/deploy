@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Deploy } from '../../config';
 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
@@ -42,7 +43,7 @@ const ServersTableRow = props => {
                 <Link
                     className="btn btn-default"
                     style={{marginRight: 5}}
-                    to={'/projects/' + server.project_id + '/servers/' + server.id + '/edit'}
+                    to={Deploy.path + '/projects/' + server.project_id + '/servers/' + server.id + '/edit'}
                 >Edit</Link>
 
                 <Button
