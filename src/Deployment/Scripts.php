@@ -92,7 +92,7 @@ class Scripts
      * @param  array $folders
      * @return string
      */
-    protected function linkFolders($folders)
+    protected function linkFolders(array $folders)
     {
         if (empty($folders)) {
             return '';
