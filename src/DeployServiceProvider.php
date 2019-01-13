@@ -3,6 +3,7 @@
 namespace Deploy;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +20,7 @@ class DeployServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerRoutes();
+        $this->registerBroadcasting();
         $this->registerEvents();
         $this->registerResources();
         $this->registerMigrations();
@@ -57,6 +59,18 @@ class DeployServiceProvider extends ServiceProvider
         });
     }
     
+    /**
+     * Regsiter package's channel routes.
+     *
+     * @return void
+     */
+    protected function registerBroadcasting()
+    {
+        Broadcast::routes();
+        
+        require __DIR__ . '/../routes/channels.php';
+    }
+
     /**
      * Regsiter package's resources.
      *
