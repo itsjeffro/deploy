@@ -57,7 +57,7 @@ const DeploymentsTableRow = props => {
                     className="btn btn-default"
                     to={Deploy.path + '/projects/' + deployment.project_id + '/deployments/' + deployment.id}
                     style={{marginLeft: 5}}
-                ><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</Link>
+                ><Icon iconName="info-circle" /> Info</Link>
             </td>
         </tr>
     )

@@ -12,7 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ mix('app.css', 'vendor/deploy') }}" rel="stylesheet">
-    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
