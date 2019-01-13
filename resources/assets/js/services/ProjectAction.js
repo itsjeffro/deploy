@@ -13,7 +13,7 @@ export default class ProjectAction {
     get(project_id, action_id) {
         return axios.request({
             method: 'GET',
-            url: '/api/projects/' + project_id + '/actions/' + action_id,
+            url: Deploy.path + '/api/projects/' + project_id + '/actions/' + action_id,
             responseType: 'json'
         });
     }

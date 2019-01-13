@@ -6,6 +6,7 @@ import ProjectService from '../../services/Project';
 import ProjectEnvironmentResetService from '../../services/ProjectEnvironmentReset';
 
 import Alert from '../../components/Alert';
+import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import TextField from '../../components/TextField';
@@ -20,6 +21,7 @@ export default class ProjectEnvironmentResetPage extends React.Component {
       isFetching: true,
       project: {},
       key: '',
+      errors: []
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -51,15 +53,27 @@ export default class ProjectEnvironmentResetPage extends React.Component {
     projectEnvironmentResetService
       .update(project.id, {key: key})
       .then(response => {
+        this.setState({errors: []});
+
         alert('Environment key was successfully reset');
       },
       error => {
-        alert('Could not reset environment key')
+        const errorResponse = error.response.data;
+        
+        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+          return previous.concat(errorResponse[key][0]);
+        }, []);
+        
+        this.setState({errors: errors});
       });
   }
 
   render() {
-    const { project, key } = this.state;
+    const { 
+      project,
+      key,
+      errors
+    } = this.state;
 
     return (
       <div>
@@ -80,6 +94,8 @@ export default class ProjectEnvironmentResetPage extends React.Component {
 
           <Panel>
             <PanelBody>
+              {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
               <div class="form-group">
                 <TextField
                   label="Key"

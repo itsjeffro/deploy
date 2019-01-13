@@ -8,6 +8,7 @@ import ProjectService from '../../services/Project';
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';
 
+import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
@@ -26,7 +27,8 @@ class ProjectActionPage extends React.Component {
       hook: {
         name: '',
         script: ''
-      }
+      },
+      errors: []
     };
 
     this.handleEditModalClick = this.handleEditModalClick.bind(this);
@@ -101,20 +103,26 @@ class ProjectActionPage extends React.Component {
   handleAddModalClick(position) {
     const { action, project } = this.state;
 
-    this.setState({hook: {
-      name: '',
-      script: '',
-      project_id: project.id,
-      action_id: action.id,
-      position: position,
-      order: 0,
-    }});
+    this.setState({
+      errors: [],
+      hook: {
+        name: '',
+        script: '',
+        project_id: project.id,
+        action_id: action.id,
+        position: position,
+        order: 0,
+      }
+    });
 
     $('#add-hook-modal').modal('show');
   }
 
   handleEditModalClick(hook) {
-    this.setState({hook: hook});
+    this.setState({
+      hook: hook,
+      errors: []
+    });
 
     $('#edit-hook-modal').modal('show');
   }
@@ -134,13 +142,21 @@ class ProjectActionPage extends React.Component {
     projectActionHookService
       .create(hook.project_id, hook.action_id, data)
       .then(response => {
-          alert('Successfully created hook');
-        },
-        error => {
-          alert('Could not create hook');
-        });
-    
-    $('#add-hook-modal').modal('hide');
+        this.setState({errors: []});
+        
+        $('#add-hook-modal').modal('hide');
+      
+        alert('Successfully created hook');
+      },
+      error => {
+        const errorResponse = error.response.data;
+        
+        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+          return previous.concat(errorResponse[key][0]);
+        }, []);
+        
+        this.setState({errors: errors});
+      });
   }
 
   handleEditHookClick() {
@@ -152,13 +168,21 @@ class ProjectActionPage extends React.Component {
     projectActionHookService
       .update(hook.project_id, hook.action_id, hook.id, data)
       .then(response => {
+        this.setState({errors: []});
+        
+        $('#edit-hook-modal').modal('hide');
+
         alert('Successfully updated hook');
       },
       error => {
-        alert('Could not update hook');
+        const errorResponse = error.response.data;
+        
+        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+          return previous.concat(errorResponse[key][0]);
+        }, []);
+        
+        this.setState({errors: errors});
       });
-
-    $('#edit-hook-modal').modal('hide');
   }
 
   handleRemoveHookClick() {
@@ -203,7 +227,8 @@ class ProjectActionPage extends React.Component {
       project,
       beforeHooks,
       afterHooks,
-      hook
+      hook,
+      errors
     } = this.state;
 
     return (
@@ -268,6 +293,8 @@ class ProjectActionPage extends React.Component {
             {text: 'Save', onPress: () => this.handleAddHookClick()}
           ]}
         >
+          {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input 
@@ -301,6 +328,8 @@ class ProjectActionPage extends React.Component {
             {text: 'Save', onPress: () => this.handleEditHookClick()}
           ]}
         >
+          {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input 
