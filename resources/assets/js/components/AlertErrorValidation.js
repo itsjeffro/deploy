@@ -13,14 +13,14 @@ const AlertErrorValidation = props => {
       <p>The following errors occurred:</p>
       <ul>
         {errors.map(error => 
-          <li></li>
+          <li>{error}</li>
         )}
       </ul>
     </Alert>
   )
 }
 
-Alert.propTypes = {
+AlertErrorValidation.propTypes = {
   errors: PropTypes.array.isRequired
 };
 

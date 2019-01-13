@@ -6,6 +6,7 @@ import { Deploy } from '../../config';
 
 import ProjectServerService from '../../services/ProjectServer';
 
+import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
@@ -20,7 +21,8 @@ class ProjectServerEditPage extends React.Component {
       isFetching: true,
       isUpdated: false,
       project: {},
-      server: {}
+      server: {},
+      errors: []
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -65,15 +67,23 @@ class ProjectServerEditPage extends React.Component {
         this.setState({isUpdated: true});
       },
       error => {
-        throw error.response.data;
+      	const errorResponse = error.response.data;
+    	
+    	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+		  return previous.concat(errorResponse[key][0]);
+		}, []);
+    	
+        this.setState({errors: errors});
       });
   }
 
-  renderServerEditPanel(server) {
+  renderServerEditPanel(server, errors) {
     return (
       <Panel>
         <PanelBody>
           <h4>Server details</h4>
+          
+          {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -112,7 +122,8 @@ class ProjectServerEditPage extends React.Component {
       project,
       server,
       isFetching,
-      isUpdated
+      isUpdated,
+      errors
     } = this.state;
 
     if (isUpdated) {
@@ -132,7 +143,7 @@ class ProjectServerEditPage extends React.Component {
         </div>
 
         <div className="container content">
-          {isFetching ? <Loader /> : this.renderServerEditPanel(server)}
+          {isFetching ? <Loader /> : this.renderServerEditPanel(server, errors)}
         </div>
       </div>
     )

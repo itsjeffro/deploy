@@ -6,6 +6,7 @@ import { Deploy } from '../../config';
 import ProjectService from '../../services/Project';
 import ProjectServerService from '../../services/ProjectServer';
 
+import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
@@ -17,8 +18,9 @@ class ProjectServerCreatePage extends React.Component {
         this.state = {
             isFetching: true,
             isCreated: false,
-            project: {}, 
+            project: {},
             server: {},
+            errors: []
         };
         
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -53,7 +55,13 @@ class ProjectServerCreatePage extends React.Component {
                 this.setState({isCreated: true});
             },
             error => {
-                alert('Could not create server');
+            	const errorResponse = error.response.data;
+            	
+            	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+    			  return previous.concat(errorResponse[key][0]);
+    			}, []);
+
+                this.setState({errors: errors});
             });
     }
 
@@ -61,7 +69,8 @@ class ProjectServerCreatePage extends React.Component {
         const { 
             project, 
             server,
-            isCreated
+            isCreated,
+            errors
         } = this.state;
         
         if (isCreated) {
@@ -84,6 +93,8 @@ class ProjectServerCreatePage extends React.Component {
                     <Panel>
                         <div className="panel-body">
                             <h4>Server details</h4>
+                            
+                            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
                             <div className="form-group">
                                 <label htmlFor="name">Name</label>
