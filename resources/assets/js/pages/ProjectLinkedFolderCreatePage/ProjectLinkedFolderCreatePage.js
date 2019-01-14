@@ -7,6 +7,7 @@ import ProjectService from '../../services/Project';
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Alert from '../../components/Alert';
+import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
@@ -21,6 +22,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
             isCreated: false,
             project: {},
             folder: {},
+            errors: []
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -55,13 +57,23 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                 this.setState({isCreated: true});
             },
             error => {
-                alert('Could not create linked folder');
+                const errorResponse = error.response.data;
+            	
+                	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+                			  return previous.concat(errorResponse[key][0]);
+                	}, []);
+    
+                this.setState({errors: errors});
             });
     }
 
     render() {
         const { project } = this.props;
-        const { isCreated,folder } = this.state;
+        const { 
+            isCreated,
+            folder,
+            errors
+        } = this.state;
         
         if (isCreated) {
             return <Redirect to={Deploy.path + '/projects/' + project.id + '/folders'} />
