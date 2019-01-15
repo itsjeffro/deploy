@@ -44,7 +44,7 @@ class Scripts
             tar --strip-components=1 -zxf release.tar.gz
             rm release.tar.gz
 
-            ' . $this->linkFolders($this->project->folders) . '
+            ' . $this->linkFolders($this->project->folders->toArray()) . '
         ';
     }
 
