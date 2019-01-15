@@ -34,3 +34,8 @@ php artisan migrate
 ### Configuration
 After publishing the assets, the primary config file will be located in config/deploy.php. This configuration file allows
 you to setup the providers (Github and/or Bitbucket) and SSH settings.
+
+The following providers are available:
+
+- Bitbucket
+- Github

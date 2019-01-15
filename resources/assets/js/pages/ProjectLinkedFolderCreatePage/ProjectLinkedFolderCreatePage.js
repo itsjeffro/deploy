@@ -54,7 +54,10 @@ class ProjectLinkedFolderCreatePage extends React.Component {
         projectFolderService
             .create(project.id, folder)
             .then(response => {
-                this.setState({isCreated: true});
+                this.setState({
+                    isCreated: true,
+                    errors: []
+                });
             },
             error => {
                 const errorResponse = error.response.data;
@@ -98,6 +101,8 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                         
                     <Panel>
                         <PanelBody>
+                            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
                             <div className="form-group">
                                 <label htmlFor="from">Link Name</label>
                                 <input
