@@ -24,7 +24,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This provides the app the ability to generate keys and provide keys
-    | to ssh into a server. Given that the target server has added 
+    | to ssh into a server. Given that the target server has added
     | the generated public key to their authorized_keys file.
     |
     */
@@ -42,7 +42,7 @@ return [
     | SSH Multiplexing
     |--------------------------------------------------------------------------
     |
-    | By setting SSH multiplexing to true, will allow for 
+    | By setting SSH multiplexing to true, will allow for
     | multiple sessions over a single TCP connection.
     |
     */
