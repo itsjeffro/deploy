@@ -39,3 +39,18 @@ The following providers are available:
 
 - Bitbucket
 - Github
+
+You may update your .env file to include the following:
+
+##### Bitbucket
+https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
+```bash
+BITBUCKET_OAUTH_KEY=client_id
+BITBUCKET_OAUTH_SECRET=client_secret
+```
+##### Github
+https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
+```bash
+GITHUB_OAUTH_KEY=client_id
+GITHUB_OAUTH_SECRET=client_secret
+```
