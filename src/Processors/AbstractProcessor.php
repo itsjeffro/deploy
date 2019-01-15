@@ -16,10 +16,15 @@ abstract class AbstractProcessor
     protected function getHost(Server $server)
     {
         $host = new Host($server->ip_address);
+        $keyPath = $this->getKeyPath($server->id);
+        
+        // In order to use the private key to ssh into a desired destination
+        // we must set the correct permissions required for a private key.
+        chmod($keyPath, 0600);
         
         return $host->user($server->connect_as)
             ->port($server->port)
-            ->identityFile($this->getKeyPath($server->id))
+            ->identityFile($keyPath)
             ->addSshOption('StrictHostKeyChecking', 'no');
     }
     
