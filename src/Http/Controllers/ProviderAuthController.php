@@ -40,7 +40,7 @@ class ProviderAuthController extends Controller
         $providerOauth->requestAccessToken($request->get('code'));
 
         return redirect()
-            ->route('account')
+            ->route('account.show')
             ->with(['message' => "Successfully integrated with {$provider->name}."]);
     }
 }
