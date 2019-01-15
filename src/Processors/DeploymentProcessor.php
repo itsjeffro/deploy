@@ -2,6 +2,7 @@
 
 namespace Deploy\Processors;
 
+use Deploy\ProviderOauthManager;
 use Deploy\Models\Deployment;
 use Deploy\Models\Process;
 use Deploy\Models\Project;
@@ -313,9 +314,8 @@ class DeploymentProcessor extends AbstractProcessor
      */
     protected function getAccessToken()
     {
-        return $this->project
-            ->user
-            ->tokenByProvider($this->project->provider_id)
-            ->id;
+        $oauth = new ProviderOauthManager($this->project->provider, $this->project->user);
+    
+        return $oauth->getAccessToken();
     }
 }
