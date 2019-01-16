@@ -58,9 +58,12 @@ GITHUB_OAUTH_KEY=client_id
 GITHUB_OAUTH_SECRET=client_secret
 ```
 
-### SSH Process
+### Queue
 In order to properly utilise the deployment functionality of the package. In your .env file, it is recommended to 
 update your queue driver to something other than "sync". This way when the process worker can correctly access the 
 known_hosts file belonging to the server's user. 
 
 Example /home/user/.ssh/known_hosts will be used instead of /var/www/.ssh/known_hosts
+
+### Broadcasting
+TBA
