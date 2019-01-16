@@ -7,6 +7,7 @@ import { Deploy } from '../../config';
 import ProjectService from '../../services/Project';
 import AccountProviderService from '../../services/AccountProvider';
 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
@@ -66,7 +67,13 @@ class ProjectSourceControlEditPage extends React.Component {
         alert('Project was updated');
       },
       error => {
-        alert('Project could not be updated');
+        const errorResponse = error.response.data;
+    	
+        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+          return previous.concat(errorResponse[key][0]);
+        }, []);
+    	
+        this.setState({errors: errors});
       });
   }
 
@@ -105,10 +112,11 @@ class ProjectSourceControlEditPage extends React.Component {
             <div className="col-xs-12 col-sm-9">
               <Panel>
                 <PanelBody>
-                  <div className={'form-group' + (errors.hasOwnProperty('provider_id') ? ' has-error' : '')}>
-                    <label>Providers</label>
-                    {errors.hasOwnProperty('provider_id') ?  <span className="help-block"><strong>{errors.provider_id[0]}</strong></span> : ''}
+                  {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
+                  <div className="form-group">
+                    <label>Providers</label>
+                    
                     {grantedProviders.map(grantedProvider =>
                       <div key={grantedProvider.provider.id}>
                         <label htmlFor={grantedProvider.provider.name}>
@@ -124,7 +132,7 @@ class ProjectSourceControlEditPage extends React.Component {
                     )}
                   </div>
 
-                  <div className={'form-group' + (errors.repository ? ' has-error' : '')}>
+                  <div className="form-group">
                     <TextField
                       id="repository"
                       label="Respository"
@@ -132,7 +140,6 @@ class ProjectSourceControlEditPage extends React.Component {
                       name="repository"
                       value={project.repository}
                     />
-                    {errors.repository ? <span className="help-block"><strong>{errors.repository[0]}</strong></span> : ''}
                   </div>
 
                   <Button
