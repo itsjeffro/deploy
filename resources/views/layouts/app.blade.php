@@ -76,6 +76,9 @@
     </div>
 
     <!-- Scripts -->
+    <script>
+        window.Deploy = {!! $deployVariables !!};
+    </script>
     <script src="{{ mix('app.js', 'vendor/deploy') }}"></script>
 </body>
 </html>
