@@ -5,6 +5,7 @@ import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 
+import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
@@ -19,7 +20,8 @@ class ProjectEditPage extends React.Component {
     this.state = {
       isFetching: true,
       editProject: {},
-      isDeleted: false
+      isDeleted: false,
+      errors: []
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -55,10 +57,17 @@ class ProjectEditPage extends React.Component {
     projectService
       .update(editProject.id, editProject)
       .then(response => {
+        this.setState({errors: []});
         alert('Updated project');
       },
       error => {
-        alert('Failed to update project');
+        const errorResponse = error.response.data;
+    	
+        	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+		        return previous.concat(errorResponse[key][0]);
+		      }, []);
+    	
+        this.setState({errors: errors});
       });
   }
 
@@ -84,7 +93,11 @@ class ProjectEditPage extends React.Component {
 
   render() {
     const { project } = this.props;
-    const { editProject, isDeleted } = this.state;
+    const { 
+      editProject,
+      isDeleted,
+      errors
+    } = this.state;
 
     if (isDeleted) {
       return <Redirect to="/" />
@@ -121,6 +134,8 @@ class ProjectEditPage extends React.Component {
                   General Settings
                 </PanelHeading>
                 <PanelBody>
+                  {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
                   <div className="form-group">
                     <label htmlFor="name">Project name</label>
                     <input
