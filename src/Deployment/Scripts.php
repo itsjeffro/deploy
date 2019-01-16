@@ -105,9 +105,9 @@ class Scripts
 
                 cd {{ release }}
 
-                echo "Linking [{{ release }}/' . $folder->from . '] to [{{ project }}/' . $folder->to . ']";
+                echo "Linking [{{ release }}/' . $folder['from'] . '] to [{{ project }}/' . $folder['to'] . ']";
 
-                {{ symlink }} {{ project }}/' . $folder->to . ' ' . $folder->from . '
+                {{ symlink }} {{ project }}/' . $folder['to'] . ' ' . $folder['from'] . '
 
             ';
         }
