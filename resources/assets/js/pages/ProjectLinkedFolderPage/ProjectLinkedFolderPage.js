@@ -6,12 +6,13 @@ import { Deploy } from '../../config';
 
 import ProjectFolderService from '../../services/ProjectFolder';
 
-import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+
+import FoldersTable from './FoldersTable';
 
 class ProjectLinkedFolderPage extends React.Component {
   constructor(props) {
@@ -63,39 +64,45 @@ class ProjectLinkedFolderPage extends React.Component {
         alert('Could not delete linked folder');
       });
   }
-  
+
   renderFoldersTable(folders) {
+    if (folders !== undefined && folders.length > 0) {
+      return (
+        <FoldersTable
+          folders={folders}
+          modalLinkedFolderRemoveShow={this.modalLinkedFolderRemoveShow}
+        />
+      )
+    }
+
     return (
-      <Panel>
-        <PanelHeading>
-          Linked Folders
-        </PanelHeading>
-        <div className="table-responsive">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>From</th>
-                <th>To</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {folders.map(folder =>
-                <tr>
-                  <td>{folder.from}</td>
-                  <td>{folder.to}</td>
-                  <td className="text-right">
-                    <Button
-                      color="default"
-                      onClick={() => this.modalLinkedFolderRemoveShow(folder)}
-                    ><Icon iconName="times" /></Button>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+      <div className="panel-body hooks-placeholder">
+        No folders have been added.
+      </div>
+    )
+  }
+
+  renderFoldersContent(isFetching, project, folders) {
+    if (isFetching) {
+      return <Loader />;
+    }
+
+    return (
+      <div>
+        <div className="form-group pull-right">
+          <Link
+            className="btn btn-default"
+            to={Deploy.path + '/projects/' + project.id + '/folders/create'}
+          ><Icon iconName="plus" /> Add Linked Folder</Link>
         </div>
-      </Panel>
+        <div className="clearfix"></div>
+        <Panel>
+          <PanelHeading>
+            Linked Folders
+          </PanelHeading>
+          {this.renderFoldersTable(folders)}
+        </Panel>
+      </div>
     )
   }
 
@@ -116,16 +123,7 @@ class ProjectLinkedFolderPage extends React.Component {
         </div>
         
         <div className="container content">
-          <div className="form-group pull-right">
-            <Link
-                className="btn btn-default"
-                to={Deploy.path + '/projects/' + project.id + '/folders/create'}
-              ><Icon iconName="plus" /> Add Linked Folder</Link>
-          </div>
-          
-          <div className="clearfix"></div>
-          
-          {isFetching ? <Loader /> : this.renderFoldersTable(folders)}
+          {this.renderFoldersContent(isFetching, project, folders)}
         </div>
         
         <Modal
