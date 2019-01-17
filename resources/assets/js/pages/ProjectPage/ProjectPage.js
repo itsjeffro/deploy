@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import { Deploy } from '../../config';
 
 import { projectSuccess } from '../../actions/project';
@@ -412,7 +413,10 @@ class ProjectPage extends React.Component {
             </PanelHeading>
             <PanelBody>
               <p>Make requests to the following URL to trigger deployments for this project.</p>
-              <pre id="project-key" data-url="https://deploy.itsjeffro.com/deploy">{'https://deploy.itsjeffro.com/deploy/' + project.key}</pre>
+              <pre
+                id="project-key"
+                data-url={Deploy.url + '/' + Deploy.path}
+              >{Deploy.url + '/' + Deploy.path + '/' + project.key}</pre>
               <Button
                 onClick={this.handleRefreshKey}
               >Refresh key</Button>
