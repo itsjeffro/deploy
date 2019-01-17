@@ -50,12 +50,12 @@ class DeployServiceProvider extends ServiceProvider
      */
     protected function registerRoutes()
     {
-        Route::group([
-            'prefix' => config('deploy.path'),
-            'namespace' => 'Deploy\Http\Controllers',
-            'middleware' => config('deploy.middleware'),
-        ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        Route::group(['prefix' => config('deploy.path'), 'namespace' => 'Deploy\Http\Controllers'], function () {
+            Route::group(['middleware' => config('deploy.middleware')], function () {
+                $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            });
+
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         });
     }
     
