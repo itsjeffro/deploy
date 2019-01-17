@@ -1,19 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import DashboardPage from '../pages/DashboardPage';
-import ProjectPage from '../pages/ProjectPage';
-import ProjectDeploymentPage from '../pages/ProjectDeploymentPage';
-import ProjectEditPage from '../pages/ProjectEditPage';
-import ProjectSourceControlEditPage from '../pages/ProjectSourceControlEditPage';
-import ProjectEnvironmentUnlockPage from '../pages/ProjectEnvironmentUnlockPage';
-import ProjectEnvironmentResetPage from '../pages/ProjectEnvironmentResetPage';
-import ProjectServerCreatePage from '../pages/ProjectServerCreatePage';
-import ProjectServerEditPage from '../pages/ProjectServerEditPage';
-import ProjectLinkedFolderCreatePage from '../pages/ProjectLinkedFolderCreatePage';
-import ProjectActionPage from '../pages/ProjectActionPage';
-import ProjectDeploymentHookPage from '../pages/ProjectDeploymentHookPage';
-import ProjectLinkedFolderPage from '../pages/ProjectLinkedFolderPage';
+import DashboardPage from './pages/DashboardPage';
+import ProjectPage from './pages/ProjectPage';
+import ProjectDeploymentPage from './pages/ProjectDeploymentPage';
+import ProjectEditPage from './pages/ProjectEditPage';
+import ProjectSourceControlEditPage from './pages/ProjectSourceControlEditPage';
+import ProjectEnvironmentUnlockPage from './pages/ProjectEnvironmentUnlockPage';
+import ProjectEnvironmentResetPage from './pages/ProjectEnvironmentResetPage';
+import ProjectServerCreatePage from './pages/ProjectServerCreatePage';
+import ProjectServerEditPage from './pages/ProjectServerEditPage';
+import ProjectLinkedFolderCreatePage from './pages/ProjectLinkedFolderCreatePage';
+import ProjectActionPage from './pages/ProjectActionPage';
+import ProjectDeploymentHookPage from './pages/ProjectDeploymentHookPage';
+import ProjectLinkedFolderPage from './pages/ProjectLinkedFolderPage';
 
 class Application extends React.Component {
   render() {

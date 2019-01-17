@@ -70,7 +70,7 @@ class ProjectDeploymentHookPage extends React.Component {
                   <td className="text-right">
                     <Link
                       className="btn btn-default"
-                      to={Deploy.path + '/projects/' + project.id + '/actions/' + action.id}
+                      to={'/projects/' + project.id + '/actions/' + action.id}
                     >Manage</Link>
                   </td>
                 </tr>
@@ -95,7 +95,7 @@ class ProjectDeploymentHookPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Deployment Hooks
+                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Deployment Hooks
               </span>
             </div>
           </div>

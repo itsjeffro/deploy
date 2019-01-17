@@ -25,7 +25,7 @@ const ProjectsTable = props => {
           <tr key={project.id}>
             <td>
               <strong>
-                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link>
+                <Link to={'/projects/' + project.id}>{project.name}</Link>
               </strong>
             </td>
             <td>
@@ -35,7 +35,7 @@ const ProjectsTable = props => {
               {project.last_deployment.created_at ? project.last_deployment.created_at : 'N/A'}
             </td>
             <td className="text-right">
-              <Link className="btn btn-default" to={Deploy.path + '/projects/' + project.id}>Setup</Link>
+              <Link className="btn btn-default" to={'/projects/' + project.id}>Setup</Link>
             </td>
           </tr>
         ))}

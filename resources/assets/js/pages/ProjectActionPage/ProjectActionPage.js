@@ -237,7 +237,7 @@ class ProjectActionPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" />
+                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" />
                 <span className="hidden-xs"> Deployment Hooks <Icon iconName="angle-double-right" /></span> {action.name}
               </span>
             </div>

@@ -43,7 +43,7 @@ const ServersTableRow = props => {
                 <Link
                     className="btn btn-default"
                     style={{marginRight: 5}}
-                    to={Deploy.path + '/projects/' + server.project_id + '/servers/' + server.id + '/edit'}
+                    to={'/projects/' + server.project_id + '/servers/' + server.id + '/edit'}
                 >Edit</Link>
 
                 <Button

@@ -133,7 +133,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         <div className="container">
           <div className="pull-left">
             <span className="heading">
-              <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Environment
+              <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Environment
             </span>
           </div>
         </div>
@@ -239,7 +239,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
               </div>
 
               <Link 
-                to={Deploy.path + '/projects/' + project.id + '/environment-reset'}
+                to={'/projects/' + project.id + '/environment-reset'}
               >Need to reset your key?</Link>
             </PanelBody>
           </Panel>

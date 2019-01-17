@@ -175,7 +175,7 @@ class ProjectDeploymentPage extends React.Component {
         <div className="breadcrumbs">
           <div className="container">
             <span className="heading">
-              <Link to={Deploy.path + '/projects/' + project.id}>
+              <Link to={'/projects/' + project.id}>
                 {project.name}
               </Link>{' '}
               <Icon iconName="angle-double-right" /> Deployment Info

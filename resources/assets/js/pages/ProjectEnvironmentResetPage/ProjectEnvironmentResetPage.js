@@ -81,7 +81,7 @@ export default class ProjectEnvironmentResetPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Reset Environment Key
+                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Reset Environment Key
               </span>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default class ProjectEnvironmentResetPage extends React.Component {
                 >Reset Environment Key</Button>
               </div>
               <Link
-                to={Deploy.path + '/projects/' + project.id + '/environment-unlock'}
+                to={'/projects/' + project.id + '/environment-unlock'}
               >Update Environment</Link>
             </PanelBody>
           </Panel>

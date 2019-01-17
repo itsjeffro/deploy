@@ -55,7 +55,7 @@ const DeploymentsTableRow = props => {
                 <Link
                     style={{marginLeft: 5}}
                     className="btn btn-default"
-                    to={Deploy.path + '/projects/' + deployment.project_id + '/deployments/' + deployment.id}
+                    to={'/projects/' + deployment.project_id + '/deployments/' + deployment.id}
                     style={{marginLeft: 5}}
                 ><Icon iconName="info-circle" /> Info</Link>
             </td>

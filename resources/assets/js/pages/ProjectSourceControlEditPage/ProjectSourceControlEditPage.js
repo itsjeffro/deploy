@@ -102,7 +102,7 @@ class ProjectSourceControlEditPage extends React.Component {
     } = this.state;
     
     if (isUpdated) {
-      return <Redirect to={Deploy.path + '/projects/' + project.id} />
+      return <Redirect to={'/projects/' + project.id} />
     }
 
     return (
@@ -110,7 +110,7 @@ class ProjectSourceControlEditPage extends React.Component {
         <div className="breadcrumbs">
           <div className="container">
             <span className="heading">
-              <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Source Control
+              <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Source Control
             </span>
           </div>
         </div>
@@ -124,8 +124,8 @@ class ProjectSourceControlEditPage extends React.Component {
                 </PanelHeading>
 
                 <div className="list-group">
-                  <Link to={Deploy.path + '/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
-                  <Link to={Deploy.path + '/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
+                  <Link to={'/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
+                  <Link to={'/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
                 </div>
               </Panel>
             </div>

@@ -127,7 +127,7 @@ class ProjectServerEditPage extends React.Component {
     } = this.state;
 
     if (isUpdated) {
-      return <Redirect to={Deploy.path + '/projects/' + project.id} />
+      return <Redirect to={'/projects/' + project.id} />
     }
 
     return (
@@ -136,7 +136,7 @@ class ProjectServerEditPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Edit Server
+                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Edit Server
               </span>
             </div>
           </div>

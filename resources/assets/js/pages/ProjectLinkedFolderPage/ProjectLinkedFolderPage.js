@@ -92,7 +92,7 @@ class ProjectLinkedFolderPage extends React.Component {
         <div className="form-group pull-right">
           <Link
             className="btn btn-default"
-            to={Deploy.path + '/projects/' + project.id + '/folders/create'}
+            to={'/projects/' + project.id + '/folders/create'}
           ><Icon iconName="plus" /> Add Linked Folder</Link>
         </div>
         <div className="clearfix"></div>
@@ -116,7 +116,7 @@ class ProjectLinkedFolderPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={Deploy.path + '/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Linked Folders
+                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Linked Folders
               </span>
             </div>
           </div>
