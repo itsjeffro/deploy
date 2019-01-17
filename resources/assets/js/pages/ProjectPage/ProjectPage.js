@@ -43,6 +43,7 @@ class ProjectPage extends React.Component {
         deployment_id: 0
       },
       project: {},
+      projectKey: '',
       deployments: [],
       servers: [],
       server: {},
@@ -75,7 +76,8 @@ class ProjectPage extends React.Component {
 
         this.setState({
           isFetching: false,
-          servers: response.data.servers
+          servers: response.data.servers,
+          projectKey: response.data.key
         });
       });
 
@@ -117,13 +119,12 @@ class ProjectPage extends React.Component {
 
   handleRefreshKey() {
     const { project } = this.props;
-    let projectKey = document.getElementById('project-key');
     let projectKeyService = new ProjectKeyService;
 
     projectKeyService
       .put(project.id)
       .then(response => {
-        projectKey.innerHTML = projectKey.dataset.url + '/' + response.data.key;
+        this.setState({projectKey: response.data.key});
       });
   }
 
@@ -334,7 +335,8 @@ class ProjectPage extends React.Component {
       servers,
       server,
       branches,
-      tags
+      tags,
+      projectKey
     } = this.state;
 
     const {
@@ -413,10 +415,7 @@ class ProjectPage extends React.Component {
             </PanelHeading>
             <PanelBody>
               <p>Make requests to the following URL to trigger deployments for this project.</p>
-              <pre
-                id="project-key"
-                data-url={Deploy.url + '/' + Deploy.path}
-              >{Deploy.url + '/' + Deploy.path + '/' + project.key}</pre>
+              <pre>{Deploy.url + Deploy.path + '/webhook/' + projectKey}</pre>
               <Button
                 onClick={this.handleRefreshKey}
               >Refresh key</Button>
