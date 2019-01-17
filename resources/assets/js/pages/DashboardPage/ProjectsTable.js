@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { Deploy } from '../../config';
+
+import Icon from '../../components/Icon'
 
 const ProjectsTable = props => {
   const {
@@ -26,7 +29,7 @@ const ProjectsTable = props => {
               </strong>
             </td>
             <td>
-              <i className={'fa fa-' + project.provider.friendly_name}></i> {project.repository}
+              <Icon iconName={project.provider.friendly_name} /> {project.repository}
             </td>
             <td>
               {project.last_deployment.created_at ? project.last_deployment.created_at : 'N/A'}
