@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+
 import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
@@ -19,8 +20,9 @@ class ProjectEditPage extends React.Component {
 
     this.state = {
       isFetching: true,
-      editProject: {},
       isDeleted: false,
+      isUpdated: false,
+      editProject: {},
       errors: []
     };
 
@@ -36,6 +38,12 @@ class ProjectEditPage extends React.Component {
     this.setState({editProject: project});
   }
 
+  /**
+   * Handle project input change.
+   *
+   * @param {object} event
+   * @return {void}
+   */
   handleInputChange(event) {
     const target = event.target;
     const name = target.name;
@@ -50,6 +58,11 @@ class ProjectEditPage extends React.Component {
     });
   }
 
+  /**
+   * Handle project update.
+   *
+   * @return {void}
+   */
   handleProjectUpdateClick() {
     const { editProject } = this.state;
     const projectService = new ProjectService;
@@ -57,8 +70,10 @@ class ProjectEditPage extends React.Component {
     projectService
       .update(editProject.id, editProject)
       .then(response => {
-        this.setState({errors: []});
-        alert('Updated project');
+        this.setState({
+          isUpdated: true,
+          errors: []
+        });
       },
       error => {
         const errorResponse = error.response.data;
@@ -71,6 +86,11 @@ class ProjectEditPage extends React.Component {
       });
   }
 
+  /**
+   * Handle project delete.
+   *
+   * @return {void}
+   */
   handleProjectDeleteClick() {
     const { project } = this.props;
     const projectService = new ProjectService;
@@ -87,6 +107,11 @@ class ProjectEditPage extends React.Component {
       });
   }
 
+  /**
+   * Handle show project delete modal.
+   *
+   * @return {void}
+   */
   modalProjectDeleteClick() {
     $('#project-delete-modal').modal('show');
   }
@@ -96,11 +121,16 @@ class ProjectEditPage extends React.Component {
     const { 
       editProject,
       isDeleted,
+      isUpdated,
       errors
     } = this.state;
 
     if (isDeleted) {
       return <Redirect to="/" />
+    }
+    
+    if (isUpdated) {
+      return <Redirect to={Deploy.path + '/projects/' + project.id} />
     }
 
     return (

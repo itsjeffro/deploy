@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import { Deploy } from '../../config';
 
@@ -21,6 +21,7 @@ class ProjectSourceControlEditPage extends React.Component {
 
     this.state = {
       isFetching: true,
+      isUpdated: false,
       project: {},
       grantedProviders: [],
       errors: {},
@@ -45,6 +46,12 @@ class ProjectSourceControlEditPage extends React.Component {
       });
   }
 
+  /**
+   * Handle project's source control input change.
+   *
+   * @param {object} event
+   * @return {void}
+   */
   handleInputChange(event) {
     const name = event.target.name;
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
@@ -56,7 +63,13 @@ class ProjectSourceControlEditPage extends React.Component {
       return {project: project}
     });
   }
-
+  
+  /**
+   * Handle project's source control update.
+   *
+   * @param {object} event
+   * @return {void}
+   */
   handleClick(event) {
     const { project } = this.state;
     const projectService = new ProjectService;
@@ -64,7 +77,10 @@ class ProjectSourceControlEditPage extends React.Component {
     projectService
       .update(project.id, project)
       .then(response => {
-        alert('Project was updated');
+        this.setState({
+            isUpdated: true,
+            errors: []
+        });
       },
       error => {
         const errorResponse = error.response.data;
@@ -81,8 +97,13 @@ class ProjectSourceControlEditPage extends React.Component {
     const {
       project,
       errors,
-      grantedProviders
+      grantedProviders,
+      isUpdated
     } = this.state;
+    
+    if (isUpdated) {
+      return <Redirect to={Deploy.path + '/projects/' + project.id} />
+    }
 
     return (
       <div>
