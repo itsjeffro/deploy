@@ -67,9 +67,6 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('repositories/branches-tags', 'RepositoryBranchesTagsController@index')->name('repository-branches-tags.index');
 });
 
-// Webhook
-Route::post('webhook/{key}', 'DeploymentWebHookController@store')->name('webhook.store');
-
 // Account
 Route::get('account', 'AccountController@show')->name('account.show');
 Route::put('account', 'AccountController@update')->name('account.update');
@@ -84,4 +81,3 @@ Route::get('authorize/{provider}/refresh', 'ProviderAuthController@providerRefre
 
 // Dashboard
 Route::get('/{view?}', 'DashboardController@index')->where('view', '(.*)')->name('deploy');
-    
