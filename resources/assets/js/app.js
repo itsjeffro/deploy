@@ -6,14 +6,14 @@ import { createStore } from 'redux';
 import './bootstrap';
 
 import rootReducers from './reducers';
-import App from './components/App';
+import Application from './Application';
 
 if (document.getElementById('dashboard')) {
   const store = createStore(rootReducers);
 
   render(
     <Provider store={store}>
-      <App />
+      <Application />
     </Provider>,
     document.getElementById('dashboard')
   )
