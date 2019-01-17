@@ -1,3 +1,5 @@
 export const Deploy = {
-  "path": "/deploy"
+  "path": '/' + window.Deploy.path,
+  "url": window.Deploy.url,
+  "timezone": window.Deploy.timezone
 };
