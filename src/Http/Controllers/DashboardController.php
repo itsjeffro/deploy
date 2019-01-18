@@ -13,7 +13,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('deploy::dashboard.index', [
+        return view('deploy::app', [
             'deployVariables' => json_encode(Deploy::scriptVariables())
         ]);
     }
