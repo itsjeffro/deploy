@@ -2,7 +2,7 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Models\DeployAccessToken;
+use Deploy\Models\Provider;
 
 class AccountProviderController extends Controller
 {
@@ -13,11 +13,11 @@ class AccountProviderController extends Controller
      */
     public function index()
     {
-        $providers = DeployAccessToken::select('provider_id')
-            ->with(['provider'])
-            ->where('user_id', auth()->id())
-            ->groupBy('provider_id')
-            ->get();
+        $providers = Provider::with(['deployAccessToken' => function ($query) {
+            return $query->where('user_id', auth()->id());
+        }])
+        ->get();
+
 
         return response()->json($providers);
     }

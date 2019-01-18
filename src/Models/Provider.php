@@ -33,4 +33,14 @@ class Provider extends Model
      * @var bool
      */
     public $timestamps = false;
+    
+    /**
+     * Return the latest access token associated with a provider.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function deployAccessToken()
+    {
+        return $this->hasOne('Deploy\Models\DeployAccessToken', 'provider_id')->latest();
+    }
 }
