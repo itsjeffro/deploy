@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Deploy } from '../../config';
-
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Icon from '../../components/Icon';
@@ -41,13 +39,21 @@ class ProjectLinkedFolderPage extends React.Component {
         });
       });
   }
-  
+
+  /**
+   * Handle show folder remove modal.
+   *
+   * @param {object} folder
+   */
   modalLinkedFolderRemoveShow(folder) {
     this.setState({folder: folder});
 
     $('#linked-folder-remove-modal').modal('show');
   }
 
+  /**
+   * Handle project folder delete.
+   */
   handleLinkedFolderRemoveClick() {
     const { folder } = this.state;
     const { project } = this.props;
@@ -56,7 +62,7 @@ class ProjectLinkedFolderPage extends React.Component {
     projectFolderService
       .delete(project.id, folder.id)
       .then(response => {
-        alert('Linked folder was removed from project');
+        this.removeFolder(folder.id);
 
         $('#linked-folder-remove-modal').modal('hide');
       },
@@ -65,6 +71,26 @@ class ProjectLinkedFolderPage extends React.Component {
       });
   }
 
+  /**
+   * Filter out specified folder from state.
+   *
+   * @param {int} folder_id
+   */
+  removeFolder(folder_id) {
+    this.setState(state => {
+      const folders = state.folders.filter(folder => {
+        return folder.id !== folder_id;
+      });
+      return {folders: folders}
+    });
+  }
+
+  /**
+   * Render folders table.
+   *
+   * @param {array} folders
+   * @returns {XML}
+   */
   renderFoldersTable(folders) {
     if (folders !== undefined && folders.length > 0) {
       return (
@@ -82,6 +108,14 @@ class ProjectLinkedFolderPage extends React.Component {
     )
   }
 
+  /**
+   * Render folders content.
+   *
+   * @param {bool} isFetching
+   * @param {object} project
+   * @param {array} folders
+   * @returns {XML}
+   */
   renderFoldersContent(isFetching, project, folders) {
     if (isFetching) {
       return <Loader />;
