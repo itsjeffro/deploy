@@ -49,7 +49,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ route('account.show') }}">
+                                        <a href="/deploy/account">
                                             Account
                                         </a>
                                     </li>
