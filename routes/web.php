@@ -60,19 +60,12 @@ Route::group(['prefix' => 'api'], function() {
     // Project redeploy
     Route::post('redeployments', 'RedeploymentController@store')->name('redeployments.store');
 
-    // Account's providers
+    // Account providers
     Route::get('account-providers', 'AccountProviderController@index')->name('account-providers.index');
 
     // Repository
     Route::get('repositories/branches-tags', 'RepositoryBranchesTagsController@index')->name('repository-branches-tags.index');
 });
-
-// Account
-Route::get('account', 'AccountController@show')->name('account.show');
-Route::put('account', 'AccountController@update')->name('account.update');
-
-// Account's password
-Route::put('account-password', 'AccountPasswordController@update')->name('account-password.update');
 
 // Provider auth
 Route::get('authorize/{provider}', 'ProviderAuthController@authorizeUser')->name('provider-authorize.get');
