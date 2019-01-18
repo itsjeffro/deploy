@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import AccountProviderService from '../../services/AccountProvider';
 
@@ -34,6 +35,8 @@ class AccountPage extends React.Component {
 
   /**
    * Handle connect to provider.
+   * 
+   * @param {object} provider
    */
   handleConnectClick(provider) {
     //
@@ -53,27 +56,34 @@ class AccountPage extends React.Component {
         </div>
 
         <div className="container content">
-          <Panel>
-            <PanelHeading>
-              <Icon iconName="github" /> Github
-            </PanelHeading>
-            <PanelBody>
-              <Button
-                onClick={this.handleConnectClick('github')}
-              >Connect to Github</Button>
-            </PanelBody>
-          </Panel>
-          
-          <Panel>
-            <PanelHeading>
-              <Icon iconName="bitbucket" /> Bitbucket
-            </PanelHeading>
-            <PanelBody>
-              <Button
-                onClick={this.handleConnectClick('bitbucket')}
-              >Connect to Bitbucket</Button>
-            </PanelBody>
-          </Panel>
+          <div className="row">
+            <div className="col-xs-12 col-sm-3">
+              <Panel>
+                <PanelHeading>
+                  <h3 className="panel-title">Account Settings</h3>
+                </PanelHeading>
+    
+                <div className="list-group">
+                  <Link to={'/account'} className="list-group-item">Integrations</Link>
+                </div>
+              </Panel>
+            </div>
+            
+            <div className="col-xs-12 col-sm-9">
+              {providers.map(provider =>
+                <Panel>
+                  <PanelHeading>
+                    <Icon iconName={provider.friendly_name} /> {provider.name}
+                  </PanelHeading>
+                  <PanelBody>
+                    <Button
+                      onClick={this.handleConnectClick(provider)}
+                    >{provider.deploy_access_token ? 'Refresh Token' : 'Connect to ' + provider.name}</Button>
+                  </PanelBody>
+                </Panel>
+              )}
+            </div>
+          </div>
         </div>            
       </div>
     )

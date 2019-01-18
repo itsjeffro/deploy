@@ -47,12 +47,14 @@ class DashboardPage extends React.Component {
         let accountProviderService = new AccountProviderService;
 
         accountProviderService
-            .index('/api/account-providers')
-            .then(response => {
-                this.setState({
-                    grantedProviders: response.data
-                });
-            });
+          .index('/api/account-providers')
+          .then(response => {
+              let providers = response.data.filter(provider => {
+                return provider.deploy_access_token;
+              });
+  
+              this.setState({grantedProviders: providers});
+          });
     }
 
     handleInputChange(event) {
@@ -142,14 +144,14 @@ class DashboardPage extends React.Component {
                             {this.state.errors.hasOwnProperty('provider_id') ?  <span className="help-block"><strong>{this.state.errors.provider_id[0]}</strong></span> : ''}
 
                             {this.state.grantedProviders.map(grantedProvider => (
-                                <div key={grantedProvider.provider.id}>
-                                    <label htmlFor={grantedProvider.provider.name}>
+                                <div key={grantedProvider.id}>
+                                    <label htmlFor={grantedProvider.name}>
                                         <input name="provider_id"
                                             type="radio"
-                                            value={grantedProvider.provider.id}
-                                            id={grantedProvider.provider.name}
+                                            value={grantedProvider.id}
+                                            id={grantedProvider.name}
                                             onChange={this.handleInputChange}
-                                        /> {grantedProvider.provider.name}
+                                        /> {grantedProvider.name}
                                     </label>
                                 </div>
                             ))}

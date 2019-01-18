@@ -40,8 +40,12 @@ class ProjectSourceControlEditPage extends React.Component {
     accountProviderService
       .index('/api/account-providers')
       .then(response => {
+        let providers = response.data.filter(provider => {
+          return provider.deploy_access_token;
+        }); 
+      
         this.setState({
-          grantedProviders: response.data
+          grantedProviders: providers
         });
       });
   }
@@ -139,15 +143,15 @@ class ProjectSourceControlEditPage extends React.Component {
                     <label>Providers</label>
                     
                     {grantedProviders.map(grantedProvider =>
-                      <div key={grantedProvider.provider.id}>
-                        <label htmlFor={grantedProvider.provider.name}>
+                      <div key={grantedProvider.id}>
+                        <label htmlFor={grantedProvider.name}>
                           <input name="provider_id"
                             type="radio"
-                            value={grantedProvider.provider.id}
-                            id={grantedProvider.provider.name}
+                            value={grantedProvider.id}
+                            id={grantedProvider.name}
                             onChange={this.handleInputChange}
-                            checked={project.provider_id == grantedProvider.provider.id}
-                          /> {grantedProvider.provider.name}
+                            checked={project.provider_id == grantedProvider.id}
+                          /> {grantedProvider.name}
                         </label>
                       </div>
                     )}
