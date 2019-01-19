@@ -8,6 +8,8 @@
 ## Introduction
 Deploy provides zero-downtime deployment for existing Laravel applications.
 
+Note: The deployment process uses symlinks and will require the user to be able to reload the php service.
+
 ## Installation
 Use composer to install the package into your Laravel project:
 ```
@@ -60,10 +62,14 @@ GITHUB_OAUTH_SECRET=client_secret
 
 ### Queue
 In order to properly utilise the deployment functionality of the package. In your .env file, it is recommended to 
-update your queue driver to something other than "sync". This way when the process worker can correctly access the 
+update your queue driver to something other than "sync". This way the process worker can correctly access the 
 known_hosts file belonging to the server's user. 
 
 Example /home/user/.ssh/known_hosts will be used instead of /var/www/.ssh/known_hosts
 
 ### Broadcasting
-TBA
+To allow real-time feedback when a deplpoyment or server connwction has started or finished, you may set up the application 
+to utlise Laravel's  broadcasting feature.
+
+The routes are already configured, you will just need to update your .env file. You may also need to restart the queue worker 
+to pick up on your configuration updates.
