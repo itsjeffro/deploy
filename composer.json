@@ -20,7 +20,7 @@
   },
   "require": {
     "symfony/process": "~3.0",
-    "laravel/framework": "~5.4.0",
+    "laravel/framework": "~5.4.0 || ~5.5.0",
     "guzzlehttp/guzzle": "~6.3.0",
     "phpseclib/phpseclib": "^2.0"
   },
