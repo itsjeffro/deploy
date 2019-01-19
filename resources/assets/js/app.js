@@ -15,6 +15,6 @@ if (document.getElementById('dashboard')) {
     <Provider store={store}>
       <Application />
     </Provider>,
-    document.getElementById('dashboard')
+    document.getElementById('app')
   )
 }
