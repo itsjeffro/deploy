@@ -62,7 +62,7 @@ class AccountPage extends React.Component {
             
             <div className="col-xs-12 col-sm-9">
               {providers.map(provider =>
-                <Panel>
+                <Panel key={provider.id}>
                   <PanelHeading>
                     <Icon iconName={provider.friendly_name} /> {provider.name}
                   </PanelHeading>
