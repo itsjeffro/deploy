@@ -39,17 +39,16 @@ class Layout extends React.Component {
 
                   <ul className="dropdown-menu" role="menu">
                     <li>
-                      <Link to="account">Account</Link>
+                      <Link to="/account">Account</Link>
                     </li>
                   </ul>
                 </li>
               </ul>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      {this.props.children}
+        {this.props.children}
       </div>
     )
   }
