@@ -5,7 +5,8 @@
 
     .navbar-brand {
         color: #fff;
-        &:hover {
+	&:hover,
+	&:focus {
             color: #fff;
         }
     }
@@ -13,7 +14,8 @@
     .navbar-nav {
         &> li > a {
             color: #fff;
-            &:hover {
+            &:hover,
+            &:focus {
                 color: #fff;
             }
         }
@@ -23,6 +25,18 @@
             background-color: #278ac1;
             color: #fff;
         }
+
+	.open {
+	    .dropdown-menu {
+                &> li > a {
+                    color: #fff;
+
+                    @media (min-width: 768px) {
+		         color: #777;
+		    }
+                }
+	    }
+	}
     }
 
     .navbar-toggle {
