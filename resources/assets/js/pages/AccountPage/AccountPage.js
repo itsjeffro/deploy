@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { Deploy } from '../../config';
+
 import AccountProviderService from '../../services/AccountProvider';
 
 import Icon from '../../components/Icon';
@@ -17,8 +19,6 @@ class AccountPage extends React.Component {
       isFetching: true,
       providers: []
     }
-
-    this.handleConnectClick = this.handleConnectClick.bind(this);
   }
 
   componentWillMount() {
@@ -31,15 +31,6 @@ class AccountPage extends React.Component {
           providers: response.data
       });
     });
-  }
-
-  /**
-   * Handle connect to provider.
-   * 
-   * @param {object} provider
-   */
-  handleConnectClick(provider) {
-    //
   }
 
   render() {
@@ -76,9 +67,11 @@ class AccountPage extends React.Component {
                     <Icon iconName={provider.friendly_name} /> {provider.name}
                   </PanelHeading>
                   <PanelBody>
-                    <Button
-                      onClick={this.handleConnectClick(provider)}
-                    >{provider.deploy_access_token ? 'Refresh Token' : 'Connect to ' + provider.name}</Button>
+                    <a
+                      className="btn btn-default"
+                      href={Deploy.path + '/authorize/' + provider.friendly_name}
+                      title={'Connect to ' + provider.name}
+                    >{provider.deploy_access_token ? 'Refresh Token' : 'Connect to ' + provider.name}</a>
                   </PanelBody>
                 </Panel>
               )}
