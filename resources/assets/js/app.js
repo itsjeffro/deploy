@@ -8,7 +8,7 @@ import './bootstrap';
 import rootReducers from './reducers';
 import Application from './Application';
 
-if (document.getElementById('dashboard')) {
+if (document.getElementById('app')) {
   const store = createStore(rootReducers);
 
   render(
