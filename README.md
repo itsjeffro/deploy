@@ -86,5 +86,9 @@ Deployment hooks provide the user the ability to perform extra tasks along side 
 - Clean Up
 
 ### Available Varables
-|| Variable || Example Output ||
-| {{ release }} | /var/www/html/releases/20190120104650 |
+| Variable | Example Output | Description |
+|----------|----------------|-------------|
+| {{ project }} | /var/www/html | Absolute path to project. |
+| {{ project }} | /var/www/html/releases | Absolute path to releases. |
+| {{ release }} | /var/www/html/releases/20190120104650 | Absolute path to new release. |
+| {{ time }} | 20190120104650 | Generated date time prior to deployment. Date format YmdHis |
