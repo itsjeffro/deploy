@@ -10,6 +10,10 @@ Deploy provides zero-downtime deployment for existing Laravel applications.
 
 Note: The deployment process uses symlinks and will require the user to be able to reload the php service.
 
+<p align="center">
+    <img src="https://res.cloudinary.com/dz4tjswiv/image/upload/v1547982989/deploy.png">
+</p>
+
 ## Installation
 Use composer to install the package into your Laravel project:
 ```
