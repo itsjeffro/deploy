@@ -29709,11 +29709,13 @@ var ProjectActionPage = function (_React$Component) {
       var data = Object.assign({}, hook);
 
       projectActionHookService.update(hook.project_id, hook.action_id, hook.id, data).then(function (response) {
-        _this4.setState({ errors: [] });
+        var hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
+
+        _this4.setState(_defineProperty({
+          errors: []
+        }, hookPosition, _this4.updateHook(hookPosition, hook.id, response.data)));
 
         $('#edit-hook-modal').modal('hide');
-
-        alert('Successfully updated hook');
       }, function (error) {
         var errorResponse = error.response.data;
 
@@ -29724,6 +29726,28 @@ var ProjectActionPage = function (_React$Component) {
         }, []);
 
         _this4.setState({ errors: errors });
+      });
+    }
+
+    /**
+     * Update hooks (before or after) state to update hook specified by it's id.
+     * 
+     * @param {string} hook_position
+     * @param {int} hook_id
+     * @param {object} updated_hook
+     */
+
+  }, {
+    key: 'updateHook',
+    value: function updateHook(hook_position, hook_id, updated_hook) {
+      var hooks = this.state[hook_position];
+
+      return hooks.map(function (hook) {
+        if (hook.id === updated_hook.id) {
+          return Object.assign(hook, updated_hook);
+        }
+
+        return Object.assign({}, hook);
       });
     }
 
@@ -29843,6 +29867,7 @@ var ProjectActionPage = function (_React$Component) {
                 ),
                 ' ',
                 _react2.default.createElement(_Icon2.default, { iconName: 'angle-double-right' }),
+                ' ',
                 _react2.default.createElement(
                   'span',
                   { className: 'hidden-xs' },
