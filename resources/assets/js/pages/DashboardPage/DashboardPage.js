@@ -103,7 +103,7 @@ class DashboardPage extends React.Component {
 
     handleDismissModal(event) {
         this.setState({
-            errors: errors
+            errors: []
         });
 
         $('#project-create-modal').modal('hide');
