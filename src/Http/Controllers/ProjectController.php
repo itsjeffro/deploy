@@ -58,10 +58,10 @@ class ProjectController extends Controller
         $this->authorize('view', $project);
 
         $project = $project->withCount([
-                'deployments as daily_deployments' => function ($query) {
+                'deployments as daily_deployments_count' => function ($query) {
                     $query->byToday(1);
                 },
-                'deployments as weekly_deployments' => function ($query) {
+                'deployments as weekly_deployments_count' => function ($query) {
                     $query->byDaysAgo(7);
                 }
             ])
