@@ -85,7 +85,7 @@ Deployment hooks provide the user the ability to perform extra tasks along side 
 - Activate New Release
 - Clean Up
 
-### Available Varables
+### Available Variables
 | Variable | Example Output | Description |
 |----------|----------------|-------------|
 | {{ project }} | /var/www/html | Absolute path to project. |
