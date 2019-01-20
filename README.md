@@ -76,7 +76,7 @@ The routes are already configured, you will just need to update your .env file w
 to pick up on your configuration updates.
 
 ## Deployments
-Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the abity to reload the php-fpm service on the server.
+Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the ability to reload the php-fpm service on the server. You may create a deployment hook which does this after the "Clean Up" action.
 
 ## Deployment Hooks
 Deployment hooks provide the user the ability to perform extra tasks along side the default actions:
