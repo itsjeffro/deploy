@@ -55,8 +55,10 @@ class ProjectServerCreatePage extends React.Component {
                 this.setState({isCreated: true});
             },
             error => {
-            	   const errorResponse = error.response.data;
-            	
+            	   let errorResponse = error.response.data;
+
+                errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
+         	
                 	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
                 			  return previous.concat(errorResponse[key][0]);
                 	}, []);

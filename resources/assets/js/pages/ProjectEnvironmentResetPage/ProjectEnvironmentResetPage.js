@@ -58,8 +58,10 @@ export default class ProjectEnvironmentResetPage extends React.Component {
         alert('Environment key was successfully reset');
       },
       error => {
-        const errorResponse = error.response.data;
-        
+        let errorResponse = error.response.data;
+
+        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
+
         const errors = Object.keys(errorResponse).reduce(function(previous, key) {
           return previous.concat(errorResponse[key][0]);
         }, []);

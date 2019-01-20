@@ -83,6 +83,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
         this.setState(state => {
           let environment = Object.assign({}, state.environment, response.data);
+
           return {
             environment: environment,
             unlocked: true
@@ -90,11 +91,13 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         });
       },
       error => {
-        const errorResponse = error.response.data;
+        let errorResponse = error.response.data;
+
+        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
       	
-      	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-    		  return previous.concat(errorResponse[key][0]);
-    		}, []);
+       	 const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+    		     return previous.concat(errorResponse[key][0]);
+    	   	}, []);
       	
         this.setState({errors: errors});
       });
@@ -107,7 +110,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     projectEnvironmentService
       .put(project.id, environment)
       .then(response => {
-      	this.setState({errors: []});
+      	  this.setState({errors: []});
       }, 
       error => {
         alert('Could not update');
@@ -120,6 +123,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         key: null,
         contents: null
       });
+
       return {
         environment: environment,
         unlocked: false
