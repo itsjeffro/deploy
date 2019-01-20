@@ -5,6 +5,7 @@ import AccountProviderService from '../../services/AccountProvider';
 
 import ProjectsTable from './ProjectsTable';
 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Icon from '../../components/Icon';
 import Dialog from '../../components/Dialog';
 import DialogTitle from '../../components/DialogTitle';
@@ -21,7 +22,7 @@ class DashboardPage extends React.Component {
             isFetching: true,
             projects: [],
             grantedProviders: [],
-            errors: {},
+            errors: [],
             input: {}
         }
 
@@ -61,6 +62,7 @@ class DashboardPage extends React.Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
+
         let input = Object.assign({}, this.state.input);
         input[name] = value;
 
@@ -83,11 +85,17 @@ class DashboardPage extends React.Component {
 
                 this.setState({
                     projects: projects,
-                    errors: {}
+                    errors: []
                 });
             },
             error => {
-                this.setState({errors: error.response.data});
+                const errorResponse = error.response.data;
+            	
+                	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+                			  return previous.concat(errorResponse[key][0]);
+                	}, []);
+
+                this.setState({errors: errors});
             });
     }
 
@@ -132,16 +140,21 @@ class DashboardPage extends React.Component {
                         Add Project
                     </DialogTitle>
                     <DialogContent>
+                        {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
                         <h4>Project Details</h4>
-                        <div className={'form-group' + (this.state.errors.hasOwnProperty('name') ? ' has-error' : '')}>
-                            <TextField id="name" label="Project Name" onChange={this.handleInputChange} name="name" />
-                            {this.state.errors.hasOwnProperty('name') ?  <span className="help-block"><strong>{this.state.errors.name[0]}</strong></span> : ''}
+                        <div className="form-group">
+                            <TextField 
+                                id="name" 
+                                label="Project Name" 
+                                onChange={this.handleInputChange} 
+                                name="name"
+                            />
                         </div>
 
                         <h4>Source Control</h4>
-                        <div className={'form-group' + (this.state.errors.hasOwnProperty('provider_id') ? ' has-error' : '')}>
+                        <div className="form-group">
                             <label>Providers</label>
-                            {this.state.errors.hasOwnProperty('provider_id') ?  <span className="help-block"><strong>{this.state.errors.provider_id[0]}</strong></span> : ''}
 
                             {this.state.grantedProviders.map(grantedProvider => (
                                 <div key={grantedProvider.id}>
@@ -157,9 +170,13 @@ class DashboardPage extends React.Component {
                             ))}
                         </div>
 
-                        <div className={'form-group' + (this.state.errors.repository ? ' has-error' : '')}>
-                            <TextField id="repository" label="Respository" onChange={this.handleInputChange} name="repository" />
-                            {this.state.errors.repository ?  <span className="help-block"><strong>{this.state.errors.repository[0]}</strong></span> : ''}
+                        <div className="form-group">
+                            <TextField 
+                                id="repository" 
+                                label="Respository" 
+                                onChange={this.handleInputChange} 
+                                name="repository"
+                            />
                         </div>
                     </DialogContent>
                     <DialogActions>
