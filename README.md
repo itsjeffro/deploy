@@ -42,10 +42,7 @@ php artisan migrate
 After publishing the assets, the primary config file will be located in config/deploy.php. This configuration file allows
 you to setup the providers (Github and/or Bitbucket) and SSH settings.
 
-The following providers are available:
-
-- Bitbucket
-- Github
+## Available Providers
 
 You may update your .env file to include the following:
 
@@ -64,14 +61,14 @@ GITHUB_OAUTH_KEY=client_id
 GITHUB_OAUTH_SECRET=client_secret
 ```
 
-### Queue
+## Queue
 In order to properly utilise the deployment functionality of the package. In your .env file, it is recommended to 
 update your queue driver to something other than "sync". This way the process worker can correctly access the 
 known_hosts file belonging to the server's user. 
 
 Example /home/user/.ssh/known_hosts will be used instead of /var/www/.ssh/known_hosts
 
-### Broadcasting
+## Broadcasting
 To allow real-time feedback when a deplpoyment or server connwction has started or finished, you may set up the application 
 to utlise Laravel's  broadcasting feature.
 
