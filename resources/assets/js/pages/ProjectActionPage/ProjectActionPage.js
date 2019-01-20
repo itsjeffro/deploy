@@ -193,11 +193,14 @@ class ProjectActionPage extends React.Component {
     projectActionHookService
       .update(hook.project_id, hook.action_id, hook.id, data)
       .then(response => {
-        this.setState({errors: []});
+        let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
+
+        this.setState({
+        	errors: [],
+        	[hookPosition]: this.updateHook(hookPosition, hook.id, response.data)
+        });
         
         $('#edit-hook-modal').modal('hide');
-
-        alert('Successfully updated hook');
       },
       error => {
         let errorResponse = error.response.data;
@@ -210,6 +213,25 @@ class ProjectActionPage extends React.Component {
         
         this.setState({errors: errors});
       });
+  }
+  
+  /**
+   * Update hooks (before or after) state to update hook specified by it's id.
+   * 
+   * @param {string} hook_position
+   * @param {int} hook_id
+   * @param {object} updated_hook
+   */
+  updateHook(hook_position, hook_id, updated_hook) {
+    const hooks = this.state[hook_position];
+    
+    return hooks.map(hook => {
+	  if (hook.id === updated_hook.id) {
+	    return Object.assign(hook, updated_hook);
+	  }
+
+	  return Object.assign({}, hook);
+	});
   }
 
   /**
@@ -297,8 +319,10 @@ class ProjectActionPage extends React.Component {
           <div className="container">
             <div className="pull-left">
               <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" />
-                <span className="hidden-xs"> Deployment Hooks <Icon iconName="angle-double-right" /></span> {action.name}
+                <Link to={'/projects/' + project.id}>{project.name}</Link>{' '}
+                <Icon iconName="angle-double-right" />{' '}
+                <span className="hidden-xs"> Deployment Hooks <Icon iconName="angle-double-right" /></span>{' '}
+                {action.name}
               </span>
             </div>
           </div>
