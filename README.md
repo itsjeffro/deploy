@@ -6,9 +6,7 @@
 </p>
 
 ## Introduction
-Deploy provides zero-downtime deployment for existing Laravel applications.
-
-Note: The deployment process uses symlinks and will require the user to be able to reload the php service.
+Deploy provides a dasboard for existing Laravel applications to manage zero-downtime deployments.
 
 <p align="center">
     <img src="https://res.cloudinary.com/dz4tjswiv/image/upload/v1547982989/deploy.png">
@@ -76,3 +74,17 @@ to utlise Laravel's broadcasting feature.
 
 The routes are already configured, you will just need to update your .env file with the provider and credentials. You may also need to restart the queue worker 
 to pick up on your configuration updates.
+
+## Deployments
+Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the abity to reload the php-fpm service on the server.
+
+## Deployment Hooks
+Deployment hooks provide the user the ability to perform extra tasks along side the default actions:
+
+- Clone New Release
+- Activate New Release
+- Clean Up
+
+### Available Varables
+|| Variable || Example Output ||
+| {{ release }} | /var/www/html/releases/20190120104650 |
