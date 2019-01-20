@@ -177,7 +177,9 @@ class ProjectActionPage extends React.Component {
         alert('Successfully updated hook');
       },
       error => {
-        const errorResponse = error.response.data;
+        let errorResponse = error.response.data;
+
+        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
         
         const errors = Object.keys(errorResponse).reduce(function(previous, key) {
           return previous.concat(errorResponse[key][0]);
