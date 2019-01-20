@@ -91,19 +91,29 @@ class DashboardPage extends React.Component {
             error => {
                 const errorResponse = error.response.data;
             	
-                	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-                			  return previous.concat(errorResponse[key][0]);
-                	}, []);
+                const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+                    return previous.concat(errorResponse[key][0]);
+                }, []);
 
-                this.setState({errors: errors});
+                this.setState({
+                    errors: errors
+                });
             });
     }
 
     handleDismissModal(event) {
+        this.setState({
+            errors: errors
+        });
+
         $('#project-create-modal').modal('hide');
     }
 
     render() {
+        const {
+            errors
+        } = this.state;
+
         let projectContent = <div className="panel-body">Loading ...</div>;
 
         if (!this.state.isFetching && this.state.projects.length === 0) {
