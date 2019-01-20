@@ -15,7 +15,9 @@ Note: The deployment process uses symlinks and will require the user to be able 
 </p>
 
 ## Installation
-Use composer to install the package into your Laravel project:
+Prior to installing this package, it is assumed you have already configured an auth gaurd with the App\User model for your Laravel application. 
+
+Using composer, install the package into your Laravel project:
 ```
 composer require itsjeffro/deploy
 ```
@@ -40,7 +42,7 @@ php artisan migrate
 
 ### Configuration
 After publishing the assets, the primary config file will be located in config/deploy.php. This configuration file allows
-you to setup the providers (Github and/or Bitbucket) and SSH settings.
+you to setup the repository providers, path and SSH settings.
 
 ## Available Providers
 
@@ -69,8 +71,8 @@ known_hosts file belonging to the server's user.
 Example /home/user/.ssh/known_hosts will be used instead of /var/www/.ssh/known_hosts
 
 ## Broadcasting
-To allow real-time feedback when a deplpoyment or server connwction has started or finished, you may set up the application 
-to utlise Laravel's  broadcasting feature.
+To allow real-time feedback when a deployment or server connection has started or finished, you may set up the application 
+to utlise Laravel's broadcasting feature.
 
-The routes are already configured, you will just need to update your .env file. You may also need to restart the queue worker 
+The routes are already configured, you will just need to update your .env file with the provider and credentials. You may also need to restart the queue worker 
 to pick up on your configuration updates.
