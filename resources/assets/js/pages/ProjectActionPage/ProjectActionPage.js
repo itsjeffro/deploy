@@ -145,6 +145,7 @@ class ProjectActionPage extends React.Component {
    * Handle click to process hook create.
    */
   handleAddHookClick() {
+    const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
    
@@ -190,6 +191,7 @@ class ProjectActionPage extends React.Component {
    * Handle click to process hook update.
    */
   handleEditHookClick() {
+    const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
     
@@ -245,6 +247,7 @@ class ProjectActionPage extends React.Component {
    * Handle click to process hook remove.
    */
   handleRemoveHookClick() {
+    const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
 

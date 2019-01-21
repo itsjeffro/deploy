@@ -64,6 +64,7 @@ class ProjectEditPage extends React.Component {
    * Handle project update.
    */
   handleProjectUpdateClick() {
+    const { dispatch } = this.props;
     const { editProject } = this.state;
     const projectService = new ProjectService;
 

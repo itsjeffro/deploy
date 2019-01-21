@@ -51,6 +51,7 @@ class ProjectEnvironmentResetPage extends React.Component {
   }
 
   handleClick() {
+    const { dispatch } = this.props;
     const { project, key } = this.state;
     const projectEnvironmentResetService = new ProjectEnvironmentResetService;
 

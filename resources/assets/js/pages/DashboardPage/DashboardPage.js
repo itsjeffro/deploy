@@ -76,6 +76,8 @@ class DashboardPage extends React.Component {
 
     handleInputClick(event) {
         event.preventDefault();
+        
+        const { dispatch } = this.props;
 
         let projectService = new ProjectService;
 

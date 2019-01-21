@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+
+import { alertShow } from '../../actions/alert';
+
 import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
@@ -49,12 +52,15 @@ class ProjectLinkedFolderCreatePage extends React.Component {
     }
 
     handleClick(event) {
+        const { dispatch } = this.props;
         const { project, folder } = this.state;
         const projectFolderService = new ProjectFolderService;
 
         projectFolderService
             .create(project.id, folder)
             .then(response => {
+                dispatch(alertShow('Folder created successfully.'));
+
                 this.setState({
                     isCreated: true,
                     errors: []

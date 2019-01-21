@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { alertShow } from '../../actions/alert';
+
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Icon from '../../components/Icon';
@@ -56,12 +58,14 @@ class ProjectLinkedFolderPage extends React.Component {
    */
   handleLinkedFolderRemoveClick() {
     const { folder } = this.state;
-    const { project } = this.props;
+    const { project, dispatch } = this.props;
     const projectFolderService = new ProjectFolderService;
 
     projectFolderService
       .delete(project.id, folder.id)
       .then(response => {
+        dispatch(alertShow('Folder removed successfully.'));
+
         this.removeFolder(folder.id);
 
         $('#linked-folder-remove-modal').modal('hide');

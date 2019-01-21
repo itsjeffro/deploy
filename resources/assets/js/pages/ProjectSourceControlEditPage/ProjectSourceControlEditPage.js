@@ -77,6 +77,7 @@ class ProjectSourceControlEditPage extends React.Component {
    * @return {void}
    */
   handleClick(event) {
+    const { dispatch } = this.props;
     const { project } = this.state;
     const projectService = new ProjectService;
 
