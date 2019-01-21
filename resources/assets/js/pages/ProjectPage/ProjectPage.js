@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Deploy } from '../../config';
 
 import { projectSuccess } from '../../actions/project';
+import { alertShow } from '../../actions/alert';
 
 import Alert from '../../components/Alert';
 import Icon from '../../components/Icon';
@@ -252,13 +253,14 @@ class ProjectPage extends React.Component {
 
   handleRemoveServerClick() {
     const { server } = this.state;
+    const { dispatch } = this.props;
     const projectServerService = new ProjectServerService;
 
     projectServerService
       .delete(server.project_id, server.id)
       .then(response => {
         this.removeServer(server.id);
-
+        dispatch(alertShow('Successfully removed server from project.'));
         $('#server-remove-modal').modal('hide');
       },
       error => {
