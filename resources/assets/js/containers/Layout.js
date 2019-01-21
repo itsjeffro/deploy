@@ -1,12 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { alertHide } from '../actions/alert';
 
 class Layout extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleOnClick = this.handleOnClick.bind(this);
+  }
+
+  handleOnClick() {
+    const { dispatch } = this.props;
+
+    dispatch(alertHide());
   }
   
   render() {
+    const { alert } = this.props;
+
     return (
       <div>
         <nav className="navbar navbar-default navbar-static-top">
@@ -48,10 +61,28 @@ class Layout extends React.Component {
           </div>
         </nav>
 
+        <div
+          className="alert alert-success"
+          style={{margin: 0, display: (alert.show ? '' : 'none')}}
+        >
+          <div className="container">
+            <button type="button" className="close" onClick={this.handleOnClick}>
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {alert.message}
+            </div>
+        </div>
+
         {this.props.children}
       </div>
     )
   }
 }
 
-export default Layout;
+const mapStateToProps = state => {
+  return state.alert;
+};
+
+export default connect(
+  mapStateToProps
+)(Layout);
