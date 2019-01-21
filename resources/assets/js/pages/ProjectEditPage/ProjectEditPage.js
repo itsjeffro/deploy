@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
+import { alertShow } from '../../actions/alert';
+
 import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
@@ -60,8 +62,6 @@ class ProjectEditPage extends React.Component {
 
   /**
    * Handle project update.
-   *
-   * @return {void}
    */
   handleProjectUpdateClick() {
     const { editProject } = this.state;
@@ -70,6 +70,8 @@ class ProjectEditPage extends React.Component {
     projectService
       .update(editProject.id, editProject)
       .then(response => {
+        dispatch(alertShow('Project updated successfully.'));
+
         this.setState({
           isUpdated: true,
           errors: []
@@ -90,8 +92,6 @@ class ProjectEditPage extends React.Component {
 
   /**
    * Handle project delete.
-   *
-   * @return {void}
    */
   handleProjectDeleteClick() {
     const { project } = this.props;
@@ -100,6 +100,8 @@ class ProjectEditPage extends React.Component {
     projectService
       .delete(project.id)
       .then(response => {
+        dispatch(alertShow('Project removed successfully.'));
+
         $('#project-delete-modal').modal('hide');
 
         this.setState({isDeleted: true});
@@ -111,8 +113,6 @@ class ProjectEditPage extends React.Component {
 
   /**
    * Handle show project delete modal.
-   *
-   * @return {void}
    */
   modalProjectDeleteClick() {
     $('#project-delete-modal').modal('show');

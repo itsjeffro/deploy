@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AceEditor from 'react-ace';
+
+import { alertShow } from '../../actions/alert';
+
 import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
@@ -150,6 +153,8 @@ class ProjectActionPage extends React.Component {
     projectActionHookService
       .create(hook.project_id, hook.action_id, data)
       .then(response => {
+        dispatch(alertShow('Hook created successfully.'));
+
         if (hook.position == 1) {
         	let hooks = this.state.beforeHooks.concat(response.data);
 
@@ -194,6 +199,8 @@ class ProjectActionPage extends React.Component {
       .update(hook.project_id, hook.action_id, hook.id, data)
       .then(response => {
         let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
+
+        dispatch(alertShow('Hook updated successfully.'));
 
         this.setState({
         	errors: [],
@@ -244,7 +251,9 @@ class ProjectActionPage extends React.Component {
     projectActionHookService
       .delete(hook.project_id, hook.action_id, hook.id)
       .then(response => {
-    	let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
+        let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
+
+        dispatch(alertShow('Hook removed successfully.'));
 
         this.removeHook(hookPosition, hook.id);
       },
@@ -264,11 +273,11 @@ class ProjectActionPage extends React.Component {
   removeHook(hook_position, hook_id) {
     this.setState(state => {
       const hooks = state[hook_position].filter(hook => {
-	    return hook.id !== hook_id;
-	  });
+        return hook.id !== hook_id;
+      });
 	  
       return {[hook_position]: hooks}
-	});
+	   });
   }
 
   /**

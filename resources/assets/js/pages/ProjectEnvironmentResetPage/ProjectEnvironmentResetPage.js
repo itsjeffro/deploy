@@ -1,5 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { alertShow } from '../../actions/alert';
+
 import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
@@ -13,7 +17,7 @@ import TextField from '../../components/TextField';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 
-export default class ProjectEnvironmentResetPage extends React.Component {
+class ProjectEnvironmentResetPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -53,9 +57,9 @@ export default class ProjectEnvironmentResetPage extends React.Component {
     projectEnvironmentResetService
       .update(project.id, {key: key})
       .then(response => {
-        this.setState({errors: []});
+        dispatch(alertShow('Environment key updated successfully.'));
 
-        alert('Environment key was successfully reset');
+        this.setState({errors: []});
       },
       error => {
         let errorResponse = error.response.data;
@@ -122,3 +126,5 @@ export default class ProjectEnvironmentResetPage extends React.Component {
     )
   }
 }
+
+export default connect()(ProjectEnvironmentResetPage);

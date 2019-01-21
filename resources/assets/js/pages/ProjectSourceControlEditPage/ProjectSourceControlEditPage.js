@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
+import { alertShow } from '../../actions/alert';
+
 import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
@@ -81,6 +83,8 @@ class ProjectSourceControlEditPage extends React.Component {
     projectService
       .update(project.id, project)
       .then(response => {
+        dispatch(alertShow('Project\'s source control updated successfully.'));
+
         this.setState({
             isUpdated: true,
             errors: []

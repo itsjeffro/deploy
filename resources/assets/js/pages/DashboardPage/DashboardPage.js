@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { alertShow } from '../../actions/alert';
 
 import ProjectService from '../../services/Project';
 import AccountProviderService from '../../services/AccountProvider';
@@ -79,6 +82,8 @@ class DashboardPage extends React.Component {
         projectService
             .post(this.state.input)
             .then(response => {
+                dispatch(alertShow('Project created successfully.'));
+
                 $('#project-create-modal').modal('hide');
 
                 let projects = this.state.projects.concat(response.data);
@@ -201,4 +206,4 @@ class DashboardPage extends React.Component {
     }
 }
 
-export default DashboardPage;
+export default connect()(DashboardPage);
