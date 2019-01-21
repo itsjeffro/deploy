@@ -62,11 +62,15 @@ class Layout extends React.Component {
         </nav>
 
         <div
-          className="alert alert-success"
-          style={{margin: 0, display: (alert.show ? '' : 'none')}}
+          className="navbar-alert alert alert-success"
+          style={{display: (alert.show ? '' : 'none')}}
         >
           <div className="container">
-            <button type="button" className="close" onClick={this.handleOnClick}>
+            <button 
+              type="button" 
+              className="close" 
+              onClick={this.handleOnClick}
+            >
               <span aria-hidden="true">&times;</span>
             </button>
             {alert.message}
