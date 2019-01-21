@@ -15,9 +15,11 @@ const alert = (state = initialState, action) => {
     case ALERT_SHOW:
     case ALERT_HIDE:
       return {
-        message: action.message,
-        show: action.show
-      }
+        alert: {
+          message: action.message,
+          show: action.show
+        }
+      };
 
     default:
       return state;
