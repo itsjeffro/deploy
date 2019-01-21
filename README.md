@@ -73,7 +73,7 @@ To allow real-time feedback when a deployment or server connection has started o
 to utlise Laravel's broadcasting feature.
 
 The package has been set up to use Pusher, with the channel routes already being registered from the package's service provider. 
-You may update the BROADCAST_DRIVER to use pusher, along with your pusher credentials and Mix ENV variables if they have not already set.
+You may update the BROADCAST_DRIVER to use pusher, along with your pusher credentials and Mix ENV variables if they have not already been set.
 ```
 MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
 
