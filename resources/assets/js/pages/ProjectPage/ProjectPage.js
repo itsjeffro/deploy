@@ -260,7 +260,9 @@ class ProjectPage extends React.Component {
       .delete(server.project_id, server.id)
       .then(response => {
         this.removeServer(server.id);
-        dispatch(alertShow('Successfully removed server from project.'));
+
+        dispatch(alertShow('Server removed successully.'));
+
         $('#server-remove-modal').modal('hide');
       },
       error => {

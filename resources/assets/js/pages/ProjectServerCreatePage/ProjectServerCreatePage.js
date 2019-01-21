@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { Deploy } from '../../config';
 
+import { alertShow } from '../../actions/alert';
+
 import ProjectService from '../../services/Project';
 import ProjectServerService from '../../services/ProjectServer';
 
@@ -46,12 +48,15 @@ class ProjectServerCreatePage extends React.Component {
     }
     
     handleClick(event) {
+        const { dispatch } = this.props;
         const { project, server } = this.state;
         const projectServerService = new ProjectServerService;
         
         projectServerService
             .create(project.id, server)
             .then(response => {
+                dispatch(alertShow('Server created successfully.'));
+
                 this.setState({isCreated: true});
             },
             error => {

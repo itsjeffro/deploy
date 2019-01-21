@@ -4,6 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { Deploy } from '../../config';
 
+import { alertShow } from '../../actions/alert';
+
 import ProjectServerService from '../../services/ProjectServer';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation'; 
@@ -58,12 +60,15 @@ class ProjectServerEditPage extends React.Component {
   }
 
   handleClick() {
+    const { dispatch } = this.props;
     const { project_id, server_id } = this.props.match.params;
     const projectServerService = new ProjectServerService;
 
     projectServerService
       .put(project_id, server_id, this.state.server)
       .then(response => {
+        dispatch(alertShow('Server updated successfully.'));
+
         this.setState({isUpdated: true});
       },
       error => {
