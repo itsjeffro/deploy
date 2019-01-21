@@ -22,7 +22,8 @@ class Application extends React.Component {
   render() {
     return (
       <Router basename="/deploy">
-      	<Layout>
+        <div>
+          <Layout />
           <Switch>
             <Route exact path="/" component={DashboardPage} />
             <Route path="/projects/:project_id/actions/:action_id" component={ProjectActionPage} />
@@ -39,7 +40,7 @@ class Application extends React.Component {
             <Route path="/projects/:project_id" component={ProjectPage} />
             <Route path="/account" component={AccountPage} />
           </Switch>
-        </Layout>
+        </div>
       </Router>
     )
   }
