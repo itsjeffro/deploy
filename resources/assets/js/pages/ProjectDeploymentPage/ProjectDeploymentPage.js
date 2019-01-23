@@ -2,9 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Deploy } from '../../config';
-
-import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
@@ -14,16 +11,18 @@ import ProcessTable from './ProcessTable';
 
 import ProjectDeploymentService from '../../services/ProjectDeployment';
 
+import { buildSequencesFromProcesses } from '../../utils/squence';
+
 class ProjectDeploymentPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isFetching: true,
+      processOutput: '',
       deployment: {
           processes: []
-      },
-      processOutput: ''
+      }
     };
 
     this.handleProcessOutputClick = this.handleProcessOutputClick.bind(this);
@@ -64,19 +63,7 @@ class ProjectDeploymentPage extends React.Component {
     const { isFetching, deployment, processOutput } = this.state;
     const { project } = this.props;
 
-    const sequences = deployment.processes.reduce((sequences, process) => {
-      if (sequences[process.sequence] === undefined) {
-        sequences[process.sequence] = {
-          id: process.sequence,
-          name: process.name,
-          processes: []
-        };
-      }
-
-      sequences[process.sequence].processes.push(process);
-
-      return sequences;
-    }, []);
+    const sequences = buildSequencesFromProcesses(deployment.processes);
 
     const sequenceList = sequences.map(sequence => (
       <Panel key={sequence.id}>
