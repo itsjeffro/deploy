@@ -101703,7 +101703,9 @@ function (_React$Component) {
     value: function handleProjectDeleteClick() {
       var _this3 = this;
 
-      var project = this.props.project;
+      var _this$props = this.props,
+          project = _this$props.project,
+          dispatch = _this$props.dispatch;
       var projectService = new _services_Project__WEBPACK_IMPORTED_MODULE_5__["default"]();
       projectService.delete(project.id).then(function (response) {
         dispatch(Object(_actions_alert__WEBPACK_IMPORTED_MODULE_3__["alertShow"])('Project removed successfully.'));
