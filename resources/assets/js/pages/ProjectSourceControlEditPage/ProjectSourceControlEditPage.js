@@ -173,6 +173,16 @@ class ProjectSourceControlEditPage extends React.Component {
                       value={project.repository}
                     />
                   </div>
+                  
+                  <div className="form-group">
+                    <TextField
+                      id="branch"
+                      label="Branch"
+                      onChange={this.handleInputChange}
+                      name="branch"
+                      value={project.branch}
+                    />
+                  </div>
 
                   <Button
                     color="primary"
