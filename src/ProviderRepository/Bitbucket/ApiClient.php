@@ -21,9 +21,17 @@ class ApiClient extends AbstractApiClient
      */
     public function request($method, $endpoint)
     {
-        return $this->client->request($method, $this->getApiUrl() . '/' . $endpoint, [
-            'headers' => $this->getHeaders(),
-        ]);
+        return $this->client->request($method, $this->getApiUrl() . '/' . $endpoint . $this->getAccessToken());
+    }
+
+    /**
+     * Add access token.
+     *
+     * @return string
+     */
+    protected function getAccessToken()
+    {
+        return $this->accessToken ? '?access_token=' . $this->accessToken : '';
     }
 
     /**
@@ -33,7 +41,7 @@ class ApiClient extends AbstractApiClient
      */
     protected function getHeaders()
     {
-        return empty($this->accessToken) ? [] : ['Authorization' => 'Bearer ' . $this->accessToken];
+        return empty($this->accessToken) ? [] : ['Authorization:' => 'Bearer ' . $this->accessToken];
     }
 
     /**
@@ -71,6 +79,7 @@ class ApiClient extends AbstractApiClient
      * Return first record from response.
      *
      * @return array
+     * @throws \Exception
      */
     public function first()
     {
