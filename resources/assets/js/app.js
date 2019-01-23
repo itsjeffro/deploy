@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 import './bootstrap';
 
@@ -9,7 +10,10 @@ import rootReducers from './reducers';
 import Application from './Application';
 
 if (document.getElementById('app')) {
-  const store = createStore(rootReducers);
+  const store = createStore(
+    rootReducers,
+    applyMiddleware(thunk)
+  );
 
   render(
     <Provider store={store}>
