@@ -95,7 +95,7 @@ class ProjectEditPage extends React.Component {
    * Handle project delete.
    */
   handleProjectDeleteClick() {
-    const { project } = this.props;
+    const { project, dispatch } = this.props;
     const projectService = new ProjectService;
 
     projectService
