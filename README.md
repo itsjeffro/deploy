@@ -12,6 +12,9 @@ Deploy provides a dasboard for existing Laravel applications to manage zero-down
     <img src="https://res.cloudinary.com/dz4tjswiv/image/upload/v1547982989/deploy.png">
 </p>
 
+## Server Requirements
+* openssh-clients - To establish ssh connections
+
 ## Installation
 Prior to installing this package, it is assumed you have already configured an auth gaurd with the App\User model for your Laravel application. 
 
