@@ -15,6 +15,8 @@ import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelBody from '../../components/PanelBody';
 
+import { buildAlertFromResponse } from '../../utils/alert';
+
 class ProjectEnvironmentUnlockPage extends React.Component {
   constructor(props) {
     super(props);
@@ -203,7 +205,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                   <PanelBody>
                     {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-                    <div class="form-group">
+                    <div className="form-group">
                       <TextField
                         label="Key"
                         name="key"
@@ -213,7 +215,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                       />
                     </div>
 
-                    <div class="form-group">
+                    <div className="form-group">
                       <label>Contents</label>
                       <textarea
                         className="form-control"
@@ -288,7 +290,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
             <PanelBody>
             	{errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-            	<div class="form-group">
+            	<div className="form-group">
                 <TextField
                   label="Key"
                   name="key"
