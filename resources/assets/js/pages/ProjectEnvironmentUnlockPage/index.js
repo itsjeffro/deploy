@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Deploy } from '../../config';
 
 import ProjectService from '../../services/Project';
 import ProjectEnvironmentUnlockService from '../../services/ProjectEnvironmentUnlock';
@@ -13,6 +12,7 @@ import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import TextField from '../../components/TextField';
 import Panel from '../../components/Panel';
+import PanelHeading from '../../components/PanelHeading';
 import PanelBody from '../../components/PanelBody';
 
 class ProjectEnvironmentUnlockPage extends React.Component {
@@ -22,12 +22,14 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     this.state = {
       isFetching: true,
       project: {},
+      servers: [],
+      syncStatus: '',
       environment: {
         key: ''
       },
       unlocked: false,
       errors: []
-    }
+    };
     
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -43,7 +45,8 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       .then(response => {
         this.setState({
           isFetching: false,
-          project: response.data
+          project: response.data,
+          servers: response.data.servers
         });
       });
   }
@@ -52,14 +55,25 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     const { project } = this.props;
 
     Echo.private('project.' + project.id)
-      .listen('EnvironmentSyncing', (e) => {
+      .listen('.Deploy\\Events\\EnvironmentSyncing', (e) => {
         let environment = e.environment.id;
+        this.setState({syncStatus: 'Syncing'});
       })
-      .listen('EnvironmentSynced', (e) => {
+      .listen('.Deploy\\Events\\EnvironmentSynced', (e) => {
         let environment = e.environment.id;
+        this.setState({syncStatus: 'Synced'});
+
+        setTimeout(() => {
+          this.setState({syncStatus: ''});
+        }, 300);
       });
   }
-  
+
+  /**
+   * Handle input change.
+   *
+   * @param {object} event
+   */
   handleInputChange(event) {
     const value = event.target.value;
     const name = event.target.name;
@@ -71,7 +85,10 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       return {environment: environment}
     });
   }
-  
+
+  /**
+   * Handle input change.
+   */
   handleClick() {
     const { project, environment } = this.state;
     const projectEnvironmentUnlockService = new ProjectEnvironmentUnlockService;
@@ -149,7 +166,9 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     const {
       environment,
       unlocked,
-      errors
+      errors,
+      servers,
+      syncStatus
     } = this.state;
     
     const {
@@ -165,42 +184,73 @@ class ProjectEnvironmentUnlockPage extends React.Component {
             <Alert type="warning">
               Your environment information will be stored in an .env file on your servers.
             </Alert>
-            
-            <Panel>
-              <PanelBody>
-              	{errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-              	<div class="form-group">
-                  <TextField
-                    label="Key"
-                    name="key"
-                    type="password"
-                    onChange={this.handleInputChange}
-                    value={environment.key}
-                  />
-                </div>
+            <div className="row">
+              <div className="col-xs-12 col-md-8">
+                <Panel>
+                  <PanelBody>
+                    {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-                <div class="form-group">
-                  <label>Contents</label>
-                  <textarea
-                    className="form-control"
-                    name="contents"
-                    onChange={this.handleInputChange}
-                    rows="6"
-                    style={{fontFamily: 'monospace', resize: 'vertical'}}
-                  >{environment.contents}</textarea>
-                </div>
+                    <div class="form-group">
+                      <TextField
+                        label="Key"
+                        name="key"
+                        type="password"
+                        onChange={this.handleInputChange}
+                        value={environment.key}
+                      />
+                    </div>
 
-                <Button 
-                  onClick={this.handleCancelClick}
-                  style={{marginRight: 5}}
-                >Cancel</Button>
+                    <div class="form-group">
+                      <label>Contents</label>
+                      <textarea
+                        className="form-control"
+                        name="contents"
+                        onChange={this.handleInputChange}
+                        rows="6"
+                        style={{fontFamily: 'monospace', resize: 'vertical'}}
+                      >{environment.contents}</textarea>
+                    </div>
 
-                <Button 
-                  onClick={this.handleUpdateClick}
-                >Update Environment</Button>
-              </PanelBody>
-            </Panel>
+                    <Button
+                      onClick={this.handleCancelClick}
+                      style={{marginRight: 5}}
+                    >Cancel</Button>
+
+                    <Button
+                      onClick={this.handleUpdateClick}
+                    >Update Environment</Button>
+                  </PanelBody>
+                </Panel>
+              </div>
+
+              <div className="col-xs-12 col-md-4">
+                <Panel>
+                  <PanelHeading>
+                    <div className="pull-right">
+                      {syncStatus}
+                    </div>
+                    Servers
+                  </PanelHeading>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th width="60%">Server</th>
+                        <th width="60%">Updated At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {servers.map(server =>
+                      <tr>
+                        <td>{server.name}</td>
+                        <td>--</td>
+                      </tr>
+                    )}
+                    </tbody>
+                  </table>
+                </Panel>
+              </div>
+            </div>
           </div>
         </div>
       )
