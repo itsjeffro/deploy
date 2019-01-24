@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Grid = props => {
   const {
     xs,
@@ -6,14 +8,13 @@ const Grid = props => {
     lg
   } = props;
   
-  let styles = Object.assign(
-    {},
+  let styles = Object.assign({},
     (xs ? {'xs-' + xs} : {}),
     (sm ? {'sm-' + sm} : {}),
     (md ? {'md-' + md} : {}),
     (lg ? {'lg-' + lg} : {}),
   );
-
+    
   return (
     <div className={styles}>
       {props.children}

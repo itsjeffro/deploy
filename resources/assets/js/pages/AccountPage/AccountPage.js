@@ -5,6 +5,7 @@ import { Deploy } from '../../config';
 
 import AccountProviderService from '../../services/AccountProvider';
 
+import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
@@ -48,7 +49,7 @@ class AccountPage extends React.Component {
 
         <div className="container content">
           <div className="row">
-            <div className="col-xs-12 col-sm-3">
+            <Grid xs={12} sm={3}>
               <Panel>
                 <PanelHeading>
                   <h3 className="panel-title">Account Settings</h3>
@@ -58,9 +59,9 @@ class AccountPage extends React.Component {
                   <Link to={'/account'} className="list-group-item">Integrations</Link>
                 </div>
               </Panel>
-            </div>
+            </Grid>
             
-            <div className="col-xs-12 col-sm-9">
+            <Grid xs={12} sm={9}>
               {providers.map(provider =>
                 <Panel key={provider.id}>
                   <PanelHeading>
@@ -75,7 +76,7 @@ class AccountPage extends React.Component {
                   </PanelBody>
                 </Panel>
               )}
-            </div>
+            </Grid>
           </div>
         </div>            
       </div>

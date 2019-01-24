@@ -164,7 +164,7 @@ class DashboardPage extends React.Component {
         </div>
 
         <Dialog id="project-create-modal">
-          <DialogTitle showCloseButton>
+          <DialogTitle>
             Add Project
           </DialogTitle>
           <DialogContent>
