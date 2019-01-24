@@ -8,18 +8,18 @@ const Grid = props => {
     lg
   } = props;
   
-  let styles = Object.assign({},
-    (xs ? {'xs-' + xs} : {}),
-    (sm ? {'sm-' + sm} : {}),
-    (md ? {'md-' + md} : {}),
-    (lg ? {'lg-' + lg} : {}),
-  );
+  let styles = [
+    (xs ? 'col-xs-' + xs : ''),
+    (sm ? 'col-sm-' + sm : ''),
+    (md ? 'col-md-' + md : ''),
+    (lg ? 'col-lg-' + lg : ''),
+  ];
     
   return (
-    <div className={styles}>
+    <div className={styles.join(' ').trim()}>
       {props.children}
     </div>
   )
-}
+};
 
 export default Grid;
