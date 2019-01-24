@@ -102123,6 +102123,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Panel__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/Panel */ "./resources/assets/js/components/Panel.js");
 /* harmony import */ var _components_PanelHeading__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/PanelHeading */ "./resources/assets/js/components/PanelHeading.js");
 /* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/PanelBody */ "./resources/assets/js/components/PanelBody.js");
+/* harmony import */ var _utils_alert__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../utils/alert */ "./resources/assets/js/utils/alert.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -102142,6 +102143,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 
 
 
@@ -102272,7 +102274,7 @@ function (_React$Component) {
         });
       }, function (error) {
         _this4.setState({
-          errors: buildAlertFromResponse(error.response)
+          errors: Object(_utils_alert__WEBPACK_IMPORTED_MODULE_14__["buildAlertFromResponse"])(error.response)
         });
       });
     }
@@ -102295,7 +102297,7 @@ function (_React$Component) {
         });
       }, function (error) {
         _this5.setState({
-          errors: buildAlertFromResponse(error.response)
+          errors: Object(_utils_alert__WEBPACK_IMPORTED_MODULE_14__["buildAlertFromResponse"])(error.response)
         });
       });
     }
@@ -102364,7 +102366,7 @@ function (_React$Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_7__["default"], {
           errors: errors
         }) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          class: "form-group"
+          className: "form-group"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
           label: "Key",
           name: "key",
@@ -102372,7 +102374,7 @@ function (_React$Component) {
           onChange: this.handleInputChange,
           value: environment.key
         })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          class: "form-group"
+          className: "form-group"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Contents"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
           className: "form-control",
           name: "contents",
@@ -102411,7 +102413,7 @@ function (_React$Component) {
       }, "Your environment information will be encrypted on our server using your chosen key. You will also have to provide your key each time you wish to update your information.", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Please keep in mind that we do not store your key and have no way of retrieving it. Therefore if you forget your key, you will need to reset your key which will also result in any previous encrypted environment information being cleared from our server."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_7__["default"], {
         errors: errors
       }) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        class: "form-group"
+        className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
         label: "Key",
         name: "key",
@@ -105658,6 +105660,33 @@ function () {
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (RepositoryTagBranch);
+
+/***/ }),
+
+/***/ "./resources/assets/js/utils/alert.js":
+/*!********************************************!*\
+  !*** ./resources/assets/js/utils/alert.js ***!
+  \********************************************/
+/*! exports provided: buildAlertFromResponse */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "buildAlertFromResponse", function() { return buildAlertFromResponse; });
+/**
+ * Return a simplied array of all the errors 
+ * we received from our source data.
+ *
+ * @param {array} response
+ * @return {array}
+ */
+var buildAlertFromResponse = function buildAlertFromResponse(response) {
+  var errorResponse = response.data.hasOwnProperty('errors') ? response.data.errors : response.data;
+  return Object.keys(errorResponse).reduce(function (previousError, key) {
+    var currentError = errorResponse[key][0];
+    return previousError.concat(currentError);
+  }, []);
+};
 
 /***/ }),
 
