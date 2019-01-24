@@ -6,9 +6,10 @@
  * @return {array}
  */
 export const buildAlertFromResponse = response => {
-  let errorResponse = response.data.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
+  let errorResponse = response.data.hasOwnProperty('errors') ? response.data.errors : response.data;
       	
-  const errors = Object.keys(errorResponse).reduce(function(previousError, key) {
-    return previousError.concat(errorResponse[key][0]);
- 	}, []); 
+  return Object.keys(errorResponse).reduce(function(previousError, key) {
+    let currentError = errorResponse[key][0];
+    return previousError.concat(currentError);
+  }, []);
 };
