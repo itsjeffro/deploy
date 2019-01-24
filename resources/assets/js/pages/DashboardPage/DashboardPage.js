@@ -195,6 +195,7 @@ class DashboardPage extends React.Component {
                                 label="Respository" 
                                 onChange={this.handleInputChange} 
                                 name="repository"
+                                placeholder="user/repository"
                             />
                         </div>
                     </DialogContent>

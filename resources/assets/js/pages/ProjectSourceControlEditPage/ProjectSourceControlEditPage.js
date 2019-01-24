@@ -171,6 +171,7 @@ class ProjectSourceControlEditPage extends React.Component {
                       onChange={this.handleInputChange}
                       name="repository"
                       value={project.repository}
+                      placeholder="user/repository"
                     />
                   </div>
                   

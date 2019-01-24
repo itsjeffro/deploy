@@ -7,7 +7,8 @@ const TextField = props => {
         onChange,
         name,
         type,
-        value
+        value,
+        placeholder
     } = props;
 
     return (
@@ -20,6 +21,7 @@ const TextField = props => {
                 type={type || 'text'} 
                 id={id}
                 value={value}
+                placeholder={placeholder}
             />
         </div>
     )
