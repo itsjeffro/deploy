@@ -18,7 +18,7 @@ const AlertErrorValidation = props => {
       </ul>
     </Alert>
   )
-}
+};
 
 AlertErrorValidation.propTypes = {
   errors: PropTypes.array.isRequired
