@@ -99623,6 +99623,34 @@ var DialogTitle = function DialogTitle(props) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/Grid.js":
+/*!************************************************!*\
+  !*** ./resources/assets/js/components/Grid.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Grid = function Grid(props) {
+  var xs = props.xs,
+      sm = props.sm,
+      md = props.md,
+      lg = props.lg;
+  var styles = [xs ? 'col-xs-' + xs : '', sm ? 'col-sm-' + sm : '', md ? 'col-md-' + md : '', lg ? 'col-lg-' + lg : ''];
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: styles.join(' ').trim()
+  }, props.children);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Grid);
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/Icon.js":
 /*!************************************************!*\
   !*** ./resources/assets/js/components/Icon.js ***!
@@ -99814,7 +99842,8 @@ var TextField = function TextField(props) {
       onChange = props.onChange,
       name = props.name,
       type = props.type,
-      value = props.value;
+      value = props.value,
+      placeholder = props.placeholder;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, label ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: id
   }, label) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
@@ -99823,7 +99852,8 @@ var TextField = function TextField(props) {
     onChange: onChange,
     type: type || 'text',
     id: id,
-    value: value
+    value: value,
+    placeholder: placeholder
   }));
 };
 
@@ -100033,11 +100063,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../config */ "./resources/assets/js/config.js");
 /* harmony import */ var _services_AccountProvider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/AccountProvider */ "./resources/assets/js/services/AccountProvider.js");
-/* harmony import */ var _components_Icon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Icon */ "./resources/assets/js/components/Icon.js");
-/* harmony import */ var _components_Panel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Panel */ "./resources/assets/js/components/Panel.js");
-/* harmony import */ var _components_PanelHeading__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/PanelHeading */ "./resources/assets/js/components/PanelHeading.js");
-/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/PanelBody */ "./resources/assets/js/components/PanelBody.js");
-/* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/Button */ "./resources/assets/js/components/Button.js");
+/* harmony import */ var _components_Grid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Grid */ "./resources/assets/js/components/Grid.js");
+/* harmony import */ var _components_Icon__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Icon */ "./resources/assets/js/components/Icon.js");
+/* harmony import */ var _components_Panel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/Panel */ "./resources/assets/js/components/Panel.js");
+/* harmony import */ var _components_PanelHeading__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/PanelHeading */ "./resources/assets/js/components/PanelHeading.js");
+/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/PanelBody */ "./resources/assets/js/components/PanelBody.js");
+/* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/Button */ "./resources/assets/js/components/Button.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -100055,6 +100086,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -100112,23 +100144,25 @@ function (_React$Component) {
         className: "container content"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-xs-12 col-sm-3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelHeading__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Grid__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        xs: 12,
+        sm: 3
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelHeading__WEBPACK_IMPORTED_MODULE_7__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
         className: "panel-title"
       }, "Account Settings")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "list-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: '/account',
         className: "list-group-item"
-      }, "Integrations")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-xs-12 col-sm-9"
+      }, "Integrations")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Grid__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        xs: 12,
+        sm: 9
       }, providers.map(function (provider) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_6__["default"], {
           key: provider.id
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelHeading__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelHeading__WEBPACK_IMPORTED_MODULE_7__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_5__["default"], {
           iconName: provider.friendly_name
-        }), " ", provider.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_7__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        }), " ", provider.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
           className: "btn btn-default",
           href: _config__WEBPACK_IMPORTED_MODULE_2__["Deploy"].path + '/authorize/' + provider.friendly_name,
           title: 'Connect to ' + provider.name
@@ -100236,7 +100270,7 @@ function (_React$Component) {
     };
     _this.handleInputClick = _this.handleInputClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleInputChange = _this.handleInputChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.handleDismissModal = _this.handleDismissModal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleDismissModalClick = _this.handleDismissModalClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -100265,6 +100299,12 @@ function (_React$Component) {
         });
       });
     }
+    /**
+     * Handle input change from the project add form.
+     *
+     * @param {object} event
+     */
+
   }, {
     key: "handleInputChange",
     value: function handleInputChange(event) {
@@ -100277,6 +100317,12 @@ function (_React$Component) {
         input: input
       });
     }
+    /**
+     * Handle click for submitting the create project form.
+     *
+     * @param {object} event
+     */
+
   }, {
     key: "handleInputClick",
     value: function handleInputClick(event) {
@@ -100307,9 +100353,15 @@ function (_React$Component) {
         });
       });
     }
+    /**
+     * Handle click for dismissing the creat project modal.
+     *
+     * @param {object} event
+     */
+
   }, {
-    key: "handleDismissModal",
-    value: function handleDismissModal(event) {
+    key: "handleDismissModalClick",
+    value: function handleDismissModalClick(event) {
       this.setState({
         errors: []
       });
@@ -100362,9 +100414,7 @@ function (_React$Component) {
         className: "panel panel-default"
       }, projectContent)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Dialog__WEBPACK_IMPORTED_MODULE_8__["default"], {
         id: "project-create-modal"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_DialogTitle__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        showCloseButton: true
-      }, "Add Project"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_DialogContent__WEBPACK_IMPORTED_MODULE_10__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_DialogTitle__WEBPACK_IMPORTED_MODULE_9__["default"], null, "Add Project"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_DialogContent__WEBPACK_IMPORTED_MODULE_10__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_6__["default"], {
         errors: errors
       }) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Project Details"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
@@ -100393,9 +100443,10 @@ function (_React$Component) {
         id: "repository",
         label: "Respository",
         onChange: this.handleInputChange,
-        name: "repository"
+        name: "repository",
+        placeholder: "user/repository"
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_DialogActions__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_13__["default"], {
-        onClick: this.handleDismissModal
+        onClick: this.handleDismissModalClick
       }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_13__["default"], {
         color: "primary",
         onClick: this.handleInputClick
@@ -102048,10 +102099,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/assets/js/pages/ProjectEnvironmentUnlockPage/index.js":
-/*!*************************************************************************!*\
-  !*** ./resources/assets/js/pages/ProjectEnvironmentUnlockPage/index.js ***!
-  \*************************************************************************/
+/***/ "./resources/assets/js/pages/ProjectEnvironmentUnlockPage/ProjectEnvironmentUnlockPage.js":
+/*!************************************************************************************************!*\
+  !*** ./resources/assets/js/pages/ProjectEnvironmentUnlockPage/ProjectEnvironmentUnlockPage.js ***!
+  \************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -102195,7 +102246,7 @@ function (_React$Component) {
       });
     }
     /**
-     * Handle input change.
+     * Handle environment unlock click.
      */
 
   }, {
@@ -102220,17 +102271,15 @@ function (_React$Component) {
           };
         });
       }, function (error) {
-        var errorResponse = error.response.data;
-        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-        var errors = Object.keys(errorResponse).reduce(function (previous, key) {
-          return previous.concat(errorResponse[key][0]);
-        }, []);
-
         _this4.setState({
-          errors: errors
+          errors: buildAlertFromResponse(error.response)
         });
       });
     }
+    /**
+     * Handle environment update click.
+     */
+
   }, {
     key: "handleUpdateClick",
     value: function handleUpdateClick() {
@@ -102245,9 +102294,15 @@ function (_React$Component) {
           errors: []
         });
       }, function (error) {
-        alert('Could not update');
+        _this5.setState({
+          errors: buildAlertFromResponse(error.response)
+        });
       });
     }
+    /**
+     * Handle cancel environement update click.
+     */
+
   }, {
     key: "handleCancelClick",
     value: function handleCancelClick() {
@@ -102262,6 +102317,13 @@ function (_React$Component) {
         };
       });
     }
+    /**
+     * Render breadcrumbs.
+     *
+     * @param {object} project
+     * @return {XML}
+     */
+
   }, {
     key: "renderBreadcrumbs",
     value: function renderBreadcrumbs(project) {
@@ -102275,9 +102337,9 @@ function (_React$Component) {
         className: "heading"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: '/projects/' + project.id
-      }, project.name), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      }, project.name), ' ', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_9__["default"], {
         iconName: "angle-double-right"
-      }), " Environment"))));
+      }), ' ', "Environment"))));
     }
   }, {
     key: "render",
@@ -102374,6 +102436,21 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps)(ProjectEnvironmentUnlockPage));
+
+/***/ }),
+
+/***/ "./resources/assets/js/pages/ProjectEnvironmentUnlockPage/index.js":
+/*!*************************************************************************!*\
+  !*** ./resources/assets/js/pages/ProjectEnvironmentUnlockPage/index.js ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ProjectEnvironmentUnlockPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProjectEnvironmentUnlockPage */ "./resources/assets/js/pages/ProjectEnvironmentUnlockPage/ProjectEnvironmentUnlockPage.js");
+
+/* harmony default export */ __webpack_exports__["default"] = (_ProjectEnvironmentUnlockPage__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
@@ -104654,7 +104731,8 @@ function (_React$Component) {
         label: "Respository",
         onChange: this.handleInputChange,
         name: "repository",
-        value: project.repository
+        value: project.repository,
+        placeholder: "user/repository"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TextField__WEBPACK_IMPORTED_MODULE_13__["default"], {
