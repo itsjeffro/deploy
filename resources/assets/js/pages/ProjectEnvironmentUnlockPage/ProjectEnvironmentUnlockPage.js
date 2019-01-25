@@ -6,14 +6,18 @@ import ProjectService from '../../services/Project';
 import ProjectEnvironmentUnlockService from '../../services/ProjectEnvironmentUnlock';
 import ProjectEnvironmentService from '../../services/ProjectEnvironment';
 
+import {projectSuccess} from '../../actions/project';
+
 import Alert from '../../components/Alert';
 import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
+import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';
-import TextField from '../../components/TextField';
+import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelBody from '../../components/PanelBody';
+import TextField from '../../components/TextField';
 
 import { buildAlertFromResponse } from '../../utils/alert';
 
@@ -40,17 +44,23 @@ class ProjectEnvironmentUnlockPage extends React.Component {
   }
 
   componentWillMount() {
+    const {dispatch, project} = this.props;
     const projectService = new ProjectService;
 
-    projectService
-      .get(this.props.match.params.project_id)
-      .then(response => {
-        this.setState({
-          isFetching: false,
-          project: response.data,
-          servers: response.data.servers
+    if (typeof project === 'object' && Object.keys(project).length === 0) {
+      projectService
+        .get(this.props.match.params.project_id)
+        .then(response => {
+          dispatch(projectSuccess(response.data));
+
+          this.setState({
+            isFetching: false,
+            servers: response.data.servers
+          });
         });
-      });
+    } else {
+      this.setState({isFetching: false});
+    }
   }
   
   componentDidMount() {
@@ -92,7 +102,8 @@ class ProjectEnvironmentUnlockPage extends React.Component {
    * Handle environment unlock click.
    */
   handleClick() {
-    const { project, environment } = this.state;
+    const {environment} = this.state;
+    const {project} = this.props;
     const projectEnvironmentUnlockService = new ProjectEnvironmentUnlockService;
     
     projectEnvironmentUnlockService
@@ -178,6 +189,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
   render() {
     const {
+      isFetching,
       environment,
       unlocked,
       errors,
@@ -185,9 +197,16 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       syncStatus
     } = this.state;
     
-    const {
-      project
-    } = this.props;
+    const {project} = this.props;
+
+    if (isFetching) {
+      return (
+        <div>
+          {this.renderBreadcrumbs(project)}
+          <Loader />
+        </div>
+      )
+    }
     
     if (unlocked) {
       return (
@@ -200,7 +219,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
             </Alert>
 
             <div className="row">
-              <div className="col-xs-12 col-md-8">
+              <Grid xs={12} md={8}>
                 <Panel>
                   <PanelBody>
                     {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
@@ -236,9 +255,9 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                     >Update Environment</Button>
                   </PanelBody>
                 </Panel>
-              </div>
+              </Grid>
 
-              <div className="col-xs-12 col-md-4">
+              <Grid xs={12} md={4}>
                 <Panel>
                   <PanelHeading>
                     <div className="pull-right">
@@ -255,15 +274,17 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                     </thead>
                     <tbody>
                     {servers.map(server =>
-                      <tr>
-                        <td>{server.name}</td>
+                      <tr key={server.id}>
+                        <td>
+                          <input type="checkbox" name="is_synced_to" value="" /> {server.name}
+                        </td>
                         <td>--</td>
                       </tr>
                     )}
                     </tbody>
                   </table>
                 </Panel>
-              </div>
+              </Grid>
             </div>
           </div>
         </div>

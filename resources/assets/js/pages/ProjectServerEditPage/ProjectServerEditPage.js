@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
-import { Deploy } from '../../config';
-
 import { alertShow } from '../../actions/alert';
 
 import ProjectServerService from '../../services/ProjectServer';
@@ -25,7 +23,7 @@ class ProjectServerEditPage extends React.Component {
       project: {},
       server: {},
       errors: []
-    }
+    };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
