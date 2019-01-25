@@ -121,7 +121,8 @@ class ProjectEnvironmentUnlockPage extends React.Component {
    * Handle environment update click.
    */
   handleUpdateClick() {
-    const { project, environment } = this.state;
+    const {project} = this.props;
+    const {environment} = this.state;
     const projectEnvironmentService = new ProjectEnvironmentService;
 
     projectEnvironmentService
