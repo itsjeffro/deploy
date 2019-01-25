@@ -99690,13 +99690,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var Loader = function Loader(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    class: "spinner"
+    className: "spinner"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    class: "bounce1"
+    className: "bounce1"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    class: "bounce2"
+    className: "bounce2"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    class: "bounce3"
+    className: "bounce3"
   }));
 };
 
@@ -102115,18 +102115,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_Project__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/Project */ "./resources/assets/js/services/Project.js");
 /* harmony import */ var _services_ProjectEnvironmentUnlock__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/ProjectEnvironmentUnlock */ "./resources/assets/js/services/ProjectEnvironmentUnlock.js");
 /* harmony import */ var _services_ProjectEnvironment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/ProjectEnvironment */ "./resources/assets/js/services/ProjectEnvironment.js");
-/* harmony import */ var _components_Alert__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/Alert */ "./resources/assets/js/components/Alert.js");
-/* harmony import */ var _components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/AlertErrorValidation */ "./resources/assets/js/components/AlertErrorValidation.js");
-/* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/Button */ "./resources/assets/js/components/Button.js");
-/* harmony import */ var _components_Icon__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/Icon */ "./resources/assets/js/components/Icon.js");
-/* harmony import */ var _components_TextField__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/TextField */ "./resources/assets/js/components/TextField.js");
-/* harmony import */ var _components_Panel__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/Panel */ "./resources/assets/js/components/Panel.js");
-/* harmony import */ var _components_PanelHeading__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/PanelHeading */ "./resources/assets/js/components/PanelHeading.js");
-/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/PanelBody */ "./resources/assets/js/components/PanelBody.js");
-/* harmony import */ var _utils_alert__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../utils/alert */ "./resources/assets/js/utils/alert.js");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
+/* harmony import */ var _actions_project__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../actions/project */ "./resources/assets/js/actions/project.js");
+/* harmony import */ var _components_Alert__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/Alert */ "./resources/assets/js/components/Alert.js");
+/* harmony import */ var _components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/AlertErrorValidation */ "./resources/assets/js/components/AlertErrorValidation.js");
+/* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/Button */ "./resources/assets/js/components/Button.js");
+/* harmony import */ var _components_Grid__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/Grid */ "./resources/assets/js/components/Grid.js");
+/* harmony import */ var _components_Icon__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/Icon */ "./resources/assets/js/components/Icon.js");
+/* harmony import */ var _components_Loader__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/Loader */ "./resources/assets/js/components/Loader.js");
+/* harmony import */ var _components_Panel__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/Panel */ "./resources/assets/js/components/Panel.js");
+/* harmony import */ var _components_PanelHeading__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../components/PanelHeading */ "./resources/assets/js/components/PanelHeading.js");
+/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../components/PanelBody */ "./resources/assets/js/components/PanelBody.js");
+/* harmony import */ var _components_TextField__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/TextField */ "./resources/assets/js/components/TextField.js");
+/* harmony import */ var _utils_alert__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../utils/alert */ "./resources/assets/js/utils/alert.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -102143,6 +102146,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+
+
 
 
 
@@ -102194,14 +102200,25 @@ function (_React$Component) {
     value: function componentWillMount() {
       var _this2 = this;
 
+      var _this$props = this.props,
+          dispatch = _this$props.dispatch,
+          project = _this$props.project;
       var projectService = new _services_Project__WEBPACK_IMPORTED_MODULE_3__["default"]();
-      projectService.get(this.props.match.params.project_id).then(function (response) {
-        _this2.setState({
-          isFetching: false,
-          project: response.data,
-          servers: response.data.servers
+
+      if (_typeof(project) === 'object' && Object.keys(project).length === 0) {
+        projectService.get(this.props.match.params.project_id).then(function (response) {
+          dispatch(Object(_actions_project__WEBPACK_IMPORTED_MODULE_6__["projectSuccess"])(response.data));
+
+          _this2.setState({
+            isFetching: false,
+            servers: response.data.servers
+          });
         });
-      });
+      } else {
+        this.setState({
+          isFetching: false
+        });
+      }
     }
   }, {
     key: "componentDidMount",
@@ -102256,9 +102273,8 @@ function (_React$Component) {
     value: function handleClick() {
       var _this4 = this;
 
-      var _this$state = this.state,
-          project = _this$state.project,
-          environment = _this$state.environment;
+      var environment = this.state.environment;
+      var project = this.props.project;
       var projectEnvironmentUnlockService = new _services_ProjectEnvironmentUnlock__WEBPACK_IMPORTED_MODULE_4__["default"]();
       projectEnvironmentUnlockService.post(project.id, environment).then(function (response) {
         _this4.setState({
@@ -102274,7 +102290,7 @@ function (_React$Component) {
         });
       }, function (error) {
         _this4.setState({
-          errors: Object(_utils_alert__WEBPACK_IMPORTED_MODULE_14__["buildAlertFromResponse"])(error.response)
+          errors: Object(_utils_alert__WEBPACK_IMPORTED_MODULE_17__["buildAlertFromResponse"])(error.response)
         });
       });
     }
@@ -102287,9 +102303,9 @@ function (_React$Component) {
     value: function handleUpdateClick() {
       var _this5 = this;
 
-      var _this$state2 = this.state,
-          project = _this$state2.project,
-          environment = _this$state2.environment;
+      var _this$state = this.state,
+          project = _this$state.project,
+          environment = _this$state.environment;
       var projectEnvironmentService = new _services_ProjectEnvironment__WEBPACK_IMPORTED_MODULE_5__["default"]();
       projectEnvironmentService.put(project.id, environment).then(function (response) {
         _this5.setState({
@@ -102297,7 +102313,7 @@ function (_React$Component) {
         });
       }, function (error) {
         _this5.setState({
-          errors: Object(_utils_alert__WEBPACK_IMPORTED_MODULE_14__["buildAlertFromResponse"])(error.response)
+          errors: Object(_utils_alert__WEBPACK_IMPORTED_MODULE_17__["buildAlertFromResponse"])(error.response)
         });
       });
     }
@@ -102339,35 +102355,41 @@ function (_React$Component) {
         className: "heading"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: '/projects/' + project.id
-      }, project.name), ' ', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      }, project.name), ' ', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_11__["default"], {
         iconName: "angle-double-right"
       }), ' ', "Environment"))));
     }
   }, {
     key: "render",
     value: function render() {
-      var _this$state3 = this.state,
-          environment = _this$state3.environment,
-          unlocked = _this$state3.unlocked,
-          errors = _this$state3.errors,
-          servers = _this$state3.servers,
-          syncStatus = _this$state3.syncStatus;
+      var _this$state2 = this.state,
+          isFetching = _this$state2.isFetching,
+          environment = _this$state2.environment,
+          unlocked = _this$state2.unlocked,
+          errors = _this$state2.errors,
+          servers = _this$state2.servers,
+          syncStatus = _this$state2.syncStatus;
       var project = this.props.project;
+
+      if (isFetching) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.renderBreadcrumbs(project), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Loader__WEBPACK_IMPORTED_MODULE_12__["default"], null));
+      }
 
       if (unlocked) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.renderBreadcrumbs(project), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "container content"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Alert__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Alert__WEBPACK_IMPORTED_MODULE_7__["default"], {
           type: "warning"
         }, "Your environment information will be stored in an .env file on your servers."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-xs-12 col-md-8"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Grid__WEBPACK_IMPORTED_MODULE_10__["default"], {
+          xs: 12,
+          md: 8
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_13__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_15__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_8__["default"], {
           errors: errors
         }) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "form-group"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TextField__WEBPACK_IMPORTED_MODULE_16__["default"], {
           label: "Key",
           name: "key",
           type: "password",
@@ -102384,16 +102406,17 @@ function (_React$Component) {
             fontFamily: 'monospace',
             resize: 'vertical'
           }
-        }, environment.contents)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        }, environment.contents)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
           onClick: this.handleCancelClick,
           style: {
             marginRight: 5
           }
-        }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
           onClick: this.handleUpdateClick
-        }, "Update Environment")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-xs-12 col-md-4"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelHeading__WEBPACK_IMPORTED_MODULE_12__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, "Update Environment")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Grid__WEBPACK_IMPORTED_MODULE_10__["default"], {
+          xs: 12,
+          md: 4
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_13__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelHeading__WEBPACK_IMPORTED_MODULE_14__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "pull-right"
         }, syncStatus), "Servers"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
           className: "table"
@@ -102402,19 +102425,25 @@ function (_React$Component) {
         }, "Server"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
           width: "60%"
         }, "Updated At"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, servers.map(function (server) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, server.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "--"));
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
+            key: server.id
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+            type: "checkbox",
+            name: "is_synced_to",
+            value: ""
+          }), " ", server.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "--"));
         }))))))));
       }
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.renderBreadcrumbs(project), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container content"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Alert__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Alert__WEBPACK_IMPORTED_MODULE_7__["default"], {
         type: "warning"
-      }, "Your environment information will be encrypted on our server using your chosen key. You will also have to provide your key each time you wish to update your information.", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Please keep in mind that we do not store your key and have no way of retrieving it. Therefore if you forget your key, you will need to reset your key which will also result in any previous encrypted environment information being cleared from our server."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }, "Your environment information will be encrypted on our server using your chosen key. You will also have to provide your key each time you wish to update your information.", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Please keep in mind that we do not store your key and have no way of retrieving it. Therefore if you forget your key, you will need to reset your key which will also result in any previous encrypted environment information being cleared from our server."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_13__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_15__["default"], null, errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_8__["default"], {
         errors: errors
       }) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TextField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_TextField__WEBPACK_IMPORTED_MODULE_16__["default"], {
         label: "Key",
         name: "key",
         type: "password",
@@ -102422,7 +102451,7 @@ function (_React$Component) {
         value: environment.key
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
         onClick: this.handleClick
       }, "Unlock Environment")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: '/projects/' + project.id + '/environment-reset'
@@ -104260,15 +104289,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../config */ "./resources/assets/js/config.js");
-/* harmony import */ var _actions_alert__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/alert */ "./resources/assets/js/actions/alert.js");
-/* harmony import */ var _services_ProjectServer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/ProjectServer */ "./resources/assets/js/services/ProjectServer.js");
-/* harmony import */ var _components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/AlertErrorValidation */ "./resources/assets/js/components/AlertErrorValidation.js");
-/* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/Button */ "./resources/assets/js/components/Button.js");
-/* harmony import */ var _components_Icon__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/Icon */ "./resources/assets/js/components/Icon.js");
-/* harmony import */ var _components_Loader__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/Loader */ "./resources/assets/js/components/Loader.js");
-/* harmony import */ var _components_Panel__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/Panel */ "./resources/assets/js/components/Panel.js");
-/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/PanelBody */ "./resources/assets/js/components/PanelBody.js");
+/* harmony import */ var _actions_alert__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../actions/alert */ "./resources/assets/js/actions/alert.js");
+/* harmony import */ var _services_ProjectServer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/ProjectServer */ "./resources/assets/js/services/ProjectServer.js");
+/* harmony import */ var _components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/AlertErrorValidation */ "./resources/assets/js/components/AlertErrorValidation.js");
+/* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/Button */ "./resources/assets/js/components/Button.js");
+/* harmony import */ var _components_Icon__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/Icon */ "./resources/assets/js/components/Icon.js");
+/* harmony import */ var _components_Loader__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/Loader */ "./resources/assets/js/components/Loader.js");
+/* harmony import */ var _components_Panel__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/Panel */ "./resources/assets/js/components/Panel.js");
+/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/PanelBody */ "./resources/assets/js/components/PanelBody.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -104286,7 +104314,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 
 
 
@@ -104330,7 +104357,7 @@ function (_React$Component) {
 
       var project = this.props.project;
       var server_id = this.props.match.params.server_id;
-      var projectServerService = new _services_ProjectServer__WEBPACK_IMPORTED_MODULE_5__["default"]();
+      var projectServerService = new _services_ProjectServer__WEBPACK_IMPORTED_MODULE_4__["default"]();
       this.setState({
         project: project
       });
@@ -104362,9 +104389,9 @@ function (_React$Component) {
       var _this$props$match$par = this.props.match.params,
           project_id = _this$props$match$par.project_id,
           server_id = _this$props$match$par.server_id;
-      var projectServerService = new _services_ProjectServer__WEBPACK_IMPORTED_MODULE_5__["default"]();
+      var projectServerService = new _services_ProjectServer__WEBPACK_IMPORTED_MODULE_4__["default"]();
       projectServerService.put(project_id, server_id, this.state.server).then(function (response) {
-        dispatch(Object(_actions_alert__WEBPACK_IMPORTED_MODULE_4__["alertShow"])('Server updated successfully.'));
+        dispatch(Object(_actions_alert__WEBPACK_IMPORTED_MODULE_3__["alertShow"])('Server updated successfully.'));
 
         _this3.setState({
           isUpdated: true
@@ -104384,7 +104411,7 @@ function (_React$Component) {
   }, {
     key: "renderServerEditPanel",
     value: function renderServerEditPanel(server, errors) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_10__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Server details"), errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Panel__WEBPACK_IMPORTED_MODULE_9__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Server details"), errors.length ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_AlertErrorValidation__WEBPACK_IMPORTED_MODULE_5__["default"], {
         errors: errors
       }) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
@@ -104444,7 +104471,7 @@ function (_React$Component) {
         id: "project_path",
         onChange: this.handleInputChange,
         value: server.project_path
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
         color: "primary",
         onClick: this.handleClick
       }, "Save Server")));
@@ -104475,11 +104502,11 @@ function (_React$Component) {
         className: "heading"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
         to: '/projects/' + project.id
-      }, project.name), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }, project.name), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Icon__WEBPACK_IMPORTED_MODULE_7__["default"], {
         iconName: "angle-double-right"
       }), " Edit Server")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container content"
-      }, isFetching ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Loader__WEBPACK_IMPORTED_MODULE_9__["default"], null) : this.renderServerEditPanel(server, errors)));
+      }, isFetching ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Loader__WEBPACK_IMPORTED_MODULE_8__["default"], null) : this.renderServerEditPanel(server, errors)));
     }
   }]);
 
