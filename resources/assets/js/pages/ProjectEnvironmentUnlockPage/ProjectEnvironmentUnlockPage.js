@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import ProjectService from '../../services/Project';
 import ProjectEnvironmentUnlockService from '../../services/ProjectEnvironmentUnlock';
 import ProjectEnvironmentService from '../../services/ProjectEnvironment';
 
-import {projectSuccess} from '../../actions/project';
+import {fetchProject} from '../../actions/project';
 
 import Alert from '../../components/Alert';
 import AlertErrorValidation from '../../components/AlertErrorValidation'; 
@@ -44,20 +43,11 @@ class ProjectEnvironmentUnlockPage extends React.Component {
   }
 
   componentWillMount() {
-    const {dispatch, project} = this.props;
-    const projectService = new ProjectService;
+    const {dispatch, project, match} = this.props;
 
     if (typeof project === 'object' && Object.keys(project).length === 0) {
-      projectService
-        .get(this.props.match.params.project_id)
-        .then(response => {
-          dispatch(projectSuccess(response.data));
-
-          this.setState({
-            isFetching: false,
-            servers: response.data.servers
-          });
-        });
+      dispatch(fetchProject(match.params.project_id));
+      this.setState({isFetching: false});
     } else {
       this.setState({isFetching: false});
     }
