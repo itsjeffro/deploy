@@ -7,9 +7,27 @@ use Deploy\Models\Project;
 use Deploy\Models\Server;
 use Deploy\Jobs\CreateServerKeysJob;
 use Deploy\Jobs\DeleteServerKeysJob;
+use Deploy\Ssh\Key;
 
 class ProjectServerController extends Controller
 {
+    
+    /**
+     * @var \Deploy\Ssh\Key
+     */
+    private $sshKey;
+    
+    /**
+     * Instantiate constructor.
+     *
+     * @param  \Deploy\Ssh\Key $sshKey
+     * @return void
+     */
+    public function __construct(Key $sshKey)
+    {
+        $this->sshKey = $sshKey;
+    }
+
     /**
      * Get server.
      *
@@ -55,7 +73,7 @@ class ProjectServerController extends Controller
         ]);
         $server->save();
 
-        dispatch(new CreateServerKeysJob($server));
+        $server = $this->createKeys($server);
 
         return response()->json($server, 201);
     }
@@ -101,5 +119,38 @@ class ProjectServerController extends Controller
         dispatch(new DeleteServerKeysJob($server));
 
         return response()->json(null, 204);
+    }
+
+    
+    /**
+     * Create server private and public key.
+     *
+     * @param  \Deploy\Models\Server $server
+     * @return \Deploy\Models\Server
+     */
+    protected function createKeys(Server $server)
+    {
+        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
+        
+        if (!is_dir($sshKeyPath)) {
+            mkdir($sshKeyPath);
+        }
+        
+        $severKeyPath = $sshKeyPath . $server->id;
+        
+        if (!is_dir($severKeyPath)) {
+            mkdir($severKeyPath);
+        }
+            
+        $this->sshKey->generate($severKeyPath, 'id_rsa', config('deploy.ssh_key.comment'));
+        
+        // Store public key contents and keep a file backup
+        $server->public_key = file_get_contents($severKeyPath . '/id_rsa.pub');
+        $server->save();
+        
+        // Remove the file, as we no longer need it.
+        unlink($severKeyPath . '/id_rsa.pub');
+        
+        return $server;
     }
 }

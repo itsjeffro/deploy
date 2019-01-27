@@ -79,11 +79,13 @@ class CreateServerKeysJob implements ShouldQueue
             // Store public key contents and keep a file backup
             $server->public_key = file_get_contents($severKeyPath . '/id_rsa.pub');
             $server->save();
+            
+            // Remove the file, as we no longer need it.
+            unlink($severKeyPath . '/id_rsa.pub');
 
             // Give the keys the correct permissions, otherwise
             // we wont be able to use them for SSH access.
             chmod($severKeyPath . '/id_rsa', 0600);
-            chmod($severKeyPath . '/id_rsa.pub', 0644);
         }
     }
 }
