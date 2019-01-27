@@ -55,10 +55,6 @@ class ProjectServerController extends Controller
         ]);
         $server->save();
 
-        if (!is_dir(storage_path('app/keys'))) {
-            mkdir(storage_path('app/keys'));
-        }
-
         dispatch(new CreateServerKeysJob($server));
 
         return response()->json($server, 201);

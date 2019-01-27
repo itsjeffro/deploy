@@ -63,21 +63,27 @@ class CreateServerKeysJob implements ShouldQueue
      */
     protected function createKeys(Server $server)
     {
-        $keyPath = storage_path('app/keys/' . $server->id);
+        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
+        
+        if (!is_dir($sshKeyPath)) {
+            mkdir($sshKeyPath);
+        }
+        
+        $severKeyPath = $sshKeyPath . $server->id;
 
-        if (!is_dir($keyPath)) {
-            mkdir($keyPath);
+        if (!is_dir($severKeyPath)) {
+            mkdir($severKeyPath);
 
-            $this->sshKey->generate($keyPath, 'id_rsa', 'deploy@itsjeffro.com');
+            $this->sshKey->generate($severKeyPath, 'id_rsa', config('deploy.ssh_key.comment'));
             
             // Store public key contents and keep a file backup
-            $server->public_key = file_get_contents($keyPath . '/id_rsa.pub');
+            $server->public_key = file_get_contents($severKeyPath . '/id_rsa.pub');
             $server->save();
 
             // Give the keys the correct permissions, otherwise
             // we wont be able to use them for SSH access.
-            chmod($keyPath . '/id_rsa', 0600);
-            chmod($keyPath . '/id_rsa.pub', 0644);
+            chmod($severKeyPath . '/id_rsa', 0600);
+            chmod($severKeyPath . '/id_rsa.pub', 0644);
         }
     }
 }
