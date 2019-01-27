@@ -17,7 +17,7 @@
         white-space: nowrap;
 
         @media (min-width: 768px) {
-            border-bottom: 1px solid #d2d6d8;
+            border-bottom: 1px solid transparent;
         }
     }
 
@@ -31,7 +31,7 @@
     a {
         display: block;
         color: $text-color;
-        border-bottom: 2px solid $body-bg;
+        border-bottom: 2px solid transparent;
         padding-top: 18px;
         padding-bottom: 18px;
 
