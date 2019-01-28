@@ -13,6 +13,7 @@ import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle'; 
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 
@@ -151,7 +152,7 @@ class ProjectEditPage extends React.Component {
             <div className="col-xs-12 col-sm-3">
               <Panel>
                 <PanelHeading>
-                  <h3 className="panel-title">Project settings</h3>
+                  <PanelTitle>Project settings</PanelTitle>
                 </PanelHeading>
 
                 <div className="list-group">
@@ -164,7 +165,7 @@ class ProjectEditPage extends React.Component {
             <div className="col-xs-12 col-sm-9">
               <Panel>
                 <PanelHeading>
-                  General Settings
+                  <PanelTitle>General Settings</PanelTitle>
                 </PanelHeading>
                 <PanelBody>
                   {errors.length ? <AlertErrorValidation errors={errors} /> : ''}

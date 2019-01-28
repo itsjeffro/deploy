@@ -2,6 +2,7 @@ import React from 'react';
 
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle'; 
 import Icon from '../../components/Icon';
 
 const ProjectDetails = props => {
@@ -16,7 +17,9 @@ const ProjectDetails = props => {
 
   return (
     <Panel>
-      <PanelHeading>Project Details</PanelHeading>
+      <PanelHeading>
+      	<PanelTitle>Project Details</PanelTitle>
+      </PanelHeading>
 
       <ul className="list-group">
         <li className="list-group-item">

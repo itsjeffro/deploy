@@ -15,6 +15,7 @@ import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle'; 
 import PanelBody from '../../components/PanelBody';
 import TextField from '../../components/TextField';
 
@@ -254,7 +255,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                     <div className="pull-right">
                       {syncStatus}
                     </div>
-                    Servers
+                    <PanelTitle>Servers</PanelTitle>
                   </PanelHeading>
                   <table className="table">
                     <thead>

@@ -99,8 +99,6 @@ class ProjectServerCreatePage extends React.Component {
                 <div className="container content">
                     <Panel>
                         <div className="panel-body">
-                            <h4>Server details</h4>
-                            
                             {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
                             <div className="form-group">

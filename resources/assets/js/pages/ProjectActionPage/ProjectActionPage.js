@@ -18,6 +18,7 @@ import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle'; 
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 
@@ -344,17 +345,14 @@ class ProjectActionPage extends React.Component {
           <div className="row">
 
             <div className="col-xs-12 col-sm-6">
-              <div className="form-group pull-right">
-                <Button
-                  onClick={() => this.handleAddModalClick(1)}
-                ><Icon iconName="plus" /> Add Before Hook</Button>
-              </div>
-
-              <div className="clearfix"></div>
-
               <Panel>
                 <PanelHeading>
-                  <i className="fa fa-code" aria-hidden="true"></i> Before This Action
+                  <div className="pull-right">
+	                <Button
+	                  onClick={() => this.handleAddModalClick(1)}
+	                ><Icon iconName="plus" /> Add Before Hook</Button>
+	              </div>
+                  <PanelTitle><Icon iconName="code" /> Before This Action</PanelTitle>
                 </PanelHeading>
 
                 {this.renderHooksTable(beforeHooks)}
@@ -362,17 +360,14 @@ class ProjectActionPage extends React.Component {
             </div>
 
             <div className="col-xs-12 col-sm-6">
-              <div className="form-group pull-right">
-                <Button
-                  onClick={() => this.handleAddModalClick(2)}
-                ><Icon iconName="plus" /> Add After Hook</Button>
-              </div>
-
-              <div className="clearfix"></div>
-
               <Panel>
                 <PanelHeading>
-                  <i className="fa fa-code" aria-hidden="true"></i> After This Action
+                  <div className="pull-right">
+	                <Button
+	                  onClick={() => this.handleAddModalClick(2)}
+	                ><Icon iconName="plus" /> Add After Hook</Button>
+	              </div>
+	              <PanelTitle><Icon iconName="code" /> After This Action</PanelTitle>
                 </PanelHeading>
 
                 {this.renderHooksTable(afterHooks)}

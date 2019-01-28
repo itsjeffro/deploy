@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Panel from '../../components/Panel'; 
+import PanelHeading from '../../components/PanelHeading'; 
+import PanelTitle from '../../components/PanelTitle'; 
 
 const DeploymentDetails = props => {
     const { project } = props;
@@ -16,9 +18,9 @@ const DeploymentDetails = props => {
 
     return (
         <Panel>
-            <div className="panel-heading">
-                Deployments
-            </div>
+            <PanelHeading>
+                <PanelTitle>Deployment Details</PanelTitle>
+            </PanelHeading>
 
             <ul className="list-group">
                 <li className="list-group-item">

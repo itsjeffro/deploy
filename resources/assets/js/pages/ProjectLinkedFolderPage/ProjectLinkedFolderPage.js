@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle'; 
 
 import FoldersTable from './FoldersTable';
 
@@ -127,16 +128,15 @@ class ProjectLinkedFolderPage extends React.Component {
 
     return (
       <div>
-        <div className="form-group pull-right">
-          <Link
-            className="btn btn-default"
-            to={'/projects/' + project.id + '/folders/create'}
-          ><Icon iconName="plus" /> Add Linked Folder</Link>
-        </div>
-        <div className="clearfix"></div>
         <Panel>
           <PanelHeading>
-            Linked Folders
+            <div className="pull-right">
+	          <Link
+	            className="btn btn-default"
+	            to={'/projects/' + project.id + '/folders/create'}
+	          ><Icon iconName="plus" /> Add Linked Folder</Link>
+	        </div>
+            <PanelTitle>Linked Folders</PanelTitle>
           </PanelHeading>
           {this.renderFoldersTable(folders)}
         </Panel>

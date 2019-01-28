@@ -8,6 +8,7 @@ import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle'; 
 
 import ProjectActionService from '../../services/ProjectAction';
 
@@ -39,7 +40,7 @@ class ProjectDeploymentHookPage extends React.Component {
     return (
       <Panel>
         <PanelHeading>
-          Deployment Hooks
+          <PanelTitle>Deployment Hooks</PanelTitle>
         </PanelHeading>
         <div className="table-responsive">
           <table className="table">

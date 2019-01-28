@@ -12,6 +12,7 @@ import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 
@@ -395,27 +396,27 @@ class ProjectPage extends React.Component {
 
           <Panel>
             <PanelHeading>
-              Servers
+	          <div className="pull-right">
+	            <Link
+	              className="btn btn-default"
+	              to={'/projects/' + project.id + '/servers/create'}
+	            ><Icon iconName="plus" /> Add Server</Link>
+	          </div>
+              <PanelTitle>Servers</PanelTitle>
             </PanelHeading>
-            <div className="panel-body text-right">
-              <Link
-                className="btn btn-default"
-                to={'/projects/' + project.id + '/servers/create'}
-              ><Icon iconName="plus" /> Add Server</Link>
-            </div>
             {this.renderServers(servers)}
           </Panel>
 
           <Panel>
             <PanelHeading>
-              Deployments
+              <PanelTitle>Deployments</PanelTitle>
             </PanelHeading>
             {this.renderDeployments(deployments)}
           </Panel>
 
           <Panel>
             <PanelHeading>
-              Deployment info
+              <PanelTitle>Deployment info</PanelTitle>
             </PanelHeading>
             <PanelBody>
               <p>Make requests to the following URL to trigger deployments for this project.</p>
