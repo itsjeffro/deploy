@@ -37,9 +37,6 @@ Route::group(['prefix' => 'api'], function() {
     Route::put('projects/{project}/servers/{server}', 'ProjectServerController@update')->name('project-servers.update');
     Route::delete('projects/{project}/servers/{server}', 'ProjectServerController@destroy')->name('project-servers.destroy');
 
-    // Project server's public key
-    Route::get('projects/{project}/servers/{server}/public-key', 'ProjectServerPublicKeyController@show')->name('project-server-public-key.show');
-
     // Project's server test connection
     Route::get('projects/{project}/servers/{server}/test-connection', 'ProjectServerTestConnectionController@show')->name('project-server-test-connection.show');
 
