@@ -1,5 +1,4 @@
 # Deploy
-
 <p align="center">
     <a href="https://travis-ci.org/itsjeffro/deploy"><img src="https://travis-ci.org/itsjeffro/deploy.svg?branch=master" alt="Build Status"></a>
     <a href="https://packagist.org/packages/itsjeffro/deploy"><img src="https://poser.pugx.org/itsjeffro/deploy/license.svg"></a>
@@ -46,18 +45,15 @@ After publishing the assets, the primary config file will be located in config/d
 you to setup the repository providers, path and SSH settings.
 
 ## Available Providers
-
 You may update your .env file to include the following:
 
 __Bitbucket__
-
 https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
 ```
 BITBUCKET_OAUTH_KEY=client_id
 BITBUCKET_OAUTH_SECRET=client_secret
 ```
 __Github__
-
 https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
 ```
 GITHUB_OAUTH_KEY=client_id
@@ -75,15 +71,16 @@ Example /home/user/.ssh/known_hosts will be used instead of /var/www/.ssh/known_
 To allow real-time feedback when a deployment or server connection has started or finished, you may set up the application 
 to utlise Laravel's broadcasting feature.
 
-The package has been set up to use Pusher, with the channel routes already being registered from the package's service provider. 
-You may update the BROADCAST_DRIVER to use pusher, along with your pusher credentials and Mix ENV variables if they have not already been set.
-```
-MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+### Publish Resources
+TBA
 
-MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
-```
+### Publish Views
+TBA
 
-You may need to restart the queue worker to pick up on your configuration updates.
+### Configuration
+TBA
+
+Note: You may need to restart the queue worker to pick up on your configuration updates.
 
 ## Deployments
 Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the ability to reload the php-fpm service on the server. You may create a deployment hook which does this after the "Clean Up" action.
