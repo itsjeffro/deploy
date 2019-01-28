@@ -4,12 +4,11 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { alertShow } from '../../actions/alert';
 
-import { Deploy } from '../../config';
-
 import ProjectService from '../../services/Project';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation'; 
 import Button from '../../components/Button';
+import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
@@ -149,7 +148,7 @@ class ProjectEditPage extends React.Component {
 
         <div className="container content">
           <div className="row">
-            <div className="col-xs-12 col-sm-3">
+            <Grid xs={12} sm={3}>
               <Panel>
                 <PanelHeading>
                   <PanelTitle>Project settings</PanelTitle>
@@ -160,9 +159,9 @@ class ProjectEditPage extends React.Component {
                   <Link to={'/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
                 </div>
               </Panel>
-            </div>
+            </Grid>
 
-            <div className="col-xs-12 col-sm-9">
+            <Grid xs={12} sm={9}>
               <Panel>
                 <PanelHeading>
                   <PanelTitle>General Settings</PanelTitle>
@@ -195,7 +194,7 @@ class ProjectEditPage extends React.Component {
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div className="form-group">
                     <Button
                       color="primary"
                       onClick={this.handleProjectUpdateClick}
@@ -210,7 +209,7 @@ class ProjectEditPage extends React.Component {
                   >Delete Project</Button>
                 </PanelBody>
               </Panel>
-            </div>
+            </Grid>
           </div>
         </div>
 
