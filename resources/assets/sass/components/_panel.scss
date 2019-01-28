@@ -1,8 +1,14 @@
 .panel-heading {
-    font-weight: 600;
-    font-size: 15px;
+    border-bottom: 0;
     padding-top: 13px;
     padding-bottom: 13px;
+}
+
+.panel-title {
+    font-weight: normal;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-size: inherit;
 }
 
 .panel-default {
