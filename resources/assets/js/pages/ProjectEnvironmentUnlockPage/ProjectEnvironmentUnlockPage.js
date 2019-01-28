@@ -28,7 +28,6 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     this.state = {
       isFetching: true,
       project: {},
-      servers: [],
       syncStatus: '',
       environment: {
         key: ''
@@ -185,7 +184,6 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       environment,
       unlocked,
       errors,
-      servers,
       syncStatus
     } = this.state;
     
@@ -234,7 +232,8 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                         onChange={this.handleInputChange}
                         rows="6"
                         style={{fontFamily: 'monospace', resize: 'vertical'}}
-                      >{environment.contents}</textarea>
+                        defaultValue={environment.contents}
+                      />
                     </div>
 
                     <Button
@@ -260,17 +259,20 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                   <table className="table">
                     <thead>
                       <tr>
-                        <th width="60%">Server</th>
-                        <th width="60%">Updated At</th>
+                        <th>Server</th>
                       </tr>
                     </thead>
                     <tbody>
-                    {servers.map(server =>
+                    {(project.servers||[]).map(server =>
                       <tr key={server.id}>
                         <td>
-                          <input type="checkbox" name="is_synced_to" value="" /> {server.name}
+                          <input
+                            type="checkbox" 
+                            name="is_synced_to"
+                            id={'server-' + server.id}
+                            value={server.id}
+                          /> <label htmlFor={'server-' + server.id}>{server.name}</label>
                         </td>
-                        <td>--</td>
                       </tr>
                     )}
                     </tbody>
