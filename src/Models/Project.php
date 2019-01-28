@@ -34,6 +34,7 @@ class Project extends Model
      * @var array
      */
     protected $with = [
+        'environmentServers',
         'user',
         'servers',
         'folders',
@@ -55,6 +56,14 @@ class Project extends Model
         'branch',
         'deploy_on_push',
     ];
+
+    /**
+     * Get project environment servers.
+     */
+    public function environmentServers()
+    {
+        return $this->hasManyThrough('Deploy\Models\EnvironmentServer', 'Deploy\Models\Environment');
+    }
 
     /**
      * Get deployments for the project.

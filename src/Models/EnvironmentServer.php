@@ -19,8 +19,16 @@ class EnvironmentServer extends Model
      * @var array
      */
     public $fillable = [
-        'evironment_id',
+        'environment_id',
         'server_id',
+    ];
+
+    /**
+     * @var array
+     */
+    public $hidden = [
+        'environment_id',
+        'project_id',
     ];
 
     /**
