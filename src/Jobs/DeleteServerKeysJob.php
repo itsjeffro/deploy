@@ -56,14 +56,10 @@ class DeleteServerKeysJob implements ShouldQueue
      */
     protected function deleteKeys(Server $server)
     {
-        $keyPath = 'keys/' . $server->id;
+        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
 
-        if (is_dir(storage_path('app/' . $keyPath))) {
-            Storage::deleteDirectory($keyPath);
-
-            Log::info('Removed directory ' . storage_path('app/' . $keyPath));
-        } else {
-            Log::info('Could not find directory ' . storage_path('app/' . $keyPath));
+        if (file_exists($sshKeyPath . $server->id)) {
+            unlink($sshKeyPath . $server->id);
         }
     }
 }
