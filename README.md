@@ -89,11 +89,12 @@ You may need to restart the queue worker to pick up on your configuration update
 Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the ability to reload the php-fpm service on the server. You may create a deployment hook which does this after the "Clean Up" action.
 
 ### Folder Structure
-During the first deployment, a few folders will be created. With the combination of symlinks will allow for zero-downtime deployments.
+During the first deployment, a few directories (current, releases) will be created. With the combination of symlinks, will allow for zero-downtime deployments. For each successful deployment, a new release directory will be created and the "current" link will be updated to point to the new release.
 
-* current - (symlink) -> release
+* current (symlink) -> 20190102235900
 * releases
-    * release (YmdHis)
+    * 20190102235900 (date YmdHis)
+    * 20190101235900
 
 ## Deployment Hooks
 Deployment hooks provide the user the ability to perform extra tasks along side the default actions:
