@@ -350,7 +350,7 @@ class ProjectActionPage extends React.Component {
                   <div className="pull-right">
 	                <Button
 	                  onClick={() => this.handleAddModalClick(1)}
-	                ><Icon iconName="plus" /> Add Before Hook</Button>
+	                ><Icon iconName="plus" /> Add Hook</Button>
 	              </div>
                   <PanelTitle><Icon iconName="code" /> Before This Action</PanelTitle>
                 </PanelHeading>
@@ -365,7 +365,7 @@ class ProjectActionPage extends React.Component {
                   <div className="pull-right">
 	                <Button
 	                  onClick={() => this.handleAddModalClick(2)}
-	                ><Icon iconName="plus" /> Add After Hook</Button>
+	                ><Icon iconName="plus" /> Add Hook</Button>
 	              </div>
 	              <PanelTitle><Icon iconName="code" /> After This Action</PanelTitle>
                 </PanelHeading>

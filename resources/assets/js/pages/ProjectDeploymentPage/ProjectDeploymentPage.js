@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import {fetchProject} from '../../actions/project';
+
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
@@ -29,10 +31,12 @@ class ProjectDeploymentPage extends React.Component {
   }
 
   componentWillMount() {
-    const { 
-      project_id,
-      deployment_id 
-    } = this.props.match.params;
+    const {project_id, deployment_id} = this.props.match.params;
+    const {dispatch, project} = this.props;
+    
+    if (typeof project === 'object' && Object.keys(project).length === 0) {
+        dispatch(fetchProject(project_id));
+    }
     
     const projectDeploymentService = new ProjectDeploymentService();
 
