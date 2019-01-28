@@ -36,7 +36,9 @@ abstract class AbstractProcessor
      */
     protected function getKeyPath($serverId)
     {
-        return storage_path('app/keys/' . $serverId . '/id_rsa');
+        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
+        
+        return $sshKeyPath . $serverId;
     }
     
     /**

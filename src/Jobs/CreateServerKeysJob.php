@@ -15,31 +15,26 @@ class CreateServerKeysJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
-     */
-    public $tries = 5;
-
-    /**
      * @var \Deploy\Models\Server
      */
     private $server;
-
+    
     /**
-     * @var \Deploy\Ssh\Key
+     * @var array
      */
-    private $sshKey;
+    private $sshKeys;
 
     /**
      * Create a new job instance.
      *
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Server $server
+     * @param array $sshKeys
      * @return void
      */
-    public function __construct(Server $server)
+    public function __construct(Server $server, array $sshKeys)
     {
         $this->server = $server;
+        $this->sshKeys = $sshKeys;
     }
 
     /**
@@ -48,20 +43,19 @@ class CreateServerKeysJob implements ShouldQueue
      * @param  \Deploy\Ssh\Key $server
      * @return void
      */
-    public function handle(Key $sshKey)
+    public function handle()
     {
-        $this->sshKey = $sshKey;
-
-        $this->createKeys($this->server);
+        $this->createKeys($this->server, $this->sshKeys);
     }
 
     /**
      * Create server private and public key.
      *
-     * @param  \Deploy\Models\Server $server
+     * @param \Deploy\Models\Server $server
+     * @param array $sshKeys
      * @return void
      */
-    protected function createKeys(Server $server)
+    protected function createKeys(Server $server, array $sshKeys)
     {
         $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
         
@@ -69,23 +63,12 @@ class CreateServerKeysJob implements ShouldQueue
             mkdir($sshKeyPath);
         }
         
-        $severKeyPath = $sshKeyPath . $server->id;
+        // Create the associated private key for the public key we created with our new server.
+        file_put_contents($sshKeyPath . $server->id, $sshKeys['privatekey']);
 
-        if (!is_dir($severKeyPath)) {
-            mkdir($severKeyPath);
 
-            $this->sshKey->generate($severKeyPath, 'id_rsa', config('deploy.ssh_key.comment'));
-            
-            // Store public key contents and keep a file backup
-            $server->public_key = file_get_contents($severKeyPath . '/id_rsa.pub');
-            $server->save();
-            
-            // Remove the file, as we no longer need it.
-            unlink($severKeyPath . '/id_rsa.pub');
-
-            // Give the keys the correct permissions, otherwise
-            // we wont be able to use them for SSH access.
-            chmod($severKeyPath . '/id_rsa', 0600);
-        }
+        // Give the keys the correct permissions, otherwise
+        // we wont be able to use them for SSH access.
+        chmod($sshKeyPath . $server->id, Key::PRIVATE_KEY_CHMOD);
     }
 }

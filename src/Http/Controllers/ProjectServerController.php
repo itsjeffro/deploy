@@ -135,21 +135,16 @@ class ProjectServerController extends Controller
         if (!is_dir($sshKeyPath)) {
             mkdir($sshKeyPath);
         }
-        
-        $severKeyPath = $sshKeyPath . $server->id;
-        
-        if (!is_dir($severKeyPath)) {
-            mkdir($severKeyPath);
-        }
             
-        $this->sshKey->generate($severKeyPath, 'id_rsa', config('deploy.ssh_key.comment'));
+        $sshKeys = $this->sshKey
+            ->generate('id_rsa', config('deploy.ssh_key.comment'));
         
-        // Store public key contents and keep a file backup
-        $server->public_key = file_get_contents($severKeyPath . '/id_rsa.pub');
+        // Store public key contents.
+        $server->public_key = $sshKeys['publickey'];
         $server->save();
         
-        // Remove the file, as we no longer need it.
-        unlink($severKeyPath . '/id_rsa.pub');
+        // Queue job to create the private key associated with the stored public key.
+        dispatch(new CreateServerKeysJob($server, $sshKeys));
         
         return $server;
     }
