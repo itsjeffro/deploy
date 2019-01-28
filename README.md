@@ -88,6 +88,13 @@ You may need to restart the queue worker to pick up on your configuration update
 ## Deployments
 Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the ability to reload the php-fpm service on the server. You may create a deployment hook which does this after the "Clean Up" action.
 
+### Folder Structure
+During the first deployment, a few folders will be created. With the combination of symlinks will allow for zero-downtime deployments.
+
+* current - (symlink) -> release
+* releases
+    * release (YmdHis)
+
 ## Deployment Hooks
 Deployment hooks provide the user the ability to perform extra tasks along side the default actions:
 
@@ -98,7 +105,7 @@ Deployment hooks provide the user the ability to perform extra tasks along side 
 ### Available Variables
 | Variable | Example Output | Description |
 |----------|----------------|-------------|
-| {{ project }} | /var/www/html | Absolute path to project. |
-| {{ releases }} | /var/www/html/releases | Absolute path to releases. |
-| {{ release }} | /var/www/html/releases/20190120104650 | Absolute path to new release. |
-| {{ time }} | 20190120104650 | Generated date time prior to deployment. Format YmdHis |
+| {{project}} | /var/www/html | Absolute path to project. |
+| {{releases}} | /var/www/html/releases | Absolute path to releases. |
+| {{release}} | /var/www/html/releases/20190120104650 | Absolute path to new release. |
+| {{time}} | 20190120104650 | Generated date time prior to deployment. Format YmdHis |
