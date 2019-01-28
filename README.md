@@ -48,12 +48,15 @@ you to setup the repository providers, path and SSH settings.
 You may update your .env file to include the following:
 
 __Bitbucket__
+
 https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
 ```
 BITBUCKET_OAUTH_KEY=client_id
 BITBUCKET_OAUTH_SECRET=client_secret
 ```
+
 __Github__
+
 https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
 ```
 GITHUB_OAUTH_KEY=client_id
