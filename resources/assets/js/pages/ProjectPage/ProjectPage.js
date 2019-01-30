@@ -479,7 +479,6 @@ class ProjectPage extends React.Component {
                 name="branch"
                 id="branch-select"
                 onChange={this.handleNameChange}
-                selectedValue={deploy.name}
               >
               {branches.map(branch =>
                 <option
@@ -497,7 +496,6 @@ class ProjectPage extends React.Component {
                 name="tag"
                 id="tag-select"
                 onChange={this.handleNameChange}
-                selectedValue={deploy.name}
               >
               {tags.map(tag =>
                 <option
