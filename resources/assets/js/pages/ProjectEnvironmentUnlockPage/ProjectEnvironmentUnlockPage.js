@@ -268,29 +268,31 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                     </div>
                     <PanelTitle>Servers</PanelTitle>
                   </PanelHeading>
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Server</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {(project.servers||[]).map(server =>
-                      <tr key={server.id}>
-                        <td>
-                          <input
-                            type="checkbox" 
-                            name="is_synced_to"
-                            id={'server-' + server.id}
-                            value={server.id}
-                            checked={syncedServers.indexOf(server.id) >= 0}
-                            onChange={() => console.log(server.id)}
-                          /> <label htmlFor={'server-' + server.id}>{server.name} ({server.ip_address})</label>
-                        </td>
-                      </tr>
-                    )}
-                    </tbody>
-                  </table>
+                  <div class="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Server</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {(project.servers||[]).map(server =>
+                        <tr key={server.id}>
+                          <td>
+                            <input
+                              type="checkbox"
+                              name="is_synced_to"
+                              id={'server-' + server.id}
+                              value={server.id}
+                              checked={syncedServers.indexOf(server.id) >= 0}
+                              onChange={() => console.log(server.id)}
+                            /> <label htmlFor={'server-' + server.id}>{server.name} ({server.ip_address})</label>
+                          </td>
+                        </tr>
+                      )}
+                      </tbody>
+                    </table>
+                  </div>
                 </Panel>
               </Grid>
             </div>
