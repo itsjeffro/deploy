@@ -5,15 +5,27 @@ import {
 } from '../constants/project';
 
 const initialState = {
-    project: {}
+  project: {},
+  isFetching: false
 };
 
 const project = (state = initialState, action) => {
   switch(action.type) {
+    case PROJECT_REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      };
     case PROJECT_SUCCESS:
       return {
-        project: action.project
-      }
+        project: action.project,
+        isFetching: false
+      };
+    case PROJECT_FAILURE:
+      return {
+        ...state,
+        isFetching: false
+      };
 
     default:
       return state;
