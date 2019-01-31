@@ -268,7 +268,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                     </div>
                     <PanelTitle>Servers</PanelTitle>
                   </PanelHeading>
-                  <div class="table-responsive">
+                  <div className="table-responsive">
                     <table className="table">
                       <thead>
                         <tr>
