@@ -14,10 +14,10 @@ import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
-import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
 import PanelBody from '../../components/PanelBody';
 import TextField from '../../components/TextField';
+
+import EnvironmentServersTable from './EnvironmentServersTable';
 
 import { buildAlertFromResponse } from '../../utils/alert';
 
@@ -26,14 +26,13 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     super(props);
 
     this.state = {
-      isFetching: true,
-      project: {},
-      syncStatus: '',
       environment: {
-        key: ''
+        key: '',
+        contents: ''
       },
-      unlocked: false,
-      errors: []
+      errors: [],
+      syncStatus: '',
+      unlocked: false
     };
     
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -42,17 +41,20 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     this.handleCancelClick = this.handleCancelClick.bind(this);
   }
 
+  /**
+   * Fetch project through dispatch during componentWillMount cycle.
+   */
   componentWillMount() {
     const {dispatch, project, match} = this.props;
 
     if (typeof project === 'object' && Object.keys(project).length === 0) {
       dispatch(fetchProject(match.params.project_id));
-      this.setState({isFetching: false});
-    } else {
-      this.setState({isFetching: false});
     }
   }
-  
+
+  /**
+   * Listen for environment updates when component has mounted.
+   */
   componentDidMount() {
     const { project } = this.props;
 
@@ -128,9 +130,9 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     projectEnvironmentService
       .put(project.id, environment)
       .then(response => {
-      	  this.setState({
-      	    errors: []
-      	  });
+        this.setState({
+          errors: []
+        });
       }, 
       error => {
         this.setState({
@@ -190,14 +192,13 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
   render() {
     const {
-      isFetching,
       environment,
-      unlocked,
       errors,
-      syncStatus
+      syncStatus,
+      unlocked
     } = this.state;
-    
-    const {project} = this.props;
+
+    const {project, isFetching} = this.props;
     const {environment_servers} = project;
     const syncedServers = this.mapEnvironmentServers(environment_servers);
 
@@ -226,15 +227,13 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                   <PanelBody>
                     {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-                    <div className="form-group">
-                      <TextField
-                        label="Key"
-                        name="key"
-                        type="password"
-                        onChange={this.handleInputChange}
-                        value={environment.key}
-                      />
-                    </div>
+                    <TextField
+                      label="Key"
+                      name="key"
+                      type="password"
+                      onChange={this.handleInputChange}
+                      value={environment.key}
+                    />
 
                     <div className="form-group">
                       <label>Contents</label>
@@ -261,39 +260,11 @@ class ProjectEnvironmentUnlockPage extends React.Component {
               </Grid>
 
               <Grid xs={12} md={4}>
-                <Panel>
-                  <PanelHeading>
-                    <div className="pull-right">
-                      {syncStatus}
-                    </div>
-                    <PanelTitle>Servers</PanelTitle>
-                  </PanelHeading>
-                  <div className="table-responsive">
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th>Server</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {(project.servers||[]).map(server =>
-                        <tr key={server.id}>
-                          <td>
-                            <input
-                              type="checkbox"
-                              name="is_synced_to"
-                              id={'server-' + server.id}
-                              value={server.id}
-                              checked={syncedServers.indexOf(server.id) >= 0}
-                              onChange={() => console.log(server.id)}
-                            /> <label htmlFor={'server-' + server.id}>{server.name} ({server.ip_address})</label>
-                          </td>
-                        </tr>
-                      )}
-                      </tbody>
-                    </table>
-                  </div>
-                </Panel>
+                <EnvironmentServersTable
+                  project={project}
+                  syncedServers={syncedServers}
+                  syncStatus={syncStatus}
+                />
               </Grid>
             </div>
           </div>
