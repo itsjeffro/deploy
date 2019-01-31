@@ -184,7 +184,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
    */
   mapEnvironmentServers(environmentServers) {
     return (environmentServers||[]).map(environmentServer => {
-      return environmentServer.server_id;
+      return parseInt(environmentServer.server_id);
     });
   }
 
@@ -199,6 +199,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     
     const {project} = this.props;
     const {environment_servers} = project;
+    const syncedServers = this.mapEnvironmentServers(environment_servers);
 
     if (isFetching) {
       return (
@@ -282,9 +283,9 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                             name="is_synced_to"
                             id={'server-' + server.id}
                             value={server.id}
-                            checked={environment_servers.indexOf(server.id)}
+                            checked={syncedServers.indexOf(server.id) >= 0}
                             onChange={() => console.log(server.id)}
-                          /> <label htmlFor={'server-' + server.id}>{server.name}</label>
+                          /> <label htmlFor={'server-' + server.id}>{server.name} ({server.ip_address})</label>
                         </td>
                       </tr>
                     )}
