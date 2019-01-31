@@ -6,6 +6,7 @@ import PanelTitle from '../../components/PanelTitle';
 
 const EnvironmentServersTable = (props) => {
   const {
+    onSyncServerClick,
     project,
     syncedServers,
     syncStatus
@@ -36,7 +37,7 @@ const EnvironmentServersTable = (props) => {
                   id={'server-' + server.id}
                   value={server.id}
                   checked={syncedServers.indexOf(server.id) >= 0}
-                  onChange={() => console.log(server.id)}
+                  onChange={() => onSyncServerClick(server.id)}
                 /> <label htmlFor={'server-' + server.id}>{server.name} ({server.ip_address})</label>
               </td>
             </tr>

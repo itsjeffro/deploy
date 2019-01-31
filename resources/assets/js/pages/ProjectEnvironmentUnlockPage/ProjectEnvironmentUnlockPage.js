@@ -142,7 +142,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
   }
   
   /**
-   * Handle cancel environement update click.
+   * Handle cancel environment update click.
    */
   handleCancelClick() {
     this.setState(state => {
@@ -156,6 +156,15 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         unlocked: false
       }
     });
+  }
+
+  /**
+   * Handle click for adding to servers that should be synced.
+   *
+   * @param {int} server_id
+   */
+  handleSyncServerClick(server_id) {
+    console.log(server_id);
   }
 
   /**
@@ -264,6 +273,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                   project={project}
                   syncedServers={syncedServers}
                   syncStatus={syncStatus}
+                  onSyncServerClick={this.handleSyncServerClick}
                 />
               </Grid>
             </div>
