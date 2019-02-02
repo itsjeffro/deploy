@@ -6,6 +6,8 @@ import { alertShow } from '../../actions/alert';
 import ProjectService from '../../services/Project';
 import AccountProviderService from '../../services/AccountProvider';
 
+import {fetchProjects} from '../../actions/projects';
+
 import ProjectsTable from './ProjectsTable';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation';
@@ -35,18 +37,9 @@ class DashboardPage extends React.Component {
   }
 
   componentWillMount() {
-    let projectService = new ProjectService;
-
-    projectService
-      .index()
-      .then(response => {
-        let projects = response.data;
-
-        this.setState({
-          isFetching: false,
-          projects: projects
-        });
-      });
+	const {dispatch, projects} = this.props;
+	
+	dispatch(fetchProjects());
 
     let accountProviderService = new AccountProviderService;
 
@@ -131,15 +124,16 @@ class DashboardPage extends React.Component {
 
   render() {
     const {errors} = this.state;
+    const {isFetching, items} = this.props;
 
     let projectContent = <div className="panel-body">Loading ...</div>;
 
-    if (!this.state.isFetching && this.state.projects.length === 0) {
+    if (!isFetching && items.length === 0) {
       projectContent = <div className="panel-body">Add a project to get started!</div>;
     }
 
-    if (!this.state.isFetching && this.state.projects.length > 0) {
-      projectContent = <div className="table-responsive"><ProjectsTable projects={this.state.projects} /></div>
+    if (!isFetching && items.length > 0) {
+      projectContent = <div className="table-responsive"><ProjectsTable projects={items} /></div>
     }
 
     return (
@@ -218,5 +212,11 @@ class DashboardPage extends React.Component {
     )
   }
 }
+  
+const mapStateToProps = (state) => {
+  return state.projects;
+}
 
-export default connect()(DashboardPage);
+export default connect(
+  mapStateToProps		
+)(DashboardPage);
