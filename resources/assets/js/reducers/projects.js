@@ -6,7 +6,7 @@ import {
 
 const initialState = {
     isFetching: false,
-    items: {}
+    items: []
 };
 
 const projects = (state = initialState, action) => {
