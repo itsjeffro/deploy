@@ -28,7 +28,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     this.state = {
       environment: {
         key: '',
-        contents: ''
+        contents: '',
       },
       errors: [],
       syncStatus: '',
@@ -39,6 +39,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleUpdateClick = this.handleUpdateClick.bind(this);
     this.handleCancelClick = this.handleCancelClick.bind(this);
+    this.handleSyncServerClick = this.handleSyncServerClick.bind(this);
   }
 
   /**
