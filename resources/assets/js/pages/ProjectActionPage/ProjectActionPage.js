@@ -404,10 +404,10 @@ class ProjectActionPage extends React.Component {
               theme="github"
               name="editor-add"
               onChange={this.handleScriptChange}
-              style={{height: 200, width: '100%'}}
+              style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
               value={hook.script}
             />
-            <textarea name="script" style={{display: 'none'}}>{hook.script}</textarea>
+            <textarea name="script" style={{display: 'none'}} value={hook.script} />
           </div>
         </Modal>
 
@@ -439,9 +439,9 @@ class ProjectActionPage extends React.Component {
               name="editor-edit"
               value={hook.script}
               onChange={this.handleScriptChange}
-              style={{height: 200, width: '100%'}}
+              style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
             />
-            <textarea name="script" style={{display: 'none'}}>{hook.script}</textarea>
+            <textarea name="script" style={{display: 'none'}} value={hook.script} />
           </div>
         </Modal>
 
