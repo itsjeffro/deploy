@@ -1,7 +1,10 @@
 import {
   PROJECTS_REQUEST,
   PROJECTS_SUCCESS,
-  PROJECTS_FAILURE
+  PROJECTS_FAILURE,
+  PROJECTS_DELETE_REQUEST,
+  PROJECTS_DELETE_SUCCESS,
+  PROJECTS_DELETE_FAILURE
 } from '../constants/projects';
 
 import ProjectService from '../services/Project';
@@ -32,8 +35,6 @@ export const projectsFailure = () =>({
 
 /**
  * Fetch items asynchronously.
- *
- * @param {object} projects
  */
 export const fetchProjects = () => {
   return (dispatch) => {
@@ -48,6 +49,52 @@ export const fetchProjects = () => {
         },
         error => {
           dispatch(projectsFailure());
+        });
+  };
+};
+
+/**
+ * Item delete is being requested.
+ */
+export const projectsDeleteRequest = () =>({
+  type: PROJECTS_DELETE_REQUEST
+});
+
+/**
+ * Item was deleted successfully.
+ *
+ * @param {int} project_id
+ */
+export const projectsDeleteSuccess = (project_id) =>({
+  type: PROJECTS_DELETE_SUCCESS,
+  project_id: project_id
+});
+
+/**
+ * Item failed being deleted.
+ */
+export const projectsDeleteFailure = () =>({
+  type: PROJECTS_DELETE_FAILURE
+});
+
+/**
+ * Delete item asynchronously.
+ *
+ * @param {int} project_id
+ */
+export const deleteProjects = (project_id) => {
+  return (dispatch) => {
+    const projectService = new ProjectService;
+
+    dispatch(projectsDeleteRequest());
+
+    projectService
+      .delete(project_id)
+      .then(response => {
+          dispatch(projectsDeleteSuccess(project_id));
+        },
+        error => {
+          dispatch(projectsDeleteFailure());
         });
   };
 };

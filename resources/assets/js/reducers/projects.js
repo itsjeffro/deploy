@@ -1,7 +1,10 @@
 import {
   PROJECTS_REQUEST,
   PROJECTS_SUCCESS,
-  PROJECTS_FAILURE
+  PROJECTS_FAILURE,
+  PROJECTS_DELETE_REQUEST,
+  PROJECTS_DELETE_SUCCESS,
+  PROJECTS_DELETE_FAILURE
 } from '../constants/projects';
 
 const initialState = {
@@ -20,6 +23,13 @@ const projects = (state = initialState, action) => {
       return {
         isFetching: false,
         items: action.projects
+      }
+      
+    case PROJECTS_DELETE_SUCCESS:
+      return {
+        items: state.items.filter(item => {
+          return item.id !== action.project_id;
+        });
       }
 
     default:

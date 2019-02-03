@@ -16,6 +16,8 @@ import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 
+import Sidebar from './Sidebar';
+
 class ProjectEditPage extends React.Component {
   constructor(props) {
     super(props);
@@ -51,21 +53,20 @@ class ProjectEditPage extends React.Component {
     const name = target.name;
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
-    this.setState(state => {
-      let project = Object.assign({}, state.editProject, {
-          [name]: value
-      });
-
-      return {editProject: project}
-    });
+    this.setState(state => ({
+      editProject: {
+        ...state.editProject,
+        [name]: value
+      }
+    }));
   }
 
   /**
    * Handle project update.
    */
   handleProjectUpdateClick() {
-    const { dispatch } = this.props;
-    const { editProject } = this.state;
+    const {dispatch} = this.props;
+    const {editProject} = this.state;
     const projectService = new ProjectService;
 
     projectService
@@ -120,7 +121,7 @@ class ProjectEditPage extends React.Component {
   }
 
   render() {
-    const { project } = this.props;
+    const {project} = this.props;
     const { 
       editProject,
       isDeleted,
@@ -149,16 +150,7 @@ class ProjectEditPage extends React.Component {
         <div className="container content">
           <div className="row">
             <Grid xs={12} sm={3}>
-              <Panel>
-                <PanelHeading>
-                  <PanelTitle>Project settings</PanelTitle>
-                </PanelHeading>
-
-                <div className="list-group">
-                  <Link to={'/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
-                  <Link to={'/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
-                </div>
-              </Panel>
+              <Sidebar project={project} />
             </Grid>
 
             <Grid xs={12} sm={9}>
