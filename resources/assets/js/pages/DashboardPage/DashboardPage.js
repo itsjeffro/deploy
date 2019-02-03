@@ -37,11 +37,12 @@ class DashboardPage extends React.Component {
   }
 
   componentWillMount() {
-	const {dispatch, projects} = this.props;
-	
-	dispatch(fetchProjects());
-
+	  const {dispatch, items} = this.props;
     let accountProviderService = new AccountProviderService;
+
+    if (typeof items === 'object' && items.length === 0) {
+      dispatch(fetchProjects());
+    }
 
     accountProviderService
       .index('/api/account-providers')
