@@ -1,8 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Link, Redirect} from 'react-router-dom';
 
-import { alertShow } from '../../actions/alert';
+import {alertShow} from '../../actions/alert';
+import {deleteProjects} from '../../actions/projects';
 
 import ProjectService from '../../services/Project';
 
@@ -96,21 +97,10 @@ class ProjectEditPage extends React.Component {
    * Handle project delete.
    */
   handleProjectDeleteClick() {
-    const { project, dispatch } = this.props;
-    const projectService = new ProjectService;
+    const {project, dispatch} = this.props;
 
-    projectService
-      .delete(project.id)
-      .then(response => {
-        dispatch(alertShow('Project removed successfully.'));
-
-        $('#project-delete-modal').modal('hide');
-
-        this.setState({isDeleted: true});
-      },
-      error => {
-        alert('Failed to delete project');
-      });
+    dispatch(deleteProjects(project.id));
+    dispatch(alertShow('Project removed successfully.'));
   }
 
   /**
