@@ -37,10 +37,10 @@ class DashboardPage extends React.Component {
   }
 
   componentWillMount() {
-	  const {dispatch, items} = this.props;
+	  const {dispatch, projects} = this.props;
     let accountProviderService = new AccountProviderService;
 
-    if (typeof items === 'object' && items.length === 0) {
+    if (typeof projects === 'object' && projects.length === 0) {
       dispatch(fetchProjects());
     }
 
@@ -125,16 +125,16 @@ class DashboardPage extends React.Component {
 
   render() {
     const {errors} = this.state;
-    const {isFetching, items} = this.props;
+    const {isFetching, projects} = this.props;
 
     let projectContent = <div className="panel-body">Loading ...</div>;
 
-    if (!isFetching && items.length === 0) {
+    if (!isFetching && projects.length === 0) {
       projectContent = <div className="panel-body">Add a project to get started!</div>;
     }
 
-    if (!isFetching && items.length > 0) {
-      projectContent = <div className="table-responsive"><ProjectsTable projects={items} /></div>
+    if (!isFetching && projects.length > 0) {
+      projectContent = <div className="table-responsive"><ProjectsTable projects={projects} /></div>
     }
 
     return (
@@ -215,8 +215,14 @@ class DashboardPage extends React.Component {
 }
   
 const mapStateToProps = (state) => {
-  return state.projects;
-}
+  const {itemsById, items, isFetching} = state.projects;
+  return {
+    isFetching: isFetching,
+    projects: items.reduce((items, key) => {
+      return items.concat(itemsById[key]);
+    }, [])
+  };
+};
 
 export default connect(
   mapStateToProps		
