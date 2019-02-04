@@ -11,8 +11,11 @@ import {
 } from '../constants/projects';
 
 const initialState = {
-    isFetching: false,
-    items: []
+  isCreated: false,
+  isDeleting: false,
+  isFetching: false,
+  itemsById: {},
+  items: []
 };
 
 const projects = (state = initialState, action) => {
@@ -25,19 +28,41 @@ const projects = (state = initialState, action) => {
 
     case PROJECTS_SUCCESS:
       return {
+        ...state,
         isFetching: false,
-        items: action.projects
+        itemsById: action.projects.reduce((items, project) => {
+          items[project.id] = project;
+          return items;
+        }, {}),
+        items: action.projects.map(project => {
+          return project.id;
+        })
+      };
+
+    case PROJECTS_CREATE_REQUEST:
+      return {
+        ...state,
+        isCreating: true,
+        items: state.items.concat(action.project)
       };
 
     case PROJECTS_CREATE_SUCCESS:
       return {
         ...state,
+        isCreating: false,
         items: state.items.concat(action.project)
+      };
+
+    case PROJECTS_DELETE_REQUEST:
+      return {
+        ...state,
+        isDeleting: true
       };
       
     case PROJECTS_DELETE_SUCCESS:
       return {
         ...state,
+        isDeleting: false,
         items: state.items.filter(item => {
           return item.id !== action.project_id;
         })
