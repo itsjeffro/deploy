@@ -73,8 +73,6 @@ class ProjectEditPage extends React.Component {
     projectService
       .update(editProject.id, editProject)
       .then(response => {
-        dispatch(alertShow('Project updated successfully.'));
-
         this.setState({
           isUpdated: true,
           errors: []
@@ -82,7 +80,6 @@ class ProjectEditPage extends React.Component {
       },
       error => {
         let errorResponse = error.response.data;
-
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
   	
         	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
@@ -99,8 +96,7 @@ class ProjectEditPage extends React.Component {
   handleProjectDeleteClick() {
     const {project, dispatch} = this.props;
 
-    dispatch(deleteProjects(project.id));
-    dispatch(alertShow('Project removed successfully.'));
+    dispatch(deleteProjects(project.project.id));
   }
 
   /**
@@ -111,19 +107,16 @@ class ProjectEditPage extends React.Component {
   }
 
   render() {
-    const {project} = this.props;
-    const { 
-      editProject,
-      isDeleted,
-      isUpdated,
-      errors
-    } = this.state;
+    const {dispatch, project, projects} = this.props;
+    const {editProject, errors} = this.state;
 
-    if (isDeleted) {
+    if (projects.itemsById[project.id] == 'undefined') {
+      dispatch(alertShow('Project removed successfully.'));
       return <Redirect to="/" />
     }
     
-    if (isUpdated) {
+    if (false) {
+      dispatch(alertShow('Project updated successfully.'));
       return <Redirect to={'/projects/' + project.id} />
     }
 
@@ -211,7 +204,10 @@ class ProjectEditPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project.project,
+    projects: state.projects
+  };
 };
 
 export default connect(
