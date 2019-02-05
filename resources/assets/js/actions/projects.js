@@ -2,6 +2,9 @@ import {
   PROJECTS_REQUEST,
   PROJECTS_SUCCESS,
   PROJECTS_FAILURE,
+  PROJECTS_UPDATE_REQUEST,
+  PROJECTS_UPDATE_SUCCESS,
+  PROJECTS_UPDATE_FAILURE,
   PROJECTS_DELETE_REQUEST,
   PROJECTS_DELETE_SUCCESS,
   PROJECTS_DELETE_FAILURE
@@ -49,6 +52,53 @@ export const fetchProjects = () => {
         },
         error => {
           dispatch(projectsFailure());
+        });
+  };
+};
+
+/**
+ * Item update is being requested.
+ */
+export const projectsUpdateRequest = () =>({
+  type: PROJECTS_UPDATE_REQUEST
+});
+
+/**
+ * Item was updated successfully.
+ *
+ * @param {object} project
+ */
+export const projectsUpdateSuccess = (project) =>({
+  type: PROJECTS_UPDATE_SUCCESS,
+  project: project
+});
+
+/**
+ * Item failed being updated.
+ */
+export const projectsUpdateFailure = () =>({
+  type: PROJECTS_UPDATE_FAILURE
+});
+
+/**
+ * Update item asynchronously.
+ *
+ * @param {int} project_id
+ * @param {object} data
+ */
+export const updateProjects = (project_id, data) => {
+  return (dispatch) => {
+    const projectService = new ProjectService;
+
+    dispatch(projectsUpdateRequest());
+
+    projectService
+      .update(project_id, data)
+      .then(response => {
+          dispatch(projectsUpdateSuccess(response.data));
+        },
+        error => {
+          dispatch(projectsUpdateFailure());
         });
   };
 };

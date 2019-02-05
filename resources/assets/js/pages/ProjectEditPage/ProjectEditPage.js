@@ -25,8 +25,6 @@ class ProjectEditPage extends React.Component {
 
     this.state = {
       isFetching: true,
-      isDeleted: false,
-      isUpdated: false,
       editProject: {},
       errors: []
     };
@@ -110,7 +108,7 @@ class ProjectEditPage extends React.Component {
     const {dispatch, project, projects} = this.props;
     const {editProject, errors} = this.state;
 
-    if (projects.itemsById[project.id] == 'undefined') {
+    if (projects.itemsById.hasOwnProperty(project.id)) {
       dispatch(alertShow('Project removed successfully.'));
       return <Redirect to="/" />
     }

@@ -5,6 +5,9 @@ import {
   PROJECTS_CREATE_REQUEST,
   PROJECTS_CREATE_SUCCESS,
   PROJECTS_CREATE_FAILURE,
+  PROJECTS_UPDATE_REQUEST,
+  PROJECTS_UPDATE_SUCCESS,
+  PROJECTS_UPDATE_FAILURE,
   PROJECTS_DELETE_REQUEST,
   PROJECTS_DELETE_SUCCESS,
   PROJECTS_DELETE_FAILURE
@@ -13,6 +16,7 @@ import {
 const initialState = {
   isCreated: false,
   isDeleting: false,
+  isUpdating: false,
   isFetching: false,
   itemsById: {},
   items: []
@@ -51,6 +55,22 @@ const projects = (state = initialState, action) => {
         ...state,
         isCreating: false,
         items: state.items.concat(action.project)
+      };
+      
+    case PROJECTS_UPDATE_REQUEST:
+      return {
+        ...state,
+        isUpdating: true
+      };
+      
+    case PROJECTS_UPDATE_SUCCESS:
+      return {
+        ...state,
+        isUpdating: false,
+        itemsById: {
+          ...state.itemsById,
+          {[action.project.id]: action.project}
+        }
       };
 
     case PROJECTS_DELETE_REQUEST:
