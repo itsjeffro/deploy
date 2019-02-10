@@ -1,12 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { alertShow } from '../../actions/alert';
-
-import ProjectService from '../../services/Project';
 import AccountProviderService from '../../services/AccountProvider';
 
-import {fetchProjects} from '../../actions/projects';
+import {fetchProjects, createProjects} from '../../actions/projects';
 
 import ProjectsTable from './ProjectsTable';
 
@@ -29,7 +26,7 @@ class DashboardPage extends React.Component {
       grantedProviders: [],
       errors: [],
       input: {}
-    }
+    };
 
     this.handleInputClick = this.handleInputClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -75,41 +72,11 @@ class DashboardPage extends React.Component {
 
   /**
    * Handle click for submitting the create project form.
-   *
-   * @param {object} event
    */
-  handleInputClick(event) {
-    event.preventDefault();
-        
-    const { dispatch } = this.props;
+  handleInputClick() {
+    const {dispatch} = this.props;
 
-    let projectService = new ProjectService;
-
-    projectService
-      .post(this.state.input)
-      .then(response => {
-        dispatch(alertShow('Project created successfully.'));
-
-        $('#project-create-modal').modal('hide');
-
-        let projects = this.state.projects.concat(response.data);
-
-        this.setState({
-          projects: projects,
-          errors: []
-        });
-      },
-      error => {
-        let errorResponse = error.response.data;
-
-        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-            	
-        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-          return previous.concat(errorResponse[key][0]);
-        }, []);
-
-        this.setState({errors: errors});
-      });
+    dispatch(createProjects(this.state.input));
   }
 
   /**
