@@ -94,7 +94,7 @@ class ProjectEditPage extends React.Component {
   handleProjectDeleteClick() {
     const {project, dispatch} = this.props;
 
-    dispatch(deleteProjects(project.project.id));
+    dispatch(deleteProjects(project.id));
   }
 
   /**
@@ -108,7 +108,7 @@ class ProjectEditPage extends React.Component {
     const {dispatch, project, projects} = this.props;
     const {editProject, errors} = this.state;
 
-    if (projects.itemsById.hasOwnProperty(project.id)) {
+    if (!projects.itemsById.hasOwnProperty(project.id)) {
       dispatch(alertShow('Project removed successfully.'));
       return <Redirect to="/" />
     }
