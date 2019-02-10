@@ -2,6 +2,9 @@ import {
   PROJECTS_REQUEST,
   PROJECTS_SUCCESS,
   PROJECTS_FAILURE,
+  PROJECTS_CREATE_REQUEST,
+  PROJECTS_CREATE_SUCCESS,
+  PROJECTS_CREATE_FAILURE,
   PROJECTS_UPDATE_REQUEST,
   PROJECTS_UPDATE_SUCCESS,
   PROJECTS_UPDATE_FAILURE,
@@ -11,6 +14,52 @@ import {
 } from '../constants/projects';
 
 import ProjectService from '../services/Project';
+
+/**
+ * Item create is being requested.
+ */
+export const projectsCreateRequest = () =>({
+  type: PROJECTS_CREATE_REQUEST
+});
+
+/**
+ * Item was created successfully.
+ *
+ * @param {object} project
+ */
+export const projectsCreateSuccess = (project) =>({
+  type: PROJECTS_CREATE_SUCCESS,
+  project: project
+});
+
+/**
+ * Item failed being created.
+ */
+export const projectsCreateFailure = () =>({
+  type: PROJECTS_CREATE_FAILURE
+});
+
+/**
+ * Create item asynchronously.
+ *
+ * @param {object} project
+ */
+export const createProjects = (project) => {
+  return (dispatch) => {
+    const projectService = new ProjectService;
+
+    dispatch(projectsCreateRequest());
+
+    projectService
+      .post(project)
+      .then(response => {
+          dispatch(projectsCreateSuccess(response.data));
+        },
+        error => {
+          dispatch(projectsCreateFailure());
+        });
+  };
+};
 
 /**
  * Items are being requested.
