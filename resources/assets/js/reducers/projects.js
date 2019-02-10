@@ -54,7 +54,8 @@ const projects = (state = initialState, action) => {
       return {
         ...state,
         isCreating: false,
-        items: state.items.concat(action.project)
+        items: state.items.concat(action.project),
+        itemsById: state.items.concat({[action.project.id]: action.project})
       };
       
     case PROJECTS_UPDATE_REQUEST:
@@ -67,10 +68,9 @@ const projects = (state = initialState, action) => {
       return {
         ...state,
         isUpdating: false,
-        itemsById: {
-          ...state.itemsById,
-          {[action.project.id]: action.project}
-        }
+        itemsById: Object.key(state.itemsById).map(key => {
+          return action.project.id === key ? action.project : state.itemsById[key]
+        })
       };
 
     case PROJECTS_DELETE_REQUEST:
@@ -84,7 +84,7 @@ const projects = (state = initialState, action) => {
         ...state,
         isDeleting: false,
         items: state.items.filter(item => {
-          return item.id !== action.project_id;
+          return item !== action.project_id;
         })
       };
 
