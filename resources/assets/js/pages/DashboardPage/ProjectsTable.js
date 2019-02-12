@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Deploy } from '../../config';
-
 import Icon from '../../components/Icon'
 
 const ProjectsTable = props => {
