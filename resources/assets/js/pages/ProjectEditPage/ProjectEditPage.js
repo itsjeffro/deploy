@@ -24,6 +24,7 @@ class ProjectEditPage extends React.Component {
     super(props);
 
     this.state = {
+      project_id: null,
       isFetching: true,
       editProject: {},
       errors: []
@@ -36,9 +37,12 @@ class ProjectEditPage extends React.Component {
   }
 
   componentWillMount() {
-    const { project } = this.props;
+    const {project, match} = this.props;
 
-    this.setState({editProject: project});
+    this.setState({
+      project_id: match.params.project_id,
+      editProject: project
+    });
   }
 
   /**
@@ -106,9 +110,10 @@ class ProjectEditPage extends React.Component {
 
   render() {
     const {dispatch, project, projects} = this.props;
-    const {editProject, errors} = this.state;
+    const {editProject, errors, project_id} = this.state;
 
-    if (!projects.itemsById.hasOwnProperty(project.id)) {
+    if (projects[project_id] === undefined) {
+      $('#project-delete-modal').modal('hide');
       dispatch(alertShow('Project removed successfully.'));
       return <Redirect to="/" />
     }
@@ -204,7 +209,7 @@ class ProjectEditPage extends React.Component {
 const mapStateToProps = state => {
   return {
     project: state.project.project,
-    projects: state.projects
+    projects: state.projects.itemsById
   };
 };
 

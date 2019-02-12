@@ -89,11 +89,11 @@ const projects = (state = initialState, action) => {
           return item !== action.project_id;
         }),
         itemsById: Object.keys(state.itemsById).reduce((previous, key) => {
-          if (key !== action.project_id) {
+          if (key != action.project_id) {
             previous[key] = state.itemsById[key];
           }
           return previous;
-        })
+        }, {})
       };
 
     default:
