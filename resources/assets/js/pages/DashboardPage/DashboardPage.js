@@ -92,7 +92,7 @@ class DashboardPage extends React.Component {
 
   render() {
     const {errors} = this.state;
-    const {isFetching, projects} = this.props;
+    const {isCreating, isFetching, projects} = this.props;
 
     let projectContent = <div className="panel-body">Loading ...</div>;
 
@@ -102,6 +102,10 @@ class DashboardPage extends React.Component {
 
     if (!isFetching && projects.length > 0) {
       projectContent = <div className="table-responsive"><ProjectsTable projects={projects} /></div>
+    }
+
+    if (isCreating) {
+      $('#project-create-modal').modal('hide');
     }
 
     return (
@@ -182,9 +186,10 @@ class DashboardPage extends React.Component {
 }
   
 const mapStateToProps = (state) => {
-  const {itemsById, items, isFetching} = state.projects;
+  const {itemsById, items, isFetching, isCreating} = state.projects;
   return {
     isFetching: isFetching,
+    isCreating: isCreating,
     projects: items.reduce((items, key) => {
       return items.concat(itemsById[key]);
     }, [])
