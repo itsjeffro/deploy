@@ -46,16 +46,18 @@ const projects = (state = initialState, action) => {
     case PROJECTS_CREATE_REQUEST:
       return {
         ...state,
-        isCreating: true,
-        items: state.items.concat(action.project)
+        isCreating: true
       };
 
     case PROJECTS_CREATE_SUCCESS:
       return {
         ...state,
         isCreating: false,
-        items: state.items.concat(action.project),
-        itemsById: state.items.concat({[action.project.id]: action.project})
+        itemsById: {
+          ...state.itemsById,
+          [action.project.id]: action.project
+        },
+        items: state.items.concat(action.project.id)
       };
       
     case PROJECTS_UPDATE_REQUEST:
@@ -85,6 +87,12 @@ const projects = (state = initialState, action) => {
         isDeleting: false,
         items: state.items.filter(item => {
           return item !== action.project_id;
+        }),
+        itemsById: Object.keys(state.itemsById).reduce((previous, key) => {
+          if (key !== action.project_id) {
+            previous[key] = state.itemsById[key];
+          }
+          return previous;
         })
       };
 
