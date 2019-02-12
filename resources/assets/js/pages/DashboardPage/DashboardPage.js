@@ -21,8 +21,6 @@ class DashboardPage extends React.Component {
     super(props);
 
     this.state = {
-      isFetching: true,
-      projects: [],
       grantedProviders: [],
       errors: [],
       input: {}
@@ -33,6 +31,9 @@ class DashboardPage extends React.Component {
     this.handleDismissModalClick = this.handleDismissModalClick.bind(this);
   }
 
+  /**
+   * Fetch data for projects and providers.
+   */
   componentWillMount() {
 	  const {dispatch, projects} = this.props;
     let accountProviderService = new AccountProviderService;
@@ -101,7 +102,7 @@ class DashboardPage extends React.Component {
     }
 
     if (!isFetching && projects.length > 0) {
-      projectContent = <div className="table-responsive"><ProjectsTable projects={projects} /></div>
+      projectContent = <ProjectsTable projects={projects} />
     }
 
     if (isCreating) {
@@ -186,13 +187,19 @@ class DashboardPage extends React.Component {
 }
   
 const mapStateToProps = (state) => {
-  const {itemsById, items, isFetching, isCreating} = state.projects;
+  const {
+    itemsById, 
+    items, 
+    isFetching, 
+    isCreating
+  } = state.projects;
+
   return {
     isFetching: isFetching,
     isCreating: isCreating,
-    projects: items.reduce((items, key) => {
-      return items.concat(itemsById[key]);
-    }, [])
+    projects: items.map(key => {
+      return itemsById[key];
+    })
   };
 };
 
