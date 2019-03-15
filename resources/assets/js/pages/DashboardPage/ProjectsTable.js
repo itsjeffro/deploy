@@ -5,8 +5,17 @@ import Icon from '../../components/Icon'
 
 const ProjectsTable = (props) => {
   const {
+    isFetching,
     projects
   } = props;
+
+  if (isFetching) {
+    return <div className="panel-body">Loading ...</div>;
+  }
+
+  if (!isFetching && projects.length === 0) {
+    return <div className="panel-body">Add a project to get started!</div>;
+  }
 
   return (
     <div className="table-responsive">

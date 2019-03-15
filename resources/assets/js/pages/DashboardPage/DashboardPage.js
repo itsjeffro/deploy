@@ -74,7 +74,7 @@ class DashboardPage extends React.Component {
   /**
    * Handle click for submitting the create project form.
    */
-  handleInputClick() {
+  handleCreateProjectClick() {
     const {dispatch} = this.props;
 
     dispatch(createProjects(this.state.input));
@@ -94,16 +94,6 @@ class DashboardPage extends React.Component {
   render() {
     const {errors} = this.state;
     const {isCreating, isFetching, projects} = this.props;
-
-    let projectContent = <div className="panel-body">Loading ...</div>;
-
-    if (!isFetching && projects.length === 0) {
-      projectContent = <div className="panel-body">Add a project to get started!</div>;
-    }
-
-    if (!isFetching && projects.length > 0) {
-      projectContent = <ProjectsTable projects={projects} />
-    }
 
     if (isCreating) {
       $('#project-create-modal').modal('hide');
@@ -126,7 +116,10 @@ class DashboardPage extends React.Component {
 
         <div className="container content">
           <div className="panel panel-default">
-            {projectContent}
+            <ProjectsTable
+              isFetching={isFetching}
+              projects={projects}
+            />
           </div>
         </div>
 
@@ -178,7 +171,7 @@ class DashboardPage extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleDismissModalClick}>Cancel</Button>
-            <Button color="primary" onClick={this.handleInputClick}>Add Project</Button>
+            <Button color="primary" onClick={this.handleCreateProjectClick}>Add Project</Button>
           </DialogActions>
         </Dialog>
       </div>
