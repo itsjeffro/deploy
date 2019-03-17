@@ -1,3 +1,5 @@
+import {buildAlertFromResponse} from '../utils/alert';
+
 import {
   PROJECTS_REQUEST,
   PROJECTS_SUCCESS,
@@ -14,12 +16,13 @@ import {
 } from '../constants/projects';
 
 const initialState = {
+  errors: [],
+  isCreating: false,
   isCreated: false,
   isDeleting: false,
   isUpdating: false,
   isFetching: false,
-  itemsById: {},
-  items: []
+  items: [],
 };
 
 const projects = (state = initialState, action) => {
@@ -33,67 +36,64 @@ const projects = (state = initialState, action) => {
     case PROJECTS_SUCCESS:
       return {
         ...state,
+        errors: [],
         isFetching: false,
-        itemsById: action.projects.reduce((items, project) => {
-          items[project.id] = project;
-          return items;
-        }, {}),
-        items: action.projects.map(project => {
-          return project.id;
-        })
+        items: action.projects,
       };
 
     case PROJECTS_CREATE_REQUEST:
       return {
         ...state,
-        isCreating: true
+        isCreating: true,
+        isCreated: false,
       };
 
     case PROJECTS_CREATE_SUCCESS:
       return {
         ...state,
+        errors: [],
         isCreating: false,
-        itemsById: {
-          ...state.itemsById,
-          [action.project.id]: action.project
-        },
-        items: state.items.concat(action.project.id)
+        isCreated: true,
+        items: state.items.concat(action.project)
+      };
+
+    case PROJECTS_CREATE_FAILURE:
+      return {
+        ...state,
+        errors: buildAlertFromResponse(action.errors),
+        isCreating: false,
+        isCreated: false,
       };
       
     case PROJECTS_UPDATE_REQUEST:
       return {
         ...state,
-        isUpdating: true
+        errors: [],
+        isUpdating: true,
       };
       
     case PROJECTS_UPDATE_SUCCESS:
       return {
         ...state,
+        errors: [],
         isUpdating: false,
-        itemsById: Object.key(state.itemsById).map(key => {
-          return action.project.id === key ? action.project : state.itemsById[key]
-        })
       };
 
     case PROJECTS_DELETE_REQUEST:
       return {
         ...state,
+        errors: [],
         isDeleting: true
       };
       
     case PROJECTS_DELETE_SUCCESS:
       return {
         ...state,
+        errors: [],
         isDeleting: false,
         items: state.items.filter(item => {
           return item !== action.project_id;
         }),
-        itemsById: Object.keys(state.itemsById).reduce((previous, key) => {
-          if (key != action.project_id) {
-            previous[key] = state.itemsById[key];
-          }
-          return previous;
-        }, {})
       };
 
     default:

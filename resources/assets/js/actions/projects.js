@@ -35,8 +35,9 @@ export const projectsCreateSuccess = (project) =>({
 /**
  * Item failed being created.
  */
-export const projectsCreateFailure = () =>({
-  type: PROJECTS_CREATE_FAILURE
+export const projectsCreateFailure = (errors) =>({
+  type: PROJECTS_CREATE_FAILURE,
+  errors: errors,
 });
 
 /**
@@ -56,7 +57,7 @@ export const createProjects = (project) => {
           dispatch(projectsCreateSuccess(response.data));
         },
         error => {
-          dispatch(projectsCreateFailure());
+          dispatch(projectsCreateFailure(error.response));
         });
   };
 };

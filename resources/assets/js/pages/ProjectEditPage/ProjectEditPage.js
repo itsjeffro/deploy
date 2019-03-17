@@ -68,7 +68,6 @@ class ProjectEditPage extends React.Component {
    * Handle project update.
    */
   handleProjectUpdateClick() {
-    const {dispatch} = this.props;
     const {editProject} = this.state;
     const projectService = new ProjectService;
 
@@ -84,9 +83,9 @@ class ProjectEditPage extends React.Component {
         let errorResponse = error.response.data;
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
   	
-        	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-		        return previous.concat(errorResponse[key][0]);
-		      }, []);
+        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+            return previous.concat(errorResponse[key][0]);
+          }, []);
     	
         this.setState({errors: errors});
       });
@@ -109,10 +108,10 @@ class ProjectEditPage extends React.Component {
   }
 
   render() {
-    const {dispatch, project, projects} = this.props;
-    const {editProject, errors, project_id} = this.state;
+    const {dispatch, project} = this.props;
+    const {editProject, errors} = this.state;
 
-    if (projects[project_id] === undefined) {
+    if (false) {
       $('#project-delete-modal').modal('hide');
       dispatch(alertShow('Project removed successfully.'));
       return <Redirect to="/" />

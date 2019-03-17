@@ -2,19 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import AccountProviderService from '../../services/AccountProvider';
-
 import {fetchProjects, createProjects} from '../../actions/projects';
 
 import ProjectsTable from './ProjectsTable';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation';
-import Icon from '../../components/Icon';
+import Button from '../../components/Button';
 import Dialog from '../../components/Dialog';
 import DialogTitle from '../../components/DialogTitle';
 import DialogContent from '../../components/DialogContent';
 import DialogActions from '../../components/DialogActions';
+import Icon from '../../components/Icon';
 import TextField from '../../components/TextField';
-import Button from '../../components/Button';
 
 class DashboardPage extends React.Component {
   constructor(props) {
@@ -22,11 +21,10 @@ class DashboardPage extends React.Component {
 
     this.state = {
       grantedProviders: [],
-      errors: [],
       input: {}
     };
 
-    this.handleInputClick = this.handleInputClick.bind(this);
+    this.handleCreateProjectClick = this.handleCreateProjectClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleDismissModalClick = this.handleDismissModalClick.bind(this);
   }
@@ -35,10 +33,14 @@ class DashboardPage extends React.Component {
    * Fetch data for projects and providers.
    */
   componentWillMount() {
-	  const {dispatch, projects} = this.props;
+    const {
+      dispatch,
+      projects
+    } = this.props;
+
     let accountProviderService = new AccountProviderService;
 
-    if (typeof projects === 'object' && projects.length === 0) {
+    if (typeof projects.items === 'object' && projects.items.length === 0) {
       dispatch(fetchProjects());
     }
 
@@ -75,9 +77,20 @@ class DashboardPage extends React.Component {
    * Handle click for submitting the create project form.
    */
   handleCreateProjectClick() {
-    const {dispatch} = this.props;
+    const {
+      dispatch,
+      projects
+    } = this.props;
 
     dispatch(createProjects(this.state.input));
+
+    if (projects.isCreated && projects.errors.length < 1) {
+      $('#project-create-modal').modal('hide');
+
+      this.setState({
+        input: {}
+      });
+    }
   }
 
   /**
@@ -86,18 +99,11 @@ class DashboardPage extends React.Component {
    * @param {object} event
    */
   handleDismissModalClick(event) {
-    this.setState({errors: []});
-
     $('#project-create-modal').modal('hide');
   }
 
   render() {
-    const {errors} = this.state;
-    const {isCreating, isFetching, projects} = this.props;
-
-    if (isCreating) {
-      $('#project-create-modal').modal('hide');
-    }
+    const {projects} = this.props;
 
     return (
       <div>
@@ -117,8 +123,8 @@ class DashboardPage extends React.Component {
         <div className="container content">
           <div className="panel panel-default">
             <ProjectsTable
-              isFetching={isFetching}
-              projects={projects}
+              isFetching={projects.isFetching}
+              projects={projects.items}
             />
           </div>
         </div>
@@ -128,7 +134,7 @@ class DashboardPage extends React.Component {
             Add Project
           </DialogTitle>
           <DialogContent>
-            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+            {projects.errors.length ? <AlertErrorValidation errors={projects.errors} /> : ''}
 
             <h4>Project Details</h4>
             <div className="form-group">
@@ -180,19 +186,8 @@ class DashboardPage extends React.Component {
 }
   
 const mapStateToProps = (state) => {
-  const {
-    itemsById, 
-    items, 
-    isFetching, 
-    isCreating
-  } = state.projects;
-
   return {
-    isFetching: isFetching,
-    isCreating: isCreating,
-    projects: items.map(key => {
-      return itemsById[key];
-    })
+    projects: state.projects
   };
 };
 
