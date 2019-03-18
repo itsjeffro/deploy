@@ -87,9 +87,7 @@ class DashboardPage extends React.Component {
     if (projects.isCreated && projects.errors.length < 1) {
       $('#project-create-modal').modal('hide');
 
-      this.setState({
-        input: {}
-      });
+      this.setState({input: {}});
     }
   }
 
@@ -176,8 +174,14 @@ class DashboardPage extends React.Component {
             </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleDismissModalClick}>Cancel</Button>
-            <Button color="primary" onClick={this.handleCreateProjectClick}>Add Project</Button>
+            <Button
+              onClick={this.handleDismissModalClick}
+            >Cancel</Button>
+
+            <Button
+              color="primary"
+              onClick={this.handleCreateProjectClick}
+            >{projects.isCreating ? 'Working...' : 'Add Project'}</Button>
           </DialogActions>
         </Dialog>
       </div>
