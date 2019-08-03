@@ -15,4 +15,4 @@ mix
   .setPublicPath('public')
   .js('resources/assets/js/app.js', 'public')
   .sass('resources/assets/sass/app.scss', 'public')
-  .copy('public', '../../public/vendor/deploy');
+  .copy('public', '../public/vendor/deploy');
