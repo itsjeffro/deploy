@@ -1,19 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import AccountProviderService from '../../services/AccountProvider';
 import {fetchProjects, createProjects} from '../../actions/projects';
-
-import ProjectsTable from './ProjectsTable';
-
-import AlertErrorValidation from '../../components/AlertErrorValidation';
-import Button from '../../components/Button';
-import Dialog from '../../components/Dialog';
-import DialogTitle from '../../components/DialogTitle';
-import DialogContent from '../../components/DialogContent';
-import DialogActions from '../../components/DialogActions';
+import AccountProviderService from '../../services/AccountProvider';
+import AddProjectDialog from './AddProjectDialog';
 import Icon from '../../components/Icon';
-import TextField from '../../components/TextField';
+import Panel from '../../components/Panel';
+import ProjectsTable from './ProjectsTable';
 
 class DashboardPage extends React.Component {
   constructor(props) {
@@ -93,10 +86,8 @@ class DashboardPage extends React.Component {
 
   /**
    * Handle click for dismissing the creat project modal.
-   *
-   * @param {object} event
    */
-  handleDismissModalClick(event) {
+  handleDismissModalClick() {
     $('#project-create-modal').modal('hide');
   }
 
@@ -104,7 +95,7 @@ class DashboardPage extends React.Component {
     const {projects} = this.props;
 
     return (
-      <div>
+      <>
         <div className="breadcrumbs">
           <div className="container">
             <div className="pull-left">
@@ -119,72 +110,22 @@ class DashboardPage extends React.Component {
         </div>
 
         <div className="container content">
-          <div className="panel panel-default">
+          <Panel>
             <ProjectsTable
               isFetching={projects.isFetching}
               projects={projects.items}
             />
-          </div>
+          </Panel>
         </div>
 
-        <Dialog id="project-create-modal">
-          <DialogTitle>
-            Add Project
-          </DialogTitle>
-          <DialogContent>
-            {projects.errors.length ? <AlertErrorValidation errors={projects.errors} /> : ''}
-
-            <h4>Project Details</h4>
-            <div className="form-group">
-              <TextField 
-                id="name" 
-                label="Project Name" 
-                onChange={this.handleInputChange} 
-                name="name"
-              />
-            </div>
-
-            <h4>Source Control</h4>
-            <div className="form-group">
-              <label>Providers</label>
-
-              {this.state.grantedProviders.map(grantedProvider => (
-                <div key={grantedProvider.id}>
-                  <label htmlFor={grantedProvider.name}>
-                    <input 
-                      name="provider_id"
-                      type="radio"
-                      value={grantedProvider.id}
-                      id={grantedProvider.name}
-                      onChange={this.handleInputChange}
-                    /> {grantedProvider.name}
-                  </label>
-                </div>
-              ))}
-            </div>
-
-            <div className="form-group">
-              <TextField 
-                id="repository" 
-                label="Respository" 
-                onChange={this.handleInputChange} 
-                name="repository"
-                placeholder="user/repository"
-              />
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={this.handleDismissModalClick}
-            >Cancel</Button>
-
-            <Button
-              color="primary"
-              onClick={this.handleCreateProjectClick}
-            >{projects.isCreating ? 'Working...' : 'Add Project'}</Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+        <AddProjectDialog
+          projects={projects}
+          grantedProviders={this.state.grantedProviders}
+          handleCreateProjectClick={this.handleCreateProjectClick}
+          handleDismissModalClick={this.handleDismissModalClick}
+          handleInputChange={this.handleInputChange}
+        />
+      </>
     )
   }
 }
