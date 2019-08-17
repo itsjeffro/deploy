@@ -1,10 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Link, Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-import {alertShow} from '../../actions/alert';
-import {deleteProjects} from '../../actions/projects';
-
+import {deleteProjects, fetchProjects} from '../../actions/projects';
 import ProjectService from '../../services/Project';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation'; 
@@ -26,8 +24,8 @@ class ProjectEditPage extends React.Component {
     this.state = {
       project_id: null,
       isFetching: true,
-      editProject: {},
-      errors: []
+      project: {},
+      errors: [],
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -37,11 +35,23 @@ class ProjectEditPage extends React.Component {
   }
 
   componentWillMount() {
-    const {project, match} = this.props;
+    const {
+      dispatch,
+      projects, 
+      match: {
+        params: {
+          project_id,
+        },
+      },
+    } = this.props;
+
+    if (typeof projects.items === 'object' && projects.items.length === 0) {
+      dispatch(fetchProjects());
+    }
 
     this.setState({
-      project_id: match.params.project_id,
-      editProject: project
+      project_id: project_id,
+      project: projects.items[project_id] || {},
     });
   }
 
@@ -57,8 +67,8 @@ class ProjectEditPage extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
     this.setState(state => ({
-      editProject: {
-        ...state.editProject,
+      project: {
+        ...state.project,
         [name]: value
       }
     }));
@@ -68,11 +78,11 @@ class ProjectEditPage extends React.Component {
    * Handle project update.
    */
   handleProjectUpdateClick() {
-    const {editProject} = this.state;
+    const {project} = this.state;
     const projectService = new ProjectService;
 
     projectService
-      .update(editProject.id, editProject)
+      .update(project.id, project)
       .then(response => {
         this.setState({
           isUpdated: true,
@@ -95,7 +105,8 @@ class ProjectEditPage extends React.Component {
    * Handle project delete.
    */
   handleProjectDeleteClick() {
-    const {project, dispatch} = this.props;
+    const {dispatch} = this.props;
+    const {project} = this.state;
 
     dispatch(deleteProjects(project.id));
   }
@@ -108,22 +119,11 @@ class ProjectEditPage extends React.Component {
   }
 
   render() {
-    const {dispatch, project} = this.props;
-    const {editProject, errors} = this.state;
-
-    if (false) {
-      $('#project-delete-modal').modal('hide');
-      dispatch(alertShow('Project removed successfully.'));
-      return <Redirect to="/" />
-    }
-    
-    if (false) {
-      dispatch(alertShow('Project updated successfully.'));
-      return <Redirect to={'/projects/' + project.id} />
-    }
+    const {dispatch, projects} = this.props;
+    const {project, errors} = this.state;
 
     return (
-      <div>
+      <>
         <div className="breadcrumbs">
           <div className="container">
             <span className="heading">
@@ -153,7 +153,7 @@ class ProjectEditPage extends React.Component {
                       name="name"
                       type="text"
                       onChange={this.handleInputChange}
-                      value={editProject.name}
+                      value={project.name}
                     />
                   </div>
 
@@ -165,7 +165,7 @@ class ProjectEditPage extends React.Component {
                           name="deploy_on_push"
                           value="1"
                           onChange={this.handleInputChange}
-                          checked={editProject.deploy_on_push}
+                          checked={project.deploy_on_push}
                         /> Deploy when code is pushed to
                       </label>
                     </div>
@@ -200,15 +200,14 @@ class ProjectEditPage extends React.Component {
         >
           Are you sure you want to delete this project?
         </Modal>
-      </div>
+      </>
     )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    project: state.project.project,
-    projects: state.projects.itemsById
+    projects: state.projects
   };
 };
 
