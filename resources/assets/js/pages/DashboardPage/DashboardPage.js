@@ -93,6 +93,10 @@ class DashboardPage extends React.Component {
 
   render() {
     const {projects} = this.props;
+    
+    const items = Object.keys(projects.items).map(key => {
+      return projects.items[key];
+    });
 
     return (
       <>
@@ -113,7 +117,7 @@ class DashboardPage extends React.Component {
           <Panel>
             <ProjectsTable
               isFetching={projects.isFetching}
-              projects={projects.items}
+              projects={items}
             />
           </Panel>
         </div>
