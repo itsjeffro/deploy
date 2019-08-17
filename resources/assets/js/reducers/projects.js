@@ -38,7 +38,10 @@ const projects = (state = initialState, action) => {
         ...state,
         errors: [],
         isFetching: false,
-        items: action.projects,
+        items: action.projects.reduce((previous, project) => {
+          previous[project.id] = project;
+          return previous;
+        }, {}),
       };
 
     case PROJECTS_CREATE_REQUEST:
@@ -54,7 +57,10 @@ const projects = (state = initialState, action) => {
         errors: [],
         isCreating: false,
         isCreated: true,
-        items: state.items.concat(action.project)
+        items: {
+          ...state.items,
+          [action.project.id]: action.project
+        }
       };
 
     case PROJECTS_CREATE_FAILURE:
@@ -91,9 +97,12 @@ const projects = (state = initialState, action) => {
         ...state,
         errors: [],
         isDeleting: false,
-        items: state.items.filter(item => {
-          return item !== action.project_id;
-        }),
+        items: Object.keys(state.items).reduce((previous, key) => {
+          if (action.project_id !== key) {
+            previous[key] = state.items[key];
+            return previous;
+          }
+        }, {}),
       };
 
     default:
