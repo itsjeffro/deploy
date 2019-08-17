@@ -29,6 +29,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       environment: {
         key: '',
         contents: '',
+        servers: [],
       },
       errors: [],
       syncStatus: '',
@@ -47,6 +48,15 @@ class ProjectEnvironmentUnlockPage extends React.Component {
    */
   componentWillMount() {
     const {dispatch, project, match} = this.props;
+
+    this.setState(prevState => {
+      const environment = {
+        ...prevState.environment,
+        servers: project.environment_servers,
+      };
+
+      return {environment: environment};
+    });
 
     if (typeof project === 'object' && Object.keys(project).length === 0) {
       dispatch(fetchProject(match.params.project_id));
@@ -164,8 +174,25 @@ class ProjectEnvironmentUnlockPage extends React.Component {
    *
    * @param {int} server_id
    */
-  handleSyncServerClick(server_id) {
-    console.log(server_id);
+  handleSyncServerClick(serverId) {
+    this.setState(prevState => {
+      let environmentServers = prevState.environment.servers;
+
+      if (environmentServers.indexOf(serverId) === -1) {
+        environmentServers.push(serverId);
+      } else {
+        environmentServers = environmentServers.filter(environmentServer => {
+          return environmentServer !== serverId;
+        });
+      }
+
+      const environment = {
+        ...prevState.environment,
+        servers: environmentServers,
+      };
+
+      return {environment: environment};
+    });
   }
 
   /**
@@ -208,9 +235,10 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       unlocked
     } = this.state;
 
-    const {project, isFetching} = this.props;
-    const {environment_servers} = project;
-    const syncedServers = this.mapEnvironmentServers(environment_servers);
+    const {
+      project,
+      isFetching
+    } = this.props;
 
     if (isFetching) {
       return (
@@ -272,7 +300,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
               <Grid xs={12} md={4}>
                 <EnvironmentServersTable
                   project={project}
-                  syncedServers={syncedServers}
+                  syncedServers={environment.servers}
                   syncStatus={syncStatus}
                   onSyncServerClick={this.handleSyncServerClick}
                 />
