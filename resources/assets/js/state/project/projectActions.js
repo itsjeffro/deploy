@@ -2,9 +2,9 @@ import {
   PROJECT_REQUEST,
   PROJECT_SUCCESS,
   PROJECT_FAILURE
-} from '../constants/project';
+} from '../../constants/project';
 
-import ProjectService from '../services/Project';
+import ProjectService from '../../services/Project';
 
 /**
  * Item is being requested.

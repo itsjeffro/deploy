@@ -11,9 +11,9 @@ import {
   PROJECTS_DELETE_REQUEST,
   PROJECTS_DELETE_SUCCESS,
   PROJECTS_DELETE_FAILURE
-} from '../constants/projects';
+} from '../../constants/projects';
 
-import ProjectService from '../services/Project';
+import ProjectService from '../../services/Project';
 
 /**
  * Item create is being requested.

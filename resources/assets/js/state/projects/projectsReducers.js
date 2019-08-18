@@ -1,4 +1,4 @@
-import {buildAlertFromResponse} from '../utils/alert';
+import {buildAlertFromResponse} from '../../utils/alert';
 
 import {
   PROJECTS_REQUEST,
@@ -13,7 +13,7 @@ import {
   PROJECTS_DELETE_REQUEST,
   PROJECTS_DELETE_SUCCESS,
   PROJECTS_DELETE_FAILURE
-} from '../constants/projects';
+} from '../../constants/projects';
 
 const initialState = {
   errors: [],
@@ -70,14 +70,14 @@ const projects = (state = initialState, action) => {
         isCreating: false,
         isCreated: false,
       };
-      
+
     case PROJECTS_UPDATE_REQUEST:
       return {
         ...state,
         errors: [],
         isUpdating: true,
       };
-      
+
     case PROJECTS_UPDATE_SUCCESS:
       return {
         ...state,
@@ -91,7 +91,7 @@ const projects = (state = initialState, action) => {
         errors: [],
         isDeleting: true
       };
-      
+
     case PROJECTS_DELETE_SUCCESS:
       return {
         ...state,
