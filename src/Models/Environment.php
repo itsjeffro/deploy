@@ -57,6 +57,6 @@ class Environment extends Model
      */
     public function environmentServers()
     {
-        return $this->hasMany('Deploy\Models\EnvironmentServer');
+        return $this->belongsToMany('Deploy\Models\Server');
     }
 }
