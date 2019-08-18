@@ -41,8 +41,8 @@ class ProjectEnvironmentUnlockController extends Controller
         } catch (Exception $e) {
             Log::info($e->getTraceAsString());
 
-            return response()->json(
-                ['key' => [
+            return response()->json([
+                'key' => [
                     'Invalid environment key.'
                 ]
             ], 422);
