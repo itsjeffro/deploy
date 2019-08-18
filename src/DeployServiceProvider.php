@@ -3,6 +3,7 @@
 namespace Deploy;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -25,8 +26,10 @@ class DeployServiceProvider extends ServiceProvider
         $this->registerResources();
         $this->registerMigrations();
         $this->registerPolicies();
+
+        Resource::withoutWrapping();
     }
-    
+
     /**
      * Regsiter package's events and listeners.
      *
@@ -42,7 +45,7 @@ class DeployServiceProvider extends ServiceProvider
             }
         }
     }
-    
+
     /**
      * Regsiter package's routes.
      *
@@ -58,7 +61,7 @@ class DeployServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         });
     }
-    
+
     /**
      * Regsiter package's channel routes.
      *
@@ -67,7 +70,7 @@ class DeployServiceProvider extends ServiceProvider
     protected function registerBroadcasting()
     {
         Broadcast::routes();
-        
+
         require __DIR__ . '/../routes/channels.php';
     }
 
@@ -80,7 +83,7 @@ class DeployServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'deploy');
     }
-    
+
     /**
      * Register the package's migrations.
      *
@@ -92,7 +95,7 @@ class DeployServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         }
     }
-    
+
     /**
      * Register the package's policies.
      *
@@ -114,7 +117,7 @@ class DeployServiceProvider extends ServiceProvider
     {
         $this->offerPublishing();
     }
-    
+
     /**
      * Setup the resource publishing groups for the package.
      *
@@ -126,7 +129,7 @@ class DeployServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../config/deploy.php' => config_path('deploy.php'),
             ], 'deploy-config');
-            
+
             $this->publishes([
                 __DIR__ . '/../public' => public_path('vendor/deploy'),
             ], 'deploy-assets');
