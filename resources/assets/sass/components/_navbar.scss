@@ -1,5 +1,5 @@
 .navbar-default {
-    background-color: #339bd5;
+    background-color: #3347d5;
     border: 0;
     margin: 0;
 
@@ -22,7 +22,7 @@
         &> .open > a,
         &> .open > a:hover,
         &> .open > a:focus {
-            background-color: #278ac1;
+            background-color: rgba(0,0,0,.12);
             color: #fff;
         }
 
@@ -40,7 +40,7 @@
     }
 
     .navbar-toggle {
-        border-color: #339bd5;
+        border-color: transparent;
 
         .icon-bar {
             background-color: #fff;
