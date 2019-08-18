@@ -8,6 +8,7 @@ use Deploy\Models\Project;
 use Deploy\Models\Deployment;
 use Deploy\Models\Server;
 use Deploy\Models\Environment;
+use Deploy\Resources\ProjectResource;
 
 class ProjectController extends Controller
 {
@@ -20,7 +21,7 @@ class ProjectController extends Controller
     {
         $projects = Project::where('user_id', auth()->id())->get();
 
-        return response()->json($projects);
+        return ProjectResource::collection($projects);
     }
 
     /**
@@ -100,7 +101,7 @@ class ProjectController extends Controller
         Server::where('project_id', $project->id)->delete();
         Environment::where('project_id', $project->id)->delete();
         Deployment::where('project_id', $project->id)->delete();
-        
+
         $project->delete();
 
         return response()->json(null, 204);
