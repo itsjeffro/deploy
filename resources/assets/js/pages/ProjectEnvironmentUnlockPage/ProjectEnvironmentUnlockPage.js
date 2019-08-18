@@ -8,7 +8,7 @@ import ProjectEnvironmentService from '../../services/ProjectEnvironment';
 import {fetchProject} from '../../actions/project';
 
 import Alert from '../../components/Alert';
-import AlertErrorValidation from '../../components/AlertErrorValidation'; 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';
@@ -35,7 +35,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       syncStatus: '',
       unlocked: false
     };
-    
+
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleUpdateClick = this.handleUpdateClick.bind(this);
@@ -52,7 +52,9 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     this.setState(prevState => {
       const environment = {
         ...prevState.environment,
-        servers: project.environment_servers,
+        servers: project.environment_servers.map(server => {
+            return server.server_id;
+        }, []),
       };
 
       return {environment: environment};
@@ -108,7 +110,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     const {environment} = this.state;
     const {project} = this.props;
     const projectEnvironmentUnlockService = new ProjectEnvironmentUnlockService;
-    
+
     projectEnvironmentUnlockService
       .post(project.id, environment)
       .then(response => {
@@ -129,7 +131,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         });
       });
   }
-  
+
   /**
    * Handle environment update click.
    */
@@ -144,14 +146,14 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         this.setState({
           errors: []
         });
-      }, 
+      },
       error => {
         this.setState({
           errors: buildAlertFromResponse(error.response)
         });
       });
   }
-  
+
   /**
    * Handle cancel environment update click.
    */
@@ -248,7 +250,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         </div>
       )
     }
-    
+
     if (unlocked) {
       return (
         <div>
@@ -326,7 +328,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
             result in any previous encrypted environment information being cleared
             from our server.
           </Alert>
-          
+
           <Panel>
             <PanelBody>
             	{errors.length ? <AlertErrorValidation errors={errors} /> : ''}
@@ -342,12 +344,12 @@ class ProjectEnvironmentUnlockPage extends React.Component {
               </div>
 
               <div className="form-group">
-                <Button 
+                <Button
                   onClick={this.handleClick}
                 >Unlock Environment</Button>
               </div>
 
-              <Link 
+              <Link
                 to={'/projects/' + project.id + '/environment-reset'}
               >Need to reset your key?</Link>
             </PanelBody>
