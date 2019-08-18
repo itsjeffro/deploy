@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { Deploy } from '../../config';
 
-import { alertShow } from '../../actions/alert';
+import { alertShow } from '../../state/alert/alertActions';
 
 import ProjectService from '../../services/Project';
 import ProjectServerService from '../../services/ProjectServer';
 
-import AlertErrorValidation from '../../components/AlertErrorValidation'; 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
@@ -24,21 +24,21 @@ class ProjectServerCreatePage extends React.Component {
             server: {},
             errors: []
         };
-        
+
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
 
     componentWillMount() {
         const { project } = this.props;
-        
+
         this.setState({project: project});
     }
-    
+
     handleInputChange(event) {
         const name = event.target.name;
         const value = event.target.value;
-        
+
         this.setState(state => {
             const server = Object.assign({}, state.server, {
                 [name]: value
@@ -46,12 +46,12 @@ class ProjectServerCreatePage extends React.Component {
             return {server: server}
         });
     }
-    
+
     handleClick(event) {
         const { dispatch } = this.props;
         const { project, server } = this.state;
         const projectServerService = new ProjectServerService;
-        
+
         projectServerService
             .create(project.id, server)
             .then(response => {
@@ -63,23 +63,23 @@ class ProjectServerCreatePage extends React.Component {
             	   let errorResponse = error.response.data;
 
                 errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-         	
+
                 	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
                 			  return previous.concat(errorResponse[key][0]);
                 	}, []);
-    
+
                 this.setState({errors: errors});
             });
     }
 
     render() {
-        const { 
-            project, 
+        const {
+            project,
             server,
             isCreated,
             errors
         } = this.state;
-        
+
         if (isCreated) {
             return <Redirect to={'/projects/' + project.id} />
         }
@@ -103,10 +103,10 @@ class ProjectServerCreatePage extends React.Component {
 
                             <div className="form-group">
                                 <label htmlFor="name">Name</label>
-                                <input 
-                                    className="form-control" 
-                                    name="name" 
-                                    type="text" 
+                                <input
+                                    className="form-control"
+                                    name="name"
+                                    type="text"
                                     id="name"
                                     onChange={this.handleInputChange}
                                     value={server.name}
@@ -115,8 +115,8 @@ class ProjectServerCreatePage extends React.Component {
                             <div className="row">
                                 <div className="form-group col-xs-8 col-md-9">
                                     <label htmlFor="ip_address">Ip Address</label>
-                                    <input 
-                                        className="form-control" 
+                                    <input
+                                        className="form-control"
                                         name="ip_address"
                                         type="text"
                                         id="ip_address"

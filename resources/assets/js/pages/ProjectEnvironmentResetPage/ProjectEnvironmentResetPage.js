@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { alertShow } from '../../actions/alert';
+import { alertShow } from '../../state/alert/alertActions';
 
 import { Deploy } from '../../config';
 
@@ -10,7 +10,7 @@ import ProjectService from '../../services/Project';
 import ProjectEnvironmentResetService from '../../services/ProjectEnvironmentReset';
 
 import Alert from '../../components/Alert';
-import AlertErrorValidation from '../../components/AlertErrorValidation'; 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import TextField from '../../components/TextField';
@@ -70,13 +70,13 @@ class ProjectEnvironmentResetPage extends React.Component {
         const errors = Object.keys(errorResponse).reduce(function(previous, key) {
           return previous.concat(errorResponse[key][0]);
         }, []);
-        
+
         this.setState({errors: errors});
       });
   }
 
   render() {
-    const { 
+    const {
       project,
       key,
       errors

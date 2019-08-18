@@ -2,7 +2,7 @@ import {
   PROJECT_REQUEST,
   PROJECT_SUCCESS,
   PROJECT_FAILURE
-} from '../../constants/project';
+} from './projectConstants';
 
 import ProjectService from '../../services/Project';
 

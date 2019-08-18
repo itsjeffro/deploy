@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 
 import './bootstrap';
 
-import rootReducers from './reducers';
+import rootReducers from './state/rootReducers';
 import Application from './Application';
 
 if (document.getElementById('app')) {

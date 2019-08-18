@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { Deploy } from '../../config';
 
-import { projectSuccess } from '../../actions/project';
-import { alertShow } from '../../actions/alert';
+import { projectSuccess } from '../../state/project/projectActions';
+import { alertShow } from '../../state/alert/alertActions';
 
 import Alert from '../../components/Alert';
 import Icon from '../../components/Icon';

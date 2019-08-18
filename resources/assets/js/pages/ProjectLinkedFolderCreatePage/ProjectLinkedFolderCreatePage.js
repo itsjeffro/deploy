@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
-import { alertShow } from '../../actions/alert';
+import { alertShow } from '../../state/alert/alertActions';
 
 import { Deploy } from '../../config';
 
@@ -10,7 +10,7 @@ import ProjectService from '../../services/Project';
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Alert from '../../components/Alert';
-import AlertErrorValidation from '../../components/AlertErrorValidation'; 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
@@ -34,7 +34,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
 
     componentWillMount() {
         const { project } = this.props;
-        
+
         this.setState({project: project});
     }
 
@@ -70,23 +70,23 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                 let errorResponse = error.response.data;
 
                 errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-            	
+
                 	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
                 			  return previous.concat(errorResponse[key][0]);
                 	}, []);
-    
+
                 this.setState({errors: errors});
             });
     }
 
     render() {
         const { project } = this.props;
-        const { 
+        const {
             isCreated,
             folder,
             errors
         } = this.state;
-        
+
         if (isCreated) {
             return <Redirect to={'/projects/' + project.id + '/folders'} />
         }
@@ -107,7 +107,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                     <Alert type="warning">
                         This linked folder will be created on your server during the next deployment.
                     </Alert>
-                        
+
                     <Panel>
                         <PanelBody>
                             {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
@@ -137,7 +137,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                                 />
                             </div>
 
-                            <Button color="primary" 
+                            <Button color="primary"
                                 onClick={this.handleClick}
                             >Save Linked Folder</Button>
                         </PanelBody>

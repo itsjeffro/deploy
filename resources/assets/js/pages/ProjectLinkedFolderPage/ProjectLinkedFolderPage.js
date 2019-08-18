@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { alertShow } from '../../actions/alert';
+import { alertShow } from '../../state/alert/alertActions';
 
 import ProjectFolderService from '../../services/ProjectFolder';
 
@@ -11,24 +11,24 @@ import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
+import PanelTitle from '../../components/PanelTitle';
 
 import FoldersTable from './FoldersTable';
 
 class ProjectLinkedFolderPage extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       isFetching: true,
       folders: [],
       folder: {}
     };
-    
+
     this.modalLinkedFolderRemoveShow = this.modalLinkedFolderRemoveShow.bind(this);
     this.handleLinkedFolderRemoveClick = this.handleLinkedFolderRemoveClick.bind(this);
   }
-  
+
   componentWillMount() {
     const { project } = this.props;
     const projectFolderService = new ProjectFolderService;
@@ -159,11 +159,11 @@ class ProjectLinkedFolderPage extends React.Component {
             </div>
           </div>
         </div>
-        
+
         <div className="container content">
           {this.renderFoldersContent(isFetching, project, folders)}
         </div>
-        
+
         <Modal
           id="linked-folder-remove-modal"
           title="Remove Linked Folder"

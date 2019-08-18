@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {fetchProjects, createProjects} from '../../actions/projects';
+import {fetchProjects, createProjects} from '../../state/projects/projectsActions';
 import AccountProviderService from '../../services/AccountProvider';
 import AddProjectDialog from './AddProjectDialog';
 import Icon from '../../components/Icon';
@@ -43,7 +43,7 @@ class DashboardPage extends React.Component {
         let providers = response.data.filter(provider => {
           return provider.deploy_access_token;
         });
-  
+
         this.setState({grantedProviders: providers});
       });
   }
@@ -93,7 +93,7 @@ class DashboardPage extends React.Component {
 
   render() {
     const {projects} = this.props;
-    
+
     const items = Object.keys(projects.items).map(key => {
       return projects.items[key];
     });
@@ -133,7 +133,7 @@ class DashboardPage extends React.Component {
     )
   }
 }
-  
+
 const mapStateToProps = (state) => {
   return {
     projects: state.projects
@@ -141,5 +141,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(
-  mapStateToProps		
+  mapStateToProps
 )(DashboardPage);

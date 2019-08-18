@@ -11,7 +11,7 @@ import {
   PROJECTS_DELETE_REQUEST,
   PROJECTS_DELETE_SUCCESS,
   PROJECTS_DELETE_FAILURE
-} from '../../constants/projects';
+} from './projectsConstants';
 
 import ProjectService from '../../services/Project';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
-import { alertShow } from '../../actions/alert';
+import { alertShow } from '../../state/alert/alertActions';
 
 import { Deploy } from '../../config';
 
@@ -14,7 +14,7 @@ import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
+import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import TextField from '../../components/TextField';
 
@@ -45,8 +45,8 @@ class ProjectSourceControlEditPage extends React.Component {
       .then(response => {
         let providers = response.data.filter(provider => {
           return provider.deploy_access_token;
-        }); 
-      
+        });
+
         this.setState({
           grantedProviders: providers
         });
@@ -70,7 +70,7 @@ class ProjectSourceControlEditPage extends React.Component {
       return {project: project}
     });
   }
-  
+
   /**
    * Handle project's source control update.
    *
@@ -96,11 +96,11 @@ class ProjectSourceControlEditPage extends React.Component {
         let errorResponse = error.response.data;
 
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-    	
+
         const errors = Object.keys(errorResponse).reduce(function(previous, key) {
             return previous.concat(errorResponse[key][0]);
         }, []);
-    	
+
         this.setState({errors: errors});
       });
   }
@@ -112,7 +112,7 @@ class ProjectSourceControlEditPage extends React.Component {
       grantedProviders,
       isUpdated
     } = this.state;
-    
+
     if (isUpdated) {
       return <Redirect to={'/projects/' + project.id} />
     }
@@ -152,7 +152,7 @@ class ProjectSourceControlEditPage extends React.Component {
 
                   <div className="form-group">
                     <label>Providers</label>
-                    
+
                     {grantedProviders.map(grantedProvider =>
                       <div key={grantedProvider.id}>
                         <label htmlFor={grantedProvider.name}>
@@ -178,7 +178,7 @@ class ProjectSourceControlEditPage extends React.Component {
                       placeholder="user/repository"
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <TextField
                       id="branch"

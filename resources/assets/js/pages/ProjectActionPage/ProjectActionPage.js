@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AceEditor from 'react-ace';
 
-import { alertShow } from '../../actions/alert';
+import { alertShow } from '../../state/alert/alertActions';
 
 import { Deploy } from '../../config';
 
@@ -13,12 +13,12 @@ import ProjectActionHookService from '../../services/ProjectActionHook';
 
 import HooksTable from './HooksTable';
 
-import AlertErrorValidation from '../../components/AlertErrorValidation'; 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
+import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 
@@ -53,7 +53,7 @@ class ProjectActionPage extends React.Component {
     const { project } = this.props;
     const { project_id, action_id } = this.props.match.params;
     const projectActionService = new ProjectActionService;
-    
+
     this.setState({project: project});
 
     projectActionService
@@ -70,7 +70,7 @@ class ProjectActionPage extends React.Component {
 
   /**
    * Render hooks table.
-   * 
+   *
    * @param {object} hooks
    * @return {XML}
    */
@@ -93,10 +93,10 @@ class ProjectActionPage extends React.Component {
       </PanelBody>
     )
   }
-  
+
   /**
    * Show modal to create hook.
-   * 
+   *
    * @param {int} position
    */
   handleAddModalClick(position) {
@@ -119,7 +119,7 @@ class ProjectActionPage extends React.Component {
 
   /**
    * Show modal to edit hook.
-   * 
+   *
    * @param {object} hook
    */
   handleEditModalClick(hook) {
@@ -133,7 +133,7 @@ class ProjectActionPage extends React.Component {
 
   /**
    * Show modal to confirm hook remove.
-   * 
+   *
    * @param {object} hook
    */
   handleRemoveModalClick(hook) {
@@ -149,9 +149,9 @@ class ProjectActionPage extends React.Component {
     const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
-   
+
     let data = Object.assign({}, hook);
-    
+
     projectActionHookService
       .create(hook.project_id, hook.action_id, data)
       .then(response => {
@@ -172,18 +172,18 @@ class ProjectActionPage extends React.Component {
         		errors: []
         	});
         }
-        
+
         $('#add-hook-modal').modal('hide');
       },
       error => {
         let errorResponse = error.response.data;
 
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-        
+
         const errors = Object.keys(errorResponse).reduce(function(previous, key) {
           return previous.concat(errorResponse[key][0]);
         }, []);
-        
+
         this.setState({errors: errors});
       });
   }
@@ -195,7 +195,7 @@ class ProjectActionPage extends React.Component {
     const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
-    
+
     let data = Object.assign({}, hook);
 
     projectActionHookService
@@ -209,32 +209,32 @@ class ProjectActionPage extends React.Component {
         	errors: [],
         	[hookPosition]: this.updateHook(hookPosition, hook.id, response.data)
         });
-        
+
         $('#edit-hook-modal').modal('hide');
       },
       error => {
         let errorResponse = error.response.data;
 
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-        
+
         const errors = Object.keys(errorResponse).reduce(function(previous, key) {
           return previous.concat(errorResponse[key][0]);
         }, []);
-        
+
         this.setState({errors: errors});
       });
   }
-  
+
   /**
    * Update hooks (before or after) state to update hook specified by it's id.
-   * 
+   *
    * @param {string} hook_position
    * @param {int} hook_id
    * @param {object} updated_hook
    */
   updateHook(hook_position, hook_id, updated_hook) {
     const hooks = this.state[hook_position];
-    
+
     return hooks.map(hook => {
 	  if (hook.id === updated_hook.id) {
 	    return Object.assign(hook, updated_hook);
@@ -267,10 +267,10 @@ class ProjectActionPage extends React.Component {
 
     $('#remove-hook-modal').modal('hide');
   }
-  
+
   /**
    * Update hooks (before or after) state to filter out hook specified by it's id.
-   * 
+   *
    * @param {string} hook_position
    * @param {int} hook_id
    */
@@ -279,14 +279,14 @@ class ProjectActionPage extends React.Component {
       const hooks = state[hook_position].filter(hook => {
         return hook.id !== hook_id;
       });
-	  
+
       return {[hook_position]: hooks}
 	   });
   }
 
   /**
    * Handle input name change for hook.
-   * 
+   *
    * @param {object} event
    */
   handleInputNameChange(event) {
@@ -296,14 +296,14 @@ class ProjectActionPage extends React.Component {
       let hook = Object.assign({}, state.hook, {
         name: value
       });
- 
+
       return {hook: hook};
     });
   }
-  
+
   /**
    * Handle script change for hook.
-   * 
+   *
    * @param {string} value
    */
   handleScriptChange(value) {
@@ -311,7 +311,7 @@ class ProjectActionPage extends React.Component {
       let hook = Object.assign({}, state.hook, {
         script: value
       });
- 
+
       return {hook: hook};
     });
   }
@@ -388,7 +388,7 @@ class ProjectActionPage extends React.Component {
 
           <div className="form-group">
             <label htmlFor="name">Name</label>
-            <input 
+            <input
               className="form-control"
               name="name"
               type="text"
@@ -423,7 +423,7 @@ class ProjectActionPage extends React.Component {
 
           <div className="form-group">
             <label htmlFor="name">Name</label>
-            <input 
+            <input
               className="form-control"
               name="name"
               type="text"

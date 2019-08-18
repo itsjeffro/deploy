@@ -2,16 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
-import {deleteProjects, fetchProjects} from '../../actions/projects';
+import {deleteProjects, fetchProjects} from '../../state/projects/projectsActions';
 import ProjectService from '../../services/Project';
 
-import AlertErrorValidation from '../../components/AlertErrorValidation'; 
+import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
+import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 
@@ -37,7 +37,7 @@ class ProjectEditPage extends React.Component {
   componentWillMount() {
     const {
       dispatch,
-      projects, 
+      projects,
       match: {
         params: {
           project_id,
@@ -92,11 +92,11 @@ class ProjectEditPage extends React.Component {
       error => {
         let errorResponse = error.response.data;
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-  	
+
         const errors = Object.keys(errorResponse).reduce(function(previous, key) {
             return previous.concat(errorResponse[key][0]);
           }, []);
-    	
+
         this.setState({errors: errors});
       });
   }

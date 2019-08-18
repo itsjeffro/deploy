@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { alertHide } from '../actions/alert';
+import { alertHide } from '../state/alert/alertActions';
 
 class Layout extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class Layout extends React.Component {
 
     dispatch(alertHide());
   }
-  
+
   render() {
     const { alert } = this.props;
 
@@ -66,9 +66,9 @@ class Layout extends React.Component {
           style={{display: (alert.show ? '' : 'none')}}
         >
           <div className="container">
-            <button 
-              type="button" 
-              className="close" 
+            <button
+              type="button"
+              className="close"
               onClick={this.handleOnClick}
             >
               <span aria-hidden="true">&times;</span>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import ProjectEnvironmentUnlockService from '../../services/ProjectEnvironmentUnlock';
 import ProjectEnvironmentService from '../../services/ProjectEnvironment';
 
-import {fetchProject} from '../../actions/project';
+import {fetchProject} from '../../state/project/projectActions';
 
 import Alert from '../../components/Alert';
 import AlertErrorValidation from '../../components/AlertErrorValidation';

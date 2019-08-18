@@ -1,7 +1,7 @@
 import {
   ALERT_SHOW,
   ALERT_HIDE
-} from '../../constants/alert';
+} from './alertConstants';
 
 export const alertShow = (message) =>({
   type: ALERT_SHOW,
