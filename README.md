@@ -71,42 +71,33 @@ known_hosts file belonging to the server's user.
 Example /home/user/.ssh/known_hosts will be used instead of /var/www/.ssh/known_hosts
 
 ## Broadcasting
+
 To allow real-time feedback when a deployment or server connection has started or finished, you may set up the application 
 to utlise Laravel's broadcasting feature.
 
 ### Publish Resources
+
 TBA
 
 ### Publish Views
+
 TBA
 
 ### Configuration
+
 TBA
 
 Note: You may need to restart the queue worker to pick up on your configuration updates.
 
 ## Deployments
+
 Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the ability to reload the php-fpm service on the server. You may create a deployment hook which does this after the "Clean Up" action.
 
-### Folder Structure
+## Folder Structure
+
 During the first deployment, a few directories (current, releases) will be created. With the combination of symlinks, will allow for zero-downtime deployments. For each successful deployment, a new release directory will be created and the "current" link will be updated to point to the new release.
 
 * current (symlink) -> 20190102235900
 * releases
     * 20190102235900 (date YmdHis)
     * 20190101235900
-
-## Deployment Hooks
-Deployment hooks provide the user the ability to perform extra tasks along side the default actions:
-
-- Clone New Release
-- Activate New Release
-- Clean Up
-
-### Available Variables
-| Variable | Example Output | Description |
-|----------|----------------|-------------|
-| {{project}} | /var/www/html | Absolute path to project. |
-| {{releases}} | /var/www/html/releases | Absolute path to releases. |
-| {{release}} | /var/www/html/releases/20190120104650 | Absolute path to new release. |
-| {{time}} | 20190120104650 | Generated date time prior to deployment. Format YmdHis |
