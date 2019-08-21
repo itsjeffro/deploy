@@ -46,12 +46,13 @@ php artisan migrate
 
 ### Configuration
 
-After publishing the assets, the primary config file will be located in config/deploy.php. This configuration file allows
-you to setup the repository providers, path and SSH settings.
+After publishing the assets, the primary config file will be located at `config/deploy.php`. 
+
+Before using the deploy application, you will need to set up your repository provider and a proper queue driver.
 
 ## Available Providers
 
-You may update your .env file to include the following:
+You may update your `.env` file to include the following:
 
 __Bitbucket__
 
@@ -77,7 +78,7 @@ In order to properly utilise the deployment functionality of the package. In you
 update your queue driver to something other than "sync". This way the process worker can correctly access the 
 known_hosts file belonging to the server's user. 
 
-Example /home/user/.ssh/known_hosts will be used instead of /var/www/.ssh/known_hosts
+For example, `/home/user/.ssh/known_hosts` will be used instead of `/var/www/.ssh/known_hosts`.
 
 ## Broadcasting
 
