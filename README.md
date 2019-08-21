@@ -1,10 +1,12 @@
 # Deploy
+
 <p align="center">
     <a href="https://travis-ci.org/itsjeffro/deploy"><img src="https://travis-ci.org/itsjeffro/deploy.svg?branch=master" alt="Build Status"></a>
     <a href="https://packagist.org/packages/itsjeffro/deploy"><img src="https://poser.pugx.org/itsjeffro/deploy/license.svg"></a>
 </p>
 
 ## Introduction
+
 Deploy provides a dasboard for existing Laravel applications to manage zero-downtime deployments.
 
 <p align="center">
@@ -12,9 +14,11 @@ Deploy provides a dasboard for existing Laravel applications to manage zero-down
 </p>
 
 ## Server Requirements
-* openssh-clients - To establish ssh connections
+
+* openssh-clients (To establish ssh connections)
 
 ## Installation
+
 Prior to installing this package, it is assumed you have already configured an auth gaurd with the App\User model for your Laravel application. 
 
 Using composer, install the package into your Laravel project:
@@ -41,15 +45,18 @@ php artisan migrate
 ```
 
 ### Configuration
+
 After publishing the assets, the primary config file will be located in config/deploy.php. This configuration file allows
 you to setup the repository providers, path and SSH settings.
 
 ## Available Providers
+
 You may update your .env file to include the following:
 
 __Bitbucket__
 
 https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
+
 ```
 BITBUCKET_OAUTH_KEY=client_id
 BITBUCKET_OAUTH_SECRET=client_secret
@@ -58,12 +65,14 @@ BITBUCKET_OAUTH_SECRET=client_secret
 __Github__
 
 https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
+
 ```
 GITHUB_OAUTH_KEY=client_id
 GITHUB_OAUTH_SECRET=client_secret
 ```
 
 ## Queue
+
 In order to properly utilise the deployment functionality of the package. In your .env file, it is recommended to 
 update your queue driver to something other than "sync". This way the process worker can correctly access the 
 known_hosts file belonging to the server's user. 
@@ -92,12 +101,3 @@ Note: You may need to restart the queue worker to pick up on your configuration 
 ## Deployments
 
 Given that the deployment process uses symlinks. The user performing the deployment actions will be required to have the ability to reload the php-fpm service on the server. You may create a deployment hook which does this after the "Clean Up" action.
-
-## Folder Structure
-
-During the first deployment, a few directories (current, releases) will be created. With the combination of symlinks, will allow for zero-downtime deployments. For each successful deployment, a new release directory will be created and the "current" link will be updated to point to the new release.
-
-* current (symlink) -> 20190102235900
-* releases
-    * 20190102235900 (date YmdHis)
-    * 20190101235900
