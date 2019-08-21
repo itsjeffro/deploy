@@ -50,9 +50,9 @@ After publishing the assets, the primary config file will be located at `config/
 
 Before using the deploy application, you will need to set up your repository provider and a proper queue driver.
 
-## Available Providers
+### Available Providers
 
-You may update your `.env` file to include the following:
+Update your `.env` file to include a provider of your choice. A minimum of one provider is required.
 
 __Bitbucket__
 
@@ -72,13 +72,21 @@ GITHUB_OAUTH_KEY=client_id
 GITHUB_OAUTH_SECRET=client_secret
 ```
 
-## Queue
+### Queue connection
 
-In order to properly utilise the deployment functionality of the package. In your .env file, it is recommended to 
-update your queue driver to something other than "sync". This way the process worker can correctly access the 
-known_hosts file belonging to the server's user. 
+In your `.env` file, `QUEUE_CONNECTION` should be changed to another connection other than "sync". This way the process workers can correctly work on the server hosting the deployment package. 
 
-For example, `/home/user/.ssh/known_hosts` will be used instead of `/var/www/.ssh/known_hosts`.
+With the connection updated, paths such as  `/home/user/.ssh/known_hosts` will be used instead of `/var/www/.ssh/known_hosts`.
+
+Worker roles also handle:
+
+* Creating individual SSH private keys for each project`s server
+
+* Handling deployments
+
+* Managing the projects .env file
+
+* Testing server connections
 
 ## Broadcasting
 
