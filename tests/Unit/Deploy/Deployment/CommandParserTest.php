@@ -7,7 +7,7 @@ use Deploy\Deployment\CommandParser;
 
 class CommandParserTest extends TestCase
 {
-    public function test_parse_command_one_line_script()
+    public function test_parse_one_line_script()
     {
         $commandParser = new CommandParser([
             'project_path' => '/var/www/html',
@@ -28,6 +28,18 @@ class CommandParserTest extends TestCase
         $this->assertEquals(
             $commandParser->parseScript('{{   project_path }}'), 
             '/var/www/html'
+        );
+    }
+    
+    public function test_parse_invalid_command_syntax()
+    {
+        $commandParser = new CommandParser([
+            'project' => '/var/www/html',
+        ]);
+        
+        $this->assertEquals(
+            $commandParser->parseScript('{ project_path }}'),
+            '{ project_path }}'
         );
     }
 }
