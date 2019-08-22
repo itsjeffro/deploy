@@ -19,5 +19,15 @@ class CommandParserTest extends TestCase
             $commandParser->parseScript($script),
             'cd /var/www/html && touch test.txt'
         );
+        
+        $this->assertEquals(
+            $commandParser->parseScript('{{project_path}}'), 
+            '/var/www/html'
+        );
+        
+        $this->assertEquals(
+            $commandParser->parseScript('{{   project_path }}'), 
+            '/var/www/html'
+        );
     }
 }
