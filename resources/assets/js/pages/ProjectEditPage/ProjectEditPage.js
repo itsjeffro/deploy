@@ -1,8 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 
-import {deleteProjects, fetchProjects} from '../../state/projects/projectsActions';
+import { deleteProjects, fetchProjects } from '../../state/projects/projectsActions';
 import ProjectService from '../../services/Project';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation';
@@ -119,8 +119,14 @@ class ProjectEditPage extends React.Component {
   }
 
   render() {
-    const {dispatch, projects} = this.props;
-    const {project, errors} = this.state;
+    const { dispatch, projects } = this.props;
+    const { project, errors } = this.state;
+    
+    if (projects.isDeleting) {
+      $('#project-delete-modal').modal('hide');
+
+      return <Redirect to={'/'} />
+    }
 
     return (
       <>
