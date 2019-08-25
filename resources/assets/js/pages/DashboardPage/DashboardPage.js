@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {fetchProjects, createProjects} from '../../state/projects/projectsActions';
+import { fetchProjects, createProjects } from '../../state/projects/projectsActions';
 import AccountProviderService from '../../services/AccountProvider';
 import AddProjectDialog from './AddProjectDialog';
 import Icon from '../../components/Icon';
@@ -61,9 +61,7 @@ class DashboardPage extends React.Component {
     let input = Object.assign({}, this.state.input);
     input[name] = value;
 
-    this.setState({
-      input: input
-    });
+    this.setState({input: input});
   }
 
   /**
@@ -76,12 +74,6 @@ class DashboardPage extends React.Component {
     } = this.props;
 
     dispatch(createProjects(this.state.input));
-
-    if (projects.isCreated && projects.errors.length < 1) {
-      $('#project-create-modal').modal('hide');
-
-      this.setState({input: {}});
-    }
   }
 
   /**
@@ -92,11 +84,15 @@ class DashboardPage extends React.Component {
   }
 
   render() {
-    const {projects} = this.props;
+    const { projects } = this.props;
 
     const items = Object.keys(projects.items).map(key => {
       return projects.items[key];
     });
+    
+    if (projects.isCreating) {
+      $('#project-create-modal').modal('hide');
+    }
 
     return (
       <>

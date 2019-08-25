@@ -18,7 +18,6 @@ import {
 const initialState = {
   errors: [],
   isCreating: false,
-  isCreated: false,
   isDeleting: false,
   isUpdating: false,
   isFetching: false,
@@ -48,7 +47,6 @@ const projects = (state = initialState, action) => {
       return {
         ...state,
         isCreating: true,
-        isCreated: false,
       };
 
     case PROJECTS_CREATE_SUCCESS:
@@ -56,7 +54,6 @@ const projects = (state = initialState, action) => {
         ...state,
         errors: [],
         isCreating: false,
-        isCreated: true,
         items: {
           ...state.items,
           [action.project.id]: action.project
@@ -68,7 +65,6 @@ const projects = (state = initialState, action) => {
         ...state,
         errors: buildAlertFromResponse(action.errors),
         isCreating: false,
-        isCreated: false,
       };
 
     case PROJECTS_UPDATE_REQUEST:
