@@ -116,4 +116,6 @@ Given that the deployment process uses symlinks. The user performing the deploym
 * [Projects](docs/project.md)
 * [Deployments](docs/deployment.md)
 * [Deployment hooks](docs/deployment-hooks.md)
+* [Environment](docs/environment.md)
+* [Linked folders](docs/linked-folders.md)
 * [Folder structure](docs/folder-structure.md)
