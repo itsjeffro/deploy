@@ -6,12 +6,6 @@ Prior to creating a project, ensure that you have configured a provider such as 
 
 From the main dashboard, you make click the `Add project` button.
 
-## Deploy on push
-
-Deploy-on-push allows for automatic deployments during every push to your repository.
-
-This can be enabled by going to your project's settings page.
-
 ## Update project
 
 The following can be updated from your project's settings page:
