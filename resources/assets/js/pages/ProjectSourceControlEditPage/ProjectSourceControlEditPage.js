@@ -4,19 +4,17 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { alertShow } from '../../state/alert/alertActions';
 
-import { Deploy } from '../../config';
-
 import ProjectService from '../../services/Project';
 import AccountProviderService from '../../services/AccountProvider';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
-import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import TextField from '../../components/TextField';
+import Layout from "../../components/Layout";
 
 class ProjectSourceControlEditPage extends React.Component {
   constructor(props) {
@@ -118,87 +116,85 @@ class ProjectSourceControlEditPage extends React.Component {
     }
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
-            <span className="heading">
-              <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Source Control
-            </span>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>Source Control</h2>
           </div>
-        </div>
 
-        <div className="container content">
-          <div className="row">
-            <div className="col-xs-12 col-sm-3">
-              <Panel>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-xs-12 col-sm-3">
+                <Panel>
+                  <PanelHeading>
+                    <PanelTitle>Project settings</PanelTitle>
+                  </PanelHeading>
+
+                  <div className="list-group">
+                    <Link to={'/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
+                    <Link to={'/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
+                  </div>
+                </Panel>
+              </div>
+
+              <div className="col-xs-12 col-sm-9">
+                <Panel>
                 <PanelHeading>
-                  <PanelTitle>Project settings</PanelTitle>
+                  <PanelTitle>Source Control</PanelTitle>
                 </PanelHeading>
+                  <PanelBody>
+                    {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-                <div className="list-group">
-                  <Link to={'/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
-                  <Link to={'/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
-                </div>
-              </Panel>
-            </div>
+                    <div className="form-group">
+                      <label>Providers</label>
 
-            <div className="col-xs-12 col-sm-9">
-              <Panel>
-	            <PanelHeading>
-	              <PanelTitle>Source Control</PanelTitle>
-	            </PanelHeading>
-                <PanelBody>
-                  {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+                      {grantedProviders.map(grantedProvider =>
+                        <div key={grantedProvider.id}>
+                          <label htmlFor={grantedProvider.name}>
+                            <input name="provider_id"
+                              type="radio"
+                              value={grantedProvider.id}
+                              id={grantedProvider.name}
+                              onChange={this.handleInputChange}
+                              checked={project.provider_id === grantedProvider.id}
+                            /> {grantedProvider.name}
+                          </label>
+                        </div>
+                      )}
+                    </div>
 
-                  <div className="form-group">
-                    <label>Providers</label>
+                    <div className="form-group">
+                      <TextField
+                        id="repository"
+                        label="Respository"
+                        onChange={this.handleInputChange}
+                        name="repository"
+                        value={project.repository}
+                        placeholder="user/repository"
+                      />
+                    </div>
 
-                    {grantedProviders.map(grantedProvider =>
-                      <div key={grantedProvider.id}>
-                        <label htmlFor={grantedProvider.name}>
-                          <input name="provider_id"
-                            type="radio"
-                            value={grantedProvider.id}
-                            id={grantedProvider.name}
-                            onChange={this.handleInputChange}
-                            checked={project.provider_id == grantedProvider.id}
-                          /> {grantedProvider.name}
-                        </label>
-                      </div>
-                    )}
-                  </div>
+                    <div className="form-group">
+                      <TextField
+                        id="branch"
+                        label="Branch"
+                        onChange={this.handleInputChange}
+                        name="branch"
+                        value={project.branch}
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <TextField
-                      id="repository"
-                      label="Respository"
-                      onChange={this.handleInputChange}
-                      name="repository"
-                      value={project.repository}
-                      placeholder="user/repository"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <TextField
-                      id="branch"
-                      label="Branch"
-                      onChange={this.handleInputChange}
-                      name="branch"
-                      value={project.branch}
-                    />
-                  </div>
-
-                  <Button
-                    color="primary"
-                    onClick={this.handleClick}
-                  >Save</Button>
-                </PanelBody>
-              </Panel>
+                    <Button
+                      color="primary"
+                      onClick={this.handleClick}
+                    >Save</Button>
+                  </PanelBody>
+                </Panel>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Layout>
     )
   }
 }

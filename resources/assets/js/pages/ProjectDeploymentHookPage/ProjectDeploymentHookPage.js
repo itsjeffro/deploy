@@ -11,6 +11,7 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle'; 
 
 import ProjectActionService from '../../services/ProjectAction';
+import Layout from "../../components/Layout";
 
 class ProjectDeploymentHookPage extends React.Component {
   constructor(props) {
@@ -91,21 +92,17 @@ class ProjectDeploymentHookPage extends React.Component {
     } = this.state;
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
-            <div className="pull-left">
-              <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Deployment Hooks
-              </span>
-            </div>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>Deployment Hooks</h2>
+          </div>
+        
+          <div className="container-fluid">
+            {isFetching ? <Loader /> : this.renderActionsTable(project, actions)}
           </div>
         </div>
-        
-        <div className="container content">
-          {isFetching ? <Loader /> : this.renderActionsTable(project, actions)}
-        </div>
-      </div>
+      </Layout>
     )
   }
 }

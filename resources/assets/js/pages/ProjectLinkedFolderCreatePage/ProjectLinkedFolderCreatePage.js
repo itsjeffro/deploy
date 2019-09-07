@@ -1,20 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { alertShow } from '../../state/alert/alertActions';
-
-import { Deploy } from '../../config';
-
-import ProjectService from '../../services/Project';
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Alert from '../../components/Alert';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
-import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
+import Layout from "../../components/Layout";
 
 class ProjectLinkedFolderCreatePage extends React.Component {
     constructor(props) {
@@ -79,73 +75,69 @@ class ProjectLinkedFolderCreatePage extends React.Component {
             });
     }
 
-    render() {
-        const { project } = this.props;
-        const {
-            isCreated,
-            folder,
-            errors
-        } = this.state;
+  render() {
+    const { project } = this.props;
+    const {
+      isCreated,
+      folder,
+      errors
+    } = this.state;
 
-        if (isCreated) {
-            return <Redirect to={'/projects/' + project.id + '/folders'} />
-        }
-
-        return (
-            <div>
-                <div className="breadcrumbs">
-                    <div className="container">
-                        <div className="pull-left">
-                            <span className="heading">
-                                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Add Linked Folder
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="container content">
-                    <Alert type="warning">
-                        This linked folder will be created on your server during the next deployment.
-                    </Alert>
-
-                    <Panel>
-                        <PanelBody>
-                            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
-
-                            <div className="form-group">
-                                <label htmlFor="from">Link Name</label>
-                                <input
-                                    className="form-control"
-                                    name="from"
-                                    type="text"
-                                    id="from"
-                                    onChange={this.handleInputChange}
-                                    value={folder.from}
-                                    placeholder="uploads"
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="to">To Target</label>
-                                <input
-                                    className="form-control"
-                                    name="to"
-                                    type="text"
-                                    id="project_path"
-                                    onChange={this.handleInputChange}
-                                    value={folder.to}
-                                    placeholder="storage/uploads"
-                                />
-                            </div>
-
-                            <Button color="primary"
-                                onClick={this.handleClick}
-                            >Save Linked Folder</Button>
-                        </PanelBody>
-                    </Panel>
-                </div>
-            </div>
-        )
+    if (isCreated) {
+      return <Redirect to={'/projects/' + project.id + '/folders'} />
     }
+
+    return (
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>Add Linked Folder</h2>
+          </div>
+
+          <div className="container-fluid">
+            <Alert type="warning">
+              This linked folder will be created on your server during the next deployment.
+            </Alert>
+
+            <Panel>
+              <PanelBody>
+                {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
+                <div className="form-group">
+                  <label htmlFor="from">Link Name</label>
+                  <input
+                    className="form-control"
+                    name="from"
+                    type="text"
+                    id="from"
+                    onChange={this.handleInputChange}
+                    value={folder.from}
+                    placeholder="uploads"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="to">To Target</label>
+                  <input
+                    className="form-control"
+                    name="to"
+                    type="text"
+                    id="project_path"
+                    onChange={this.handleInputChange}
+                    value={folder.to}
+                    placeholder="storage/uploads"
+                  />
+                </div>
+
+                <Button color="primary"
+                        onClick={this.handleClick}
+                >Save Linked Folder</Button>
+              </PanelBody>
+            </Panel>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
 }
 
 const mapStateToProps = state => {

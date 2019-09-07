@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Layout from './containers/Layout';
-
 import DashboardPage from './pages/DashboardPage';
 import ProjectPage from './pages/ProjectPage';
 import ProjectDeploymentPage from './pages/ProjectDeploymentPage';
@@ -22,8 +20,7 @@ class Application extends React.Component {
   render() {
     return (
       <Router basename="/deploy">
-        <div>
-          <Layout />
+        <>
           <Switch>
             <Route exact path="/" component={DashboardPage} />
             <Route path="/projects/:project_id/actions/:action_id" component={ProjectActionPage} />
@@ -40,7 +37,7 @@ class Application extends React.Component {
             <Route path="/projects/:project_id" component={ProjectPage} />
             <Route path="/account" component={AccountPage} />
           </Switch>
-        </div>
+        </>
       </Router>
     )
   }

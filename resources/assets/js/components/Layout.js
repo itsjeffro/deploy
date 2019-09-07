@@ -1,15 +1,14 @@
 import React from 'react';
-import Drawer from "../components/Drawer";
+import Drawer from "./Drawer";
 
 class Layout extends React.Component {
   render() {
-    const { project_name, project_id } = this.props;
+    const { project } = this.props;
 
     return (
       <div className="wrapper">
         <Drawer
-          project_name={project_name}
-          project_id={project_id}
+          project={project}
         />
 
         <main className="main-content">

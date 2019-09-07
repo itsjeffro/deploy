@@ -12,6 +12,7 @@ import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
+import Layout from '../../components/Layout';
 
 class ProjectServerEditPage extends React.Component {
   constructor(props) {
@@ -134,21 +135,17 @@ class ProjectServerEditPage extends React.Component {
     }
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
-            <div className="pull-left">
-              <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Edit Server
-              </span>
-            </div>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>Edit Server</h2>
+          </div>
+
+          <div className="container-fluid">
+            {isFetching ? <Loader /> : this.renderServerEditPanel(server, errors)}
           </div>
         </div>
-
-        <div className="container content">
-          {isFetching ? <Loader /> : this.renderServerEditPanel(server, errors)}
-        </div>
-      </div>
+      </Layout>
     )
   }
 }

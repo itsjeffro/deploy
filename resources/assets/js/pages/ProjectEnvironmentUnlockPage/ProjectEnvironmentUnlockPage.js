@@ -20,6 +20,7 @@ import TextField from '../../components/TextField';
 import EnvironmentServersTable from './EnvironmentServersTable';
 
 import { buildAlertFromResponse } from '../../utils/alert';
+import Layout from "../../components/Layout";
 
 class ProjectEnvironmentUnlockPage extends React.Component {
   constructor(props) {
@@ -198,28 +199,6 @@ class ProjectEnvironmentUnlockPage extends React.Component {
   }
 
   /**
-   * Render breadcrumbs.
-   *
-   * @param {object} project
-   * @return {XML}
-   */
-  renderBreadcrumbs(project) {
-    return (
-      <div className="breadcrumbs">
-        <div className="container">
-          <div className="pull-left">
-            <span className="heading">
-              <Link to={'/projects/' + project.id}>{project.name}</Link>{' '}
-              <Icon iconName="angle-double-right" />{' '}
-              Environment
-            </span>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  /**
    * @param {Array} environmentServers
    * @returns {Array}
    */
@@ -253,109 +232,121 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
     if (unlocked) {
       return (
-        <div>
-          {this.renderBreadcrumbs(project)}
+        <Layout project={project}>
+          <div className="content">
+            <div className="container-fluid heading">
+              <h2>
+                Environment
+              </h2>
+            </div>
 
-          <div className="container content">
-            <Alert type="warning">
-              Your environment information will be stored in an .env file on your servers.
-            </Alert>
+            <div className="container-fluid">
+              <Alert type="warning">
+                Your environment information will be stored in an .env file on your servers.
+              </Alert>
 
-            <div className="row">
-              <Grid xs={12} md={8}>
-                <Panel>
-                  <PanelBody>
-                    {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+              <div className="row">
+                <Grid xs={12} md={8}>
+                  <Panel>
+                    <PanelBody>
+                      {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-                    <TextField
-                      label="Key"
-                      name="key"
-                      type="password"
-                      onChange={this.handleInputChange}
-                      value={environment.key}
-                    />
-
-                    <div className="form-group">
-                      <label>Contents</label>
-                      <textarea
-                        className="form-control"
-                        name="contents"
+                      <TextField
+                        label="Key"
+                        name="key"
+                        type="password"
                         onChange={this.handleInputChange}
-                        rows="6"
-                        style={{fontFamily: 'monospace', resize: 'vertical'}}
-                        defaultValue={environment.contents}
+                        value={environment.key}
                       />
-                    </div>
 
-                    <Button
-                      onClick={this.handleCancelClick}
-                      style={{marginRight: 5}}
-                    >Cancel</Button>
+                      <div className="form-group">
+                        <label>Contents</label>
+                        <textarea
+                          className="form-control"
+                          name="contents"
+                          onChange={this.handleInputChange}
+                          rows="6"
+                          style={{fontFamily: 'monospace', resize: 'vertical'}}
+                          defaultValue={environment.contents}
+                        />
+                      </div>
 
-                    <Button
-                      onClick={this.handleUpdateClick}
-                    >Update Environment</Button>
-                  </PanelBody>
-                </Panel>
-              </Grid>
+                      <Button
+                        onClick={this.handleCancelClick}
+                        style={{marginRight: 5}}
+                      >Cancel</Button>
 
-              <Grid xs={12} md={4}>
-                <EnvironmentServersTable
-                  project={project}
-                  syncedServers={environment.servers}
-                  syncStatus={syncStatus}
-                  onSyncServerClick={this.handleSyncServerClick}
-                />
-              </Grid>
+                      <Button
+                        onClick={this.handleUpdateClick}
+                      >Update Environment</Button>
+                    </PanelBody>
+                  </Panel>
+                </Grid>
+
+                <Grid xs={12} md={4}>
+                  <EnvironmentServersTable
+                    project={project}
+                    syncedServers={environment.servers}
+                    syncStatus={syncStatus}
+                    onSyncServerClick={this.handleSyncServerClick}
+                  />
+                </Grid>
+              </div>
             </div>
           </div>
-        </div>
+        </Layout>
       )
     }
 
     return (
-      <div>
-        {this.renderBreadcrumbs(project)}
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>
+              Environment
+            </h2>
+          </div>
 
-        <div className="container content">
-          <Alert type="warning">
-            Your environment information will be encrypted on our server using your
-            chosen key. You will also have to provide your key each time you wish to
-            update your information.
-            <br/><br/>
-            Please keep in mind that we do not store your key and have no way of
-            retrieving it. Therefore if you forget your key, you will need to reset your key which will also
-            result in any previous encrypted environment information being cleared
-            from our server.
-          </Alert>
+          <div className="container-fluid">
+            <Alert type="warning">
+              Your environment information will be encrypted on our server using your
+              chosen key. You will also have to provide your key each time you wish to
+              update your information.
+              <br/><br/>
+              Please keep in mind that we do not store your key and have no way of
+              retrieving it. Therefore if you forget your key, you will need to reset your key which will also
+              result in any previous encrypted environment information being cleared
+              from our server.
+            </Alert>
 
-          <Panel>
-            <PanelBody>
-            	{errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+            <Panel>
+              <PanelBody>
+                {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-            	<div className="form-group">
-                <TextField
-                  label="Key"
-                  name="key"
-                  type="password"
-                  onChange={this.handleInputChange}
-                  value={environment.key}
-                />
-              </div>
+                <div className="form-group">
+                  <TextField
+                    label="Key"
+                    name="key"
+                    type="password"
+                    onChange={this.handleInputChange}
+                    value={environment.key}
+                  />
+                </div>
 
-              <div className="form-group">
-                <Button
-                  onClick={this.handleClick}
-                >Unlock Environment</Button>
-              </div>
+                <div className="form-group">
+                  <Button
+                    onClick={this.handleClick}
+                  >Unlock Environment</Button>
+                </div>
 
-              <Link
-                to={'/projects/' + project.id + '/environment-reset'}
-              >Need to reset your key?</Link>
-            </PanelBody>
-          </Panel>
+                <Link
+                  to={'/projects/' + project.id + '/environment-reset'}
+                >Need to reset your key?</Link>
+              </PanelBody>
+            </Panel>
+          </div>
         </div>
-      </div>
+      </Layout>
     )
   }
 }

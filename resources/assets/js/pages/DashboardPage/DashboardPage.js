@@ -7,6 +7,7 @@ import AddProjectDialog from './AddProjectDialog';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import ProjectsTable from './ProjectsTable';
+import Layout from "../../components/Layout";
 
 class DashboardPage extends React.Component {
   constructor(props) {
@@ -95,11 +96,11 @@ class DashboardPage extends React.Component {
     }
 
     return (
-      <>
-        <div className="breadcrumbs">
-          <div className="container">
+      <Layout>
+        <div className="content">
+          <div className="container-fluid heading">
             <div className="pull-left">
-              <span className="heading">Project List</span>
+              <h2>Project List</h2>
             </div>
             <div className="pull-right">
               <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#project-create-modal">
@@ -107,25 +108,25 @@ class DashboardPage extends React.Component {
               </button>
             </div>
           </div>
-        </div>
 
-        <div className="container content">
-          <Panel>
-            <ProjectsTable
-              isFetching={projects.isFetching}
-              projects={items}
-            />
-          </Panel>
-        </div>
+          <div className="container-fluid">
+            <Panel>
+              <ProjectsTable
+                isFetching={projects.isFetching}
+                projects={items}
+              />
+            </Panel>
+          </div>
 
-        <AddProjectDialog
-          projects={projects}
-          grantedProviders={this.state.grantedProviders}
-          handleCreateProjectClick={this.handleCreateProjectClick}
-          handleDismissModalClick={this.handleDismissModalClick}
-          handleInputChange={this.handleInputChange}
-        />
-      </>
+          <AddProjectDialog
+            projects={projects}
+            grantedProviders={this.state.grantedProviders}
+            handleCreateProjectClick={this.handleCreateProjectClick}
+            handleDismissModalClick={this.handleDismissModalClick}
+            handleInputChange={this.handleInputChange}
+          />
+        </div>
+      </Layout>
     )
   }
 }

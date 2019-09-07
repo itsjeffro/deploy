@@ -14,6 +14,7 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 
 import FoldersTable from './FoldersTable';
+import Layout from "../../components/Layout";
 
 class ProjectLinkedFolderPage extends React.Component {
   constructor(props) {
@@ -149,35 +150,31 @@ class ProjectLinkedFolderPage extends React.Component {
     const { folders, isFetching } = this.state;
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
-            <div className="pull-left">
-              <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Linked Folders
-              </span>
-            </div>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>Linked Folders</h2>
           </div>
-        </div>
 
-        <div className="container content">
-          {this.renderFoldersContent(isFetching, project, folders)}
-        </div>
+          <div className="container-fluid">
+            {this.renderFoldersContent(isFetching, project, folders)}
+          </div>
 
-        <Modal
-          id="linked-folder-remove-modal"
-          title="Remove Linked Folder"
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#linked-folder-remove-modal').modal('hide')},
-            {text: 'Remove Linked Folder', onPress: () => this.handleLinkedFolderRemoveClick()}
-          ]}
-        >
-          Are you sure you want to remove this link folder from the project?
-          <br/>
-          Note: Your folder will not be removed from the server. This will
-          only prevent a symlink during your next deploy.
-        </Modal>
-      </div>
+          <Modal
+            id="linked-folder-remove-modal"
+            title="Remove Linked Folder"
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#linked-folder-remove-modal').modal('hide')},
+              {text: 'Remove Linked Folder', onPress: () => this.handleLinkedFolderRemoveClick()}
+            ]}
+          >
+            Are you sure you want to remove this link folder from the project?
+            <br/>
+            Note: Your folder will not be removed from the server. This will
+            only prevent a symlink during your next deploy.
+          </Modal>
+        </div>
+      </Layout>
     )
   }
 }

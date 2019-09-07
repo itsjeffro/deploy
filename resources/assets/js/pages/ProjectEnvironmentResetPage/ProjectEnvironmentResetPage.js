@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 
 import { alertShow } from '../../state/alert/alertActions';
 
-import { Deploy } from '../../config';
-
 import ProjectService from '../../services/Project';
 import ProjectEnvironmentResetService from '../../services/ProjectEnvironmentReset';
 
@@ -16,6 +14,7 @@ import Icon from '../../components/Icon';
 import TextField from '../../components/TextField';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
+import Layout from "../../components/Layout";
 
 class ProjectEnvironmentResetPage extends React.Component {
   constructor(props) {
@@ -83,47 +82,43 @@ class ProjectEnvironmentResetPage extends React.Component {
     } = this.state;
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
-            <div className="pull-left">
-              <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> Reset Environment Key
-              </span>
-            </div>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>Reset Environment Key</h2>
+          </div>
+
+          <div className="container-fluid">
+            <Alert type="warning">
+              Resetting your environment key will also clear the environment contents.
+            </Alert>
+
+            <Panel>
+              <PanelBody>
+                {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
+                <div className="form-group">
+                  <TextField
+                    label="Key"
+                    name="key"
+                    type="password"
+                    onChange={this.handleInputChange}
+                    value={key}
+                  />
+                </div>
+                <div className="form-group">
+                  <Button
+                    onClick={this.handleClick}
+                  >Reset Environment Key</Button>
+                </div>
+                <Link
+                  to={'/projects/' + project.id + '/environment-unlock'}
+                >Update Environment</Link>
+              </PanelBody>
+            </Panel>
           </div>
         </div>
-
-        <div class="container content">
-          <Alert type="warning">
-            Resetting your environment key will also clear the environment contents.
-          </Alert>
-
-          <Panel>
-            <PanelBody>
-              {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
-
-              <div class="form-group">
-                <TextField
-                  label="Key"
-                  name="key"
-                  type="password"
-                  onChange={this.handleInputChange}
-                  value={key}
-                />
-              </div>
-              <div className="form-group">
-                <Button
-                  onClick={this.handleClick}
-                >Reset Environment Key</Button>
-              </div>
-              <Link
-                to={'/projects/' + project.id + '/environment-unlock'}
-              >Update Environment</Link>
-            </PanelBody>
-          </Panel>
-        </div>
-      </div>
+      </Layout>
     )
   }
 }

@@ -1,19 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import {fetchProject} from '../../state/project/projectActions';
+import { fetchProject } from '../../state/project/projectActions';
+import ProjectDeploymentService from '../../services/ProjectDeployment';
+import { buildSequencesFromProcesses } from '../../utils/squence';
 
-import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import Modal from '../../components/Modal';
-
 import ProcessTable from './ProcessTable';
-
-import ProjectDeploymentService from '../../services/ProjectDeployment';
-
-import { buildSequencesFromProcesses } from '../../utils/squence';
+import Layout from "../../components/Layout";
 
 class ProjectDeploymentPage extends React.Component {
   constructor(props) {
@@ -84,41 +80,36 @@ class ProjectDeploymentPage extends React.Component {
     ));
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
-            <span className="heading">
-              <Link to={'/projects/' + project.id}>
-                {project.name}
-              </Link>{' '}
-              <Icon iconName="angle-double-right" /> Deployment Info
-            </span>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>Deployment Info</h2>
           </div>
-        </div>
 
-        <div className="container content">
-          {isFetching ? <Loader /> : sequenceList}
-        </div>
+          <div className="container-fluid">
+            {isFetching ? <Loader /> : sequenceList}
+          </div>
 
-        <Modal
-          id="process-output-modal"
-          title="Process Output"
-          buttons={[
-            { text: 'Close', onPress: () => $('#process-output-modal').modal('hide') }
-          ]}
-        >
-          <div
-            className="well"
-            style={{
-              marginBottom: 0,
-              whiteSpace: 'pre-line',
-              overflowX: 'auto'
-            }}
+          <Modal
+            id="process-output-modal"
+            title="Process Output"
+            buttons={[
+              { text: 'Close', onPress: () => $('#process-output-modal').modal('hide') }
+            ]}
           >
-            {processOutput}
-          </div>
-        </Modal>
-      </div>
+            <div
+              className="well"
+              style={{
+                marginBottom: 0,
+                whiteSpace: 'pre-line',
+                overflowX: 'auto'
+              }}
+            >
+              {processOutput}
+            </div>
+          </Modal>
+        </div>
+      </Layout>
     );
   }
 }

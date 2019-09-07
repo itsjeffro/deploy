@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { deleteProjects, fetchProjects } from '../../state/projects/projectsActions';
 import ProjectService from '../../services/Project';
@@ -8,7 +8,6 @@ import ProjectService from '../../services/Project';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
-import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
@@ -16,6 +15,7 @@ import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 
 import Sidebar from './Sidebar';
+import Layout from "../../components/Layout";
 
 class ProjectEditPage extends React.Component {
   constructor(props) {
@@ -129,84 +129,82 @@ class ProjectEditPage extends React.Component {
     }
 
     return (
-      <>
-        <div className="breadcrumbs">
-          <div className="container">
-            <span className="heading">
-              <Link to={'/projects/' + project.id}>{project.name}</Link> <Icon iconName="angle-double-right" /> General Settings
-            </span>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <h2>General Settings</h2>
           </div>
-        </div>
 
-        <div className="container content">
-          <div className="row">
-            <Grid xs={12} sm={3}>
-              <Sidebar project={project} />
-            </Grid>
+          <div className="container-fluid">
+            <div className="row">
+              <Grid xs={12} sm={3}>
+                <Sidebar project={project} />
+              </Grid>
 
-            <Grid xs={12} sm={9}>
-              <Panel>
-                <PanelHeading>
-                  <PanelTitle>General Settings</PanelTitle>
-                </PanelHeading>
-                <PanelBody>
-                  {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+              <Grid xs={12} sm={9}>
+                <Panel>
+                  <PanelHeading>
+                    <PanelTitle>General Settings</PanelTitle>
+                  </PanelHeading>
+                  <PanelBody>
+                    {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
-                  <div className="form-group">
-                    <label htmlFor="name">Project name</label>
-                    <input
-                      className="form-control"
-                      name="name"
-                      type="text"
-                      onChange={this.handleInputChange}
-                      value={project.name}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <div className="checkbox">
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="deploy_on_push"
-                          value="1"
-                          onChange={this.handleInputChange}
-                          checked={project.deploy_on_push}
-                        /> Deploy when code is pushed to
-                      </label>
+                    <div className="form-group">
+                      <label htmlFor="name">Project name</label>
+                      <input
+                        className="form-control"
+                        name="name"
+                        type="text"
+                        onChange={this.handleInputChange}
+                        value={project.name}
+                      />
                     </div>
-                  </div>
 
-                  <div className="form-group">
+                    <div className="form-group">
+                      <div className="checkbox">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="deploy_on_push"
+                            value="1"
+                            onChange={this.handleInputChange}
+                            checked={project.deploy_on_push}
+                          /> Deploy when code is pushed to
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <Button
+                        color="primary"
+                        onClick={this.handleProjectUpdateClick}
+                      >Save</Button>
+                    </div>
+
+                    <label>Delete This Project</label>
+                    <p>Once you delete this project, there is no going back.</p>
                     <Button
-                      color="primary"
-                      onClick={this.handleProjectUpdateClick}
-                    >Save</Button>
-                  </div>
-
-                  <label>Delete This Project</label>
-                  <p>Once you delete this project, there is no going back.</p>
-                  <Button
-                    color="danger"
-                    onClick={this.modalProjectDeleteClick}
-                  >Delete Project</Button>
-                </PanelBody>
-              </Panel>
-            </Grid>
+                      color="danger"
+                      onClick={this.modalProjectDeleteClick}
+                    >Delete Project</Button>
+                  </PanelBody>
+                </Panel>
+              </Grid>
+            </div>
           </div>
-        </div>
 
-        <Modal
-          id="project-delete-modal"
-          title={'Delete Project'}
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#project-delete-modal').modal('hide')},
-            {text: 'Delete Project', onPress: () => this.handleProjectDeleteClick()}
-          ]}
-        >
-          Are you sure you want to delete this project?
-        </Modal>
-      </>
+          <Modal
+            id="project-delete-modal"
+            title={'Delete Project'}
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#project-delete-modal').modal('hide')},
+              {text: 'Delete Project', onPress: () => this.handleProjectDeleteClick()}
+            ]}
+          >
+            Are you sure you want to delete this project?
+          </Modal>
+        </div>
+      </Layout>
     )
   }
 }

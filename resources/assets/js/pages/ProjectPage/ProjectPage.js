@@ -29,6 +29,7 @@ import ProjectKeyService from '../../services/ProjectKey';
 import ProjectServerConnectionService from '../../services/ProjectServerConnection';
 import ProjectServerService from '../../services/ProjectServer';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
+import Layout from "../../components/Layout";
 
 class ProjectPage extends React.Component {
   constructor(props) {
@@ -349,11 +350,13 @@ class ProjectPage extends React.Component {
     } = this.props;
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
+      <Layout
+        project={project}
+      >
+        <div className="content">
+          <div className="container-fluid heading">
             <div className="pull-left">
-              <span className="heading">{project.name}</span>
+              <h2>{project.name}</h2>
             </div>
             <div className="pull-right">
               <Link
@@ -373,181 +376,177 @@ class ProjectPage extends React.Component {
               : ''}
             </div>
           </div>
-        </div>
 
-        <SubMenu
-          project={project}
-        />
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-xs-12 col-md-6">
+                <ProjectDetails
+                  project={project}
+                />
+              </div>
 
-        <div className="container content">
-          <div className="row">
-            <div className="col-xs-12 col-md-6">
-              <ProjectDetails
-                project={project}
-              />
+              <div className="col-xs-12 col-md-6">
+                <DeploymentDetails
+                  project={project}
+                />
+              </div>
             </div>
 
-            <div className="col-xs-12 col-md-6">
-              <DeploymentDetails
-                project={project}
-              />
-            </div>
+            <Panel>
+              <PanelHeading>
+              <div className="pull-right">
+                <Link
+                  className="btn btn-default"
+                  to={'/projects/' + project.id + '/servers/create'}
+                ><Icon iconName="plus" /> Add Server</Link>
+              </div>
+                <PanelTitle>Servers</PanelTitle>
+              </PanelHeading>
+              {this.renderServers(servers)}
+            </Panel>
+
+            <Panel>
+              <PanelHeading>
+                <PanelTitle>Deployments</PanelTitle>
+              </PanelHeading>
+              {this.renderDeployments(deployments)}
+            </Panel>
+
+            <Panel>
+              <PanelHeading>
+                <PanelTitle>Deployment info</PanelTitle>
+              </PanelHeading>
+              <PanelBody>
+                <p>Make requests to the following URL to trigger deployments for this project.</p>
+                <pre>{Deploy.url + Deploy.path + '/webhook/' + projectKey}</pre>
+                <Button
+                  onClick={this.handleRefreshKey}
+                >Refresh key</Button>
+              </PanelBody>
+            </Panel>
           </div>
 
-          <Panel>
-            <PanelHeading>
-	          <div className="pull-right">
-	            <Link
-	              className="btn btn-default"
-	              to={'/projects/' + project.id + '/servers/create'}
-	            ><Icon iconName="plus" /> Add Server</Link>
-	          </div>
-              <PanelTitle>Servers</PanelTitle>
-            </PanelHeading>
-            {this.renderServers(servers)}
-          </Panel>
-
-          <Panel>
-            <PanelHeading>
-              <PanelTitle>Deployments</PanelTitle>
-            </PanelHeading>
-            {this.renderDeployments(deployments)}
-          </Panel>
-
-          <Panel>
-            <PanelHeading>
-              <PanelTitle>Deployment info</PanelTitle>
-            </PanelHeading>
-            <PanelBody>
-              <p>Make requests to the following URL to trigger deployments for this project.</p>
-              <pre>{Deploy.url + Deploy.path + '/webhook/' + projectKey}</pre>
-              <Button
-                onClick={this.handleRefreshKey}
-              >Refresh key</Button>
-            </PanelBody>
-          </Panel>
-        </div>
-
-        <Modal
-          id="deploy-modal"
-          title="Deploy Project"
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#deploy-modal').modal('hide')},
-            {text: 'Deploy', onPress: () => this.handleDeploymentClick()}
-          ]}
-        >
-          <label>Deploy From</label>
-
-          <div className="form-group">
-            <label>
-              <input
-                name="reference"
-                value="default"
-                type="radio"
-                onChange={this.handleReferenceChange}
-                checked={'default' === deploy.reference}
-              /> Default Branch ({project.branch})
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              <input
-                name="reference"
-                value="branch"
-                type="radio"
-                onChange={this.handleReferenceChange}
-                checked={'branch' === deploy.reference}
-              /> A Different Branch
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              <input
-                name="reference"
-                value="tag"
-                type="radio"
-                onChange={this.handleReferenceChange}
-                checked={'tag' === deploy.reference}
-              /> Tag
-            </label>
-          </div>
-          <div className="form-group">
-            <div className="branch-select" style={deploy.reference === 'branch' ? {} : {display: 'none'}}>
-              <label htmlFor="branch-select">Branch</label>
-              <select
-                className="form-control"
-                name="branch"
-                id="branch-select"
-                onChange={this.handleNameChange}
-              >
-              {branches.map(branch =>
-                <option
-                  key={'branch' + branch.name}
-                  value={branch.name}
-                >{branch.name}</option>
-              )}
-              </select>
-            </div>
-
-            <div className="tag-select" style={deploy.reference === 'tag' ? {} : {display: 'none'}}>
-              <label htmlFor="tag-select">Tag</label>
-              <select
-                className="form-control"
-                name="tag"
-                id="tag-select"
-                onChange={this.handleNameChange}
-              >
-              {tags.map(tag =>
-                <option
-                  key={'tag' + tag.name}
-                  value={tag.name}
-                >{tag.name}</option>
-              )}
-              </select>
-            </div>
-          </div>
-        </Modal>
-
-        <Modal
-          id="redeploy-modal"
-          title={'Redeploy Commit (' + redeploy.commit.substr(0,7) + ')'}
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#redeploy-modal').modal('hide')},
-            {text: 'Redeploy', onPress: () => this.handleRedeploymentClick()}
-          ]}
-        >
-          Are you sure you want to redeploy this commit?
-        </Modal>
-
-        <Modal
-          id="server-remove-modal"
-          title="Remove Server"
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#server-remove-modal').modal('hide')},
-            {text: 'Remove Server', onPress: () => this.handleRemoveServerClick()}
-          ]}
-        >
-          Are you sure you want to remove this server from the project?
-        </Modal>
-
-        <Modal
-          id="server-key-modal"
-          title="Server Public Key"
-          buttons={[
-            {text: 'Close', onPress: () => $('#server-key-modal').modal('hide')}
-          ]}
-        >
-          <Alert type="warning">
-            This key must be added to the server`s ~/.ssh/authorized_keys file.
-          </Alert>
-          <div
-            className="well"
-            style={{margin: 0, overflowWrap: 'break-word'}}
+          <Modal
+            id="deploy-modal"
+            title="Deploy Project"
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#deploy-modal').modal('hide')},
+              {text: 'Deploy', onPress: () => this.handleDeploymentClick()}
+            ]}
           >
-            {server.public_key}
-          </div>
-        </Modal>
-      </div>
+            <label>Deploy From</label>
+
+            <div className="form-group">
+              <label>
+                <input
+                  name="reference"
+                  value="default"
+                  type="radio"
+                  onChange={this.handleReferenceChange}
+                  checked={'default' === deploy.reference}
+                /> Default Branch ({project.branch})
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  name="reference"
+                  value="branch"
+                  type="radio"
+                  onChange={this.handleReferenceChange}
+                  checked={'branch' === deploy.reference}
+                /> A Different Branch
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  name="reference"
+                  value="tag"
+                  type="radio"
+                  onChange={this.handleReferenceChange}
+                  checked={'tag' === deploy.reference}
+                /> Tag
+              </label>
+            </div>
+            <div className="form-group">
+              <div className="branch-select" style={deploy.reference === 'branch' ? {} : {display: 'none'}}>
+                <label htmlFor="branch-select">Branch</label>
+                <select
+                  className="form-control"
+                  name="branch"
+                  id="branch-select"
+                  onChange={this.handleNameChange}
+                >
+                {branches.map(branch =>
+                  <option
+                    key={'branch' + branch.name}
+                    value={branch.name}
+                  >{branch.name}</option>
+                )}
+                </select>
+              </div>
+
+              <div className="tag-select" style={deploy.reference === 'tag' ? {} : {display: 'none'}}>
+                <label htmlFor="tag-select">Tag</label>
+                <select
+                  className="form-control"
+                  name="tag"
+                  id="tag-select"
+                  onChange={this.handleNameChange}
+                >
+                {tags.map(tag =>
+                  <option
+                    key={'tag' + tag.name}
+                    value={tag.name}
+                  >{tag.name}</option>
+                )}
+                </select>
+              </div>
+            </div>
+          </Modal>
+
+          <Modal
+            id="redeploy-modal"
+            title={'Redeploy Commit (' + redeploy.commit.substr(0,7) + ')'}
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#redeploy-modal').modal('hide')},
+              {text: 'Redeploy', onPress: () => this.handleRedeploymentClick()}
+            ]}
+          >
+            Are you sure you want to redeploy this commit?
+          </Modal>
+
+          <Modal
+            id="server-remove-modal"
+            title="Remove Server"
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#server-remove-modal').modal('hide')},
+              {text: 'Remove Server', onPress: () => this.handleRemoveServerClick()}
+            ]}
+          >
+            Are you sure you want to remove this server from the project?
+          </Modal>
+
+          <Modal
+            id="server-key-modal"
+            title="Server Public Key"
+            buttons={[
+              {text: 'Close', onPress: () => $('#server-key-modal').modal('hide')}
+            ]}
+          >
+            <Alert type="warning">
+              This key must be added to the server`s ~/.ssh/authorized_keys file.
+            </Alert>
+            <div
+              className="well"
+              style={{margin: 0, overflowWrap: 'break-word'}}
+            >
+              {server.public_key}
+            </div>
+          </Modal>
+        </div>
+      </Layout>
     )
   }
 }

@@ -5,9 +5,6 @@ import AceEditor from 'react-ace';
 
 import { alertShow } from '../../state/alert/alertActions';
 
-import { Deploy } from '../../config';
-
-import ProjectService from '../../services/Project';
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';
 
@@ -21,6 +18,7 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
+import Layout from "../../components/Layout";
 
 class ProjectActionPage extends React.Component {
   constructor(props) {
@@ -327,135 +325,129 @@ class ProjectActionPage extends React.Component {
     } = this.state;
 
     return (
-      <div>
-        <div className="breadcrumbs">
-          <div className="container">
-            <div className="pull-left">
-              <span className="heading">
-                <Link to={'/projects/' + project.id}>{project.name}</Link>{' '}
-                <Icon iconName="angle-double-right" />{' '}
-                <span className="hidden-xs"> Deployment Hooks <Icon iconName="angle-double-right" /></span>{' '}
-                {action.name}
-              </span>
+      <Layout project={project}>
+        <div className="content">
+          <div className="container-fluid heading">
+            <Link to={'/projects/' + project.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
+            <h2>{action.name}</h2>
+          </div>
+
+          <div className="container-fluid">
+            <div className="row">
+
+              <div className="col-xs-12 col-sm-6">
+                <Panel>
+                  <PanelHeading>
+                    <div className="pull-right">
+                    <Button
+                      onClick={() => this.handleAddModalClick(1)}
+                    ><Icon iconName="plus" /> Add Hook</Button>
+                  </div>
+                    <PanelTitle><Icon iconName="code" /> Before This Action</PanelTitle>
+                  </PanelHeading>
+
+                  {this.renderHooksTable(beforeHooks)}
+                </Panel>
+              </div>
+
+              <div className="col-xs-12 col-sm-6">
+                <Panel>
+                  <PanelHeading>
+                    <div className="pull-right">
+                    <Button
+                      onClick={() => this.handleAddModalClick(2)}
+                    ><Icon iconName="plus" /> Add Hook</Button>
+                  </div>
+                  <PanelTitle><Icon iconName="code" /> After This Action</PanelTitle>
+                  </PanelHeading>
+
+                  {this.renderHooksTable(afterHooks)}
+                </Panel>
+              </div>
             </div>
           </div>
+
+          <Modal
+            id="add-hook-modal"
+            title="Add Deployment Hook"
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#add-hook-modal').modal('hide')},
+              {text: 'Save', onPress: () => this.handleAddHookClick()}
+            ]}
+          >
+            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                className="form-control"
+                name="name"
+                type="text"
+                id="name"
+                onChange={this.handleInputNameChange}
+                value={hook.name}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="script">Script</label>
+              <AceEditor
+                mode="powershell"
+                theme="github"
+                name="editor-add"
+                onChange={this.handleScriptChange}
+                style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
+                value={hook.script}
+              />
+              <textarea name="script" style={{display: 'none'}} value={hook.script} />
+            </div>
+          </Modal>
+
+          <Modal
+            id="edit-hook-modal"
+            title="Edit Deployment Hook"
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#edit-hook-modal').modal('hide')},
+              {text: 'Save', onPress: () => this.handleEditHookClick()}
+            ]}
+          >
+            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                className="form-control"
+                name="name"
+                type="text"
+                onChange={this.handleInputNameChange}
+                value={hook.name}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="script">Script</label>
+              <AceEditor
+                mode="powershell"
+                theme="github"
+                name="editor-edit"
+                value={hook.script}
+                onChange={this.handleScriptChange}
+                style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
+              />
+              <textarea name="script" style={{display: 'none'}} value={hook.script} />
+            </div>
+          </Modal>
+
+          <Modal
+            id="remove-hook-modal"
+            title="Remove Deployment Hook"
+            buttons={[
+              {text: 'Cancel', onPress: () => $('#remove-hook-modal').modal('hide')},
+              {text: 'Remove', onPress: () => this.handleRemoveHookClick()}
+            ]}
+          >
+            Are you sure you want to remove "{hook.name}"?
+          </Modal>
         </div>
-
-        <div className="container content">
-          <div className="row">
-
-            <div className="col-xs-12 col-sm-6">
-              <Panel>
-                <PanelHeading>
-                  <div className="pull-right">
-	                <Button
-	                  onClick={() => this.handleAddModalClick(1)}
-	                ><Icon iconName="plus" /> Add Hook</Button>
-	              </div>
-                  <PanelTitle><Icon iconName="code" /> Before This Action</PanelTitle>
-                </PanelHeading>
-
-                {this.renderHooksTable(beforeHooks)}
-              </Panel>
-            </div>
-
-            <div className="col-xs-12 col-sm-6">
-              <Panel>
-                <PanelHeading>
-                  <div className="pull-right">
-	                <Button
-	                  onClick={() => this.handleAddModalClick(2)}
-	                ><Icon iconName="plus" /> Add Hook</Button>
-	              </div>
-	              <PanelTitle><Icon iconName="code" /> After This Action</PanelTitle>
-                </PanelHeading>
-
-                {this.renderHooksTable(afterHooks)}
-              </Panel>
-            </div>
-          </div>
-        </div>
-
-        <Modal
-          id="add-hook-modal"
-          title="Add Deployment Hook"
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#add-hook-modal').modal('hide')},
-            {text: 'Save', onPress: () => this.handleAddHookClick()}
-          ]}
-        >
-          {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
-
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              className="form-control"
-              name="name"
-              type="text"
-              id="name"
-              onChange={this.handleInputNameChange}
-              value={hook.name}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="script">Script</label>
-            <AceEditor
-              mode="powershell"
-              theme="github"
-              name="editor-add"
-              onChange={this.handleScriptChange}
-              style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
-              value={hook.script}
-            />
-            <textarea name="script" style={{display: 'none'}} value={hook.script} />
-          </div>
-        </Modal>
-
-        <Modal
-          id="edit-hook-modal"
-          title="Edit Deployment Hook"
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#edit-hook-modal').modal('hide')},
-            {text: 'Save', onPress: () => this.handleEditHookClick()}
-          ]}
-        >
-          {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
-
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              className="form-control"
-              name="name"
-              type="text"
-              onChange={this.handleInputNameChange}
-              value={hook.name}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="script">Script</label>
-            <AceEditor
-              mode="powershell"
-              theme="github"
-              name="editor-edit"
-              value={hook.script}
-              onChange={this.handleScriptChange}
-              style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
-            />
-            <textarea name="script" style={{display: 'none'}} value={hook.script} />
-          </div>
-        </Modal>
-
-        <Modal
-          id="remove-hook-modal"
-          title="Remove Deployment Hook"
-          buttons={[
-            {text: 'Cancel', onPress: () => $('#remove-hook-modal').modal('hide')},
-            {text: 'Remove', onPress: () => this.handleRemoveHookClick()}
-          ]}
-        >
-          Are you sure you want to remove "{hook.name}"?
-        </Modal>
-      </div>
+      </Layout>
     )
   }
 }
