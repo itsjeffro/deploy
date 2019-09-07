@@ -49,6 +49,10 @@ const Drawer = (props) => {
         </li>
         { projectNavigation(project) }
       </ul>
+
+      <div className="drawer__account">
+        <Link to={'/account'}>My Account</Link>
+      </div>
     </div>
   )
 };
