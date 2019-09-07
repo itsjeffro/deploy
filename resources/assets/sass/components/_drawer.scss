@@ -2,41 +2,61 @@
   background: $navbar-default-bg;
   min-width: 230px;
   width: 230px;
+  display: flex;
+  flex-direction: column;
+
   a {
     color: #fff;
+    display: block;
+    padding: 7px 15px;
   }
+
   &>ul>li>a {
     color: #fff;
     padding-top: 9px;
     padding-bottom: 9px;
   }
+
   ul ul {
     padding-left: 15px;
+
     a {
       padding-left: 15px;
     }
   }
+
   h2 {
     color: #fff;
     font-size: 18px;
     margin: 0;
     padding: 20px 15px;
   }
+
   ul {
     margin: 0;
     padding: 0;
     list-style: none;
+    flex: 1;
   }
+
   li {
     margin: 0;
     padding: 0;
   }
-  a {
-    display: block;
-    padding: 7px 15px;
-  }
+
   .fa {
     width: 25px;
     display: inline-block;
+  }
+}
+
+.drawer__account {
+  align-self: flex-end;
+  width: 100%;
+
+  a {
+    background: rgba(0, 0, 0, .12);
+    padding-top: 14px;
+    padding-bottom: 14px;
   }
 }
