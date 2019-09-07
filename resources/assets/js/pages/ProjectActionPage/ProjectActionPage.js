@@ -328,8 +328,8 @@ class ProjectActionPage extends React.Component {
       <Layout project={project}>
         <div className="content">
           <div className="container-fluid heading">
-            <Link to={'/projects/' + project.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
             <h2>{action.name}</h2>
+            <Link to={'/projects/' + project.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
           </div>
 
           <div className="container-fluid">

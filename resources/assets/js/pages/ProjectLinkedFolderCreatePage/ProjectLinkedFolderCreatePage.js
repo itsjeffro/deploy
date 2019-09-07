@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 import { alertShow } from '../../state/alert/alertActions';
 import ProjectFolderService from '../../services/ProjectFolder';
@@ -92,6 +92,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
         <div className="content">
           <div className="container-fluid heading">
             <h2>Add Linked Folder</h2>
+            <Link to={'/projects/' + project.id + '/folders'}>Back to Linked Folders</Link>
           </div>
 
           <div className="container-fluid">
