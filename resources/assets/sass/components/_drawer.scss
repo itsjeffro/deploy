@@ -1,0 +1,42 @@
+.drawer {
+  background: $navbar-default-bg;
+  min-width: 230px;
+  width: 230px;
+  a {
+    color: #fff;
+  }
+  &>ul>li>a {
+    color: #fff;
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+  ul ul {
+    padding-left: 15px;
+    a {
+      padding-left: 15px;
+    }
+  }
+  h2 {
+    color: #fff;
+    font-size: 18px;
+    margin: 0;
+    padding: 20px 15px;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    display: block;
+    padding: 7px 15px;
+  }
+  .fa {
+    width: 25px;
+    display: inline-block;
+  }
+}
