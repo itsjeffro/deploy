@@ -17,6 +17,22 @@ const ProjectsTable = (props) => {
     return <div className="panel-body">Add a project to get started!</div>;
   }
 
+  const lastDeployment = (project) => {
+    if (project.last_deployment.duration === null) {
+      return 'N/A';
+    }
+
+    if (project.last_deployment.status === 0) {
+      return (
+        <span className="text-danger" title="Failed deployment">
+          <Icon iconName="times" /> {project.last_deployment.created_at}
+        </span>
+      );
+    }
+
+    return project.last_deployment.created_at;
+  };
+
   return (
     <div className="table-responsive">
       <table className="table">
@@ -40,7 +56,7 @@ const ProjectsTable = (props) => {
                 <Icon iconName={project.provider.friendly_name} /> {project.repository}
               </td>
               <td>
-                {project.last_deployment.created_at ? project.last_deployment.created_at : 'N/A'}
+                {lastDeployment(project)}
               </td>
               <td className="text-right">
                 <Link className="btn btn-default" to={'/projects/' + project.id}>Setup</Link>
