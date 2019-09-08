@@ -53,24 +53,18 @@ class ProjectPage extends React.Component {
       tags: [],
       branches: []
     };
-
-    this.handleRefreshKey = this.handleRefreshKey.bind(this);
-    this.handleDeployModal = this.handleDeployModal.bind(this);
-    this.handleRedeployModal = this.handleRedeployModal.bind(this);
-    this.handleServerRemoveModal = this.handleServerRemoveModal.bind(this);
-    this.handleServerKeyModal = this.handleServerKeyModal.bind(this);
-    this.handleServerConnectionTestClick = this.handleServerConnectionTestClick.bind(this);
-    this.handleReferenceChange = this.handleReferenceChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleDeploymentClick = this.handleDeploymentClick.bind(this);
-    this.handleRedeploymentClick = this.handleRedeploymentClick.bind(this);
-    this.handleRemoveServerClick = this.handleRemoveServerClick.bind(this);
   }
 
-  componentWillMount() {
-    const { project_id } = this.props.match.params;
+  componentDidMount() {
     const projectService = new ProjectService;
-    const { dispatch } = this.props;
+    const {
+      dispatch,
+      match: {
+        params: {
+          project_id
+        }
+      }
+    } = this.props;
 
     projectService
       .get(project_id)
@@ -89,14 +83,8 @@ class ProjectPage extends React.Component {
     projectDeploymentService
       .index(project_id)
       .then(response => {
-        this.setState({
-          deployments: response.data
-        });
+        this.setState({ deployments: response.data });
       });
-  }
-
-  componentDidMount() {
-    const { project_id } = this.props.match.params;
 
     Echo.private('project.' + project_id)
       .listen('.Deploy\\Events\\DeploymentDeploying', e => {
@@ -120,7 +108,10 @@ class ProjectPage extends React.Component {
       });
   }
 
-  handleRefreshKey() {
+  /**
+   * Refreshes project deployment hook key.
+   */
+  handleRefreshKey = () => {
     const { project } = this.props;
     let projectKeyService = new ProjectKeyService;
 
@@ -129,9 +120,12 @@ class ProjectPage extends React.Component {
       .then(response => {
         this.setState({projectKey: response.data.key});
       });
-  }
+  };
 
-  handleDeployModal() {
+  /**
+   * Displays deploy modal.
+   */
+  handleDeployModal = () => {
     const { project } = this.props;
     const repositoryTagBranchService = new RepositoryTagBranchService;
 
@@ -145,9 +139,15 @@ class ProjectPage extends React.Component {
       });
 
     $('#deploy-modal').modal('show');
-  }
+  };
 
-  handleRedeployModal(event, deployment) {
+  /**
+   * Displays redeploy modal.
+   *
+   * @param event
+   * @param deployment
+   */
+  handleRedeployModal = (event, deployment) => {
     this.setState(state => {
       let redeploy = Object.assign({}, state.redeploy, {
         commit: deployment.commit,
@@ -157,27 +157,42 @@ class ProjectPage extends React.Component {
     });
 
     $('#redeploy-modal').modal('show');
-  }
+  };
 
-  handleServerRemoveModal(server) {
+  /**
+   * Displays server delete confirmation modal.
+   *
+   * @param server
+   */
+  handleServerRemoveModal = (server) => {
     this.setState({server: server});
     $('#server-remove-modal').modal('show');
-  }
+  };
 
-  handleServerKeyModal(server) {
+  /**
+   * Displays server ssh key modal.
+   *
+   * @param server
+   */
+  handleServerKeyModal = (server) => {
     this.setState({server: server});
     $('#server-key-modal').modal('show');
-  }
+  };
 
-  handleReferenceChange(event) {
+  /**
+   * Handles changing the repository reference when deploying.
+   *
+   * @param event
+   */
+  handleReferenceChange = (event) => {
     const reference = event.target.value;
     const { tags, branches } = this.state;
 
     let name = '';
 
-    if (reference == 'tag') {
+    if (reference === 'tag') {
         name = tags[0].name;
-    } else if (reference == 'branch') {
+    } else if (reference === 'branch') {
         name = branches[0].name;
     }
 
@@ -187,17 +202,26 @@ class ProjectPage extends React.Component {
     });
 
     this.setState({deploy: deploy});
-  }
+  };
 
-  handleNameChange(event) {
+  /**
+   * @param event
+   */
+  handleNameChange = (event) => {
     let deploy = Object.assign({}, this.state.deploy, {
       name: event.target.value
     });
 
     this.setState({deploy: deploy});
-  }
+  };
 
-  handleServerConnectionTestClick(event, server_id) {
+  /**
+   * Handles testing the server connection.
+   *
+   * @param event
+   * @param server_id
+   */
+  handleServerConnectionTestClick = (event, server_id) => {
     event.preventDefault();
 
     const { project } = this.props;
@@ -214,9 +238,12 @@ class ProjectPage extends React.Component {
 
     projectServerConnectionService
       .get(project.id, server_id);
-  }
+  };
 
-  handleDeploymentClick() {
+  /**
+   * Handles processing the deployment when the button is clicked.
+   */
+  handleDeploymentClick = () => {
     const { project } = this.props;
     const { deploy } = this.state;
     const projectDeploymentService = new ProjectDeploymentService;
@@ -235,9 +262,12 @@ class ProjectPage extends React.Component {
       error => {
         alert('Could not deploy');
       });
-  }
+  };
 
-  handleRedeploymentClick() {
+  /**
+   * Handles processing the redeployment when the button is clicked.
+   */
+  handleRedeploymentClick = () => {
     const { redeploy } = this.state;
     const projectRedeploymentService = new ProjectRedeploymentService;
 
@@ -251,9 +281,12 @@ class ProjectPage extends React.Component {
       error => {
         alert('Could not redeploy');
       });
-  }
+  };
 
-  handleRemoveServerClick() {
+  /**
+   * Handles processing the removal of the server from the project when the button is clicked.
+   */
+  handleRemoveServerClick = () => {
     const { server } = this.state;
     const { dispatch } = this.props;
     const projectServerService = new ProjectServerService;
@@ -270,36 +303,55 @@ class ProjectPage extends React.Component {
       error => {
         alert('Could not delete server #' + server.id);
       });
-  }
+  };
 
-  removeServer(server_id) {
+  /**
+   * Remove the specified server from the servers table.
+   *
+   * @param server_id
+   */
+  removeServer = (server_id) => {
     this.setState(state => {
       const servers = state.servers.filter(server => {
         return server.id !== server_id;
       });
       return {servers: servers}
     });
-  }
+  };
 
-  updateServerConnection(prevServers, server) {
+  /**
+   * @param prevServers
+   * @param server
+   * @returns {*}
+   */
+  updateServerConnection = (prevServers, server) => {
     return prevServers.map(prevServer => {
       if (prevServer.id === server.id) {
         return Object.assign({}, prevServer, {connection_status: server.connection_status});
       }
       return Object.assign({}, prevServer);
     });
-  }
+  };
 
-  updateDeploymentStatus(previousDeployments, deployment) {
+  /**
+   * @param previousDeployments
+   * @param deployment
+   * @returns {*}
+   */
+  updateDeploymentStatus = (previousDeployments, deployment) => {
     return previousDeployments.map(previousDeployment => {
       if (previousDeployment.id === deployment.id) {
         return Object.assign({}, previousDeployment, {status: deployment.status});
       }
       return Object.assign({}, previousDeployment);
     });
-  }
+  };
 
-  renderDeployments(deployments) {
+  /**
+   * @param deployments
+   * @returns {*}
+   */
+  renderDeployments = (deployments) => {
     if (deployments.length > 0) {
       return (
         <div className="table-responsive">
@@ -316,9 +368,13 @@ class ProjectPage extends React.Component {
         No deployments made yet
       </div>
     )
-  }
+  };
 
-  renderServers(servers) {
+  /**
+   * @param servers
+   * @returns {*}
+   */
+  renderServers = (servers) => {
     if (servers.length > 0) {
       return (
         <div className="table-responsive">
@@ -331,7 +387,7 @@ class ProjectPage extends React.Component {
         </div>
       )
     }
-  }
+  };
 
   render() {
     const {
