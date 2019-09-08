@@ -7,9 +7,11 @@ import {
   projectsCreateRequest,
   projectsCreateSuccess
 } from '../../state/projects/projectsActions';
+
 import AccountProviderService from '../../services/AccountProvider';
 import AddProjectDialog from './AddProjectDialog';
 import Icon from '../../components/Icon';
+import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import ProjectsTable from './ProjectsTable';
 import Layout from "../../components/Layout";
@@ -85,7 +87,14 @@ class DashboardPage extends React.Component {
   };
 
   /**
-   * Handle click for dismissing the creat project modal.
+   * Handle click for displaying the create project modal.
+   */
+  handleShowModalClick = () => {
+    $('#project-create-modal').modal('show');
+  };
+
+  /**
+   * Handle click for dismissing the create project modal.
    */
   handleDismissModalClick = () => {
     $('#project-create-modal').modal('hide');
@@ -101,16 +110,16 @@ class DashboardPage extends React.Component {
     return (
       <Layout>
         <div className="content">
-          <div className="container-fluid heading">
-            <div className="pull-left">
+          <Container fluid>
+            <div className="pull-left heading">
               <h2>Project List</h2>
             </div>
             <div className="pull-right">
-              <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#project-create-modal">
+              <Button color="primary" onClick={this.handleShowModalClick}>
                 <Icon iconName="plus" /> Add Project
-              </button>
+              </Button>
             </div>
-          </div>
+          </Container>
 
           <Container fluid>
             <Panel>
