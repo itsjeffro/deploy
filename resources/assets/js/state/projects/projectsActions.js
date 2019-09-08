@@ -41,28 +41,6 @@ export const projectsCreateFailure = (errors) =>({
 });
 
 /**
- * Create item asynchronously.
- *
- * @param {object} project
- */
-export const createProjects = (project) => {
-  return (dispatch) => {
-    const projectService = new ProjectService;
-
-    dispatch(projectsCreateRequest());
-
-    projectService
-      .post(project)
-      .then(response => {
-          dispatch(projectsCreateSuccess(response.data));
-        },
-        error => {
-          dispatch(projectsCreateFailure(error.response));
-        });
-  };
-};
-
-/**
  * Items are being requested.
  */
 export const projectsRequest = () =>({
