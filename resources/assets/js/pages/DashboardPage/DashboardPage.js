@@ -1,32 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchProjects, createProjects } from '../../state/projects/projectsActions';
+import {
+  fetchProjects,
+  projectsCreateFailure,
+  projectsCreateRequest,
+  projectsCreateSuccess
+} from '../../state/projects/projectsActions';
 import AccountProviderService from '../../services/AccountProvider';
 import AddProjectDialog from './AddProjectDialog';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import ProjectsTable from './ProjectsTable';
 import Layout from "../../components/Layout";
+import ProjectService from "../../services/Project";
+import Container from "../../components/Container";
 
 class DashboardPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      grantedProviders: [],
-      input: {}
-    };
-
-    this.handleCreateProjectClick = this.handleCreateProjectClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleDismissModalClick = this.handleDismissModalClick.bind(this);
-  }
+  state = {
+    grantedProviders: [],
+    input: {}
+  };
 
   /**
    * Fetch data for projects and providers.
    */
-  componentWillMount() {
+  componentDidMount() {
     const {
       dispatch,
       projects
@@ -45,7 +44,7 @@ class DashboardPage extends React.Component {
           return provider.deploy_access_token;
         });
 
-        this.setState({grantedProviders: providers});
+        this.setState({ grantedProviders: providers });
       });
   }
 
@@ -54,7 +53,7 @@ class DashboardPage extends React.Component {
    *
    * @param {object} event
    */
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -63,26 +62,34 @@ class DashboardPage extends React.Component {
     input[name] = value;
 
     this.setState({input: input});
-  }
+  };
 
   /**
-   * Handle click for submitting the create project form.
+   * Handles creating the project once the form button is clicked.
    */
-  handleCreateProjectClick() {
-    const {
-      dispatch,
-      projects
-    } = this.props;
+  handleCreateProjectClick = () => {
+    const { dispatch } = this.props;
+    const projectService = new ProjectService();
 
-    dispatch(createProjects(this.state.input));
-  }
+    dispatch(projectsCreateRequest());
+
+    projectService
+      .post(this.state.input)
+      .then(response => {
+          dispatch(projectsCreateSuccess(response.data));
+          $('#project-create-modal').modal('hide');
+        },
+        error => {
+          dispatch(projectsCreateFailure(error.response));
+        });
+  };
 
   /**
    * Handle click for dismissing the creat project modal.
    */
-  handleDismissModalClick() {
+  handleDismissModalClick = () => {
     $('#project-create-modal').modal('hide');
-  }
+  };
 
   render() {
     const { projects } = this.props;
@@ -90,10 +97,6 @@ class DashboardPage extends React.Component {
     const items = Object.keys(projects.items).map(key => {
       return projects.items[key];
     });
-    
-    if (projects.isCreating) {
-      $('#project-create-modal').modal('hide');
-    }
 
     return (
       <Layout>
@@ -109,14 +112,14 @@ class DashboardPage extends React.Component {
             </div>
           </div>
 
-          <div className="container-fluid">
+          <Container fluid>
             <Panel>
               <ProjectsTable
                 isFetching={projects.isFetching}
                 projects={items}
               />
             </Panel>
-          </div>
+          </Container>
 
           <AddProjectDialog
             projects={projects}
