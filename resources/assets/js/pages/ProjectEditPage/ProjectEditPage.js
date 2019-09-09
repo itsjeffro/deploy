@@ -2,7 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { deleteProjects, fetchProjects } from '../../state/projects/projectsActions';
+import {
+  deleteProjects,
+  fetchProjects,
+  projectsDeleteFailure,
+  projectsDeleteRequest,
+  projectsDeleteSuccess
+} from '../../state/projects/projectsActions';
 import ProjectService from '../../services/Project';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation';
@@ -13,28 +19,20 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
-
-import Sidebar from './Sidebar';
 import Layout from "../../components/Layout";
+import Container from "../../components/Container";
+import Sidebar from './Sidebar';
 
 class ProjectEditPage extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    project_id: null,
+    isDeleted: false,
+    isUpdated: false,
+    project: {},
+    errors: [],
+  };
 
-    this.state = {
-      project_id: null,
-      isFetching: true,
-      project: {},
-      errors: [],
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleProjectUpdateClick = this.handleProjectUpdateClick.bind(this);
-    this.modalProjectDeleteClick = this.modalProjectDeleteClick.bind(this);
-    this.handleProjectDeleteClick = this.handleProjectDeleteClick.bind(this);
-  }
-
-  componentWillMount() {
+  componentDidMount() {
     const {
       dispatch,
       projects,
@@ -61,7 +59,7 @@ class ProjectEditPage extends React.Component {
    * @param {object} event
    * @return {void}
    */
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const target = event.target;
     const name = target.name;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -72,12 +70,12 @@ class ProjectEditPage extends React.Component {
         [name]: value
       }
     }));
-  }
+  };
 
   /**
    * Handle project update.
    */
-  handleProjectUpdateClick() {
+  handleProjectUpdateClick = () => {
     const {project} = this.state;
     const projectService = new ProjectService;
 
@@ -99,43 +97,65 @@ class ProjectEditPage extends React.Component {
 
         this.setState({errors: errors});
       });
-  }
+  };
 
   /**
    * Handle project delete.
    */
-  handleProjectDeleteClick() {
-    const {dispatch} = this.props;
-    const {project} = this.state;
+  handleProjectDeleteClick = () => {
+    const { dispatch } = this.props;
+    const { project } = this.state;
+    const projectService = new ProjectService();
 
-    dispatch(deleteProjects(project.id));
-  }
+    dispatch(projectsDeleteRequest());
+
+    projectService
+      .delete(project.id)
+      .then(response => {
+          $('#project-delete-modal').modal('hide');
+
+          this.setState({isDeleted: true});
+
+          dispatch(projectsDeleteSuccess(project.id));
+        },
+        error => {
+          dispatch(projectsDeleteFailure());
+        });
+  };
 
   /**
    * Handle show project delete modal.
    */
-  modalProjectDeleteClick() {
+  modalProjectDeleteClick = () => {
     $('#project-delete-modal').modal('show');
-  }
+  };
 
-  render() {
-    const { dispatch, projects } = this.props;
-    const { project, errors } = this.state;
+  render = () => {
+    const {
+      isDeleted,
+      isUpdated,
+      project,
+      errors,
+    } = this.state;
     
-    if (projects.isDeleting) {
-      $('#project-delete-modal').modal('hide');
-
+    if (isDeleted) {
       return <Redirect to={'/'} />
+    }
+
+    if (isUpdated) {
+      return <Redirect to={'/projects/' + project.id} />
     }
 
     return (
       <Layout project={project}>
         <div className="content">
-          <div className="container-fluid heading">
-            <h2>General Settings</h2>
-          </div>
+          <Container fluid>
+            <div className="heading">
+              <h2>General Settings</h2>
+            </div>
+          </Container>
 
-          <div className="container-fluid">
+          <Container fluid>
             <div className="row">
               <Grid xs={12} sm={3}>
                 <Sidebar project={project} />
@@ -180,7 +200,14 @@ class ProjectEditPage extends React.Component {
                         onClick={this.handleProjectUpdateClick}
                       >Save</Button>
                     </div>
+                  </PanelBody>
+                </Panel>
 
+                <Panel>
+                  <PanelHeading>
+                    <PanelTitle>Danger Zone</PanelTitle>
+                  </PanelHeading>
+                  <PanelBody>
                     <label>Delete This Project</label>
                     <p>Once you delete this project, there is no going back.</p>
                     <Button
@@ -191,7 +218,7 @@ class ProjectEditPage extends React.Component {
                 </Panel>
               </Grid>
             </div>
-          </div>
+          </Container>
 
           <Modal
             id="project-delete-modal"
