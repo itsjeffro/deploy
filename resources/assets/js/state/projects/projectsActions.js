@@ -154,25 +154,3 @@ export const projectsDeleteSuccess = (project_id) =>({
 export const projectsDeleteFailure = () =>({
   type: PROJECTS_DELETE_FAILURE
 });
-
-/**
- * Delete item asynchronously.
- *
- * @param {int} project_id
- */
-export const deleteProjects = (project_id) => {
-  return (dispatch) => {
-    const projectService = new ProjectService;
-
-    dispatch(projectsDeleteRequest());
-
-    projectService
-      .delete(project_id)
-      .then(response => {
-          dispatch(projectsDeleteSuccess(project_id));
-        },
-        error => {
-          dispatch(projectsDeleteFailure());
-        });
-  };
-};
