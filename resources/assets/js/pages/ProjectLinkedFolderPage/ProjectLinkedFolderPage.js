@@ -15,20 +15,14 @@ import PanelTitle from '../../components/PanelTitle';
 
 import FoldersTable from './FoldersTable';
 import Layout from "../../components/Layout";
+import Container from "../../components/Container";
 
 class ProjectLinkedFolderPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      folders: [],
-      folder: {}
-    };
-
-    this.modalLinkedFolderRemoveShow = this.modalLinkedFolderRemoveShow.bind(this);
-    this.handleLinkedFolderRemoveClick = this.handleLinkedFolderRemoveClick.bind(this);
-  }
+  state = {
+    isFetching: true,
+    folders: [],
+    folder: {}
+  };
 
   componentWillMount() {
     const { project } = this.props;
@@ -49,16 +43,16 @@ class ProjectLinkedFolderPage extends React.Component {
    *
    * @param {object} folder
    */
-  modalLinkedFolderRemoveShow(folder) {
+  modalLinkedFolderRemoveShow = (folder) => {
     this.setState({folder: folder});
 
     $('#linked-folder-remove-modal').modal('show');
-  }
+  };
 
   /**
    * Handle project folder delete.
    */
-  handleLinkedFolderRemoveClick() {
+  handleLinkedFolderRemoveClick = () => {
     const { folder } = this.state;
     const { project, dispatch } = this.props;
     const projectFolderService = new ProjectFolderService;
@@ -75,21 +69,21 @@ class ProjectLinkedFolderPage extends React.Component {
       error => {
         alert('Could not delete linked folder');
       });
-  }
+  };
 
   /**
    * Filter out specified folder from state.
    *
    * @param {int} folder_id
    */
-  removeFolder(folder_id) {
+  removeFolder = (folder_id) => {
     this.setState(state => {
       const folders = state.folders.filter(folder => {
         return folder.id !== folder_id;
       });
       return {folders: folders}
     });
-  }
+  };
 
   /**
    * Render folders table.
@@ -97,7 +91,7 @@ class ProjectLinkedFolderPage extends React.Component {
    * @param {array} folders
    * @returns {XML}
    */
-  renderFoldersTable(folders) {
+  renderFoldersTable = (folders) => {
     if (folders !== undefined && folders.length > 0) {
       return (
         <FoldersTable
@@ -112,7 +106,7 @@ class ProjectLinkedFolderPage extends React.Component {
         No folders have been added.
       </div>
     )
-  }
+  };
 
   /**
    * Render folders content.
@@ -122,13 +116,13 @@ class ProjectLinkedFolderPage extends React.Component {
    * @param {array} folders
    * @returns {XML}
    */
-  renderFoldersContent(isFetching, project, folders) {
+  renderFoldersContent = (isFetching, project, folders) => {
     if (isFetching) {
       return <Loader />;
     }
 
     return (
-      <div>
+      <>
         <Panel>
           <PanelHeading>
             <div className="pull-right">
@@ -141,9 +135,9 @@ class ProjectLinkedFolderPage extends React.Component {
           </PanelHeading>
           {this.renderFoldersTable(folders)}
         </Panel>
-      </div>
+      </>
     )
-  }
+  };
 
   render() {
     const { project } = this.props;
@@ -156,9 +150,9 @@ class ProjectLinkedFolderPage extends React.Component {
             <h2>Linked Folders</h2>
           </div>
 
-          <div className="container-fluid">
+          <Container fluid>
             {this.renderFoldersContent(isFetching, project, folders)}
-          </div>
+          </Container>
 
           <Modal
             id="linked-folder-remove-modal"
