@@ -15,6 +15,7 @@ import ProjectActionPage from './pages/ProjectActionPage';
 import ProjectDeploymentHookPage from './pages/ProjectDeploymentHookPage';
 import ProjectLinkedFolderPage from './pages/ProjectLinkedFolderPage';
 import AccountPage from './pages/AccountPage';
+import Alert from "./containers/Alert";
 
 class Application extends React.Component {
   render() {
@@ -37,6 +38,7 @@ class Application extends React.Component {
             <Route path="/projects/:project_id" component={ProjectPage} />
             <Route path="/account" component={AccountPage} />
           </Switch>
+          <Alert/>
         </>
       </Router>
     )

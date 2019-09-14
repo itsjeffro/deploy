@@ -1,0 +1,14 @@
+.toast {
+  border-radius: 3px;
+  bottom: 15px;
+  padding: 10px 15px;
+  position: fixed;
+  right: 15px;
+}
+
+.toast-success {
+  background: #9de683;
+  color: #152d0c;
+  box-shadow: 0 3px 5px #11422133;
+  border: 1px solid #87d46b;
+}
