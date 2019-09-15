@@ -3,6 +3,7 @@
 <p align="center">
     <a href="https://travis-ci.org/itsjeffro/deploy"><img src="https://travis-ci.org/itsjeffro/deploy.svg?branch=master" alt="Build Status"></a>
     <a href="https://packagist.org/packages/itsjeffro/deploy"><img src="https://poser.pugx.org/itsjeffro/deploy/license.svg"></a>
+    <a href="https://packagist.org/packages/itsjeffro/deploy"><img src="https://poser.pugx.org/itsjeffro/deploy/d/total.svg" alt="Total Downloads"></a>
 </p>
 
 ## Introduction
@@ -10,7 +11,7 @@
 Deploy provides a dasboard for existing Laravel applications to manage zero-downtime deployments.
 
 <p align="center">
-    <img src="https://res.cloudinary.com/dz4tjswiv/image/upload/v1547982989/deploy.png">
+    <img src="https://res.cloudinary.com/dz4tjswiv/image/upload/v1568524157/dashboard.png">
 </p>
 
 ## Server Requirements
