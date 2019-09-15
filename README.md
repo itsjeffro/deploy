@@ -10,7 +10,7 @@
 Deploy provides a dasboard for existing Laravel applications to manage zero-downtime deployments.
 
 <p align="center">
-    <img src="https://res.cloudinary.com/dz4tjswiv/image/upload/v1547982989/deploy.png">
+    <img src="https://res.cloudinary.com/dz4tjswiv/image/upload/v1568523301/deploy-project-dashboard.png">
 </p>
 
 ## Server Requirements
