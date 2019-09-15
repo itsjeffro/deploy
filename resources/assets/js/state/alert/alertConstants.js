@@ -1,2 +1,2 @@
-export const ALERT_SHOW = 'alert_show';
-export const ALERT_HIDE = 'alert_hide';
+export const TOAST_ADD = 'toast_add';
+export const TOAST_REMOVE = 'toast_remove';
