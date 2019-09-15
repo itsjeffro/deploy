@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
-import { alertShow } from '../../state/alert/alertActions';
+import { createToast } from '../../state/alert/alertActions';
 import ProjectServerService from '../../services/ProjectServer';
 
 import AlertErrorValidation from '../../components/AlertErrorValidation';
@@ -52,7 +52,7 @@ class ProjectServerCreatePage extends React.Component {
     projectServerService
       .create(project.id, server)
       .then(response => {
-          dispatch(alertShow('Server created successfully.'));
+          dispatch(createToast('Server created successfully.'));
 
           this.setState({isCreated: true});
         },

@@ -2,10 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
-import { alertShow } from '../../state/alert/alertActions';
-
+import { createToast } from '../../state/alert/alertActions';
 import ProjectServerService from '../../services/ProjectServer';
-
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
@@ -66,7 +64,7 @@ class ProjectServerEditPage extends React.Component {
     projectServerService
       .put(project_id, server_id, this.state.server)
       .then(response => {
-        dispatch(alertShow('Server updated successfully.'));
+        dispatch(createToast('Server updated successfully.'));
 
         this.setState({isUpdated: true});
       },

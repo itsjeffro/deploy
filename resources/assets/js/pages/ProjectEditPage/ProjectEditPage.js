@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import {
-  deleteProjects,
   fetchProjects,
   projectsDeleteFailure,
   projectsDeleteRequest,
@@ -22,6 +21,7 @@ import Modal from '../../components/Modal';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import Sidebar from './Sidebar';
+import { createToast } from "../../state/alert/alertActions";
 
 class ProjectEditPage extends React.Component {
   state = {
@@ -76,7 +76,8 @@ class ProjectEditPage extends React.Component {
    * Handle project update.
    */
   handleProjectUpdateClick = () => {
-    const {project} = this.state;
+    const { dispatch } = this.props;
+    const { project } = this.state;
     const projectService = new ProjectService;
 
     projectService
@@ -86,6 +87,8 @@ class ProjectEditPage extends React.Component {
           isUpdated: true,
           errors: []
         });
+
+        dispatch(createToast('Project updated successfully.'));
       },
       error => {
         let errorResponse = error.response.data;
@@ -117,6 +120,8 @@ class ProjectEditPage extends React.Component {
           this.setState({isDeleted: true});
 
           dispatch(projectsDeleteSuccess(project.id));
+
+          dispatch(createToast('Project deleted successfully.'));
         },
         error => {
           dispatch(projectsDeleteFailure());

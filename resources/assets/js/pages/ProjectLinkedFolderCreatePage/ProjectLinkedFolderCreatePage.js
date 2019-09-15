@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Link, Redirect} from 'react-router-dom';
 
-import { alertShow } from '../../state/alert/alertActions';
+import { createToast } from '../../state/alert/alertActions';
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Alert from '../../components/Alert';
@@ -55,7 +55,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
         projectFolderService
             .create(project.id, folder)
             .then(response => {
-                dispatch(alertShow('Folder created successfully.'));
+                dispatch(createToast('Folder created successfully.'));
 
                 this.setState({
                     isCreated: true,

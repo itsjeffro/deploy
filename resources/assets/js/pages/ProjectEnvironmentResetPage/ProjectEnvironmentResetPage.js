@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { alertShow } from '../../state/alert/alertActions';
+import { createToast } from '../../state/alert/alertActions';
 
 import ProjectService from '../../services/Project';
 import ProjectEnvironmentResetService from '../../services/ProjectEnvironmentReset';
@@ -57,7 +57,7 @@ class ProjectEnvironmentResetPage extends React.Component {
     projectEnvironmentResetService
       .update(project.id, {key: key})
       .then(response => {
-        dispatch(alertShow('Environment key updated successfully.'));
+        dispatch(createToast('Environment key updated successfully.'));
 
         this.setState({errors: []});
       },

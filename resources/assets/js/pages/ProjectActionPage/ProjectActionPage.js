@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AceEditor from 'react-ace';
 
-import { alertShow } from '../../state/alert/alertActions';
+import { createToast } from '../../state/alert/alertActions';
 
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';
@@ -153,7 +153,7 @@ class ProjectActionPage extends React.Component {
     projectActionHookService
       .create(hook.project_id, hook.action_id, data)
       .then(response => {
-        dispatch(alertShow('Hook created successfully.'));
+        dispatch(createToast('Hook created successfully.'));
 
         if (hook.position == 1) {
         	let hooks = this.state.beforeHooks.concat(response.data);
@@ -201,7 +201,7 @@ class ProjectActionPage extends React.Component {
       .then(response => {
         let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
 
-        dispatch(alertShow('Hook updated successfully.'));
+        dispatch(createToast('Hook updated successfully.'));
 
         this.setState({
         	errors: [],
@@ -255,7 +255,7 @@ class ProjectActionPage extends React.Component {
       .then(response => {
         let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
 
-        dispatch(alertShow('Hook removed successfully.'));
+        dispatch(createToast('Hook removed successfully.'));
 
         this.removeHook(hookPosition, hook.id);
       },

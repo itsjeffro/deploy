@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Deploy } from '../../config';
 
 import { projectSuccess } from '../../state/project/projectActions';
-import { alertShow } from '../../state/alert/alertActions';
+import { createToast } from '../../state/alert/alertActions';
 
 import Alert from '../../components/Alert';
 import Icon from '../../components/Icon';
@@ -18,7 +18,6 @@ import Modal from '../../components/Modal';
 
 import ProjectDetails from './ProjectDetails';
 import DeploymentDetails from './DeploymentDetails';
-import SubMenu from './SubMenu';
 import DeploymentsTable from './DeploymentsTable';
 import ServersTable from './ServersTable';
 
@@ -296,7 +295,7 @@ class ProjectPage extends React.Component {
       .then(response => {
         this.removeServer(server.id);
 
-        dispatch(alertShow('Server removed successully.'));
+        dispatch(createToast('Server removed successully.'));
 
         $('#server-remove-modal').modal('hide');
       },

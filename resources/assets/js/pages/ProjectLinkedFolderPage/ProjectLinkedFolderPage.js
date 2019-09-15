@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { alertShow } from '../../state/alert/alertActions';
+import { createToast } from '../../state/alert/alertActions';
 
 import ProjectFolderService from '../../services/ProjectFolder';
 
@@ -60,7 +60,7 @@ class ProjectLinkedFolderPage extends React.Component {
     projectFolderService
       .delete(project.id, folder.id)
       .then(response => {
-        dispatch(alertShow('Folder removed successfully.'));
+        dispatch(createToast('Folder removed successfully.'));
 
         this.removeFolder(folder.id);
 
