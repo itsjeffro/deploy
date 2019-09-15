@@ -1,16 +1,30 @@
-import {
-  ALERT_SHOW,
-  ALERT_HIDE
-} from './alertConstants';
+import { TOAST_ADD, TOAST_REMOVE } from './alertConstants';
 
-export const alertShow = (message) =>({
-  type: ALERT_SHOW,
-  message: message,
-  show: true
+let id = 0;
+
+export const toastAdd = (message) =>({
+  type: TOAST_ADD,
+  payload: {
+    id: id++,
+    message: message,
+  }
 });
 
-export const alertHide = () =>({
-  type: ALERT_HIDE,
-  message: '',
-  show: false
+export const toastRemove = (id) =>({
+  type: TOAST_REMOVE,
+  payload: {
+    id: id,
+  }
 });
+
+export const createToast = (message) => {
+  return (dispatch) => {
+    const toastId = id;
+
+    dispatch(toastAdd(message));
+
+    setTimeout(() => {
+      dispatch(toastRemove(toastId));
+    }, 3000);
+  };
+};

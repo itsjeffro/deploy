@@ -1,24 +1,24 @@
-import {
-  ALERT_SHOW,
-  ALERT_HIDE
-} from './alertConstants';
+import { TOAST_ADD, TOAST_REMOVE } from './alertConstants';
 
 const initialState = {
-  alert: {
-    message: '',
-    show: false
-  }
+  toasts: [],
 };
 
 const alert = (state = initialState, action) => {
-  switch(action.type) {
-    case ALERT_SHOW:
-    case ALERT_HIDE:
+  const { payload, type } = action;
+
+  switch(type) {
+    case TOAST_ADD:
       return {
-        alert: {
-          message: action.message,
-          show: action.show
-        }
+        toasts: [
+          payload,
+          ...state.toasts,
+        ]
+      };
+
+    case TOAST_REMOVE:
+      return {
+        toasts: state.toasts.filter((toast) => toast.id !== payload.id)
       };
 
     default:
