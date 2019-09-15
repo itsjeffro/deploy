@@ -32,7 +32,7 @@ class ProjectSourceControlEditPage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { project } = this.props;
     const accountProviderService = new AccountProviderService;
 

@@ -13,67 +13,67 @@ import PanelBody from '../../components/PanelBody';
 import Layout from "../../components/Layout";
 
 class ProjectLinkedFolderCreatePage extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            isFetching: true,
-            isCreated: false,
-            project: {},
-            folder: {},
+    this.state = {
+      isFetching: true,
+      isCreated: false,
+      project: {},
+      folder: {},
+      errors: []
+    }
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { project } = this.props;
+
+    this.setState({project: project});
+  }
+
+  handleInputChange(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState(state => {
+      const folder = Object.assign({}, state.folder, {
+        [name]: value
+      });
+
+      return {folder: folder}
+    });
+  }
+
+  handleClick(event) {
+    const { dispatch } = this.props;
+    const { project, folder } = this.state;
+    const projectFolderService = new ProjectFolderService;
+
+    projectFolderService
+      .create(project.id, folder)
+      .then(response => {
+          dispatch(createToast('Folder created successfully.'));
+
+          this.setState({
+            isCreated: true,
             errors: []
-        }
+          });
+        },
+        error => {
+          let errorResponse = error.response.data;
 
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-    }
+          errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
 
-    componentWillMount() {
-        const { project } = this.props;
+          const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+            return previous.concat(errorResponse[key][0]);
+          }, []);
 
-        this.setState({project: project});
-    }
-
-    handleInputChange(event) {
-        const name = event.target.name;
-        const value = event.target.value;
-
-        this.setState(state => {
-            const folder = Object.assign({}, state.folder, {
-                [name]: value
-            });
-
-            return {folder: folder}
+          this.setState({errors: errors});
         });
-    }
-
-    handleClick(event) {
-        const { dispatch } = this.props;
-        const { project, folder } = this.state;
-        const projectFolderService = new ProjectFolderService;
-
-        projectFolderService
-            .create(project.id, folder)
-            .then(response => {
-                dispatch(createToast('Folder created successfully.'));
-
-                this.setState({
-                    isCreated: true,
-                    errors: []
-                });
-            },
-            error => {
-                let errorResponse = error.response.data;
-
-                errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-
-                	const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-                			  return previous.concat(errorResponse[key][0]);
-                	}, []);
-
-                this.setState({errors: errors});
-            });
-    }
+  }
 
   render() {
     const { project } = this.props;
@@ -142,9 +142,9 @@ class ProjectLinkedFolderCreatePage extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return state.project;
+  return state.project;
 };
 
 export default connect(
-    mapStateToProps
+  mapStateToProps
 )(ProjectLinkedFolderCreatePage);

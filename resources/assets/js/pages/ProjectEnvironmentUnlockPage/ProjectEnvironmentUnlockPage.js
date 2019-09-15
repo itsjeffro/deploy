@@ -46,15 +46,20 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
   /**
    * Fetch project through dispatch during componentWillMount cycle.
+   * Listen for environment updates when component has mounted.
    */
-  componentWillMount() {
-    const {dispatch, project, match} = this.props;
+  componentDidMount() {
+    const {
+      dispatch,
+      project,
+      match,
+    } = this.props;
 
     this.setState(prevState => {
       const environment = {
         ...prevState.environment,
         servers: project.environment_servers.map(server => {
-            return server.server_id;
+          return server.server_id;
         }, []),
       };
 
@@ -64,13 +69,6 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     if (typeof project === 'object' && Object.keys(project).length === 0) {
       dispatch(fetchProject(match.params.project_id));
     }
-  }
-
-  /**
-   * Listen for environment updates when component has mounted.
-   */
-  componentDidMount() {
-    const { project } = this.props;
 
     Echo.private('project.' + project.id)
       .listen('.Deploy\\Events\\EnvironmentSyncing', (e) => {

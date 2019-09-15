@@ -26,7 +26,7 @@ class ProjectServerCreatePage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { project } = this.props;
 
     this.setState({project: project});

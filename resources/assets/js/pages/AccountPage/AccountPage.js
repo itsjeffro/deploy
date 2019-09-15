@@ -22,7 +22,7 @@ class AccountPage extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let accountProviderService = new AccountProviderService;
 
     accountProviderService

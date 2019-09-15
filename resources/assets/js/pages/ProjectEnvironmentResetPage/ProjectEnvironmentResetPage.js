@@ -31,7 +31,7 @@ class ProjectEnvironmentResetPage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const projectService = new ProjectService;
 
     projectService

@@ -22,8 +22,8 @@ class ProjectDeploymentHookPage extends React.Component {
       actions: []
     };
   }
-  
-  componentWillMount() {
+
+  componentDidMount() {
     const { project } = this.props;
     const projectActionService = new ProjectActionService;
 

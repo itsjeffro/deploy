@@ -47,7 +47,7 @@ class ProjectActionPage extends React.Component {
     this.handleScriptChange = this.handleScriptChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { project } = this.props;
     const { project_id, action_id } = this.props.match.params;
     const projectActionService = new ProjectActionService;

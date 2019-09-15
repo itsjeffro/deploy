@@ -28,7 +28,7 @@ class ProjectServerEditPage extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { project } = this.props;
     const { server_id } = this.props.match.params;
     const projectServerService = new ProjectServerService;

@@ -26,7 +26,7 @@ class ProjectDeploymentPage extends React.Component {
     this.handleProcessOutputClick = this.handleProcessOutputClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const {project_id, deployment_id} = this.props.match.params;
     const {dispatch, project} = this.props;
 

@@ -24,7 +24,7 @@ class ProjectLinkedFolderPage extends React.Component {
     folder: {}
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { project } = this.props;
     const projectFolderService = new ProjectFolderService;
 
