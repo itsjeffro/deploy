@@ -28,7 +28,10 @@ class ProjectEditPage extends React.Component {
     project_id: null,
     isDeleted: false,
     isUpdated: false,
-    project: {},
+    project: {
+      name: '',
+      deploy_on_push: '',
+    },
     errors: [],
   };
 
@@ -47,10 +50,28 @@ class ProjectEditPage extends React.Component {
       dispatch(fetchProjects());
     }
 
-    this.setState({
-      project_id: project_id,
-      project: projects.items[project_id] || {},
-    });
+    if (projects.items[project_id] !== undefined) {
+      this.setState({
+        project: projects.items[project_id]
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    const {
+      projects,
+      match: {
+        params: {
+          project_id
+        }
+      }
+    } = this.props;
+
+    if (projects.items !== nextProps.projects.items) {
+      this.setState({
+        project: nextProps.projects.items[project_id]
+      });
+    }
   }
 
   /**
@@ -142,6 +163,15 @@ class ProjectEditPage extends React.Component {
       project,
       errors,
     } = this.state;
+
+    const {
+      projects,
+      match: {
+        params: {
+          project_id
+        }
+      }
+    } = this.props;
     
     if (isDeleted) {
       return <Redirect to={'/'} />
@@ -152,7 +182,7 @@ class ProjectEditPage extends React.Component {
     }
 
     return (
-      <Layout project={project}>
+      <Layout project={projects.items[project_id]}>
         <div className="content">
           <Container fluid>
             <div className="heading">
@@ -181,7 +211,7 @@ class ProjectEditPage extends React.Component {
                         name="name"
                         type="text"
                         onChange={this.handleInputChange}
-                        value={project.name}
+                        value={this.state.project.name}
                       />
                     </div>
 
@@ -193,7 +223,7 @@ class ProjectEditPage extends React.Component {
                             name="deploy_on_push"
                             value="1"
                             onChange={this.handleInputChange}
-                            checked={project.deploy_on_push}
+                            checked={this.state.project.deploy_on_push}
                           /> Deploy when code is pushed to
                         </label>
                       </div>
