@@ -3,16 +3,16 @@ import {connect} from 'react-redux';
 
 class Alert extends React.Component {
   render() {
-    const { alert } = this.props;
-
-    if (alert.message === '') {
-      return <></>;
-    }
+    const { toasts } = this.props;
 
     return (
-      <div className="toast toast-success">
-        {alert.message}
-      </div>
+      <ul className="toasts">
+        {(toasts||[]).map((toast) => (
+          <li key={toast.id} className="toast toast-success">
+            {toast.message}
+          </li>
+        ))}
+      </ul>
     )
   }
 }
