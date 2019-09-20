@@ -45,16 +45,18 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * Returns any existing valid access token for the specified repository provider.
+     * If the there is no access token, the access token has expired, or there is
+     * no expiry date on the access token, then a new token will be provided.
      *
-     * @param  string $code
-     * @return \Deploy\Models\DeployAccessToken
+     * @param string $code
+     * @return DeployAccessToken
      */
     public function requestAccessToken($code)
     {
         $token = $this->getDeployAccessToken($this->provider, $this->user);
 
-        if (!is_object($token) || $this->isAccessTokenExpired($token)) {
+        if (!$token instanceof DeployAccessToken || empty($token->expires_at) || $this->isAccessTokenExpired($token)) {
             $requestedToken = $this->getProviderOauthClass()->requestAccessToken($code);
 
             return $this->storeAccessToken($requestedToken);
@@ -173,10 +175,6 @@ class ProviderOauthManager
      */
     protected function isAccessTokenExpired($token)
     {
-        if (is_null($token->expires_at) || empty($token->expires_at)) {
-            return false;
-        }
-
         $dateTime = new DateTime;
 
         return $dateTime->format('Y-m-d H:i:s') >= $token->expires_at;
