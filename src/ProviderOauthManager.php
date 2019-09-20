@@ -2,28 +2,34 @@
 
 namespace Deploy;
 
+use App\User;
+use Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface;
 use Deploy\Models\DeployAccessToken;
 use Deploy\Models\DeployRefreshToken;
 use DateTime;
-use Deployer\Exception\Exception;
+use Deploy\Models\Provider;
+use Deploy\ProviderOauth\AbstractProviderOauth;
+use Exception;
 
 class ProviderOauthManager
 {
     /**
-     * @var \Deploy\Models\Provider
+     * The repository provider model.
+     * @var Provider
      */
     private $provider;
 
     /**
-     * @var \App\User
+     * The user model.
+     * @var User
      */
     private $user;
 
     /**
      * Instantiate ProviderOauth.
      *
-     * @param \App\Provider
-     * @param \App\User
+     * @param Provider
+     * @param User
      */
     public function __construct($provider, $user)
     {
@@ -32,7 +38,7 @@ class ProviderOauthManager
     }
 
     /**
-     * Return provider access token.
+     * Returns the last stored access token ID of the specified provider.
      *
      * @return string
      * @throws Exception
@@ -51,6 +57,7 @@ class ProviderOauthManager
      *
      * @param string $code
      * @return DeployAccessToken
+     * @throws Exception
      */
     public function requestAccessToken($code)
     {
@@ -70,11 +77,11 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * Returns the stored provider access token model.
      *
-     * @param  \Deploy\Models\Provider $provider
-     * @param  \App\User $user
-     * @return \Deploy\Models\DeployAccessToken
+     * @param  Provider $provider
+     * @param  User $user
+     * @return DeployAccessToken
      */
     public function getDeployAccessToken($provider, $user)
     {
@@ -85,7 +92,7 @@ class ProviderOauthManager
     }
 
     /**
-     * Return providers url for authorizing a request for an access token.
+     * Returns the authorization url to of the specified repository provider.
      *
      * @return string
      */
@@ -95,10 +102,11 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * Stores the access token.
      *
-     * @param  \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface $requestedToken
-     * @return \Deploy\Models\DeployAccessToken
+     * @param ProviderOauthResourceInterface $requestedToken
+     * @return DeployAccessToken
+     * @throws Exception
      */
     public function storeAccessToken($requestedToken)
     {
@@ -125,7 +133,7 @@ class ProviderOauthManager
      * If a refresh token exists, then update record with new access token.
      * Otherwise if a refresh token does not exist, create a new record.
      *
-     * @param \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface $requestedToken
+     * @param ProviderOauthResourceInterface $requestedToken
      */
     public function storeRefreshToken($requestedToken)
     {
@@ -149,10 +157,11 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * Formats the provided token's expiry date.
      *
-     * @param  \Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface $requestedToken
+     * @param  ProviderOauthResourceInterface $requestedToken
      * @return string|null
+     * @throws Exception
      */
     protected function formatExpirationDateTime($requestedToken)
     {
@@ -168,10 +177,11 @@ class ProviderOauthManager
     }
 
     /**
-     * [description]
+     * Checks if the access token from the specified repository provider has expired.
      *
-     * @param  \Deploy\Models\DeployAccessToken $token
+     * @param DeployAccessToken $token
      * @return bool
+     * @throws Exception
      */
     protected function isAccessTokenExpired($token)
     {
@@ -181,9 +191,9 @@ class ProviderOauthManager
     }
 
     /**
-     * Get instance of the oauth for specified provider.
+     * Returns an instance of the oauth for specified provider.
      *
-     * @return \Deploy\ProviderOauth\AbstractProviderOauth
+     * @return AbstractProviderOauth
      */
     protected function getProviderOauthClass()
     {
