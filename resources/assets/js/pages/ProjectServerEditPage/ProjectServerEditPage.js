@@ -1,42 +1,44 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
 import ProjectServerService from '../../services/ProjectServer';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
-import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import Layout from '../../components/Layout';
+import {fetchProject} from "../../state/project/actions/project";
 
 class ProjectServerEditPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      isUpdated: false,
-      project: {},
-      server: {},
-      errors: []
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+  state = {
+    isFetching: true,
+    isUpdated: false,
+    project: {},
+    server: {},
+    errors: []
+  };
 
   componentDidMount() {
-    const { project } = this.props;
-    const { server_id } = this.props.match.params;
+    const {
+      dispatch,
+      project,
+      match: {
+        params: {
+          server_id,
+          project_id,
+        }
+      }
+    } = this.props;
+
     const projectServerService = new ProjectServerService;
 
-    this.setState({project: project});
+    dispatch(fetchProject(project_id));
 
     projectServerService
-      .get(project.id, server_id)
+      .get(project_id, server_id)
       .then(response => {
         this.setState({
           isFetching: false,
@@ -45,7 +47,12 @@ class ProjectServerEditPage extends React.Component {
       });
   }
 
-  handleInputChange(event) {
+  /**
+   * Handle input change when updating a server.
+   *
+   * @param {object} event
+   */
+  handleInputChange = (event) => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -54,9 +61,12 @@ class ProjectServerEditPage extends React.Component {
     server[name] = value;
 
     this.setState({server: server});
-  }
+  };
 
-  handleClick() {
+  /**
+   * Handles updating a server.
+   */
+  handleClick = () => {
     const { dispatch } = this.props;
     const { project_id, server_id } = this.props.match.params;
     const projectServerService = new ProjectServerService;
@@ -79,9 +89,16 @@ class ProjectServerEditPage extends React.Component {
 
         this.setState({errors: errors});
       });
-  }
+  };
 
-  renderServerEditPanel(server, errors) {
+  /**
+   * Returns edit server form.
+   *
+   * @param {object} server
+   * @param {array} errors
+   * @returns {*}
+   */
+  renderServerEditPanel = (server, errors) => {
     return (
       <Panel>
         <PanelBody>
@@ -117,11 +134,11 @@ class ProjectServerEditPage extends React.Component {
         </PanelBody>
       </Panel>
     )
-  }
+  };
 
   render() {
+    const { project } = this.props;
     const {
-      project,
       server,
       isFetching,
       isUpdated,
@@ -129,11 +146,11 @@ class ProjectServerEditPage extends React.Component {
     } = this.state;
 
     if (isUpdated) {
-      return <Redirect to={'/projects/' + project.id} />
+      return <Redirect to={'/projects/' + project.item.id} />
     }
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <h2>Edit Server</h2>
@@ -149,7 +166,9 @@ class ProjectServerEditPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(
