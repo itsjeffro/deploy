@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { Deploy } from '../../config';
 
-import { projectSuccess } from '../../state/project/projectActions';
+import { fetchProject } from '../../state/project/actions/project';
+import { updateProjectKey } from '../../state/project/actions/key';
+import { testServerConnection, updateServerConnectionStatus } from '../../state/project/actions/serverConnectionTest';
 import { createToast } from '../../state/alert/alertActions';
 
 import Alert from '../../components/Alert';
@@ -15,47 +16,35 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
-
 import ProjectDetails from './ProjectDetails';
 import DeploymentDetails from './DeploymentDetails';
 import DeploymentsTable from './DeploymentsTable';
 import ServersTable from './ServersTable';
-
-import ProjectService from '../../services/Project';
 import ProjectDeploymentService from '../../services/ProjectDeployment';
 import ProjectRedeploymentService from '../../services/ProjectRedeployment';
-import ProjectKeyService from '../../services/ProjectKey';
-import ProjectServerConnectionService from '../../services/ProjectServerConnection';
 import ProjectServerService from '../../services/ProjectServer';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
+import { fetchProjectDeployments } from "../../state/projectDeployments/actions";
+import Container from "../../components/Container";
 
 class ProjectPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      deploy: {
-        reference: 'default',
-        name: ''
-      },
-      redeploy: {
-        commit: '',
-        deployment_id: 0
-      },
-      project: {},
-      projectKey: '',
-      deployments: [],
-      servers: [],
-      server: {},
-      tags: [],
-      branches: []
-    };
-  }
+  state = {
+    deploy: {
+      reference: 'default',
+      name: ''
+    },
+    redeploy: {
+      commit: '',
+      deployment_id: 0
+    },
+    server: {},
+    deployments: [],
+    tags: [],
+    branches: []
+  };
 
   componentDidMount() {
-    const projectService = new ProjectService;
     const {
       dispatch,
       match: {
@@ -65,27 +54,22 @@ class ProjectPage extends React.Component {
       }
     } = this.props;
 
-    projectService
-      .get(project_id)
-      .then(response => {
-        dispatch(projectSuccess(response.data));
+    dispatch(fetchProject(project_id));
 
-        this.setState({
-          isFetching: false,
-          servers: response.data.servers,
-          projectKey: response.data.key
-        });
-      });
+    dispatch(fetchProjectDeployments(project_id));
 
-    const projectDeploymentService = new ProjectDeploymentService;
+    this.listenForEvents(project_id);
+  }
 
-    projectDeploymentService
-      .index(project_id)
-      .then(response => {
-        this.setState({ deployments: response.data });
-      });
+  /**
+   * Listen for project related events.
+   *
+   * @param {number} projectId
+   */
+  listenForEvents(projectId) {
+    const { dispatch } = this.props;
 
-    Echo.private('project.' + project_id)
+    Echo.private('project.' + projectId)
       .listen('.Deploy\\Events\\DeploymentDeploying', e => {
         this.setState(state => {
           const deployments = [e.deployment].concat(state.deployments.slice(0, 4));
@@ -93,17 +77,14 @@ class ProjectPage extends React.Component {
         });
       })
       .listen('.Deploy\\Events\\DeploymentFinished', e => {
-         this.setState(state => {
+        this.setState(state => {
           const deployments = this.updateDeploymentStatus(state.deployments, e.deployment);
 
           return {deployments: deployments}
         });
       })
       .listen('.Deploy\\Events\\ServerConnectionTested', e => {
-        this.setState(state => {
-          let servers = this.updateServerConnection(state.servers, e.server);
-          return {servers: servers}
-        });
+        dispatch(updateServerConnectionStatus(e.server.id, e.server.connection_status));
       });
   }
 
@@ -111,14 +92,9 @@ class ProjectPage extends React.Component {
    * Refreshes project deployment hook key.
    */
   handleRefreshKey = () => {
-    const { project } = this.props;
-    let projectKeyService = new ProjectKeyService;
+    const { dispatch, project } = this.props;
 
-    projectKeyService
-      .put(project.id)
-      .then(response => {
-        this.setState({projectKey: response.data.key});
-      });
+    dispatch(updateProjectKey(project.item.id));
   };
 
   /**
@@ -223,20 +199,9 @@ class ProjectPage extends React.Component {
   handleServerConnectionTestClick = (event, server_id) => {
     event.preventDefault();
 
-    const { project } = this.props;
-    const projectServerConnectionService = new ProjectServerConnectionService;
+    const { dispatch, project } = this.props;
 
-    this.setState(state => {
-      const servers = this.updateServerConnection(state.servers, {
-        id: server_id,
-        connection_status: 2
-      });
-
-      return {servers: servers}
-    });
-
-    projectServerConnectionService
-      .get(project.id, server_id);
+    dispatch(testServerConnection(project.item.id, server_id));
   };
 
   /**
@@ -392,8 +357,6 @@ class ProjectPage extends React.Component {
     const {
       deploy,
       redeploy,
-      deployments,
-      servers,
       server,
       branches,
       tags,
@@ -401,26 +364,27 @@ class ProjectPage extends React.Component {
     } = this.state;
 
     const {
-        project
+      project,
+      deployments
     } = this.props;
 
     return (
       <Layout
-        project={project}
+        project={project.item}
       >
         <div className="content">
           <div className="container-fluid heading">
             <div className="pull-left">
-              <h2>{project.name}</h2>
+              <h2>{project.item.name}</h2>
             </div>
             <div className="pull-right">
               <Link
                 className="btn btn-default"
-                to={'/projects/' + project.id + '/edit'}
+                to={'/projects/' + project.item.id + '/edit'}
               >
                 <Icon iconName="gear" /> Settings
               </Link>
-              {servers.length > 0
+              {project.item.servers.length > 0
               ? <Button
                 color="primary"
                 onClick={this.handleDeployModal}
@@ -432,17 +396,17 @@ class ProjectPage extends React.Component {
             </div>
           </div>
 
-          <div className="container-fluid">
+          <Container fluid>
             <div className="row">
               <div className="col-xs-12 col-md-6">
                 <ProjectDetails
-                  project={project}
+                  project={project.item}
                 />
               </div>
 
               <div className="col-xs-12 col-md-6">
                 <DeploymentDetails
-                  project={project}
+                  project={project.item}
                 />
               </div>
             </div>
@@ -452,19 +416,19 @@ class ProjectPage extends React.Component {
               <div className="pull-right">
                 <Link
                   className="btn btn-default"
-                  to={'/projects/' + project.id + '/servers/create'}
+                  to={'/projects/' + project.item.id + '/servers/create'}
                 ><Icon iconName="plus" /> Add Server</Link>
               </div>
                 <PanelTitle>Servers</PanelTitle>
               </PanelHeading>
-              {this.renderServers(servers)}
+              {this.renderServers(project.item.servers)}
             </Panel>
 
             <Panel>
               <PanelHeading>
                 <PanelTitle>Deployments</PanelTitle>
               </PanelHeading>
-              {this.renderDeployments(deployments)}
+              {this.renderDeployments(deployments.items)}
             </Panel>
 
             <Panel>
@@ -473,13 +437,13 @@ class ProjectPage extends React.Component {
               </PanelHeading>
               <PanelBody>
                 <p>Make requests to the following URL to trigger deployments for this project.</p>
-                <pre>{Deploy.url + Deploy.path + '/webhook/' + projectKey}</pre>
+                <pre>{Deploy.url + Deploy.path + '/webhook/' + project.item.key}</pre>
                 <Button
                   onClick={this.handleRefreshKey}
                 >Refresh key</Button>
               </PanelBody>
             </Panel>
-          </div>
+          </Container>
 
           <Modal
             id="deploy-modal"
@@ -499,7 +463,7 @@ class ProjectPage extends React.Component {
                   type="radio"
                   onChange={this.handleReferenceChange}
                   checked={'default' === deploy.reference}
-                /> Default Branch ({project.branch})
+                /> Default Branch ({project.item.branch})
               </label>
             </div>
             <div className="form-group">
@@ -607,7 +571,10 @@ class ProjectPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+    deployments: state.projectDeployments,
+  };
 };
 
 export default connect(
