@@ -6,7 +6,7 @@ import { Deploy } from '../../config';
 import { fetchProject } from '../../state/project/actions/project';
 import { updateProjectKey } from '../../state/project/actions/key';
 import { testServerConnection, updateServerConnectionStatus } from '../../state/project/actions/serverConnectionTest';
-import { createToast } from '../../state/alert/alertActions';
+import { removeProjectServer } from '../../state/project/actions/removeProjectServer';
 
 import Alert from '../../components/Alert';
 import Icon from '../../components/Icon';
@@ -22,7 +22,6 @@ import DeploymentsTable from './DeploymentsTable';
 import ServersTable from './ServersTable';
 import ProjectDeploymentService from '../../services/ProjectDeployment';
 import ProjectRedeploymentService from '../../services/ProjectRedeployment';
-import ProjectServerService from '../../services/ProjectServer';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
 import { fetchProjectDeployments } from "../../state/projectDeployments/actions";
@@ -253,20 +252,10 @@ class ProjectPage extends React.Component {
   handleRemoveServerClick = () => {
     const { server } = this.state;
     const { dispatch } = this.props;
-    const projectServerService = new ProjectServerService;
 
-    projectServerService
-      .delete(server.project_id, server.id)
-      .then(response => {
-        this.removeServer(server.id);
+    dispatch(removeProjectServer(server.project_id, server.id));
 
-        dispatch(createToast('Server removed successully.'));
-
-        $('#server-remove-modal').modal('hide');
-      },
-      error => {
-        alert('Could not delete server #' + server.id);
-      });
+    $('#server-remove-modal').modal('hide');
   };
 
   /**
