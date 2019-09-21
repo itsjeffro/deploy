@@ -3,7 +3,6 @@
 namespace Deploy\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use mysql_xdevapi\BaseResult;
 
 class ProjectResource extends JsonResource
 {
