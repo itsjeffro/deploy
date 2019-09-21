@@ -6,7 +6,8 @@ import {
   PROJECT_FAILURE,
   PROJECT_UPDATE_KEY_SUCCESS,
   TEST_SERVER_CONNECTION_REQUEST,
-  UPDATE_SERVER_CONNECTION_STATUS
+  UPDATE_SERVER_CONNECTION_STATUS,
+  PROJECT_SERVER_REMOVE_SUCCESS,
 } from './constants';
 
 const project = (state = initialState, action) => {
@@ -65,6 +66,16 @@ const project = (state = initialState, action) => {
             } else {
               return server;
             }
+          })
+        }
+      };
+    case PROJECT_SERVER_REMOVE_SUCCESS:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          servers: state.item.servers.filter(server => {
+            return server.id !== action.serverId;
           })
         }
       };
