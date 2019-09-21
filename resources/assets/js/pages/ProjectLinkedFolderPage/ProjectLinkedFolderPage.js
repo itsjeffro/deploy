@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
-
 import ProjectFolderService from '../../services/ProjectFolder';
 
 import Icon from '../../components/Icon';
@@ -12,10 +11,10 @@ import Modal from '../../components/Modal';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
-
 import FoldersTable from './FoldersTable';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
+import {fetchProject} from "../../state/project/actions/project";
 
 class ProjectLinkedFolderPage extends React.Component {
   state = {
@@ -25,11 +24,22 @@ class ProjectLinkedFolderPage extends React.Component {
   };
 
   componentDidMount() {
-    const { project } = this.props;
+    const {
+      dispatch,
+      project,
+      match: {
+        params: {
+          project_id,
+        }
+      }
+    } = this.props;
+
     const projectFolderService = new ProjectFolderService;
 
+    dispatch(fetchProject(project_id));
+
     projectFolderService
-      .list(project.id)
+      .list(project_id)
       .then(response => {
         this.setState({
           folders: response.data,
@@ -58,7 +68,7 @@ class ProjectLinkedFolderPage extends React.Component {
     const projectFolderService = new ProjectFolderService;
 
     projectFolderService
-      .delete(project.id, folder.id)
+      .delete(project.item.id, folder.id)
       .then(response => {
         dispatch(createToast('Folder removed successfully.'));
 
@@ -144,14 +154,14 @@ class ProjectLinkedFolderPage extends React.Component {
     const { folders, isFetching } = this.state;
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <h2>Linked Folders</h2>
           </div>
 
           <Container fluid>
-            {this.renderFoldersContent(isFetching, project, folders)}
+            {this.renderFoldersContent(isFetching, project.item, folders)}
           </Container>
 
           <Modal
@@ -174,7 +184,9 @@ class ProjectLinkedFolderPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(
