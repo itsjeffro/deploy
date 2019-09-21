@@ -12,19 +12,13 @@ import ProcessTable from './ProcessTable';
 import Layout from "../../components/Layout";
 
 class ProjectDeploymentPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      processOutput: '',
-      deployment: {
-          processes: []
-      }
-    };
-
-    this.handleProcessOutputClick = this.handleProcessOutputClick.bind(this);
-  }
+  state = {
+    isFetching: true,
+    processOutput: '',
+    deployment: {
+        processes: []
+    }
+  };
 
   componentDidMount() {
     const {project_id, deployment_id} = this.props.match.params;
@@ -51,13 +45,13 @@ class ProjectDeploymentPage extends React.Component {
    *
    * @param {object} process
    */
-  handleProcessOutputClick(process) {
+  handleProcessOutputClick = (process) => {
     this.setState({
       processOutput: process.output
     });
 
     $('#process-output-modal').modal('show');
-  }
+  };
 
   render() {
     const { isFetching, deployment, processOutput } = this.state;
