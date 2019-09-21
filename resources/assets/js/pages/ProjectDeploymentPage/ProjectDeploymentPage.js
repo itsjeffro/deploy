@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { fetchProject } from '../../state/project/actions/project';
 import ProjectDeploymentService from '../../services/ProjectDeployment';
 import { buildSequencesFromProcesses } from '../../utils/squence';
-
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import Modal from '../../components/Modal';
@@ -21,12 +20,17 @@ class ProjectDeploymentPage extends React.Component {
   };
 
   componentDidMount() {
-    const {project_id, deployment_id} = this.props.match.params;
-    const {dispatch, project} = this.props;
+    const {
+      dispatch,
+      match: {
+        params: {
+          project_id,
+          deployment_id
+        }
+      }
+    } = this.props;
 
-    if (typeof project === 'object' && Object.keys(project).length === 0) {
-        dispatch(fetchProject(project_id));
-    }
+    dispatch(fetchProject(project_id));
 
     const projectDeploymentService = new ProjectDeploymentService();
 
@@ -74,7 +78,7 @@ class ProjectDeploymentPage extends React.Component {
     ));
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <h2>Deployment Info</h2>
@@ -109,7 +113,9 @@ class ProjectDeploymentPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(
