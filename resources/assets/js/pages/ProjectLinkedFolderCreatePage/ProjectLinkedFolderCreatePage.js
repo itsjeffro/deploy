@@ -4,37 +4,43 @@ import {Link, Redirect} from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
 import ProjectFolderService from '../../services/ProjectFolder';
-
 import Alert from '../../components/Alert';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import Layout from "../../components/Layout";
+import { fetchProject } from "../../state/project/actions/project";
 
 class ProjectLinkedFolderCreatePage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      isCreated: false,
-      project: {},
-      folder: {},
-      errors: []
-    }
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+  state = {
+    isFetching: true,
+    isCreated: false,
+    project: {},
+    folder: {},
+    errors: [],
+  };
 
   componentDidMount() {
-    const { project } = this.props;
+    const {
+      dispatch,
+      project,
+      match: {
+        params: {
+          project_id
+        }
+      }
+    } = this.props;
 
-    this.setState({project: project});
+    dispatch(fetchProject(project_id));
   }
 
-  handleInputChange(event) {
+  /**
+   * Handle input change for a new linked folder.
+   *
+   * @param {object} event
+   */
+  handleInputChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
 
@@ -45,54 +51,58 @@ class ProjectLinkedFolderCreatePage extends React.Component {
 
       return {folder: folder}
     });
-  }
+  };
 
-  handleClick(event) {
-    const { dispatch } = this.props;
-    const { project, folder } = this.state;
+  /**
+   * Handle click for saving a new folder.
+   *
+   * @param {object} event
+   */
+  handleClick = (event) => {
+    const { dispatch, project } = this.props;
+    const { folder } = this.state;
     const projectFolderService = new ProjectFolderService;
 
     projectFolderService
-      .create(project.id, folder)
+      .create(project.item.id, folder)
       .then(response => {
-          dispatch(createToast('Folder created successfully.'));
+        dispatch(createToast('Folder created successfully.'));
 
-          this.setState({
-            isCreated: true,
-            errors: []
-          });
-        },
-        error => {
-          let errorResponse = error.response.data;
-
-          errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-
-          const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-            return previous.concat(errorResponse[key][0]);
-          }, []);
-
-          this.setState({errors: errors});
+        this.setState({
+          isCreated: true,
+          errors: []
         });
+      },
+      error => {
+        let errorResponse = error.response.data;
+
+        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
+
+        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
+          return previous.concat(errorResponse[key][0]);
+        }, []);
+
+        this.setState({errors: errors});
+      });
   }
 
   render() {
     const { project } = this.props;
     const {
       isCreated,
-      folder,
       errors
     } = this.state;
 
     if (isCreated) {
-      return <Redirect to={'/projects/' + project.id + '/folders'} />
+      return <Redirect to={'/projects/' + project.item.id + '/folders'} />
     }
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <h2>Add Linked Folder</h2>
-            <Link to={'/projects/' + project.id + '/folders'}>Back to Linked Folders</Link>
+            <Link to={'/projects/' + project.item.id + '/folders'}>Back to Linked Folders</Link>
           </div>
 
           <div className="container-fluid">
@@ -112,7 +122,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                     type="text"
                     id="from"
                     onChange={this.handleInputChange}
-                    value={folder.from}
+                    value={this.state.folder.from}
                     placeholder="uploads"
                   />
                 </div>
@@ -124,13 +134,13 @@ class ProjectLinkedFolderCreatePage extends React.Component {
                     type="text"
                     id="project_path"
                     onChange={this.handleInputChange}
-                    value={folder.to}
+                    value={this.state.folder.to}
                     placeholder="storage/uploads"
                   />
                 </div>
 
                 <Button color="primary"
-                        onClick={this.handleClick}
+                  onClick={this.handleClick}
                 >Save Linked Folder</Button>
               </PanelBody>
             </Panel>
@@ -142,7 +152,9 @@ class ProjectLinkedFolderCreatePage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(
