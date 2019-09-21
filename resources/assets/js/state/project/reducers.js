@@ -5,7 +5,9 @@ import {
 } from './projectConstants';
 
 const initialState = {
-  project: {},
+  item: {
+    servers: [],
+  },
   isFetching: false
 };
 
@@ -18,7 +20,7 @@ const project = (state = initialState, action) => {
       };
     case PROJECT_SUCCESS:
       return {
-        project: action.project,
+        item: action.project,
         isFetching: false
       };
     case PROJECT_FAILURE:
