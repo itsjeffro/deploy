@@ -21,7 +21,7 @@ const FoldersTable = props => {
         </thead>
         <tbody>
         {folders.map(folder =>
-          <tr>
+          <tr key={folder.id}>
             <td>{folder.from}</td>
             <td>{folder.to}</td>
             <td className="text-right">
