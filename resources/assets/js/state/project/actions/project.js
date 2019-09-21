@@ -2,9 +2,9 @@ import {
   PROJECT_REQUEST,
   PROJECT_SUCCESS,
   PROJECT_FAILURE
-} from './projectConstants';
+} from '../constants';
 
-import ProjectService from '../../services/Project';
+import ProjectService from '../../../services/Project';
 
 /**
  * Item is being requested.
@@ -25,29 +25,31 @@ export const projectSuccess = (project) =>({
 
 /**
  * Item failed being fetched.
+ *
+ * @param {object} error
  */
-export const projectFailure = () =>({
+export const projectFailure = (error) =>({
   type: PROJECT_FAILURE
 });
 
 /**
  * Fetch item asynchronously.
  *
- * @param {object} project
+ * @param {number} projectId
  */
-export const fetchProject = (project_id) => {
+export const fetchProject = (projectId) => {
   return (dispatch) => {
     const projectService = new ProjectService;
 
     dispatch(projectRequest());
 
     projectService
-      .get(project_id)
+      .get(projectId)
       .then(response => {
           dispatch(projectSuccess(response.data));
         },
         error => {
-          dispatch(projectFailure());
+          dispatch(projectFailure(error));
         });
   };
 };
