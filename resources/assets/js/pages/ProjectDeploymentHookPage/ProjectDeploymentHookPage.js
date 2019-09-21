@@ -1,34 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Deploy } from '../../config';
 
-import Button from '../../components/Button';
-import Icon from '../../components/Icon';
+import { fetchProject } from '../../state/project/actions/project';
+
+import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
-
+import PanelTitle from '../../components/PanelTitle';
 import ProjectActionService from '../../services/ProjectAction';
 import Layout from "../../components/Layout";
 
 class ProjectDeploymentHookPage extends React.Component {
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      isFetching: true,
-      actions: []
-    };
-  }
+  state = {
+    isFetching: true,
+    actions: []
+  };
 
   componentDidMount() {
-    const { project } = this.props;
+    const {
+      dispatch,
+      match: {
+        params: {
+          project_id
+        }
+      }
+    } = this.props;
+
     const projectActionService = new ProjectActionService;
 
+    dispatch(fetchProject(project_id));
+
     projectActionService
-      .index(project.id)
+      .index(project_id)
       .then(response => {
         this.setState({
           isFetching: false,
@@ -36,13 +41,20 @@ class ProjectDeploymentHookPage extends React.Component {
         });
       });
   }
-  
-  renderActionsTable(project, actions) {
+
+  /**
+   * Returns hooks and the associated actions (before and after) per action.
+   *
+   * @param project
+   * @param actions
+   */
+  renderActionsTable = (project, actions) => {
     return (
       <Panel>
         <PanelHeading>
           <PanelTitle>Deployment Hooks</PanelTitle>
         </PanelHeading>
+
         <div className="table-responsive">
           <table className="table">
             <thead>
@@ -82,7 +94,7 @@ class ProjectDeploymentHookPage extends React.Component {
         </div>
       </Panel>
     )
-  }
+  };
 
   render() {
     const { project } = this.props;
@@ -92,15 +104,15 @@ class ProjectDeploymentHookPage extends React.Component {
     } = this.state;
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <h2>Deployment Hooks</h2>
           </div>
         
-          <div className="container-fluid">
-            {isFetching ? <Loader /> : this.renderActionsTable(project, actions)}
-          </div>
+          <Container fluid>
+            {isFetching ? <Loader /> : this.renderActionsTable(project.item, actions)}
+          </Container>
         </div>
       </Layout>
     )
@@ -108,7 +120,9 @@ class ProjectDeploymentHookPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(
