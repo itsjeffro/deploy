@@ -16,8 +16,10 @@ class ProjectLinkedFolderCreatePage extends React.Component {
   state = {
     isFetching: true,
     isCreated: false,
-    project: {},
-    folder: {},
+    folder: {
+      from: '',
+      to: '',
+    },
     errors: [],
   };
 
@@ -88,10 +90,7 @@ class ProjectLinkedFolderCreatePage extends React.Component {
 
   render() {
     const { project } = this.props;
-    const {
-      isCreated,
-      errors
-    } = this.state;
+    const { isCreated, errors } = this.state;
 
     if (isCreated) {
       return <Redirect to={'/projects/' + project.item.id + '/folders'} />
