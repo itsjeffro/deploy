@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 import AceEditor from 'react-ace';
 
 import { createToast } from '../../state/alert/alertActions';
+import { fetchProject } from '../../state/project/actions/project';
 
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';
-
 import HooksTable from './HooksTable';
-
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
@@ -21,38 +20,25 @@ import Modal from '../../components/Modal';
 import Layout from "../../components/Layout";
 
 class ProjectActionPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      project: {},
-      action: {},
-      beforeHooks: [],
-      afterHooks: [],
-      hook: {
-        name: '',
-        script: '',
-        order: 0
-      },
-      errors: []
-    };
-
-    this.handleEditModalClick = this.handleEditModalClick.bind(this);
-    this.handleRemoveModalClick = this.handleRemoveModalClick.bind(this);
-    this.handleAddHookClick = this.handleAddHookClick.bind(this);
-    this.handleEditHookClick = this.handleEditHookClick.bind(this);
-    this.handleRemoveHookClick = this.handleRemoveHookClick.bind(this);
-    this.handleInputNameChange = this.handleInputNameChange.bind(this);
-    this.handleScriptChange = this.handleScriptChange.bind(this);
-  }
+  state = {
+    isFetching: true,
+    action: {},
+    beforeHooks: [],
+    afterHooks: [],
+    hook: {
+      name: '',
+      script: '',
+      order: 0
+    },
+    errors: []
+  };
 
   componentDidMount() {
-    const { project } = this.props;
+    const { dispatch } = this.props;
     const { project_id, action_id } = this.props.match.params;
     const projectActionService = new ProjectActionService;
 
-    this.setState({project: project});
+    dispatch(fetchProject(project_id));
 
     projectActionService
       .get(project_id, action_id)
@@ -97,15 +83,16 @@ class ProjectActionPage extends React.Component {
    *
    * @param {int} position
    */
-  handleAddModalClick(position) {
-    const { action, project } = this.state;
+  handleAddModalClick = (position) => {
+    const { project } = this.props;
+    const { action } = this.state;
 
     this.setState({
       errors: [],
       hook: {
         name: '',
         script: '',
-        project_id: project.id,
+        project_id: project.item.id,
         action_id: action.id,
         position: position,
         order: 0,
@@ -113,37 +100,37 @@ class ProjectActionPage extends React.Component {
     });
 
     $('#add-hook-modal').modal('show');
-  }
+  };
 
   /**
    * Show modal to edit hook.
    *
    * @param {object} hook
    */
-  handleEditModalClick(hook) {
+  handleEditModalClick = (hook) => {
     this.setState({
       hook: hook,
       errors: []
     });
 
     $('#edit-hook-modal').modal('show');
-  }
+  };
 
   /**
    * Show modal to confirm hook remove.
    *
    * @param {object} hook
    */
-  handleRemoveModalClick(hook) {
+  handleRemoveModalClick = (hook) => {
     this.setState({hook: hook});
 
     $('#remove-hook-modal').modal('show');
-  }
+  };
 
   /**
    * Handle click to process hook create.
    */
-  handleAddHookClick() {
+  handleAddHookClick = () => {
     const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
@@ -155,14 +142,14 @@ class ProjectActionPage extends React.Component {
       .then(response => {
         dispatch(createToast('Hook created successfully.'));
 
-        if (hook.position == 1) {
+        if (hook.position === 1) {
         	let hooks = this.state.beforeHooks.concat(response.data);
 
         	this.setState({
         		beforeHooks: hooks,
         		errors: []
         	});
-        } else if (hook.position == 2) {
+        } else if (hook.position === 2) {
         	let hooks = this.state.afterHooks.concat(response.data);
 
         	this.setState({
@@ -184,12 +171,12 @@ class ProjectActionPage extends React.Component {
 
         this.setState({errors: errors});
       });
-  }
+  };
 
   /**
    * Handle click to process hook update.
    */
-  handleEditHookClick() {
+  handleEditHookClick = () => {
     const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
@@ -221,7 +208,7 @@ class ProjectActionPage extends React.Component {
 
         this.setState({errors: errors});
       });
-  }
+  };
 
   /**
    * Update hooks (before or after) state to update hook specified by it's id.
@@ -230,22 +217,22 @@ class ProjectActionPage extends React.Component {
    * @param {int} hook_id
    * @param {object} updated_hook
    */
-  updateHook(hook_position, hook_id, updated_hook) {
+  updateHook = (hook_position, hook_id, updated_hook) => {
     const hooks = this.state[hook_position];
 
     return hooks.map(hook => {
-	  if (hook.id === updated_hook.id) {
-	    return Object.assign(hook, updated_hook);
-	  }
+      if (hook.id === updated_hook.id) {
+        return Object.assign(hook, updated_hook);
+      }
 
-	  return Object.assign({}, hook);
-	});
-  }
+      return Object.assign({}, hook);
+    });
+  };
 
   /**
    * Handle click to process hook remove.
    */
-  handleRemoveHookClick() {
+  handleRemoveHookClick = () => {
     const { dispatch } = this.props;
     const { hook } = this.state;
     const projectActionHookService = new ProjectActionHookService;
@@ -253,7 +240,7 @@ class ProjectActionPage extends React.Component {
     projectActionHookService
       .delete(hook.project_id, hook.action_id, hook.id)
       .then(response => {
-        let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
+        let hookPosition = hook.position === 1 ? 'beforeHooks' : 'afterHooks';
 
         dispatch(createToast('Hook removed successfully.'));
 
@@ -264,7 +251,7 @@ class ProjectActionPage extends React.Component {
       });
 
     $('#remove-hook-modal').modal('hide');
-  }
+  };
 
   /**
    * Update hooks (before or after) state to filter out hook specified by it's id.
@@ -272,7 +259,7 @@ class ProjectActionPage extends React.Component {
    * @param {string} hook_position
    * @param {int} hook_id
    */
-  removeHook(hook_position, hook_id) {
+  removeHook = (hook_position, hook_id) => {
     this.setState(state => {
       const hooks = state[hook_position].filter(hook => {
         return hook.id !== hook_id;
@@ -280,14 +267,14 @@ class ProjectActionPage extends React.Component {
 
       return {[hook_position]: hooks}
 	   });
-  }
+  };
 
   /**
    * Handle input name change for hook.
    *
    * @param {object} event
    */
-  handleInputNameChange(event) {
+  handleInputNameChange = (event) => {
     const value = event.target.value;
 
     this.setState(state => {
@@ -297,14 +284,14 @@ class ProjectActionPage extends React.Component {
 
       return {hook: hook};
     });
-  }
+  };
 
   /**
    * Handle script change for hook.
    *
    * @param {string} value
    */
-  handleScriptChange(value) {
+  handleScriptChange = (value) => {
     this.setState(state => {
       let hook = Object.assign({}, state.hook, {
         script: value
@@ -312,24 +299,24 @@ class ProjectActionPage extends React.Component {
 
       return {hook: hook};
     });
-  }
+  };
 
   render() {
+    const { project } = this.props;
     const {
       action,
-      project,
       beforeHooks,
       afterHooks,
+      errors,
       hook,
-      errors
     } = this.state;
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <h2>{action.name}</h2>
-            <Link to={'/projects/' + project.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
+            <Link to={'/projects/' + project.item.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
           </div>
 
           <div className="container-fluid">
@@ -385,7 +372,7 @@ class ProjectActionPage extends React.Component {
                 type="text"
                 id="name"
                 onChange={this.handleInputNameChange}
-                value={hook.name}
+                value={this.state.hook.name}
               />
             </div>
             <div className="form-group">
@@ -396,9 +383,9 @@ class ProjectActionPage extends React.Component {
                 name="editor-add"
                 onChange={this.handleScriptChange}
                 style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
-                value={hook.script}
+                value={this.state.hook.script}
               />
-              <textarea name="script" style={{display: 'none'}} value={hook.script} />
+              <textarea name="script" style={{display: 'none'}} value={hook.script} readOnly />
             </div>
           </Modal>
 
@@ -419,7 +406,7 @@ class ProjectActionPage extends React.Component {
                 name="name"
                 type="text"
                 onChange={this.handleInputNameChange}
-                value={hook.name}
+                value={this.state.hook.name}
               />
             </div>
             <div className="form-group">
@@ -428,11 +415,11 @@ class ProjectActionPage extends React.Component {
                 mode="powershell"
                 theme="github"
                 name="editor-edit"
-                value={hook.script}
+                value={this.state.hook.script}
                 onChange={this.handleScriptChange}
                 style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
               />
-              <textarea name="script" style={{display: 'none'}} value={hook.script} />
+              <textarea name="script" style={{display: 'none'}} value={hook.script} readOnly />
             </div>
           </Modal>
 
@@ -444,7 +431,7 @@ class ProjectActionPage extends React.Component {
               {text: 'Remove', onPress: () => this.handleRemoveHookClick()}
             ]}
           >
-            Are you sure you want to remove "{hook.name}"?
+            Are you sure you want to remove "{this.state.hook.name}"?
           </Modal>
         </div>
       </Layout>
@@ -453,7 +440,9 @@ class ProjectActionPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(
