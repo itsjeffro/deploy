@@ -1,15 +1,13 @@
+import { initialState } from './state';
+
 import {
   PROJECT_REQUEST,
   PROJECT_SUCCESS,
-  PROJECT_FAILURE
-} from './projectConstants';
-
-const initialState = {
-  item: {
-    servers: [],
-  },
-  isFetching: false
-};
+  PROJECT_FAILURE,
+  PROJECT_UPDATE_KEY_SUCCESS,
+  TEST_SERVER_CONNECTION_REQUEST,
+  UPDATE_SERVER_CONNECTION_STATUS
+} from './constants';
 
 const project = (state = initialState, action) => {
   switch(action.type) {
@@ -27,6 +25,48 @@ const project = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false
+      };
+    case PROJECT_UPDATE_KEY_SUCCESS:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          key: action.key,
+        }
+      };
+    case TEST_SERVER_CONNECTION_REQUEST:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          servers: state.item.servers.map(server => {
+            if (server.id === action.serverId) {
+              return {
+                ...server,
+                connection_status: 2,
+              }
+            } else {
+              return server;
+            }
+          })
+        }
+      };
+    case UPDATE_SERVER_CONNECTION_STATUS:
+      return {
+        ...state,
+        item: {
+          ...state.item,
+          servers: state.item.servers.map(server => {
+            if (server.id === action.serverId) {
+              return {
+                ...server,
+                connection_status: action.connectionStatus,
+              }
+            } else {
+              return server;
+            }
+          })
+        }
       };
 
     default:
