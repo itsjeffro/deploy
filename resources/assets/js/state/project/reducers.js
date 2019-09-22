@@ -1,4 +1,5 @@
 import { initialState } from './state';
+import { buildAlertFromResponse } from "../../utils/alert";
 
 import {
   PROJECT_REQUEST,
@@ -49,7 +50,7 @@ const project = (state = initialState, action) => {
       return {
         ...state,
         isUpdating: false,
-        errors: action.error,
+        errors: buildAlertFromResponse(action.error.response),
       };
 
     case PROJECT_UPDATE_KEY_SUCCESS:
