@@ -8,6 +8,9 @@ import {
   TEST_SERVER_CONNECTION_REQUEST,
   UPDATE_SERVER_CONNECTION_STATUS,
   PROJECT_SERVER_REMOVE_SUCCESS,
+  PROJECT_UPDATE_REQUEST,
+  PROJECT_UPDATE_SUCCESS,
+  PROJECT_UPDATE_FAILURE,
 } from './constants';
 
 const project = (state = initialState, action) => {
@@ -19,6 +22,7 @@ const project = (state = initialState, action) => {
       };
     case PROJECT_SUCCESS:
       return {
+        ...state,
         item: action.project,
         isFetching: false
       };
@@ -27,6 +31,27 @@ const project = (state = initialState, action) => {
         ...state,
         isFetching: false
       };
+
+    case PROJECT_UPDATE_REQUEST:
+      return {
+        ...state,
+        isUpdating: true,
+        errors: [],
+      };
+    case PROJECT_UPDATE_SUCCESS:
+      return {
+        ...state,
+        item: action.project,
+        isUpdating: false,
+        errors: [],
+      };
+    case PROJECT_UPDATE_FAILURE:
+      return {
+        ...state,
+        isUpdating: false,
+        errors: action.error,
+      };
+
     case PROJECT_UPDATE_KEY_SUCCESS:
       return {
         ...state,
@@ -35,6 +60,7 @@ const project = (state = initialState, action) => {
           key: action.key,
         }
       };
+
     case TEST_SERVER_CONNECTION_REQUEST:
       return {
         ...state,
@@ -52,6 +78,7 @@ const project = (state = initialState, action) => {
           })
         }
       };
+
     case UPDATE_SERVER_CONNECTION_STATUS:
       return {
         ...state,
@@ -69,6 +96,7 @@ const project = (state = initialState, action) => {
           })
         }
       };
+
     case PROJECT_SERVER_REMOVE_SUCCESS:
       return {
         ...state,
