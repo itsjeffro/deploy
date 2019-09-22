@@ -46,9 +46,7 @@ class ProjectEditPage extends React.Component {
       },
     } = this.props;
 
-    if (typeof projects.items === 'object' && projects.items.length === 0) {
-      dispatch(fetchProjects());
-    }
+    dispatch(fetchProjects());
 
     if (projects.items[project_id] !== undefined) {
       this.setState({

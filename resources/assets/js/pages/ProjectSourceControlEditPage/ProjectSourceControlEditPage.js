@@ -15,28 +15,72 @@ import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import TextField from '../../components/TextField';
 import Layout from "../../components/Layout";
+import {fetchProject, updateProject} from "../../state/project/actions";
+import Container from "../../components/Container";
 
 class ProjectSourceControlEditPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      isUpdated: false,
-      project: {},
-      grantedProviders: [],
-      errors: {},
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+  state = {
+    edit: {
+      name: '',
+      branch: '',
+      repository: '',
+      provider_id: 0,
+    },
+    grantedProviders: [],
+  };
 
   componentDidMount() {
-    const { project } = this.props;
-    const accountProviderService = new AccountProviderService;
+    const {
+      dispatch,
+      project,
+      match: {
+        params: {
+          project_id,
+        }
+      }
+    } = this.props;
 
-    this.setState({project: project});
+    if (project.item.id === null) {
+      dispatch(fetchProject(project_id));
+    }
+
+    this.setState({
+      edit: this.setEditState(project),
+    });
+
+    this.loadAccountProviders();
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { project } = this.props;
+
+    if (project.item.id === null) {
+      this.setState({
+        edit: this.setEditState(nextProps.project),
+      });
+    }
+  }
+
+  /**
+   * Sets the necessary project edit state.
+   *
+   * @param {object} project
+   * @return {object}
+   */
+  setEditState = (project) => {
+    return {
+      name: project.item.name,
+      branch: project.item.branch,
+      repository: project.item.repository,
+      provider_id: project.item.provider_id,
+    };
+  };
+
+  /**
+   * Retrieves account providers.
+   */
+  loadAccountProviders = () => {
+    const accountProviderService = new AccountProviderService;
 
     accountProviderService
       .index('/api/account-providers')
@@ -49,7 +93,7 @@ class ProjectSourceControlEditPage extends React.Component {
           grantedProviders: providers
         });
       });
-  }
+  };
 
   /**
    * Handle project's source control input change.
@@ -57,17 +101,18 @@ class ProjectSourceControlEditPage extends React.Component {
    * @param {object} event
    * @return {void}
    */
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const name = event.target.name;
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
 
     this.setState(state => {
-      const project = Object.assign({}, state.project, {
+      const project = {
+        ...state.edit,
         [name]: value
-      });
-      return {project: project}
+      };
+      return {edit: project}
     });
-  }
+  };
 
   /**
    * Handle project's source control update.
@@ -75,54 +120,27 @@ class ProjectSourceControlEditPage extends React.Component {
    * @param {object} event
    * @return {void}
    */
-  handleClick(event) {
-    const { dispatch } = this.props;
-    const { project } = this.state;
-    const projectService = new ProjectService;
+  handleClick = (event) => {
+    const { dispatch, project } = this.props;
+    const { edit } = this.state;
 
-    projectService
-      .update(project.id, project)
-      .then(response => {
-        dispatch(createToast('Project\'s source control updated successfully.'));
-
-        this.setState({
-            isUpdated: true,
-            errors: []
-        });
-      },
-      error => {
-        let errorResponse = error.response.data;
-
-        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-
-        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-            return previous.concat(errorResponse[key][0]);
-        }, []);
-
-        this.setState({errors: errors});
-      });
-  }
+    dispatch(updateProject(project.item.id, edit));
+  };
 
   render() {
-    const {
-      project,
-      errors,
-      grantedProviders,
-      isUpdated
-    } = this.state;
-
-    if (isUpdated) {
-      return <Redirect to={'/projects/' + project.id} />
-    }
+    const { project } = this.props;
+    const { grantedProviders } = this.state;
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
-          <div className="container-fluid heading">
-            <h2>Source Control</h2>
-          </div>
+          <Container fluid>
+            <div className="heading">
+              <h2>Source Control</h2>
+            </div>
+          </Container>
 
-          <div className="container-fluid">
+          <Container fluid>
             <div className="row">
               <div className="col-xs-12 col-sm-3">
                 <Panel>
@@ -131,8 +149,8 @@ class ProjectSourceControlEditPage extends React.Component {
                   </PanelHeading>
 
                   <div className="list-group">
-                    <Link to={'/projects/' + project.id + '/edit'} className="list-group-item">General settings</Link>
-                    <Link to={'/projects/' + project.id + '/source-control/edit'} className="list-group-item">Source control</Link>
+                    <Link to={'/projects/' + project.item.id + '/edit'} className="list-group-item">General settings</Link>
+                    <Link to={'/projects/' + project.item.id + '/source-control/edit'} className="list-group-item">Source control</Link>
                   </div>
                 </Panel>
               </div>
@@ -143,7 +161,7 @@ class ProjectSourceControlEditPage extends React.Component {
                   <PanelTitle>Source Control</PanelTitle>
                 </PanelHeading>
                   <PanelBody>
-                    {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+                    {project.errors.length ? <AlertErrorValidation errors={project.errors} /> : ''}
 
                     <div className="form-group">
                       <label>Providers</label>
@@ -151,12 +169,13 @@ class ProjectSourceControlEditPage extends React.Component {
                       {grantedProviders.map(grantedProvider =>
                         <div key={grantedProvider.id}>
                           <label htmlFor={grantedProvider.name}>
-                            <input name="provider_id"
+                            <input
+                              name="provider_id"
                               type="radio"
                               value={grantedProvider.id}
                               id={grantedProvider.name}
                               onChange={this.handleInputChange}
-                              checked={project.provider_id === grantedProvider.id}
+                              checked={parseInt(this.state.edit.provider_id) === grantedProvider.id}
                             /> {grantedProvider.name}
                           </label>
                         </div>
@@ -166,10 +185,10 @@ class ProjectSourceControlEditPage extends React.Component {
                     <div className="form-group">
                       <TextField
                         id="repository"
-                        label="Respository"
+                        label="Repository"
                         onChange={this.handleInputChange}
                         name="repository"
-                        value={project.repository}
+                        value={this.state.edit.repository}
                         placeholder="user/repository"
                       />
                     </div>
@@ -180,19 +199,19 @@ class ProjectSourceControlEditPage extends React.Component {
                         label="Branch"
                         onChange={this.handleInputChange}
                         name="branch"
-                        value={project.branch}
+                        value={this.state.edit.branch}
                       />
                     </div>
 
                     <Button
                       color="primary"
                       onClick={this.handleClick}
-                    >Save</Button>
+                    >{project.isUpdating ? 'Saving...' : 'Save'}</Button>
                   </PanelBody>
                 </Panel>
               </div>
             </div>
-          </div>
+          </Container>
         </div>
       </Layout>
     )
@@ -200,7 +219,9 @@ class ProjectSourceControlEditPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(
