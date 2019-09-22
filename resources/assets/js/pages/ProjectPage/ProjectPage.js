@@ -7,6 +7,13 @@ import { fetchProject } from '../../state/project/actions/project';
 import { updateProjectKey } from '../../state/project/actions/key';
 import { testServerConnection, updateServerConnectionStatus } from '../../state/project/actions/serverConnectionTest';
 import { removeProjectServer } from '../../state/project/actions/removeProjectServer';
+import {
+  fetchProjectDeployments,
+  createProjectDeployment,
+  createProjectRedeployment,
+  projectDeploymentDeploying,
+  projectDeploymentDeployed
+} from "../../state/projectDeployments/actions";
 
 import Alert from '../../components/Alert';
 import Icon from '../../components/Icon';
@@ -20,13 +27,9 @@ import ProjectDetails from './ProjectDetails';
 import DeploymentDetails from './DeploymentDetails';
 import DeploymentsTable from './DeploymentsTable';
 import ServersTable from './ServersTable';
-import ProjectRedeploymentService from '../../services/ProjectRedeployment';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
-import { fetchProjectDeployments } from "../../state/projectDeployments/actions/fetchProjectDeployments";
-import { createProjectDeployment } from "../../state/projectDeployments/actions/createProjectDeployment";
 import Container from "../../components/Container";
-import { projectDeploymentDeploying, projectDeploymentDeployed} from "../../state/projectDeployments/actions/deployProjectDeployment";
 
 class ProjectPage extends React.Component {
   state = {
@@ -204,8 +207,8 @@ class ProjectPage extends React.Component {
     const { dispatch, project } = this.props;
     const { deploy } = this.state;
 
-    let reference = deploy.reference == 'default' ? 'branch' : deploy.reference;
-    let name = deploy.reference == 'default' ? project.item.branch : deploy.name;
+    let reference = deploy.reference === 'default' ? 'branch' : deploy.reference;
+    let name = deploy.reference === 'default' ? project.item.branch : deploy.name;
 
     dispatch(createProjectDeployment(project.item.id, {
       reference: reference,
@@ -219,19 +222,12 @@ class ProjectPage extends React.Component {
    * Handles processing the redeployment when the button is clicked.
    */
   handleRedeploymentClick = () => {
+    const { dispatch } = this.props;
     const { redeploy } = this.state;
-    const projectRedeploymentService = new ProjectRedeploymentService;
 
-    projectRedeploymentService
-      .create({
-        deployment_id: redeploy.deployment_id
-      })
-      .then(response => {
-        $('#redeploy-modal').modal('hide');
-      },
-      error => {
-        alert('Could not redeploy');
-      });
+    dispatch(createProjectRedeployment(redeploy.deployment_id));
+
+    $('#redeploy-modal').modal('hide');
   };
 
   /**
