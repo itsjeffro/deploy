@@ -20,12 +20,13 @@ import ProjectDetails from './ProjectDetails';
 import DeploymentDetails from './DeploymentDetails';
 import DeploymentsTable from './DeploymentsTable';
 import ServersTable from './ServersTable';
-import ProjectDeploymentService from '../../services/ProjectDeployment';
 import ProjectRedeploymentService from '../../services/ProjectRedeployment';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
-import { fetchProjectDeployments } from "../../state/projectDeployments/actions";
+import { fetchProjectDeployments } from "../../state/projectDeployments/actions/fetchProjectDeployments";
+import { createProjectDeployment } from "../../state/projectDeployments/actions/createProjectDeployment";
 import Container from "../../components/Container";
+import { projectDeploymentDeploying, projectDeploymentDeployed} from "../../state/projectDeployments/actions/deployProjectDeployment";
 
 class ProjectPage extends React.Component {
   state = {
@@ -65,22 +66,15 @@ class ProjectPage extends React.Component {
    *
    * @param {number} projectId
    */
-  listenForEvents(projectId) {
+  listenForEvents = (projectId) => {
     const { dispatch } = this.props;
 
     Echo.private('project.' + projectId)
       .listen('.Deploy\\Events\\DeploymentDeploying', e => {
-        this.setState(state => {
-          const deployments = [e.deployment].concat(state.deployments.slice(0, 4));
-          return {deployments: deployments}
-        });
+        dispatch(projectDeploymentDeploying(e.deployment));
       })
       .listen('.Deploy\\Events\\DeploymentFinished', e => {
-        this.setState(state => {
-          const deployments = this.updateDeploymentStatus(state.deployments, e.deployment);
-
-          return {deployments: deployments}
-        });
+        dispatch(projectDeploymentDeployed(e.deployment));
       })
       .listen('.Deploy\\Events\\ServerConnectionTested', e => {
         dispatch(updateServerConnectionStatus(e.server.id, e.server.connection_status));
@@ -104,7 +98,7 @@ class ProjectPage extends React.Component {
     const repositoryTagBranchService = new RepositoryTagBranchService;
 
     repositoryTagBranchService
-      .get(project.provider_id, project.repository)
+      .get(project.item.provider_id, project.item.repository)
       .then(response => {
         this.setState({
           branches: response.data.branches,
@@ -207,24 +201,18 @@ class ProjectPage extends React.Component {
    * Handles processing the deployment when the button is clicked.
    */
   handleDeploymentClick = () => {
-    const { project } = this.props;
+    const { dispatch, project } = this.props;
     const { deploy } = this.state;
-    const projectDeploymentService = new ProjectDeploymentService;
 
     let reference = deploy.reference == 'default' ? 'branch' : deploy.reference;
-    let name = deploy.reference == 'default' ? project.branch : deploy.name;
+    let name = deploy.reference == 'default' ? project.item.branch : deploy.name;
 
-    projectDeploymentService
-      .create(project.id, {
-        reference: reference,
-        name: name
-      })
-      .then(response => {
-        $('#deploy-modal').modal('hide');
-      },
-      error => {
-        alert('Could not deploy');
-      });
+    dispatch(createProjectDeployment(project.item.id, {
+      reference: reference,
+      name: name
+    }));
+
+    $('#deploy-modal').modal('hide');
   };
 
   /**
@@ -287,7 +275,7 @@ class ProjectPage extends React.Component {
   };
 
   /**
-   * @param previousDeployments
+   * @param {array} previousDeployments
    * @param deployment
    * @returns {*}
    */
