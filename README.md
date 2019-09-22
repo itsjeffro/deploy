@@ -35,12 +35,20 @@ Deploy\DeployServiceProvider::class
 ```
 
 Publish the package's config and assets:
+
 ```
 php artisan vendor:publish --tag=deploy-config
 php artisan vendor:publish --tag=deploy-assets
 ```
 
+When you update to a new release of deploy package, you should make sure you update the assets using the command below.
+
+```
+php artisan vendor:publish --tag=deploy-assets --force
+```
+
 Run the package's migrations:
+
 ```
 php artisan migrate
 ```
