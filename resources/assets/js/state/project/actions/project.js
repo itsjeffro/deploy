@@ -9,7 +9,7 @@ import ProjectService from '../../../services/Project';
 /**
  * Item is being requested.
  */
-export const projectRequest = () =>({
+export const fetchProjectRequest = () =>({
   type: PROJECT_REQUEST
 });
 
@@ -18,7 +18,7 @@ export const projectRequest = () =>({
  *
  * @param {object} project
  */
-export const projectSuccess = (project) =>({
+export const fetchProjectSuccess = (project) =>({
   type: PROJECT_SUCCESS,
   project: project
 });
@@ -28,7 +28,7 @@ export const projectSuccess = (project) =>({
  *
  * @param {object} error
  */
-export const projectFailure = (error) =>({
+export const fetchProjectFailure = (error) =>({
   type: PROJECT_FAILURE
 });
 
@@ -41,15 +41,15 @@ export const fetchProject = (projectId) => {
   return (dispatch) => {
     const projectService = new ProjectService;
 
-    dispatch(projectRequest());
+    dispatch(fetchProjectRequest());
 
     projectService
       .get(projectId)
       .then(response => {
-          dispatch(projectSuccess(response.data));
+          dispatch(fetchProjectSuccess(response.data));
         },
         error => {
-          dispatch(projectFailure(error));
+          dispatch(fetchProjectFailure(error));
         });
   };
 };
