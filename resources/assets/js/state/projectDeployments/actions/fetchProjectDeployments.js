@@ -1,29 +1,23 @@
-import ProjectDeployment from '../../services/ProjectDeployment';
+import {
+  PROJECT_DEPLOYMENTS_REQUEST,
+  PROJECT_DEPLOYMENTS_SUCCESS,
+  PROJECT_DEPLOYMENTS_FAILURE,
+} from '../constants';
 
-/**
- * Items are being requested.
- */
+import ProjectDeployment from '../../../services/ProjectDeployment';
+
 export const projectDeploymentsRequest = () =>({
-  type: 'PROJECT_DEPLOYMENTS_REQUEST'
+  type: PROJECT_DEPLOYMENTS_REQUEST,
 });
 
-/**
- * Items were fetch successfully.
- *
- * @param {array} deployments
- */
 export const projectDeploymentsSuccess = (deployments) =>({
-  type: 'PROJECT_DEPLOYMENTS_SUCCESS',
-  deployments: deployments
+  type: PROJECT_DEPLOYMENTS_SUCCESS,
+  deployments: deployments,
 });
 
-/**
- * Items failed being fetched.
- *
- * @param {object} errors
- */
-export const projectDeploymentsFailure = (errors) =>({
-  type: 'PROJECT_DEPLOYMENTS_FAILURE'
+export const projectDeploymentsFailure = (error) =>({
+  type: PROJECT_DEPLOYMENTS_FAILURE,
+  error: error,
 });
 
 /**
