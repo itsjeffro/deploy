@@ -3,6 +3,7 @@
 namespace Deploy\Events;
 
 use Deploy\Models\Deployment;
+use Deploy\Resources\DeploymentResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -39,5 +40,17 @@ class DeploymentDeploying implements ShouldBroadcastNow
     public function broadcastOn()
     {
         return new PrivateChannel('project.' . $this->deployment->project_id);
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return [
+            'deployment' => new DeploymentResource($this->deployment),
+        ];
     }
 }

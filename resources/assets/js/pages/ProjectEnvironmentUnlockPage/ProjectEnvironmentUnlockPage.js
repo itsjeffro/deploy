@@ -5,20 +5,18 @@ import { Link } from 'react-router-dom';
 import ProjectEnvironmentUnlockService from '../../services/ProjectEnvironmentUnlock';
 import ProjectEnvironmentService from '../../services/ProjectEnvironment';
 
-import {fetchProject} from '../../state/project/projectActions';
+import { fetchProject } from '../../state/project/actions/project';
 
 import Alert from '../../components/Alert';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
+import Container from '../../components/Container';
 import Grid from '../../components/Grid';
-import Icon from '../../components/Icon';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import TextField from '../../components/TextField';
-
 import EnvironmentServersTable from './EnvironmentServersTable';
-
 import { buildAlertFromResponse } from '../../utils/alert';
 import Layout from "../../components/Layout";
 
@@ -58,7 +56,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     this.setState(prevState => {
       const environment = {
         ...prevState.environment,
-        servers: project.environment_servers.map(server => {
+        servers: project.item.environment_servers.map(server => {
           return server.server_id;
         }, []),
       };
@@ -66,9 +64,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       return {environment: environment};
     });
 
-    if (typeof project === 'object' && Object.keys(project).length === 0) {
-      dispatch(fetchProject(match.params.project_id));
-    }
+    dispatch(fetchProject(match.params.project_id));
 
     Echo.private('project.' + project.id)
       .listen('.Deploy\\Events\\EnvironmentSyncing', (e) => {
@@ -106,12 +102,12 @@ class ProjectEnvironmentUnlockPage extends React.Component {
    * Handle environment unlock click.
    */
   handleClick() {
-    const {environment} = this.state;
-    const {project} = this.props;
+    const { environment } = this.state;
+    const { project } = this.props;
     const projectEnvironmentUnlockService = new ProjectEnvironmentUnlockService;
 
     projectEnvironmentUnlockService
-      .post(project.id, environment)
+      .post(project.item.id, environment)
       .then(response => {
       	this.setState({errors: []});
 
@@ -135,12 +131,12 @@ class ProjectEnvironmentUnlockPage extends React.Component {
    * Handle environment update click.
    */
   handleUpdateClick() {
-    const {project} = this.props;
-    const {environment} = this.state;
+    const { project } = this.props;
+    const { environment } = this.state;
     const projectEnvironmentService = new ProjectEnvironmentService;
 
     projectEnvironmentService
-      .put(project.id, environment)
+      .put(project.item.id, environment)
       .then(response => {
         this.setState({
           errors: []
@@ -215,22 +211,30 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     } = this.state;
 
     const {
-      project,
-      isFetching
+      project
     } = this.props;
 
-    if (isFetching) {
+    if (project.isFetching) {
       return (
-        <div>
-          {this.renderBreadcrumbs(project)}
-          <Loader />
-        </div>
+        <Layout project={project.item}>
+          <div className="content">
+            <div className="container-fluid heading">
+              <h2>
+                Environment
+              </h2>
+            </div>
+
+            <Container fluid>
+              <Loader />
+            </Container>
+          </div>
+        </Layout>
       )
     }
 
     if (unlocked) {
       return (
-        <Layout project={project}>
+        <Layout project={project.item}>
           <div className="content">
             <div className="container-fluid heading">
               <h2>
@@ -283,7 +287,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
                 <Grid xs={12} md={4}>
                   <EnvironmentServersTable
-                    project={project}
+                    project={project.item}
                     syncedServers={environment.servers}
                     syncStatus={syncStatus}
                     onSyncServerClick={this.handleSyncServerClick}
@@ -297,7 +301,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     }
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <h2>
@@ -338,7 +342,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                 </div>
 
                 <Link
-                  to={'/projects/' + project.id + '/environment-reset'}
+                  to={'/projects/' + project.item.id + '/environment-reset'}
                 >Need to reset your key?</Link>
               </PanelBody>
             </Panel>
@@ -350,7 +354,9 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(

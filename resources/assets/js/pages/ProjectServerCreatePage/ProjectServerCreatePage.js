@@ -1,38 +1,49 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
 import ProjectServerService from '../../services/ProjectServer';
-
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import Layout from '../../components/Layout';
+import { fetchProject } from "../../state/project/actions/project";
 
 class ProjectServerCreatePage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      isCreated: false,
-      project: {},
-      server: {},
-      errors: []
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+  state = {
+    isFetching: true,
+    isCreated: false,
+    server: {
+      name: '',
+      port: '',
+      ip_address: '',
+      project_path: '',
+      connect_as: '',
+    },
+    errors: [],
+  };
 
   componentDidMount() {
-    const { project } = this.props;
+    const {
+      dispatch,
+      project,
+      match: {
+        params: {
+          project_id,
+        }
+      }
+    } = this.props;
 
-    this.setState({project: project});
+    dispatch(fetchProject(project_id));
   }
 
-  handleInputChange(event) {
+  /**
+   * Handle input change when creating a server.
+   *
+   * @param {object} event
+   */
+  handleInputChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
 
@@ -40,17 +51,23 @@ class ProjectServerCreatePage extends React.Component {
       const server = Object.assign({}, state.server, {
         [name]: value
       });
+
       return {server: server}
     });
-  }
+  };
 
-  handleClick(event) {
-    const { dispatch } = this.props;
-    const { project, server } = this.state;
+  /**
+   * Handle click for creating a server.
+   *
+   * @param {object} event
+   */
+  handleClick = (event) => {
+    const { dispatch, project } = this.props;
+    const { server } = this.state;
     const projectServerService = new ProjectServerService;
 
     projectServerService
-      .create(project.id, server)
+      .create(project.item.id, server)
       .then(response => {
           dispatch(createToast('Server created successfully.'));
 
@@ -67,22 +84,22 @@ class ProjectServerCreatePage extends React.Component {
 
           this.setState({errors: errors});
         });
-  }
+  };
 
   render() {
+    const { project } = this.props;
+
     const {
-      project,
-      server,
       isCreated,
       errors
     } = this.state;
 
     if (isCreated) {
-      return <Redirect to={'/projects/' + project.id} />
+      return <Redirect to={'/projects/' + project.item.id} />
     }
 
     return (
-      <Layout project={project}>
+      <Layout project={project.item}>
         <div className="content">
           <div className="container-fluid heading">
             <div className="pull-left">
@@ -103,7 +120,7 @@ class ProjectServerCreatePage extends React.Component {
                     type="text"
                     id="name"
                     onChange={this.handleInputChange}
-                    value={server.name}
+                    value={this.state.server.name}
                   />
                 </div>
                 <div className="row">
@@ -115,7 +132,7 @@ class ProjectServerCreatePage extends React.Component {
                       type="text"
                       id="ip_address"
                       onChange={this.handleInputChange}
-                      value={server.ip_address}
+                      value={this.state.server.ip_address}
                     />
                   </div>
                   <div className="form-group col-xs-4 col-md-3">
@@ -126,7 +143,7 @@ class ProjectServerCreatePage extends React.Component {
                       type="text"
                       id="port"
                       onChange={this.handleInputChange}
-                      value={server.port}
+                      value={this.state.server.port}
                       placeholder="22"
                     />
                   </div>
@@ -139,7 +156,7 @@ class ProjectServerCreatePage extends React.Component {
                     type="text"
                     id="connect_as"
                     onChange={this.handleInputChange}
-                    value={server.connect_as}
+                    value={this.state.server.connect_as}
                   />
                 </div>
                 <div className="form-group">
@@ -150,7 +167,7 @@ class ProjectServerCreatePage extends React.Component {
                     type="text"
                     id="project_path"
                     onChange={this.handleInputChange}
-                    value={server.project_path}
+                    value={this.state.server.project_path}
                   />
                 </div>
 
@@ -165,7 +182,9 @@ class ProjectServerCreatePage extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return state.project;
+  return {
+    project: state.project,
+  };
 };
 
 export default connect(

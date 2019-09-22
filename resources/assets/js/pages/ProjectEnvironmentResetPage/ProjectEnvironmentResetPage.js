@@ -99,7 +99,7 @@ class ProjectEnvironmentResetPage extends React.Component {
 
                 <div className="form-group">
                   <TextField
-                    label="Key"
+                    label="New Key"
                     name="key"
                     type="password"
                     onChange={this.handleInputChange}

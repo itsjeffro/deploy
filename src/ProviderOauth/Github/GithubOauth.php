@@ -8,11 +8,23 @@ use GuzzleHttp\Client;
 class GithubOauth extends AbstractProviderOauth
 {
     /**
+     * Authorization scopes.
+     *
+     * @var array
+     */
+    public $scopes = ['repo'];
+
+    /**
      * {@inheritdoc}
      */
     public function getAuthorizeUrl()
     {
-        return 'https://github.com/login/oauth/authorize?client_id=' . $this->getClientId();
+        $queries = [
+            'client_id' => $this->getClientId(),
+            'scope' => implode($this->scopes),
+        ];
+
+        return 'https://github.com/login/oauth/authorize?' . http_build_query($queries);
     }
 
     /**

@@ -2,14 +2,14 @@ import {
   PROJECT_REQUEST,
   PROJECT_SUCCESS,
   PROJECT_FAILURE
-} from './projectConstants';
+} from '../constants';
 
-import ProjectService from '../../services/Project';
+import ProjectService from '../../../services/Project';
 
 /**
  * Item is being requested.
  */
-export const projectRequest = () =>({
+export const fetchProjectRequest = () =>({
   type: PROJECT_REQUEST
 });
 
@@ -18,36 +18,38 @@ export const projectRequest = () =>({
  *
  * @param {object} project
  */
-export const projectSuccess = (project) =>({
+export const fetchProjectSuccess = (project) =>({
   type: PROJECT_SUCCESS,
   project: project
 });
 
 /**
  * Item failed being fetched.
+ *
+ * @param {object} error
  */
-export const projectFailure = () =>({
+export const fetchProjectFailure = (error) =>({
   type: PROJECT_FAILURE
 });
 
 /**
  * Fetch item asynchronously.
  *
- * @param {object} project
+ * @param {number} projectId
  */
-export const fetchProject = (project_id) => {
+export const fetchProject = (projectId) => {
   return (dispatch) => {
     const projectService = new ProjectService;
 
-    dispatch(projectRequest());
+    dispatch(fetchProjectRequest());
 
     projectService
-      .get(project_id)
+      .get(projectId)
       .then(response => {
-          dispatch(projectSuccess(response.data));
+          dispatch(fetchProjectSuccess(response.data));
         },
         error => {
-          dispatch(projectFailure());
+          dispatch(fetchProjectFailure(error));
         });
   };
 };
