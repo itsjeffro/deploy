@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AceEditor from 'react-ace';
 
 import { createToast } from '../../state/alert/alertActions';
-import { fetchProject } from '../../state/project/actions/project';
+import { fetchProject } from '../../state/project/actions';
 
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';

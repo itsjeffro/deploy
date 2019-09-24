@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { fetchProject } from '../../state/project/actions/project';
+import { fetchProject } from '../../state/project/actions';
 
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';

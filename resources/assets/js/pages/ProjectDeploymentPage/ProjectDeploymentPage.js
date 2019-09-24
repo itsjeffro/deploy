@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchProject } from '../../state/project/actions/project';
+import { fetchProject } from '../../state/project/actions';
 import ProjectDeploymentService from '../../services/ProjectDeployment';
 import { buildSequencesFromProcesses } from '../../utils/squence';
 import Loader from '../../components/Loader';

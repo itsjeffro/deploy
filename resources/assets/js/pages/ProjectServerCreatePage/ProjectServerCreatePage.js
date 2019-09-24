@@ -8,7 +8,7 @@ import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import Layout from '../../components/Layout';
-import { fetchProject } from "../../state/project/actions/project";
+import { fetchProject } from "../../state/project/actions";
 
 class ProjectServerCreatePage extends React.Component {
   state = {

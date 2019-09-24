@@ -14,7 +14,7 @@ import PanelTitle from '../../components/PanelTitle';
 import FoldersTable from './FoldersTable';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
-import {fetchProject} from "../../state/project/actions/project";
+import {fetchProject} from "../../state/project/actions";
 
 class ProjectLinkedFolderPage extends React.Component {
   state = {

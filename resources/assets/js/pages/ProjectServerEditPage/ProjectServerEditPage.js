@@ -10,7 +10,7 @@ import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import Layout from '../../components/Layout';
-import {fetchProject} from "../../state/project/actions/project";
+import {fetchProject} from "../../state/project/actions";
 
 class ProjectServerEditPage extends React.Component {
   state = {
