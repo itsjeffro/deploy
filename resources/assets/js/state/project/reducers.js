@@ -2,9 +2,9 @@ import { initialState } from './state';
 import { buildAlertFromResponse } from "../../utils/alert";
 
 import {
-  PROJECT_REQUEST,
-  PROJECT_SUCCESS,
-  PROJECT_FAILURE,
+  PROJECT_FETCH_REQUEST,
+  PROJECT_FETCH_SUCCESS,
+  PROJECT_FETCH_FAILURE,
   PROJECT_UPDATE_KEY_SUCCESS,
   TEST_SERVER_CONNECTION_REQUEST,
   UPDATE_SERVER_CONNECTION_STATUS,
@@ -16,18 +16,18 @@ import {
 
 const project = (state = initialState, action) => {
   switch(action.type) {
-    case PROJECT_REQUEST:
+    case PROJECT_FETCH_REQUEST:
       return {
         ...state,
         isFetching: true
       };
-    case PROJECT_SUCCESS:
+    case PROJECT_FETCH_SUCCESS:
       return {
         ...state,
         item: action.project,
         isFetching: false
       };
-    case PROJECT_FAILURE:
+    case PROJECT_FETCH_FAILURE:
       return {
         ...state,
         isFetching: false
