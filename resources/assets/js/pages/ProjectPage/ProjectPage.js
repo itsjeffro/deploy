@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Deploy } from '../../config';
 
-import { fetchProject } from '../../state/project/actions/project';
+import { Deploy } from '../../config';
+import { fetchProject } from '../../state/project/actions';
 import { updateProjectKey } from '../../state/project/actions/key';
 import { testServerConnection, updateServerConnectionStatus } from '../../state/project/actions/serverConnectionTest';
 import { removeProjectServer } from '../../state/project/actions/removeProjectServer';
@@ -14,7 +14,6 @@ import {
   projectDeploymentDeploying,
   projectDeploymentDeployed
 } from "../../state/projectDeployments/actions";
-
 import Alert from '../../components/Alert';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';

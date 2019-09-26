@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
-
 import ProjectService from '../../services/Project';
 import ProjectEnvironmentResetService from '../../services/ProjectEnvironmentReset';
-
 import Alert from '../../components/Alert';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
-import Icon from '../../components/Icon';
 import TextField from '../../components/TextField';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';

@@ -1,7 +1,7 @@
 import {
-  PROJECT_REQUEST,
-  PROJECT_SUCCESS,
-  PROJECT_FAILURE
+  PROJECT_FETCH_REQUEST,
+  PROJECT_FETCH_SUCCESS,
+  PROJECT_FETCH_FAILURE
 } from '../constants';
 
 import ProjectService from '../../../services/Project';
@@ -10,7 +10,7 @@ import ProjectService from '../../../services/Project';
  * Item is being requested.
  */
 export const fetchProjectRequest = () =>({
-  type: PROJECT_REQUEST
+  type: PROJECT_FETCH_REQUEST
 });
 
 /**
@@ -19,7 +19,7 @@ export const fetchProjectRequest = () =>({
  * @param {object} project
  */
 export const fetchProjectSuccess = (project) =>({
-  type: PROJECT_SUCCESS,
+  type: PROJECT_FETCH_SUCCESS,
   project: project
 });
 
@@ -29,7 +29,7 @@ export const fetchProjectSuccess = (project) =>({
  * @param {object} error
  */
 export const fetchProjectFailure = (error) =>({
-  type: PROJECT_FAILURE
+  type: PROJECT_FETCH_FAILURE
 });
 
 /**

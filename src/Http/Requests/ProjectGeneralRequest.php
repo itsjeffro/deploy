@@ -26,6 +26,7 @@ class ProjectGeneralRequest extends FormRequest
         return [
             'name' => 'required',
             'repository' => 'required',
+            'branch' => 'required',
         ];
     }
 }
