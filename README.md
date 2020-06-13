@@ -1,7 +1,7 @@
 # Deploy
 
 <p align="center">
-    <a href="https://travis-ci.org/itsjeffro/deploy"><img src="https://travis-ci.org/itsjeffro/deploy.svg?branch=master" alt="Build Status"></a>
+    <a href="https://github.com/itsjeffro/deploy/actions"><img src="https://github.com/itsjeffro/deploy/workflows/tests/badge.svg" alt="Build Status"></a>
     <a href="https://packagist.org/packages/itsjeffro/deploy"><img src="https://poser.pugx.org/itsjeffro/deploy/license.svg"></a>
     <a href="https://packagist.org/packages/itsjeffro/deploy"><img src="https://poser.pugx.org/itsjeffro/deploy/d/total.svg" alt="Total Downloads"></a>
 </p>
