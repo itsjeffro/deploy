@@ -97,6 +97,10 @@ Worker roles also handle:
 
 * Testing server connections
 
+## Deploy dashboard
+
+Once you have completed the bare minimum of installation, a dashboard to manage your projects will be exposed at `/deploy`.
+
 ## Broadcasting
 
 To allow real-time feedback when a deployment or server connection has started or finished, you may set up the application 
