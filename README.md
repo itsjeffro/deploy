@@ -115,19 +115,23 @@ Once you have completed the bare minimum of installation, a dashboard to manage 
 To allow real-time feedback when a deployment or server connection has started or finished, you may set up the application 
 to utlise Laravel's broadcasting feature.
 
-### Publish Resources
+Deploy currently only supports Pusher.
 
-TBA
+```
+composer require pusher/pusher-php-server "~4.0"
+```
 
-### Publish Views
-
-TBA
+Note: You may need to restart the queue worker to pick up on your configuration updates.
 
 ### Configuration
 
-TBA
+You will need to change your broadcast driver to `pusher` in your `.env` file:
 
-Note: You may need to restart the queue worker to pick up on your configuration updates.
+```
+BROADCAST_DRIVER=pusher
+```
+
+Finally, you may update the Pusher credentials. The frontend assets for Deploy will automatically include your Pusher key and cluster.
 
 ## Deployments
 
