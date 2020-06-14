@@ -64,7 +64,9 @@ Before using the deploy application, you will need to set up your repository pro
 
 Update your `.env` file to include a provider of your choice. A minimum of one provider is required.
 
-__Bitbucket__
+Ensure that the callback URL is set as well. For example, `yoursite.com/deploy/authorize/<provider>/access`.
+
+#### Bitbucket
 
 https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
 
@@ -73,7 +75,11 @@ BITBUCKET_OAUTH_KEY=client_id
 BITBUCKET_OAUTH_SECRET=client_secret
 ```
 
-__Github__
+Callback URL: `https://yoursite.com/deploy/authorize/bitbucket/access`
+
+Permissions: `projects:read`, `account:read`, `webhooks:read and write`
+
+#### Github
 
 https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
 
@@ -81,6 +87,8 @@ https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
 GITHUB_OAUTH_KEY=client_id
 GITHUB_OAUTH_SECRET=client_secret
 ```
+
+Callback URL: `https://yoursite.com/deploy/authorize/github/access`
 
 ### Queue connection
 
