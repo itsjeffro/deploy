@@ -115,7 +115,7 @@ Once you have completed the bare minimum of installation, a dashboard to manage 
 To allow real-time feedback when a deployment or server connection has started or finished, you may set up the application 
 to utlise Laravel's broadcasting feature.
 
-Deploy currently only uses Pusher.
+Deploy currently only supports Pusher.
 
 ```
 composer require pusher/pusher-php-server "~4.0"
