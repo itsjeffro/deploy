@@ -28,12 +28,7 @@ Using composer, install the package into your Laravel project:
 composer require itsjeffro/deploy
 ```
 
-Next, you will need to register the package's service provider class under the providers array 
-in the config/app.php configuration file.
-
-```
-Deploy\DeployServiceProvider::class
-```
+The package will automatically register its service provider.
 
 Publish the package's config and assets:
 
