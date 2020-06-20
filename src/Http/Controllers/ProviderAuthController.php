@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class ProviderAuthController extends Controller
 {
+    /** @var ProviderOauthManager */
+    private $providerOauthManager;
+
+    /**
+     * @param ProviderOauthManager $providerOauthManager
+     */
+    public function __construct(ProviderOauthManager $providerOauthManager)
+    {
+        $this->providerOauthManager = $providerOauthManager;
+    }
+
     /**
      * Redirect the logged in user to their chosen provider so that they can
      * authorize this application to access the user's information.
@@ -19,9 +30,14 @@ class ProviderAuthController extends Controller
     {
         $provider = Provider::where('friendly_name', $providerFriendlyName)->first();
 
-        $providerOauth = new ProviderOauthManager($provider, auth()->user());
+        $user = auth()->user();
 
-        return redirect($providerOauth->getAuthorizeUrl());
+        $authorizerUrl = $this->providerOauthManager
+            ->setProvider($provider)
+            ->setUser($user)
+            ->getAuthorizeUrl();
+
+        return redirect($authorizerUrl);
     }
 
     /**
@@ -35,9 +51,12 @@ class ProviderAuthController extends Controller
     {
         $provider = Provider::where('friendly_name', $providerFriendlyName)->first();
 
-        $providerOauth = new ProviderOauthManager($provider, auth()->user());
+        $user = auth()->user();
 
-        $providerOauth->requestAccessToken($request->get('code'));
+        $this->providerOauthManager
+            ->setProvider($provider)
+            ->setUser($user)
+            ->requestAccessToken($request->get('code'));
 
         return redirect()->route('deploy');
     }

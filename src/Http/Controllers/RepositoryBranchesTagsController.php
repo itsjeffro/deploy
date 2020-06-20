@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 
 class RepositoryBranchesTagsController extends Controller
 {
+    /** @var ProviderOauthManager */
+    private $providerOauthManager;
+
+    /**
+     * @param ProviderOauthManager $providerOauthManager
+     */
+    public function __construct(ProviderOauthManager $providerOauthManager)
+    {
+        $this->providerOauthManager = $providerOauthManager;
+    }
+    
     /**
      * Return repository's branch list.
      *
@@ -43,7 +54,11 @@ class RepositoryBranchesTagsController extends Controller
      */
     protected function accessToken($provider)
     {
-        $providerOauth = new ProviderOauthManager($provider, auth()->user());
+        $user = auth()->user();
+
+        $providerOauth = $this->providerOauthManager
+            ->setProvider($provider)
+            ->setUser($user);
 
         return $providerOauth->getAccessToken();
     }
