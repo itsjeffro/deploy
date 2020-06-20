@@ -42,4 +42,14 @@ class CommandParserTest extends TestCase
             '{ project_path }}'
         );
     }
+
+    /**
+     * @expectedException Exception
+     */
+    public function test_invalid_command_throws_exception()
+    {
+        $commandParser = new CommandParser([]);
+        
+        $commandParser->parseScript('{{ invalid_command }}');
+    }
 }
