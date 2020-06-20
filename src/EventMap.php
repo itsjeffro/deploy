@@ -10,17 +10,20 @@ trait EventMap
      * @var array
      */
     protected $events = [
-        'Events\ServerConnectionTested' => [
-            'Listeners\SendSeverConnectionNotification',
+        \Deploy\Events\ServerConnectionTested::class => [
+            \Deploy\Listeners\SendSeverConnectionNotification::class,
         ],
-        'Events\DeploymentFinished' => [
-            'Listeners\SendDeploymentFinishedNotification',
+        \Deploy\Events\DeploymentFinished::class => [
+            \Deploy\Listeners\SendDeploymentFinishedNotification::class,
         ],
-        'Events\EnvironmentSyncing' => [
-            'Listeners\EnvironmentSyncingNotification',
+        \Deploy\Events\EnvironmentSyncing::class => [
+            \Deploy\Listeners\EnvironmentSyncingNotification::class,
         ],
-        'Events\EnvironmentSynced' => [
-            'Listeners\EnvironmentSyncedNotification',
+        \Deploy\Events\EnvironmentSynced::class => [
+            \Deploy\Listeners\EnvironmentSyncedNotification::class,
+        ],
+        \Deploy\Events\ProcessorErrorEvent::class => [
+            \Deploy\Listeners\ProcessorErrorListener::class,
         ],
     ];
 }
