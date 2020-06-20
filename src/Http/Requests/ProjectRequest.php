@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Log;
 
 class ProjectRequest extends FormRequest
 {
+    /** @var ProviderOauthManager */
+    private $providerOauthManager;
+
+    /**
+     * @param ProviderOauthManager $providerOauthManager
+     */
+    public function __construct(ProviderOauthManager $providerOauthManager) {
+        $this->providerOauthManager = $providerOauthManager;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -65,9 +75,14 @@ class ProjectRequest extends FormRequest
         $response = [];
 
         try {
-            $providerOauth = new ProviderOauthManager($provider, $user);
+            $providerOauth = $this->providerOauthManager
+                ->setProvider($provider)
+                ->setUser($user);
+
             $providerRepository = new ProviderRepositoryManager();
+
             $diver = $providerRepository->driver($provider->friendly_name, $providerOauth->getAccessToken());
+
             $response = $diver->repository($repository);
         } catch (Exception $e) {
              Log::info($e->getMessage());
