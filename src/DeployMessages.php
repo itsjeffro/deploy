@@ -2,17 +2,23 @@
 
 namespace Deploy;
 
-use Illuminate\Config\Repository as Config;
+use Illuminate\Contracts\Config\Repository;
 
 class DeployMessages
 {
-    /** @var Config */
+    /** @var Repository */
     private $config;
 
+    /** @var string */
+    const BROADCASTER_DRIVER = 'BROADCASTER_DRIVER';
+
+    /** @var string */
+    const BROADCASTER_CREDENTIALS = 'BROADCASTER_CREDENTIALS';
+
     /**
-     * @param Config $config
+     * @param Repository $config
      */
-    public function __construct(Config $config)
+    public function __construct(Repository $config)
     {
         $this->config = $config;
     }
@@ -25,21 +31,21 @@ class DeployMessages
      */
     public function getWarnings(): array
     {
-        $isBroadcastingEnabled = $this->config->get('broadcasting.default') !== 'log';
+        $isBroadcastingEnabled = $this->config->get('broadcasting.default') === 'pusher';
         $broadcastingKey = $this->config->get('broadcasting.connections.pusher.key');
 
         $alerts = [];
 
         if (!$isBroadcastingEnabled) {
             $alerts[] = [
-                'code' => 'BROADCASTER_DRIVER',
+                'code' => self::BROADCASTER_DRIVER,
                 'message' => 'Set BROADCAST_DRIVER to "pusher" for real-time feedback'
             ];
         }
       
         if ($isBroadcastingEnabled && empty($broadcastingKey)) {
             $alerts[] = [
-                'code' => 'BROADCASTER_CREDS',
+                'code' => self::BROADCASTER_CREDENTIALS,
                 'message' => 'Ensure your Pusher credentials are properly set up'
             ];
         }
