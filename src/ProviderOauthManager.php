@@ -10,31 +10,47 @@ use DateTime;
 use Deploy\Models\Provider;
 use Deploy\ProviderOauth\AbstractProviderOauth;
 use Exception;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class ProviderOauthManager
 {
-    /**
-     * The repository provider model.
-     * @var Provider
-     */
+    /** @var Provider */
     private $provider;
 
-    /**
-     * The user model.
-     * @var User
-     */
+    /** @var User */
     private $user;
 
+    /** @var Config */
+    private $config;
+
     /**
-     * Instantiate ProviderOauth.
-     *
-     * @param Provider
-     * @param User
+     * @param $config
      */
-    public function __construct($provider, $user)
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @param Provider $provider
+     * @return self
+     */
+    public function setProvider($provider)
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return self
+     */
+    public function setUser($user)
+    {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -163,7 +179,7 @@ class ProviderOauthManager
      * @return string|null
      * @throws Exception
      */
-    protected function formatExpirationDateTime($requestedToken)
+    public function formatExpirationDateTime($requestedToken)
     {
         if ($requestedToken->getExpiration()) {
             $dateTime = new DateTime();
@@ -199,9 +215,9 @@ class ProviderOauthManager
     {
         $providerName = $this->provider->friendly_name;
 
-        $provider = config('deploy.providers.' . $providerName . '.oauth');
-        $clientId = config('deploy.providers.' . $providerName . '.key');
-        $clientSecret = config('deploy.providers.' . $providerName . '.secret');
+        $provider = $this->config->get('deploy.providers.' . $providerName . '.oauth');
+        $clientId = $this->config->get('deploy.providers.' . $providerName . '.key');
+        $clientSecret = $this->config->get('deploy.providers.' . $providerName . '.secret');
 
         return new $provider($clientId, $clientSecret);
     }
