@@ -11,6 +11,10 @@ import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import Layout from '../../components/Layout';
 import {fetchProject} from "../../state/project/actions";
+import Container from '../../components/Container';
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle';
 
 class ProjectServerEditPage extends React.Component {
   state = {
@@ -101,6 +105,10 @@ class ProjectServerEditPage extends React.Component {
   renderServerEditPanel = (server, errors) => {
     return (
       <Panel>
+        <PanelHeading>
+          <PanelTitle>Edit Server</PanelTitle>
+        </PanelHeading>
+
         <PanelBody>
           {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
@@ -150,15 +158,13 @@ class ProjectServerEditPage extends React.Component {
     }
 
     return (
-      <Layout project={project.item}>
-        <div className="content">
-          <div className="container-fluid heading">
-            <h2>Edit Server</h2>
-          </div>
+      <Layout project={ project.item }>
+        <ProjectHeading project={ project.item } />
 
-          <div className="container-fluid">
+        <div className="content">
+          <Container fluid>
             {isFetching ? <Loader /> : this.renderServerEditPanel(server, errors)}
-          </div>
+          </Container>
         </div>
       </Layout>
     )

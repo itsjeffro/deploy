@@ -11,6 +11,7 @@ import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import Layout from "../../components/Layout";
 import { fetchProject } from "../../state/project/actions";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectLinkedFolderCreatePage extends React.Component {
   state = {
@@ -98,9 +99,10 @@ class ProjectLinkedFolderCreatePage extends React.Component {
 
     return (
       <Layout project={project.item}>
+        <ProjectHeading project={ project.item } />
+
         <div className="content">
           <div className="container-fluid heading">
-            <h2>Add Linked Folder</h2>
             <Link to={'/projects/' + project.item.id + '/folders'}>Back to Linked Folders</Link>
           </div>
 

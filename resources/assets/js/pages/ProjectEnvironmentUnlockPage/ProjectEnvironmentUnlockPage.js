@@ -17,6 +17,7 @@ import TextField from '../../components/TextField';
 import EnvironmentServersTable from './EnvironmentServersTable';
 import { buildAlertFromResponse } from '../../utils/alert';
 import Layout from "../../components/Layout";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectEnvironmentUnlockPage extends React.Component {
   constructor(props) {
@@ -214,14 +215,10 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
     if (project.isFetching) {
       return (
-        <Layout project={project.item}>
-          <div className="content">
-            <div className="container-fluid heading">
-              <h2>
-                Environment
-              </h2>
-            </div>
+        <Layout project={ project.item }>
+          <ProjectHeading project={ project.item } />
 
+          <div className="content">
             <Container fluid>
               <Loader />
             </Container>
@@ -233,14 +230,10 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     if (unlocked) {
       return (
         <Layout project={project.item}>
-          <div className="content">
-            <div className="container-fluid heading">
-              <h2>
-                Environment
-              </h2>
-            </div>
+          <ProjectHeading project={ project.item } />
 
-            <div className="container-fluid">
+          <div className="content">
+            <Container fluid>
               <Alert type="warning">
                 Your environment information will be stored in an .env file on your servers.
               </Alert>
@@ -292,7 +285,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                   />
                 </Grid>
               </div>
-            </div>
+            </Container>
           </div>
         </Layout>
       )
@@ -300,14 +293,10 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
     return (
       <Layout project={project.item}>
-        <div className="content">
-          <div className="container-fluid heading">
-            <h2>
-              Environment
-            </h2>
-          </div>
+        <ProjectHeading project={ project.item } />
 
-          <div className="container-fluid">
+        <div className="content">
+          <Container fluid>
             <Alert type="warning">
               Your environment information will be encrypted on our server using your
               chosen key. You will also have to provide your key each time you wish to
@@ -344,7 +333,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
                 >Need to reset your key?</Link>
               </PanelBody>
             </Panel>
-          </div>
+          </Container>
         </div>
       </Layout>
     )
