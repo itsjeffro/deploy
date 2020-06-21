@@ -23,10 +23,10 @@ class ProviderAuthController extends Controller
      * Redirect the logged in user to their chosen provider so that they can
      * authorize this application to access the user's information.
      *
-     * @param  string $providerFriendlyName
-     * @return \Illuminate\Http\RedirectResponse
+     * @param string $providerFriendlyName
+     * @return RedirectResponse
      */
-    public function authorizeUser($providerFriendlyName)
+    public function authorizeUser(string $providerFriendlyName)
     {
         $provider = Provider::where('friendly_name', $providerFriendlyName)->first();
 
@@ -43,11 +43,11 @@ class ProviderAuthController extends Controller
     /**
      * Retrieve the access token from the provider.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  string $providerFriendlyName
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param string $providerFriendlyName
+     * @return RedirectResponse
      */
-    public function providerAccessToken(Request $request, $providerFriendlyName)
+    public function providerAccessToken(Request $request, string $providerFriendlyName)
     {
         $provider = Provider::where('friendly_name', $providerFriendlyName)->first();
 
