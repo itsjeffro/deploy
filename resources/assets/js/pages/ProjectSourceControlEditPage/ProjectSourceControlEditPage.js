@@ -17,6 +17,7 @@ import TextField from '../../components/TextField';
 import Layout from "../../components/Layout";
 import {fetchProject, updateProject} from "../../state/project/actions";
 import Container from "../../components/Container";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectSourceControlEditPage extends React.Component {
   state = {
@@ -133,13 +134,9 @@ class ProjectSourceControlEditPage extends React.Component {
 
     return (
       <Layout project={project.item}>
-        <div className="content">
-          <Container fluid>
-            <div className="heading">
-              <h2>Source Control</h2>
-            </div>
-          </Container>
+        <ProjectHeading project={ project.item } />
 
+        <div className="content">
           <Container fluid>
             <div className="row">
               <div className="col-xs-12 col-sm-3">

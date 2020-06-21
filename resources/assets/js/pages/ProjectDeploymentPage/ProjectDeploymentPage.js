@@ -9,6 +9,7 @@ import Panel from '../../components/Panel';
 import Modal from '../../components/Modal';
 import ProcessTable from './ProcessTable';
 import Layout from "../../components/Layout";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectDeploymentPage extends React.Component {
   state = {
@@ -79,11 +80,9 @@ class ProjectDeploymentPage extends React.Component {
 
     return (
       <Layout project={project.item}>
-        <div className="content">
-          <div className="container-fluid heading">
-            <h2>Deployment Info</h2>
-          </div>
+        <ProjectHeading project={ project.item } />
 
+        <div className="content">
           <div className="container-fluid">
             {isFetching ? <Loader /> : sequenceList}
           </div>

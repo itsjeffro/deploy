@@ -18,6 +18,7 @@ import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
 import Layout from "../../components/Layout";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectActionPage extends React.Component {
   state = {
@@ -313,9 +314,10 @@ class ProjectActionPage extends React.Component {
 
     return (
       <Layout project={project.item}>
+        <ProjectHeading project={ project.item } />
+
         <div className="content">
           <div className="container-fluid heading">
-            <h2>{action.name}</h2>
             <Link to={'/projects/' + project.item.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
           </div>
 

@@ -11,6 +11,7 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import ProjectActionService from '../../services/ProjectAction';
 import Layout from "../../components/Layout";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectDeploymentHookPage extends React.Component {
   state = {
@@ -84,7 +85,7 @@ class ProjectDeploymentHookPage extends React.Component {
                   <td className="text-right">
                     <Link
                       className="btn btn-default"
-                      to={'/projects/' + project.id + '/actions/' + action.id}
+                      to={'/projects/' + project.id + '/deployment-hooks/actions/' + action.id}
                     >Manage</Link>
                   </td>
                 </tr>
@@ -105,11 +106,9 @@ class ProjectDeploymentHookPage extends React.Component {
 
     return (
       <Layout project={project.item}>
+        <ProjectHeading project={ project.item } />
+
         <div className="content">
-          <div className="container-fluid heading">
-            <h2>Deployment Hooks</h2>
-          </div>
-        
           <Container fluid>
             {isFetching ? <Loader /> : this.renderActionsTable(project.item, actions)}
           </Container>

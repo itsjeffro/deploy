@@ -22,6 +22,7 @@ import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import Sidebar from './Sidebar';
 import { createToast } from "../../state/alert/alertActions";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectEditPage extends React.Component {
   state = {
@@ -181,17 +182,13 @@ class ProjectEditPage extends React.Component {
 
     return (
       <Layout project={projects.items[project_id]}>
-        <div className="content">
-          <Container fluid>
-            <div className="heading">
-              <h2>General Settings</h2>
-            </div>
-          </Container>
+        <ProjectHeading project={ project } />
 
+        <div className="content">
           <Container fluid>
             <div className="row">
               <Grid xs={12} sm={3}>
-                <Sidebar project={project} />
+                <Sidebar project={ project } />
               </Grid>
 
               <Grid xs={12} sm={9}>

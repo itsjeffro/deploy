@@ -24,7 +24,7 @@ class Application extends React.Component {
         <>
           <Switch>
             <Route exact path="/" component={DashboardPage} />
-            <Route path="/projects/:project_id/actions/:action_id" component={ProjectActionPage} />
+            <Route path="/projects/:project_id/deployment-hooks/actions/:action_id" component={ProjectActionPage} />
             <Route path="/projects/:project_id/deployment-hooks" component={ProjectDeploymentHookPage} />
             <Route path="/projects/:project_id/servers/create" component={ProjectServerCreatePage} />
             <Route path="/projects/:project_id/servers/:server_id/edit" component={ProjectServerEditPage} />

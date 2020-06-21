@@ -15,6 +15,7 @@ import FoldersTable from './FoldersTable';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import {fetchProject} from "../../state/project/actions";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectLinkedFolderPage extends React.Component {
   state = {
@@ -155,11 +156,9 @@ class ProjectLinkedFolderPage extends React.Component {
 
     return (
       <Layout project={project.item}>
-        <div className="content">
-          <div className="container-fluid heading">
-            <h2>Linked Folders</h2>
-          </div>
+        <ProjectHeading project={ project.item } />
 
+        <div className="content">
           <Container fluid>
             {this.renderFoldersContent(isFetching, project.item, folders)}
           </Container>

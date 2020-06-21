@@ -9,6 +9,10 @@ import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import Layout from '../../components/Layout';
 import { fetchProject } from "../../state/project/actions";
+import Container from '../../components/Container';
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+import PanelHeading from '../../components/PanelHeading';
+import PanelTitle from '../../components/PanelTitle';
 
 class ProjectServerCreatePage extends React.Component {
   state = {
@@ -99,16 +103,16 @@ class ProjectServerCreatePage extends React.Component {
     }
 
     return (
-      <Layout project={project.item}>
-        <div className="content">
-          <div className="container-fluid heading">
-            <div className="pull-left">
-              <h2>Add Server</h2>
-            </div>
-          </div>
+      <Layout project={ project.item }>
+        <ProjectHeading project={ project.item } />
 
-          <div className="container-fluid">
+        <div className="content">
+          <Container fluid>
             <Panel>
+              <PanelHeading>
+                <PanelTitle>Create Server</PanelTitle>
+              </PanelHeading>
+
               <div className="panel-body">
                 {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
 
@@ -174,7 +178,7 @@ class ProjectServerCreatePage extends React.Component {
                 <Button color="primary" onClick={this.handleClick}>Save Server</Button>
               </div>
             </Panel>
-          </div>
+          </Container>
         </div>
       </Layout>
     )

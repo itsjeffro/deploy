@@ -29,6 +29,7 @@ import ServersTable from './ServersTable';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 
 class ProjectPage extends React.Component {
   state = {
@@ -346,30 +347,21 @@ class ProjectPage extends React.Component {
       <Layout
         project={project.item}
       >
-        <div className="content">
-          <div className="container-fluid heading">
-            <div className="pull-left">
-              <h2>{project.item.name}</h2>
-            </div>
-            <div className="pull-right">
-              <Link
-                className="btn btn-default"
-                to={'/projects/' + project.item.id + '/edit'}
-              >
-                <Icon iconName="gear" /> Settings
-              </Link>
-              {project.item.servers.length > 0
-              ? <Button
-                color="primary"
-                onClick={this.handleDeployModal}
-                style={{marginLeft: 5}}
-              >
-                <Icon iconName="cloud-upload" /> Deploy
-              </Button>
-              : ''}
-            </div>
-          </div>
+        <ProjectHeading project={ project.item }>
+          <>
+            {project.item.servers.length > 0
+            ? <Button
+              color="primary"
+              onClick={this.handleDeployModal}
+              style={{marginLeft: 5}}
+            >
+              <Icon iconName="cloud-upload" /> Deploy
+            </Button>
+            : ''}
+          </>
+        </ProjectHeading>
 
+        <div className="content">
           <Container fluid>
             <div className="row">
               <div className="col-xs-12 col-md-6">

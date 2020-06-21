@@ -10,7 +10,7 @@ body, html {
 }
 
 .content {
-  padding: 20px;
+  padding: 30px 20px;
   max-width: 1200px;
   margin: 0 auto;
 
@@ -35,5 +35,55 @@ body, html {
     font-weight: 600;
     margin: .5em 0;
     font-size: 18px;
+  }
+}
+
+.project-heading {
+  max-width: 100%;
+  background: #eeeef48a;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 20px 0;
+  h2 {
+    font-weight: 600;
+    margin: .4em 0;
+    font-size: 18px;
+    color: #0889d0;
+  }
+}
+
+.project-navigation {
+  list-style: none;
+  margin: 0;
+  padding: 0 0;
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+  li {
+    float: left;
+  }
+  a {
+    color: #111;
+    display: block;
+    padding: 15px;
+    border-bottom: 1px solid transparent;
+    font-size: 13px;
+    &:hover, &:focus {
+      text-decoration: none;
+      .fa {
+        color: #2a3239;
+      }
+    }
+    &.active {
+      border-bottom-color: #ff3000;
+      .fa {
+        color: #111;
+      }
+    }
+  }
+  .fa {
+    margin-right: 8px;
+    color: #959da5;
   }
 }

@@ -12,6 +12,8 @@ import TextField from '../../components/TextField';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import Layout from "../../components/Layout";
+import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+import Container from '../../components/Container';
 
 class ProjectEnvironmentResetPage extends React.Component {
   constructor(props) {
@@ -80,12 +82,10 @@ class ProjectEnvironmentResetPage extends React.Component {
 
     return (
       <Layout project={project}>
-        <div className="content">
-          <div className="container-fluid heading">
-            <h2>Reset Environment Key</h2>
-          </div>
+        <ProjectHeading project={ project } />
 
-          <div className="container-fluid">
+        <div className="content">
+          <Container fluid>
             <Alert type="warning">
               Resetting your environment key will also clear the environment contents.
             </Alert>
@@ -113,7 +113,7 @@ class ProjectEnvironmentResetPage extends React.Component {
                 >Update Environment</Link>
               </PanelBody>
             </Panel>
-          </div>
+          </Container>
         </div>
       </Layout>
     )
