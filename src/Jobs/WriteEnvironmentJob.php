@@ -22,31 +22,45 @@ class WriteEnvironmemtJob implements ShouldQueue
      */
     public $tries = 5;
 
-    /**
-     * @var \Deploy\Processors\WriteEnvironmentProcessor
-     */
+    /** @var Project */
+    private $project;
+
+    /** @var Environment */
+    private $environment;
+
+    /** @var WriteEnvironmentProcessor */
     protected $writeEnvironmentProcessor;
+
+    /** @var string */
+    protected $key;
 
     /**
      * Create a new job instance.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Environment $environment
-     * @param  string $key
+     * @param Project $project
+     * @param Environment $environment
+     * @param string $key
      * @return void
      */
     public function __construct(Project $project, Environment $environment, $key)
     {
-        $this->writeEnvironmentProcessor = new WriteEnvironmentProcessor($project, $environment, $key);
+        $this->project = $project;
+        $this->environment = $environment;
+        $this->key = $key;
     }
 
     /**
      * Execute the job.
      *
+     * @param WriteEnvironmentProcessor $processor
      * @return void
      */
-    public function handle()
+    public function handle(WriteEnvironmentProcessor $processor)
     {
-        $this->writeEnvironmentProcessor->fire();
+        $processor
+            ->setProject($this->project)
+            ->setEnvironment($this->environment)
+            ->setKey($this->key)
+            ->fire();
     }
 }

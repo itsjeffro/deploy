@@ -17,6 +17,7 @@ import ProjectsTable from './ProjectsTable';
 import Layout from "../../components/Layout";
 import ProjectService from "../../services/Project";
 import Container from "../../components/Container";
+import Alert from '../../components/Alert';
 
 class DashboardPage extends React.Component {
   state = {
@@ -100,12 +101,23 @@ class DashboardPage extends React.Component {
     $('#project-create-modal').modal('hide');
   };
 
+  /**
+   * Return list of warnings.
+   *
+   * @returns {array}
+   */
+  warnings = () => {
+    return window.Deploy.warnings || [];
+  }
+
   render() {
     const { projects } = this.props;
 
     const items = Object.keys(projects.items).map(key => {
       return projects.items[key];
     });
+
+    const warnings = this.warnings();
 
     return (
       <Layout>
@@ -119,7 +131,23 @@ class DashboardPage extends React.Component {
                 <Icon iconName="plus" /> Add Project
               </Button>
             </div>
+
+            {}
           </Container>
+
+          {warnings.length > 0 ?
+            <Container fluid>
+              <Alert type="warning">
+                <p>The following warnings have occurred:</p>
+
+                <ul>
+                  {warnings.map(warning =>
+                    <li key={ warning.code }>{ warning.message }</li>
+                  )}
+                </ul>
+              </Alert>
+            </Container>
+          : ''}
 
           <Container fluid>
             <Panel>

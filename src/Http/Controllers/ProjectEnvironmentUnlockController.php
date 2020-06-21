@@ -14,15 +14,17 @@ class ProjectEnvironmentUnlockController extends Controller
     /**
      * Unlock environment.
      *
-     * @param  \Deploy\Http\Requests\EnvironmentRequest $request
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
+     * @param EnvironmentEncrypter $environmentEncrypter
+     * @param EnvironmentRequest $request
+     * @param Project $project
+     * @return JsonResponse
      */
-    public function store(EnvironmentRequest $request, Project $project)
+    public function store(EnvironmentEncrypter $environmentEncrypter, EnvironmentRequest $request, Project $project)
     {
         $this->authorize('view', $project);
 
-        $encrypter = new EnvironmentEncrypter($request->get('key'));
+        $encrypter = $environmentEncrypter->setKey($request->get('key'));
+
         $environment = Environment::where('project_id', $project->id)->first();
 
         if (!$environment) {

@@ -2,10 +2,11 @@
 
 namespace Deploy\Processors;
 
+use Deploy\Contracts\Processors\ProcessorInterface;
 use Deploy\Ssh\Host;
 use Deploy\Models\Server;
 
-abstract class AbstractProcessor
+abstract class AbstractProcessor implements ProcessorInterface
 {
     /**
      * Return SSH Host.

@@ -58,7 +58,7 @@ class Client
     /**
      * Start a SSH process.
      *
-     * @return string
+     * @return Process
      */
     public function getProcess()
     {

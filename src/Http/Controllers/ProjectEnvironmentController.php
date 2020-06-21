@@ -14,18 +14,19 @@ class ProjectEnvironmentController extends Controller
     /**
      * Update environment.
      *
+     * @param EnvironmentEncrypter $environmentEncrypter
      * @param EnvironmentRequest $request
      * @param Project $project
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return JsonResponse
+     * @throws AuthorizationException
      */
-    public function update(EnvironmentRequest $request, Project $project)
+    public function update(EnvironmentEncrypter $environmentEncrypter, EnvironmentRequest $request, Project $project)
     {
         $this->authorize('view', $project);
 
         $environment = Environment::where('project_id', $project->id)->first();
 
-        $encrypter = new EnvironmentEncrypter($request->get('key'));
+        $encrypter = $environmentEncrypter->setKey($request->get('key'));
 
         if (!$environment) {
             return response()->json(

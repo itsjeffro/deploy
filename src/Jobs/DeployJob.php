@@ -20,28 +20,36 @@ class DeployJob implements ShouldQueue
      */
     public $tries = 5;
     
-    /**
-     * @var \Deploy\Processors\DeploymentProcessor
-     */
-    protected $deploymentProcessor;
+    /** @var Deployment */
+    private $deployment;
+
+    /** @var Project */
+    private $project;
 
     /**
      * Instantiate constructor.
      * 
+     * @param $deployment
+     * @param $project
      * @return void
      */
     public function __construct($deployment, $project)
     {
-        $this->deploymentProcessor = new DeploymentProcessor($deployment, $project);
+        $this->deployment = $deployment;
+        $this->project = $project;
     }
 
     /**
      * Execute the job.
      *
+     * @param DeploymentProcessor $deploymentProcessor
      * @return void
      */
-    public function handle()
+    public function handle(DeploymentProcessor $processor)
     {
-        $this->deploymentProcessor->fire();
+        $processor
+            ->setDeployment($this->deployment)
+            ->setProject($this->project)
+            ->fire();
     }
 }

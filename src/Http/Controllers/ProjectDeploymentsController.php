@@ -56,9 +56,9 @@ class ProjectDeploymentsController extends Controller
     /**
      * Create deployment and dispatch queue.
      *
-     * @param  \Deploy\Http\Requests\DeploymentRequest $request
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
+     * @param DeploymentRequest $request
+     * @param Project $project
+     * @return JsonResponse
      */
     public function store(DeploymentRequest $request, Project $project)
     {

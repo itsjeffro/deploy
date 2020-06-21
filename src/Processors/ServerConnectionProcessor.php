@@ -2,28 +2,42 @@
 
 namespace Deploy\Processors;
 
+use Deploy\Contracts\Processors\ProcessorInterface;
+use Deploy\Events\ProcessorErrorEvent;
 use Deploy\Events\ServerConnectionTested;
 use Deploy\Models\Server;
 use Deploy\Ssh\Client;
 use Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Events\Dispatcher;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class ServerConnectionProcessor extends AbstractProcessor
+class ServerConnectionProcessor extends AbstractProcessor implements ProcessorInterface
 {
-    /**
-     * @var \Deploy\Models\Server
-     */
+     /** @var dispatcher */
+    public $dispatcher;
+
+    /** @var Server */
     public $server;
 
     /**
-     * Instantiate.
-     * 
-     * @return void
+     * @param Dispatcher $dispatcher
      */
-    public function __construct(Server $server)
+    public function __construct(Dispatcher $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * Set server.
+     *
+     * @param Server $server
+     * @return self
+     */
+    public function setServer(Server $server)
     {
         $this->server = $server;
+
+        return $this;
     }
 
     /**
@@ -35,6 +49,7 @@ class ServerConnectionProcessor extends AbstractProcessor
         
         try {
             $client = new Client($this->getHost($this->server));
+
             $client = $client
                 ->setTimeout(30)
                 ->getProcess();
@@ -46,16 +61,14 @@ class ServerConnectionProcessor extends AbstractProcessor
             }
             
             $successful = true;
-        } catch (ProcessFailedException $e) {
-            Log::error($e->getMessage());
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
+        } catch (ProcessFailedException | Exception $exception) {
+            $this->dispatcher->dispatch(new ProcessorErrorEvent(static::class, $exception));
         }
         
         $server = Server::find($this->server->id);
         $server->connection_status = $successful;
         $server->save();
         
-        event(new ServerConnectionTested($server));
+        $this->dispatcher->dispatch(new ServerConnectionTested($server));
     }
 }

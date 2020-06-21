@@ -10,31 +10,47 @@ use DateTime;
 use Deploy\Models\Provider;
 use Deploy\ProviderOauth\AbstractProviderOauth;
 use Exception;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class ProviderOauthManager
 {
-    /**
-     * The repository provider model.
-     * @var Provider
-     */
+    /** @var Provider */
     private $provider;
 
-    /**
-     * The user model.
-     * @var User
-     */
+    /** @var User */
     private $user;
 
+    /** @var Config */
+    private $config;
+
     /**
-     * Instantiate ProviderOauth.
-     *
-     * @param Provider
-     * @param User
+     * @param $config
      */
-    public function __construct($provider, $user)
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @param Provider $provider
+     * @return self
+     */
+    public function setProvider($provider)
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return self
+     */
+    public function setUser($user)
+    {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -45,50 +61,7 @@ class ProviderOauthManager
      */
     public function getAccessToken()
     {
-        $accessToken = $this->getDeployAccessToken($this->provider, $this->user);
-
-        return $accessToken->id;
-    }
-
-    /**
-     * Returns any existing valid access token for the specified repository provider.
-     * If the there is no access token, the access token has expired, or there is
-     * no expiry date on the access token, then a new token will be provided.
-     *
-     * @param string $code
-     * @return DeployAccessToken
-     * @throws Exception
-     */
-    public function requestAccessToken($code)
-    {
-        $token = $this->getDeployAccessToken($this->provider, $this->user);
-
-        if (!$token instanceof DeployAccessToken || empty($token->expires_at) || $this->isAccessTokenExpired($token)) {
-            $requestedToken = $this->getProviderOauthClass()->requestAccessToken($code);
-
-            return $this->storeAccessToken($requestedToken);
-        }
-
-        if (!$this->getProviderOauthClass()->hasRefreshToken()) {
-            return $token;
-        }
-
-        return $token;
-    }
-
-    /**
-     * Returns the stored provider access token model.
-     *
-     * @param  Provider $provider
-     * @param  User $user
-     * @return DeployAccessToken
-     */
-    public function getDeployAccessToken($provider, $user)
-    {
-        return DeployAccessToken::where('provider_id', $provider->id)
-            ->where('user_id', $user->id)
-            ->orderBy('created_at', 'DESC')
-            ->first();
+        return $this->getValidatedAccessToken($this->provider, $this->user);
     }
 
     /**
@@ -99,6 +72,68 @@ class ProviderOauthManager
     public function getAuthorizeUrl()
     {
         return $this->getProviderOauthClass()->getAuthorizeUrl();
+    }
+
+    /**
+     * Requests a new access token from the OAuth provider.
+     *
+     * @param string $code
+     * @return string
+     * @throws Exception
+     */
+    public function requestAccessToken(string $code): string
+    {
+        $requestedToken = $this->getProviderOauthClass()->requestAccessToken($code);
+
+        $this->storeAccessToken($requestedToken);
+
+        return $requestedToken->getAccessToken();
+    }
+
+    /**
+     * Returns the most recent access token for the user along. If the access token
+     * has an associated refresh token, then that will also be returned as well.
+     *
+     * @param  Provider $provider
+     * @param  User $user
+     * @return string
+     * 
+     * @throws Exception
+     */
+    public function getValidatedAccessToken($provider, $user): string
+    {
+        $accessToken = DeployAccessToken::where('provider_id', $provider->id)
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+
+        if (!$accessToken instanceof DeployAccessToken) {
+            throw new Exception(
+                sprintf('A valid access token was not found for provider [%d]. Try requesting a new one.', $provider->id)
+            );
+        }
+
+        if (!$this->getProviderOauthClass()->hasRefreshToken()) {
+            return $accessToken->id;
+        }
+
+        if (!$this->isAccessTokenExpired($accessToken)) {
+            return $accessToken->id;
+        }
+        
+        // If the provider uses refresh tokens and our access token is now expired. We will get the refresh token
+        // associated with the access token and try to make a request for a new access token from the provider.
+        $refreshToken = DeployRefreshToken::where('deploy_access_token_id', $accessToken->id)->first();
+
+        if (!$refreshToken instanceof DeployRefreshToken) {
+            throw new \Exception('Could not find an associated refresh token for the expired access token. Try requesting a new one.');
+        }
+
+        $response = $this->getProviderOauthClass()->refreshAccessToken($refreshToken->id);
+
+        $this->storeAccessToken($response);
+
+        return $response->getAccessToken();
     }
 
     /**
@@ -148,7 +183,7 @@ class ProviderOauthManager
 
         $refreshToken = new DeployRefreshToken();
         $refreshToken->fill([
-            'id' => $requestedToken->getAccessToken(),
+            'id' => $requestedToken->getRefreshToken(),
             'deploy_access_token_id' => $requestedToken->getAccessToken(),
             'revoked' => 0,
             'expires_at' => date('Y-m-d H:i:s'),
@@ -163,7 +198,7 @@ class ProviderOauthManager
      * @return string|null
      * @throws Exception
      */
-    protected function formatExpirationDateTime($requestedToken)
+    public function formatExpirationDateTime($requestedToken)
     {
         if ($requestedToken->getExpiration()) {
             $dateTime = new DateTime();
@@ -199,9 +234,9 @@ class ProviderOauthManager
     {
         $providerName = $this->provider->friendly_name;
 
-        $provider = config('deploy.providers.' . $providerName . '.oauth');
-        $clientId = config('deploy.providers.' . $providerName . '.key');
-        $clientSecret = config('deploy.providers.' . $providerName . '.secret');
+        $provider = $this->config->get('deploy.providers.' . $providerName . '.oauth');
+        $clientId = $this->config->get('deploy.providers.' . $providerName . '.key');
+        $clientSecret = $this->config->get('deploy.providers.' . $providerName . '.secret');
 
         return new $provider($clientId, $clientSecret);
     }

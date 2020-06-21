@@ -59,10 +59,10 @@ class BitbucketOauth extends AbstractProviderOauth
     {
         $client = new Client();
 
-        $response = $client->request('POST', $this->getApiUrl() . '/access_token', [
+        $response = $client->request('POST', $this->getApiUrl(), [
             'auth' => [
-                $this->clientId(),
-                $this->clientSecret(),
+                $this->getClientId(),
+                $this->getClientSecret(),
             ],
             'form_params' => [
                 'grant_type' => 'refresh_token',
@@ -70,6 +70,6 @@ class BitbucketOauth extends AbstractProviderOauth
             ]
         ]);
 
-        return json_decode($response->getBody());
+        return new BitbucketOauthResource(json_decode($response->getBody()));
     }
 }

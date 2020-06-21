@@ -71,7 +71,8 @@ class ProjectPage extends React.Component {
   listenForEvents = (projectId) => {
     const { dispatch } = this.props;
 
-    Echo.private('project.' + projectId)
+    if (Echo !== null) {
+      Echo.private('project.' + projectId)
       .listen('.Deploy\\Events\\DeploymentDeploying', e => {
         dispatch(projectDeploymentDeploying(e.deployment));
       })
@@ -81,6 +82,7 @@ class ProjectPage extends React.Component {
       .listen('.Deploy\\Events\\ServerConnectionTested', e => {
         dispatch(updateServerConnectionStatus(e.server.id, e.server.connection_status));
       });
+    }
   }
 
   /**

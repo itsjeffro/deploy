@@ -124,18 +124,21 @@ class Commit
             }
         }
         
-        throw InvalidArgumentException('Cannot retrieve tag\'s commit hash from invalid [' . $tagName . '] tag.');
+        throw new InvalidArgumentException('Cannot retrieve tag\'s commit hash from invalid [' . $tagName . '] tag.');
     }
 
     /**
      * Get instance of ProviderRepositoryManager using the specified provider.
      *
-     * @param  \Deploy\Models\Project $project
-     * @return \Deploy\Contracts\ProviderRepository\ProviderRepositoryInterface
+     * @param Project $project
+     * @return ProviderRepositoryInterface
      */
     protected function getRepositoryManager(Project $project)
     {
-        $oauth = new ProviderOauthManager($project->provider, $project->user);
+        $oauth = new ProviderOauthManager(config());
+
+        $oauth->setProvider($project->provider);
+        $oauth->setUser($project->user);
 
         $providerRepository = new ProviderRepositoryManager();
         
