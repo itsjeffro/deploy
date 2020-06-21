@@ -2,6 +2,7 @@
 
 namespace Deploy\Processors;
 
+use Deploy\Contracts\Processors\ProcessorInterface;
 use Deploy\Events\EnvironmentSynced;
 use Deploy\Events\EnvironmentSyncing;
 use Deploy\Models\Environment;
@@ -11,36 +12,62 @@ use Deploy\Ssh\Client;
 use Deploy\Environment\EnvironmentEncrypter;
 use Illuminate\Support\Facades\Log;
 
-class WriteEnvironmentProcessor extends AbstractProcessor
+class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorInterface
 {
-    /**
-     * @var \Deploy\Models\Project
-     */
+    /** @var Project */
     private $project;
 
-    /**
-     * @var \Deploy\Models\Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var \Deploy\Environment\EnvironmentEncrypter
-     */
-    private $encrypter;
+    /** @var EnvironmentEncrypter */
+    private $environmentEncrypter;
+
+    /** @var string */
+    private $key;
 
     /**
      * Instantiate EnvironmentProcessor.
      *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Environment $environment
-     * @param  string $key
+     * @param EnvironmentEncrypter  $environmentEncrypter
      * @return void
      */
-    public function __construct(Project $project, Environment $environment, $key)
+    public function __construct(EnvironmentEncrypter $environmentEncrypter)
+    {
+        $this->environmentEncrypter = $environmentEncrypter;
+    }
+
+    /**
+     * @param Project $project
+     * @return self
+     */
+    public function setProject(Project $project)
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @param Environment $environment
+     * @return self
+     */
+    public function setEnvironment(Environment $environment)
+    {
         $this->environment = $environment;
-        $this->encrypter = new EnvironmentEncrypter($key);
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @return self
+     */
+    public function setKey(string $key)
+    {
+        $this->key = $key;
+
+        return $this;
     }
 
     /**
@@ -52,11 +79,15 @@ class WriteEnvironmentProcessor extends AbstractProcessor
 
         event(new EnvironmentSyncing($this->environment));
 
+        $decryptedContents = $this->environmentEncrypter
+            ->setKey($this->key)
+            ->decrypt($this->environment->contents);
+
         // Loop through each server to spin up a processor to run our script.
         foreach ($this->project->servers as $server) {
             $client = new Client(
                 $this->getHost($server),
-                $this->script($server, $this->encrypter->decrypt($this->environment->contents))
+                $this->script($server, $decryptedContents)
             );
             
             $processors[] = $client->getProcess();
