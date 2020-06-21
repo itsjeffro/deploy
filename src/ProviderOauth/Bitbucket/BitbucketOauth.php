@@ -3,7 +3,6 @@
 namespace Deploy\ProviderOauth\Bitbucket;
 
 use Deploy\ProviderOauth\AbstractProviderOauth;
-use GuzzleHttp\Client;
 
 class BitbucketOauth extends AbstractProviderOauth
 {
@@ -36,7 +35,7 @@ class BitbucketOauth extends AbstractProviderOauth
      */
     public function requestAccessToken($code)
     {
-        $client = new Client();
+        $client = $this->getHttpClient();
 
         $response = $client->request('POST', $this->getApiUrl(), [
             'auth' => [
@@ -57,7 +56,7 @@ class BitbucketOauth extends AbstractProviderOauth
      */
     public function refreshAccessToken($refreshToken)
     {
-        $client = new Client();
+        $client = $this->getHttpClient();
 
         $response = $client->request('POST', $this->getApiUrl(), [
             'auth' => [

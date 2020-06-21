@@ -48,7 +48,7 @@ class GithubOauth extends AbstractProviderOauth
      */
     public function requestAccessToken($code)
     {
-        $client = new Client();
+        $client = $this->getHttpClient();
 
         $response = $client->request('POST', $this->getApiUrl(), [
             'headers' => [
