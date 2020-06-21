@@ -17,7 +17,8 @@ Deploy provides a dasboard for existing Laravel applications to manage zero-down
 
 ## Server Requirements
 
-* openssh-clients (To establish ssh connections)
+- Laravel 5.8
+- openssh-clients (installed on the servcer to establish ssh connections)
 
 ## Installation
 
