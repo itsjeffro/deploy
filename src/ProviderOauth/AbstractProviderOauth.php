@@ -2,21 +2,24 @@
 
 namespace Deploy\ProviderOauth;
 
+use GuzzleHttp\Client;
+
 abstract class AbstractProviderOauth
 {
     /**
      * Provider client id.
-     *
      * @var string
      */
     protected $clientId;
 
     /**
      * Provider client secret.
-     *
      * @var string
      */
     protected $clientSecret;
+
+    /** @var mixed */
+    protected $client;
 
     /**
      * Instantiate OAuth instance.
@@ -86,5 +89,30 @@ abstract class AbstractProviderOauth
     public function getClientSecret()
     {
         return $this->clientSecret;
+    }
+
+    /**
+     * Set http client.
+     *
+     * @param mixed $client
+     * @return void
+     */
+    public function setHttpClient($client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * Returns http client.
+     *
+     * @return return mixed
+     */
+    public function getHttpClient()
+    {
+        if (null === $this->client) {
+            return new Client();
+        }
+
+        return $this->client;
     }
 }
