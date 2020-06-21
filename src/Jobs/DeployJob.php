@@ -45,9 +45,9 @@ class DeployJob implements ShouldQueue
      * @param DeploymentProcessor $deploymentProcessor
      * @return void
      */
-    public function handle(DeploymentProcessor $deploymentProcessor)
+    public function handle(DeploymentProcessor $processor)
     {
-        $deploymentProcessor
+        $processor
             ->setDeployment($this->deployment)
             ->setProject($this->project)
             ->fire();
