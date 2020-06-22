@@ -27,7 +27,9 @@ class NotificationController extends Controller
         $userId = auth()->user()->id;
 
         $notifications = $this->notification
+            ->with('project')
             ->where('user_id', $userId)
+            ->orderBy('id', 'desc')
             ->paginate();
 
         return response()->json($notifications);
