@@ -3,6 +3,7 @@
 namespace Deploy\Http\Controllers;
 
 use Deploy\Models\Notification;
+use Deploy\Resources\NotificationResource;
 
 class NotificationController extends Controller
 {
@@ -28,22 +29,30 @@ class NotificationController extends Controller
 
         $notifications = $this->notification
             ->with('project')
-            ->where('user_id', $userId)
+            ->whereHas('project', function ($query) use ($userId) {
+                return $query->where('user_id', $userId);
+            })
             ->orderBy('id', 'desc')
             ->paginate();
 
-        return response()->json($notifications);
+        return NotificationResource::collection($notifications);
     }
 
     /**
-     * Show the specified notification belonging to the user.
-     *   
+     * Returns notification that belongs to users attached to associated projects.
+     *
+     * @param Notification $notification
      * @return JsonResponse
      */
     public function show(Notification $notification)
     {
         $this->authorize('view', $notification);
-    
-        return response()->json($notification);
+
+        $notification = $this->notification
+            ->with('project')
+            ->where('id', $notification->id)
+            ->first();
+
+        return new NotificationResource($notification);
     }
 }
