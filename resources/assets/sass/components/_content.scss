@@ -43,6 +43,11 @@ body, html {
   background: #eeeef48a;
   border-bottom: 1px solid #ddd;
   padding: 15px 20px 0;
+
+  @media (max-width: 768px) {
+    padding: 15px 0 0;
+  }
+
   h2 {
     font-weight: 600;
     margin: .4em 0;
