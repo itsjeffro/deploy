@@ -10,6 +10,9 @@ class Notification extends Model
     use SoftDeletes;
 
     /** @var string */
+    const INFO_TYPE = 'info';
+
+    /** @var string */
     const ERROR_TYPE = 'error';
 
     /**
@@ -19,7 +22,7 @@ class Notification extends Model
      */
     protected $table = 'deploy_notifications';
 
-        /**
+    /**
      * Belongs to one project.
      *
      * @return BelongsTo
