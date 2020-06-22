@@ -15,7 +15,6 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('deploy_notifications', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->nullable()->unsigned();
             $table->integer('project_id')->nullable()->unsigned();
             $table->string('subject');
             $table->string('type');
