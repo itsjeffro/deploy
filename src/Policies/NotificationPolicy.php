@@ -19,6 +19,6 @@ class NotificationPolicy
      */
     public function view(User $user, Notification $notification)
     {
-        return (int) $user->id === (int) $notification->user_id;
+        return (int) $user->id === (int) $notification->project->user_id;
     }
 }
