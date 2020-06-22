@@ -1,57 +1,30 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Icon from './Icon';
 
 const Drawer = (props) => {
   const {
     project,
   } = props;
 
-  const projectNavigation = (project) => {
-    if (project === undefined) {
-      return <></>;
-    }
-
-    return (
-      <li>
-        <a href="#">{project.name}</a>
-        <ul>
-          <li>
-            <Link to={'/projects/' + project.id}>
-              <i className="fa fa-dashboard"></i>Overview
-            </Link>
-          </li>
-          <li>
-            <Link to={'/projects/' + project.id + '/environment-unlock'}>
-              <i className="fa fa-file-o"></i>Environment
-            </Link>
-          </li>
-          <li>
-            <Link to={'/projects/' + project.id + '/deployment-hooks'}>
-              <i className="fa fa-cubes"></i>Deployment Hooks
-            </Link>
-          </li>
-          <li>
-            <Link to={'/projects/' + project.id + '/folders'}>
-              <i className="fa fa-folder"></i>Linked Folders
-            </Link>
-          </li>
-        </ul>
-      </li>
-    )
-  }
-
   return (
     <div className="drawer">
       <h2>Deploy</h2>
       <ul>
         <li>
-          <Link to={'/'}>Dashboard</Link>
+          <NavLink to={'/'} activeClassName="active">
+            <Icon iconName="desktop" />Dashboard
+          </NavLink>
         </li>
-        { projectNavigation(project) }
+        <li>
+          <NavLink to="/notifications" activeClassName="active">
+            <Icon iconName="bell" />Notifications
+          </NavLink>
+        </li>
       </ul>
 
       <div className="drawer__account">
-        <Link to={'/account'}>My Account</Link>
+        <NavLink to={'/account'} activeClassName="active">My Account</NavLink>
       </div>
     </div>
   )
