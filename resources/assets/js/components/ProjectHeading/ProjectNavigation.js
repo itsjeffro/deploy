@@ -30,7 +30,7 @@ const ProjectNavigation = (props) => {
         </NavLink>
       </li>
       <li>
-        <NavLink to={'/projects/' + project.id + '/edit'} activeClassName="active">
+        <NavLink to={'/projects/' + project.id + '/settings'} activeClassName="active">
           <Icon iconName="gear" />Settings
         </NavLink>
       </li>
