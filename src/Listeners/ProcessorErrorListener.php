@@ -28,11 +28,11 @@ class ProcessorErrorListener
     {
         $notification = new Notification();
 
-        $notification->user_id = 0;
-        $notification->project_id = 2;
-        $notification->subject = $event->class;
+        $notification->subject = $event->subject;
+        $notification->model_type = $event->modelType;
+        $notification->model_id = $event->modelId;
         $notification->contents = $event->exception->getMessage();
-        $notification->type = Notification::ERROR_TYPE;
+        $notification->reason = Notification::ERROR_TYPE;
 
         $notification->save();
     }
