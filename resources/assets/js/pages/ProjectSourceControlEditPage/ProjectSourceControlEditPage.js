@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
 
@@ -146,8 +146,18 @@ class ProjectSourceControlEditPage extends React.Component {
                   </PanelHeading>
 
                   <div className="list-group">
-                    <Link to={'/projects/' + project.item.id + '/edit'} className="list-group-item">General settings</Link>
-                    <Link to={'/projects/' + project.item.id + '/source-control/edit'} className="list-group-item">Source control</Link>
+                    <NavLink
+                      to={'/projects/' + project.item.id + '/settings'}
+                      className="list-group-item"
+                      activeClassName="active"
+                      exact
+                    >General settings</NavLink>
+                    <NavLink
+                      to={'/projects/' + project.item.id + '/settings/source-control'}
+                      className="list-group-item"
+                      activeClassName="active"
+                      exact
+                    >Source control</NavLink>
                   </div>
                 </Panel>
               </div>

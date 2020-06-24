@@ -3,7 +3,8 @@
 namespace Deploy\Listeners;
 
 use Deploy\Events\ProcessorErrorEvent;
-use Illuminate\Support\Facades\Log;
+use Deploy\Models\Notification;
+use Exception;
 
 class ProcessorErrorListener
 {
@@ -25,9 +26,19 @@ class ProcessorErrorListener
      */
     public function handle(ProcessorErrorEvent $event)
     {
-        Log::error('Processor exception was thrown', [
-            'class' => $event->class,
-            'message' => $event->exception->getMessage(),
-        ]);
+        try {
+            $notification = new Notification();
+
+            $notification->subject = $event->subject;
+            $notification->project_id = $event->projectId;
+            $notification->model_type = $event->modelType;
+            $notification->model_id = $event->modelId;
+            $notification->contents = $event->exception->getMessage();
+            $notification->reason = Notification::ERROR_TYPE;
+    
+            $notification->save();
+        } catch (Exception $e) {
+            throw new $event->exception;
+        }
     }
 }

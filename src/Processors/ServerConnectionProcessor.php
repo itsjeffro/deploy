@@ -62,7 +62,9 @@ class ServerConnectionProcessor extends AbstractProcessor implements ProcessorIn
             
             $successful = true;
         } catch (ProcessFailedException | Exception $exception) {
-            $this->dispatcher->dispatch(new ProcessorErrorEvent(static::class, $exception));
+            $this->dispatcher->dispatch(
+                new ProcessorErrorEvent('Server connection test issue', $this->server->project_id, $this->server, $exception)
+            );
         }
         
         $server = Server::find($this->server->id);

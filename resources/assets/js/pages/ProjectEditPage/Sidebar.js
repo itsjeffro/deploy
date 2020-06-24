@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
@@ -16,14 +16,18 @@ const Sidebar = (props) => {
       </PanelHeading>
 
       <div className="list-group">
-        <Link 
-          to={'/projects/' + project.id + '/edit'} 
+        <NavLink 
+          to={'/projects/' + project.id + '/settings'} 
           className="list-group-item"
-        >General settings</Link>
-        <Link 
-          to={'/projects/' + project.id + '/source-control/edit'} 
+          activeClassName="active"
+          exact
+        >General settings</NavLink>
+        <NavLink 
+          to={'/projects/' + project.id + '/settings/source-control'} 
           className="list-group-item"
-        >Source control</Link>
+          activeClassName="active"
+          exact
+        >Source control</NavLink>
       </div>
     </Panel>
   )

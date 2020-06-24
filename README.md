@@ -102,6 +102,10 @@ Worker roles also handle:
 
 * Testing server connections
 
+### Middleware
+
+The provided config `deploy.php` also provides a convenient way to add middlewares. You may add your own or one of Laravels out-of-the-box middlwares, such as `auth` to the middleware list.
+
 ## Deploy dashboard
 
 Once you have completed the bare minimum of installation, a dashboard to manage your projects will be exposed at `/deploy`.

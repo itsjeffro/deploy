@@ -8,6 +8,9 @@ use Deploy\Models\Project;
 use Deploy\Models\Deployment;
 use Deploy\Models\Server;
 use Deploy\Models\Environment;
+use Deploy\Models\Hook;
+use Deploy\Models\Notification;
+use Deploy\Models\Process;
 use Deploy\Resources\ProjectResource;
 
 class ProjectController extends Controller
@@ -98,9 +101,19 @@ class ProjectController extends Controller
     {
         $this->authorize('delete', $project);
 
-        Server::where('project_id', $project->id)->delete();
+        // Remove notifications associated with project
+        Notification::where('project_id', $project->id)->forceDelete();
+
+        // Remove env associated with project
         Environment::where('project_id', $project->id)->delete();
+
+        // Remove deployment related data associated with project
+        Process::where('project_id', $project->id)->delete();
+        Hook::where('project_id', $project->id)->delete();
         Deployment::where('project_id', $project->id)->delete();
+
+        // Remove server associated with project
+        Server::where('project_id', $project->id)->forceDelete();
 
         $project->delete();
 

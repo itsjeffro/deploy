@@ -13,6 +13,7 @@
             &> th {
                 font-size: 13px;
                 padding: 10px 15px;
+                border-bottom: 0;
             }
         }
     }
@@ -28,6 +29,14 @@
     &>td {
         background: #f2dede;
     }
+}
+
+.table-pagination {
+    margin-top: 0;
+}
+
+.table-meta {
+    margin: 10px 0 0;
 }
 
 .avatar {

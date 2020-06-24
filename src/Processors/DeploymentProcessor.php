@@ -15,8 +15,8 @@ use Deploy\Deployment\Sequences;
 use Deploy\Deployment\CommandParser;
 use DateTime;
 use Deploy\Contracts\Processors\ProcessorInterface;
+use Deploy\Events\ProcessorErrorEvent;
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class DeploymentProcessor extends AbstractProcessor implements ProcessorInterface
@@ -94,14 +94,10 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
                     break;
                 }
             }
-        } catch (ProcessFailedException $e) {
+        } catch (ProcessFailedException | Exception $e) {
             $status = Deployment::FAILED;
             
-            Log::info($e->getTraceAsString());
-        } catch (Exception $e) {
-            $status = Deployment::FAILED;
-            
-            Log::info($e->getTraceAsString());
+            event(new ProcessorErrorEvent('Deployment issue', $this->deployment->project_id, $this->deployment, $e));
         }
         
         $this->updateRemainingProcessesAsCancelled($this->deployment);

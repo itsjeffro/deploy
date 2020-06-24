@@ -62,6 +62,11 @@ Route::group(['prefix' => 'api'], function() {
 
     // Repository
     Route::get('repositories/branches-tags', 'RepositoryBranchesTagsController@index')->name('repository-branches-tags.index');
+
+    // Notification
+    Route::get('notifications', 'NotificationController@index');
+    Route::get('notifications/{notification}', 'NotificationController@show');
+    Route::post('notifications/{notification}/read', 'NotificationController@markAsRead');
 });
 
 // Provider auth

@@ -9,18 +9,32 @@ class ProcessorErrorEvent
 {
     use Dispatchable, SerializesModels;
 
-    public $class;
+    /** @var mixed */
+    public $subject;
 
+    /** @var mixed */
     public $exception;
+
+    /** @var string */
+    public $modelType;
+    
+    /** @var string */
+    public $modelId;
+
+    /** @var string */
+    public $projectId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($class, $exception)
+    public function __construct($subject, $projectId, $model, $exception)
     {
-        $this->class = $class;
+        $this->subject = $subject;
+        $this->projectId = $projectId;
+        $this->modelType = get_class($model);
+        $this->modelId = $model->id;
         $this->exception = $exception;
     }
 }

@@ -43,6 +43,11 @@ body, html {
   background: #eeeef48a;
   border-bottom: 1px solid #ddd;
   padding: 15px 20px 0;
+
+  @media (max-width: 768px) {
+    padding: 15px 0 0;
+  }
+
   h2 {
     font-weight: 600;
     margin: .4em 0;
@@ -55,13 +60,10 @@ body, html {
   list-style: none;
   margin: 0;
   padding: 0 0;
-  &:after {
-    content: '';
-    clear: both;
-    display: table;
-  }
+  overflow-x: auto;
+  white-space: nowrap;
   li {
-    float: left;
+    display: inline-block;
   }
   a {
     color: #111;
