@@ -21,4 +21,16 @@ class NotificationPolicy
     {
         return (int) $user->id === (int) $notification->project->user_id;
     }
+
+    /**
+     * Mark notification belong to user as read.
+     *
+     * @param User $user
+     * @param Notification $notification
+     * @return bool
+     */
+    public function markAsRead(User $user, Notification $notification)
+    {
+        return (int) $user->id === (int) $notification->project->user_id;
+    }
 }
