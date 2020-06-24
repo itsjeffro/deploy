@@ -8,6 +8,7 @@ use Deploy\Models\Project;
 use Deploy\Models\Deployment;
 use Deploy\Models\Server;
 use Deploy\Models\Environment;
+use Deploy\Models\Notification;
 use Deploy\Resources\ProjectResource;
 
 class ProjectController extends Controller
@@ -98,6 +99,7 @@ class ProjectController extends Controller
     {
         $this->authorize('delete', $project);
 
+        Notification::where('project_id', $project->id)->forceDelete();
         Server::where('project_id', $project->id)->delete();
         Environment::where('project_id', $project->id)->delete();
         Deployment::where('project_id', $project->id)->delete();
