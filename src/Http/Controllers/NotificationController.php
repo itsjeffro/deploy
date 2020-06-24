@@ -32,6 +32,7 @@ class NotificationController extends Controller
             ->whereHas('project', function ($query) use ($userId) {
                 return $query->where('user_id', $userId);
             })
+            ->where('is_read', 0)
             ->orderBy('id', 'desc')
             ->paginate();
 
@@ -49,10 +50,27 @@ class NotificationController extends Controller
         $this->authorize('view', $notification);
 
         $notification = $this->notification
-            ->with('project')
             ->where('id', $notification->id)
+            ->where('is_read', 0)
             ->first();
 
         return new NotificationResource($notification);
+    }
+
+    /**
+     * Mark notification as read.
+     *
+     * @param Notification $notification
+     * @return JsonResponse
+     */
+    public function markAsRead(Notification $notification)
+    {
+        $this->authorize('markAsRead', $notification);
+
+        $notification->is_read = 1;
+        $notification->read_at = new \DateTime();
+        $notification->save();
+
+        return response()->json(null, 204);
     }
 }
