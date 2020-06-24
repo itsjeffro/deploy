@@ -21,16 +21,20 @@ class ProcessorErrorEvent
     /** @var string */
     public $modelId;
 
+    /** @var string */
+    public $projectId;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($subject, $exception, $model)
+    public function __construct($subject, $projectId, $model, $exception)
     {
         $this->subject = $subject;
-        $this->exception = $exception;
+        $this->projectId = $projectId;
         $this->modelType = get_class($model);
         $this->modelId = $model->id;
+        $this->exception = $exception;
     }
 }
