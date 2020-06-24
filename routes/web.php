@@ -66,6 +66,7 @@ Route::group(['prefix' => 'api'], function() {
     // Notification
     Route::get('notifications', 'NotificationController@index');
     Route::get('notifications/{notification}', 'NotificationController@show');
+    Route::post('notifications/{notification}/read', 'NotificationController@markAsRead');
 });
 
 // Provider auth
