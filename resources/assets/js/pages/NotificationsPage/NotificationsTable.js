@@ -2,9 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const NotificationsTable = (props) => {
-  const { items } = props;
+  const { 
+    items,
+    onShowModalClick,
+    onMarkAsReadClick,
+  } = props;
 
-  const types = {
+  const reasons = {
     'info': 'info',
     'error': 'danger',
   };
@@ -16,36 +20,35 @@ const NotificationsTable = (props) => {
           <tr>
             <th>Subject</th>
             <th>Project</th>
-            <th>Type</th>
+            <th>Reason</th>
             <th>Date</th>
             <th width="15%"></th>
           </tr>
         </thead>
         <tbody>
           {items.map(item => {
-            const projectId = item.project ? item.project.id : null;
-            const projectName = item.project ? item.project.name : '--';
-
             return (
               <tr key={ item.id }>
                 <td>
-                  <strong>
-                    <Link to={ '/notifications/' + item.id }>{ item.subject }</Link>
-                  </strong>
+                  <span className="small">{ item.model_type } #{ item.model_id }</span><br />
+                  <a href="#" onClick={ e => onShowModalClick(item)}>{ item.subject }</a>
                 </td>
                 <td>
-                    <Link to={ '/projects/' + projectId }>{ projectName }</Link>
+                  <Link to={ '/projects/' + item.project.id }>{ item.project.name }</Link>
                 </td>
                 <td>
-                  <span className={`label label-${types[item.type]}`}>
-                    { item.type }
+                  <span className={`label label-${reasons[item.reason]}`}>
+                    { item.reason }
                   </span>
                 </td>
                 <td>
                   { item.created_at }
                 </td>
                 <td className="text-right" width="15%">
-                  <Link className="btn btn-default" to="">Mark as read</Link>
+                  <button 
+                    className="btn btn-default"
+                    onClick={ e => onMarkAsReadClick(item.id) }
+                  >Mark as read</button>
                 </td>
               </tr>
             )
