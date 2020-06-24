@@ -19,12 +19,11 @@ class NotificationResource extends JsonResource
             'project' => [
                 'id' => $this->project->id,
                 'name' => $this->project->name,
-                'owner' => [
-                    'id' => $this->project->user_id,
-                ]
             ],
+            'model_type' => $this->model_type,
+            'model_id' => $this->model_id,
             'subject' => $this->subject,
-            'type' => $this->type,
+            'reason' => $this->reason,
             'contents' => $this->contents,
             'is_read' => $this->is_read,
             'created_at' => $this->created_at,
