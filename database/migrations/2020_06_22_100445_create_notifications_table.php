@@ -15,6 +15,7 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('deploy_notifications', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('project_id');
             $table->string('subject');
             $table->string('model_type');
             $table->string('model_id');
@@ -24,6 +25,8 @@ class CreateNotificationsTable extends Migration
             $table->dateTime('read_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('project_id')->references('id')->on('projects');
         });
     }
 
