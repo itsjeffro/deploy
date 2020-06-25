@@ -1,12 +1,12 @@
 import React from 'react';
 
-import AlertErrorValidation from '../../components/AlertErrorValidation';
-import Button from '../../components/Button';
-import Dialog from '../../components/Dialog';
-import DialogActions from '../../components/DialogActions';
-import DialogContent from '../../components/DialogContent';
-import DialogTitle from '../../components/DialogTitle';
-import TextField from '../../components/TextField';
+import AlertErrorValidation from '../../../components/AlertErrorValidation';
+import Button from '../../../components/Button';
+import Dialog from '../../../components/Dialog';
+import DialogActions from '../../../components/DialogActions';
+import DialogContent from '../../../components/DialogContent';
+import DialogTitle from '../../../components/DialogTitle';
+import TextField from '../../../components/TextField';
 
 const AddProjectDialog = props => {
   const {

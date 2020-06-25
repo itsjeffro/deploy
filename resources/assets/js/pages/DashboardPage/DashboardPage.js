@@ -9,11 +9,11 @@ import {
 } from '../../state/projects/projectsActions';
 
 import AccountProviderService from '../../services/AccountProvider';
-import AddProjectDialog from './AddProjectDialog';
+import AddProjectDialog from './components/AddProjectDialog';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
-import ProjectsTable from './ProjectsTable';
+import ProjectsTable from './components/ProjectsTable';
 import Layout from "../../components/Layout";
 import ProjectService from "../../services/Project";
 import Container from "../../components/Container";

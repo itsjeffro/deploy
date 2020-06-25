@@ -14,7 +14,7 @@ import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import PanelBody from '../../components/PanelBody';
 import TextField from '../../components/TextField';
-import EnvironmentServersTable from './EnvironmentServersTable';
+import EnvironmentServersTable from './components/EnvironmentServersTable';
 import { buildAlertFromResponse } from '../../utils/alert';
 import Layout from "../../components/Layout";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';

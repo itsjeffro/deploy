@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Panel from '../../components/Panel'; 
-import PanelHeading from '../../components/PanelHeading'; 
-import PanelTitle from '../../components/PanelTitle'; 
+import Panel from '../../../components/Panel'; 
+import PanelHeading from '../../../components/PanelHeading'; 
+import PanelTitle from '../../../components/PanelTitle'; 
 
 const DeploymentDetails = props => {
     const { project } = props;

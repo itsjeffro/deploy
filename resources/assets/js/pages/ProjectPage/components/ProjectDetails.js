@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Panel from '../../components/Panel';
-import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
-import Icon from '../../components/Icon';
+import Panel from '../../../components/Panel';
+import PanelHeading from '../../../components/PanelHeading';
+import PanelTitle from '../../../components/PanelTitle'; 
+import Icon from '../../../components/Icon';
 
 const ProjectDetails = props => {
   const { project } = props;

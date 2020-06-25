@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Deploy } from '../../config';
+import { Deploy } from '../../../config';
 
-import Button from '../../components/Button';
-import Icon from '../../components/Icon';
+import Button from '../../../components/Button';
+import Icon from '../../../components/Icon';
 
 const ServersTableRow = props => {
     const {

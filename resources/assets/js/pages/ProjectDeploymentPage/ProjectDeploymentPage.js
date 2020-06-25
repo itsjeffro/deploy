@@ -7,7 +7,7 @@ import { buildSequencesFromProcesses } from '../../utils/squence';
 import Loader from '../../components/Loader';
 import Panel from '../../components/Panel';
 import Modal from '../../components/Modal';
-import ProcessTable from './ProcessTable';
+import ProcessTable from './components/ProcessTable';
 import Layout from "../../components/Layout";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 

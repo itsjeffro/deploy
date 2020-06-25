@@ -11,7 +11,7 @@ import Modal from '../../components/Modal';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
-import FoldersTable from './FoldersTable';
+import FoldersTable from './components/FoldersTable';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import {fetchProject} from "../../state/project/actions";
