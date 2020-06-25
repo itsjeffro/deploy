@@ -10,7 +10,10 @@ use Deploy\Models\Project;
 use Deploy\Models\Server;
 use Deploy\Ssh\Client;
 use Deploy\Environment\EnvironmentEncrypter;
+use Deploy\Events\ProcessorErrorEvent;
+use Exception;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorInterface
 {
@@ -77,8 +80,6 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
     {
         $processors = [];
 
-        event(new EnvironmentSyncing($this->environment));
-
         $decryptedContents = $this->environmentEncrypter
             ->setKey($this->key)
             ->decrypt($this->environment->contents);
@@ -90,32 +91,46 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
                 $this->script($server, $decryptedContents)
             );
             
-            $processors[] = $client->getProcess();
+            $processors[] = [
+                'process' => $client->getProcess(),
+                'server' => $server,
+            ];
         }
 
-        // Run through each processor and run the script, as well as collecting  the output.
+        // Run through each processor (server connection) and run the script.
         foreach ($processors as $processor) {
-            $processor->run(function ($type, $output) {
-                Log::debug($output);
-            });
-        }
+            $status = Environment::SYNCING;
+            $process = $processor['process'];
+            $server = $processor['server'];
 
-        // Get the exit codes for each processor after completion.
-        foreach ($processors as $processor) {
-            Log::debug('Exit code: ' . $processor->getExitCode());
-        }
+            try {
+                event(new EnvironmentSyncing($server, $status));
 
-        event(new EnvironmentSynced($this->environment));
+                $process->run();
+
+                if (!$process->isSuccessful()) {
+                    throw new ProcessFailedException($process);
+                }
+
+                $status = Environment::SYNCED;
+            } catch (ProcessFailedException | Exception $e) {
+                event(new ProcessorErrorEvent('Environment server issue', $this->project->id, $server, $e));
+                
+                $status = Environment::FAILED_SYNC;
+            }
+
+            event(new EnvironmentSynced($server, $status));
+        }
     }
 
     /**
      * Return script to create .env with it's contents.
      *
-     * @param  \Deploy\Models\Server $server
-     * @param  string $contents
+     * @param Server $server
+     * @param string $contents
      * @return string
      */
-    public function script(Server $server, $contents)
+    public function script(Server $server, string $contents)
     {
         return 'cd ' . $server->project_path . ' && echo "' . $contents . '" > .env';
     }
