@@ -30,7 +30,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
         servers: [],
       },
       errors: [],
-      syncStatus: '',
+      status: {},
       unlocked: false
     };
 
@@ -49,8 +49,10 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     const {
       dispatch,
       project,
-      match,
+      match
     } = this.props;
+
+    const projectId = match.params.project_id;
 
     this.setState(prevState => {
       const environment = {
@@ -63,21 +65,37 @@ class ProjectEnvironmentUnlockPage extends React.Component {
       return {environment: environment};
     });
 
-    dispatch(fetchProject(match.params.project_id));
+    dispatch(fetchProject(projectId));
 
-    Echo.private('project.' + project.id)
-      .listen('.Deploy\\Events\\EnvironmentSyncing', (e) => {
-        let environment = e.environment.id;
-        this.setState({syncStatus: 'Syncing'});
-      })
-      .listen('.Deploy\\Events\\EnvironmentSynced', (e) => {
-        let environment = e.environment.id;
-        this.setState({syncStatus: 'Synced'});
+    if (Echo !== null) {
+      Echo.private('project.' + projectId)
+        .listen('.Deploy\\Events\\EnvironmentSyncing', (e) => {
+          let serverId = e.serverId;
+          let serverStatus = e.status;
 
-        setTimeout(() => {
-          this.setState({syncStatus: ''});
-        }, 300);
-      });
+          this.setState(prevState => {
+            const status = {
+              ...prevState.status,
+              [serverId]: serverStatus
+            };
+
+            return { status: status }
+          });
+        })
+        .listen('.Deploy\\Events\\EnvironmentSynced', (e) => {
+          let serverId = e.serverId;
+          let serverStatus = e.status;
+
+          this.setState(prevState => {
+            const status = {
+              ...prevState.status,
+              [serverId]: serverStatus
+            };
+
+            return { status: status }
+          });
+        });
+    }
   }
 
   /**
@@ -205,7 +223,7 @@ class ProjectEnvironmentUnlockPage extends React.Component {
     const {
       environment,
       errors,
-      syncStatus,
+      status,
       unlocked
     } = this.state;
 
@@ -278,9 +296,9 @@ class ProjectEnvironmentUnlockPage extends React.Component {
 
                 <Grid xs={12} md={4}>
                   <EnvironmentServersTable
-                    project={project.item}
-                    syncedServers={environment.servers}
-                    syncStatus={syncStatus}
+                    project={ project.item }
+                    syncedServers={ environment.servers }
+                    status={ status }
                     onSyncServerClick={this.handleSyncServerClick}
                   />
                 </Grid>
