@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Button from '../../components/Button';
-import Icon from '../../components/Icon';
+import Button from '../../../components/Button';
+import Icon from '../../../components/Icon';
 
 const FoldersTable = props => {
   const {

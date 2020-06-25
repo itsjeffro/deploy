@@ -8,7 +8,7 @@ import { fetchProject } from '../../state/project/actions';
 
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';
-import HooksTable from './HooksTable';
+import HooksTable from './components/HooksTable';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';

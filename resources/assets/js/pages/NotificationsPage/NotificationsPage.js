@@ -3,9 +3,9 @@ import React from 'react';
 import Panel from '../../components/Panel';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
-import NotificationsTable from './NotificationsTable';
+import NotificationsTable from './components/NotificationsTable';
 import NotificationApi from '../../services/NotificationApi';
-import NotificationDialog from './NotificationDialog';
+import NotificationDialog from './components/NotificationDialog';
 import Pagination from '../../components/Pagination';
 
 class NotificationsPage extends React.Component {

@@ -22,14 +22,14 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
 import Modal from '../../components/Modal';
-import ProjectDetails from './ProjectDetails';
-import DeploymentDetails from './DeploymentDetails';
-import DeploymentsTable from './DeploymentsTable';
-import ServersTable from './ServersTable';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+import ProjectDetails from './components/ProjectDetails';
+import DeploymentDetails from './components/DeploymentDetails';
+import DeploymentsTable from './components/DeploymentsTable';
+import ServersTable from './components/ServersTable';
 
 class ProjectPage extends React.Component {
   state = {

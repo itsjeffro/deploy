@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Deploy } from '../../config';
+import { Deploy } from '../../../config';
 
 const SubMenu = (props) => {
   const { project } = props;
