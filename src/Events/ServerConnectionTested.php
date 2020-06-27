@@ -6,7 +6,6 @@ use Deploy\Models\Server;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -22,15 +21,13 @@ class ServerConnectionTested implements ShouldBroadcastNow
      */
     public $broadcastQueue = 'server-connection-test';
 
-    /**
-     * @var \Deploy\Models\Server
-     */
+    /** @var Server */
     public $server;
 
     /**
      * Create a new event instance.
      *
-     * @param  \Deploy\Models\Server $server
+     * @param Server $server
      * @return void
      */
     public function __construct(Server $server)
