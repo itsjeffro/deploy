@@ -4,6 +4,7 @@ namespace Deploy\Tests\Unit\Deployment;
 
 use PHPUnit\Framework\TestCase;
 use Deploy\Deployment\CommandParser;
+use Exception;
 
 class CommandParserTest extends TestCase
 {
@@ -43,11 +44,10 @@ class CommandParserTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function test_invalid_command_throws_exception()
     {
+        $this->expectException(Exception::class);
+
         $commandParser = new CommandParser([]);
         
         $commandParser->parseScript('{{ invalid_command }}');
