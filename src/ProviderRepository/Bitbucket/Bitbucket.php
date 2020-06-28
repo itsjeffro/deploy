@@ -8,8 +8,8 @@ use Deploy\ProviderRepository\Bitbucket\Resources\BranchesResource;
 use Deploy\ProviderRepository\Bitbucket\Resources\BranchResource;
 use Deploy\ProviderRepository\Bitbucket\Resources\CommitsResource;
 use Deploy\ProviderRepository\Bitbucket\Resources\TagsResource;
-use Deploy\ProviderRepository\Bitbucket\Resources\RepositoryResource;
 use Deploy\ProviderRepository\Bitbucket\Resources\CommitResource;
+use Deploy\ProviderRepository\Bitbucket\Resources\RepositoryResource;
 
 class Bitbucket extends ApiClient implements ProviderRepositoryInterface
 {
@@ -75,7 +75,9 @@ class Bitbucket extends ApiClient implements ProviderRepositoryInterface
         $response = $this->request('GET', 'repositories/' . $userRepo);
         $repository = json_decode($response->getBody());
         
-        return (new RepositoryResource($repository))->toArray();
+        return [
+            'name' => $repository->name,
+        ];
     }
 
     /**

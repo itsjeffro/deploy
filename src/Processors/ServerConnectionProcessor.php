@@ -13,18 +13,12 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ServerConnectionProcessor extends AbstractProcessor implements ProcessorInterface
 {
-     /** @var dispatcher */
-    public $dispatcher;
-
     /** @var Server */
     public $server;
 
-    /**
-     * @param Dispatcher $dispatcher
-     */
-    public function __construct(Dispatcher $dispatcher)
+    public function __construct()
     {
-        $this->dispatcher = $dispatcher;
+        //
     }
 
     /**
@@ -62,15 +56,18 @@ class ServerConnectionProcessor extends AbstractProcessor implements ProcessorIn
             
             $successful = true;
         } catch (ProcessFailedException | Exception $exception) {
-            $this->dispatcher->dispatch(
-                new ProcessorErrorEvent('Server connection test issue', $this->server->project_id, $this->server, $exception)
-            );
+            event(new ProcessorErrorEvent(
+                'Server connection test issue',
+                $this->server->project_id,
+                $this->server,
+                $exception
+            ));
         }
         
         $server = Server::find($this->server->id);
         $server->connection_status = $successful;
         $server->save();
         
-        $this->dispatcher->dispatch(new ServerConnectionTested($server));
+        event(new ServerConnectionTested($server));
     }
 }

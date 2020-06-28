@@ -13,7 +13,7 @@ class ProviderOauthManagerTest extends TestCase
 {
     private $providerOauthManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $config = Mockery::mock(Repository::class);
         $config->shouldReceive('get')->with('deploy.providers.bitbucket.oauth')->andReturn(BitbucketOauth::class);
@@ -32,7 +32,7 @@ class ProviderOauthManagerTest extends TestCase
             ->setProvider($provider);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         \Mockery::close();
     }
