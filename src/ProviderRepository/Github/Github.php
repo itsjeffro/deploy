@@ -7,7 +7,6 @@ use Deploy\ProviderRepository\ResourceCollection;
 use Deploy\ProviderRepository\Github\Resources\BranchResource;
 use Deploy\ProviderRepository\Github\Resources\CommitResource;
 use Deploy\ProviderRepository\Github\Resources\TagsResource;
-use Deploy\ProviderRepository\Github\Resources\RepositoryResource;
 use Deploy\ProviderRepository\Github\Resources\BranchesResource;
 
 class Github extends ApiClient implements ProviderRepositoryInterface
@@ -69,7 +68,9 @@ class Github extends ApiClient implements ProviderRepositoryInterface
         $response = $this->request('GET', 'repos/' . $userRepo);
         $repository = json_decode($response->getBody());
         
-        return (new RepositoryResource($repository))->toArray();
+        return [
+            'name' => $repository->name,
+        ];
     }
 
     /**
