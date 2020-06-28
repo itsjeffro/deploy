@@ -39,11 +39,21 @@ class Processes
     }
 
     /**
-     * Create deployment processes
+     * Create deployment processes.
      *
      * @return array
      */
     public function create()
+    {
+        Process::insert($this->prepareProcesses());
+    }
+
+    /**
+     * Loops through each sequence (action) along with each server associated with the project.
+     * 
+     * @return array
+     */
+    public function prepareProcesses(): array
     {
         $sequences = $this->getSequences($this->actions);
         $processes = [];
@@ -53,64 +63,58 @@ class Processes
             foreach ($this->project->servers as $server) {
                 $processes[] = array_merge($sequence, [
                     'deployment_id' => $this->deployment->id,
-                    'project_id' => $server->project->id,
+                    'project_id' => $this->project->id,
                     'server_id' => $server->id,
                     'server_name' => $server->name,
                     'sequence' => $sequenceNumber,
                 ]);
             }
+
             $sequenceNumber++;
         }
 
-        Process::insert($processes);
+        return $processes;
     }
 
     /**
      * Get list of processes.
      *
-     * @param  array $actions
+     * @param $actions
      * @return array
      */
-    public function getSequences($actions)
+    public function getSequences($actions): array
     {
         $sequences = [];
 
+        $defaults = [
+            'deployment_id' => null,
+            'project_id' => null,
+            'server_id' =>  null,
+            'server_name' =>  null,
+            'sequence' => null,
+            'name' => null,
+            'action_id' => null,
+            'hook_id' =>  null,
+        ];
+
         foreach ($actions as $action) {
             foreach ($action->beforeHooks as $beforeHook) {
-                $sequences[] = [
-                    'deployment_id' => null,
-                    'project_id' => null,
-                    'server_id' =>  null,
-                    'server_name' =>  null,
-                    'sequence' => null,
+                $sequences[] = array_merge($defaults, [
                     'name' => $beforeHook->name,
-                    'action_id' => null,
                     'hook_id' =>  $beforeHook->id,
-                ];
+                ]);
             }
 
-            $sequences[] = [
-                'deployment_id' => null,
-                'project_id' => null,
-                'server_id' => null,
-                'server_name' => null,
-                'sequence' => null,
+            $sequences[] = array_merge($defaults, [
                 'name' => $action->name,
                 'action_id' => $action->id,
-                'hook_id' => null,
-            ];
+            ]);
 
             foreach ($action->afterHooks as $afterHook) {
-                $sequences[] = [
-                    'deployment_id' => null,
-                    'project_id' => null,
-                    'server_id' =>  null,
-                    'server_name' =>  null,
-                    'sequence' => null,
+                $sequences[] = array_merge($defaults, [
                     'name' => $afterHook->name,
-                    'action_id' => null,
                     'hook_id' =>  $afterHook->id,
-                ];
+                ]);
             }
         }
 
