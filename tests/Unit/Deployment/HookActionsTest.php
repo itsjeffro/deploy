@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class HookActionsTest extends TestCase
 {
-    public function test()
+    public function test_server_returned_with_hooks()
     {
         $servers = [
             ['id' => 1],
