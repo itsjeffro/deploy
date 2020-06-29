@@ -5,6 +5,8 @@ namespace Deploy\Processors;
 use Deploy\Contracts\Processors\ProcessorInterface;
 use Deploy\Ssh\Host;
 use Deploy\Models\Server;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
@@ -21,7 +23,13 @@ abstract class AbstractProcessor implements ProcessorInterface
         
         // In order to use the private key to ssh into a desired destination
         // we must set the correct permissions required for a private key.
-        chmod($keyPath, 0600);
+        try {
+            chmod($keyPath, 0600);
+        } catch (Exception $e) {
+            $message = 'There was an issue running chmod on file path [%s] with error - %s';
+
+            throw new Exception(sprintf($message, $keyPath, $e->getMessage()));
+        }
         
         return $host->user($server->connect_as)
             ->port($server->port)
