@@ -1,3 +1,0 @@
-# Linked folders
-
-TBA
