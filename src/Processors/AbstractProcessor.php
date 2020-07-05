@@ -13,8 +13,8 @@ abstract class AbstractProcessor implements ProcessorInterface
     /**
      * Return SSH Host.
      *
-     * @param  \Deploy\Models\Server $server
-     * @return \Deploy\Ssh\Host
+     * @param Server $server
+     * @return Host
      */
     protected function getHost(Server $server)
     {
@@ -40,14 +40,14 @@ abstract class AbstractProcessor implements ProcessorInterface
     /**
      * Return absolute path to ssh key.
      *
-     * @param  int $serverId
+     * @param int $serverId
      * @return string
      */
-    protected function getKeyPath($serverId)
+    protected function getKeyPath($serverId): string
     {
-        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
-        
-        return $sshKeyPath . $serverId;
+        $keysPath = ltrim(rtrim(config('deploy.ssh_key.path'), '/'), '/');
+
+        return storage_path(sprintf('app/%s/%s', $keysPath, $serverId));
     }
     
     /**

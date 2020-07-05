@@ -2,14 +2,15 @@
 
 namespace Deploy\Jobs;
 
+use Deploy\Events\ProcessorErrorEvent;
 use Deploy\Models\Server;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 
 class DeleteServerKeysJob implements ShouldQueue
 {
@@ -22,15 +23,13 @@ class DeleteServerKeysJob implements ShouldQueue
      */
     public $tries = 5;
 
-    /**
-     * @var \Deploy\Models\Server
-     */
+    /** @var Server */
     private $server;
 
     /**
      * Create a new job instance.
      *
-     * @param  \Deploy\Models\Server $server
+     * @param Server $server
      * @return void
      */
     public function __construct(Server $server)
@@ -45,21 +44,27 @@ class DeleteServerKeysJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->deleteKeys($this->server);
-    }
+        try {
+            $keysDirectory = rtrim(config('deploy.ssh_key.path'), '/');
 
-    /**
-     * Delete server private and public key.
-     *
-     * @param  \Deploy\Models\Server $server
-     * @return void
-     */
-    protected function deleteKeys(Server $server)
-    {
-        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
+            $filePath = sprintf('%s/%s', $keysDirectory, $this->server->id);
 
-        if (file_exists($sshKeyPath . $server->id)) {
-            unlink($sshKeyPath . $server->id);
+            $fileExists = Storage::exists($filePath);
+
+            if (!$fileExists) {
+                throw new Exception(sprintf('Server private key does not exist in path [%s]', $filePath));
+            }
+
+            if (!Storage::delete($filePath)) {
+                throw new Exception(sprintf('Server private key could not be deleted from path [%s]', $filePath));
+            }
+        } catch (Exception $exception) {
+            event(new ProcessorErrorEvent(
+                'Server private key issue',
+                $this->server->project_id,
+                $this->server,
+                $exception
+            ));
         }
     }
 }
