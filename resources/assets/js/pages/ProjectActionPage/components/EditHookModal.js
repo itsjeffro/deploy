@@ -9,7 +9,10 @@ const EditHookModal = (props) => {
     isVisible,
     errors,
     hook,
+    onInputNameChange,
+    onScriptChange,
     onDismissModalClick,
+    onEditHookClick,
   } = props;
 
   return (

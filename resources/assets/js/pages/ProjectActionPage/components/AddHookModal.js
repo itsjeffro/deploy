@@ -12,6 +12,7 @@ const AddHookModal = (props) => {
     onInputNameChange,
     onScriptChange,
     onDismissModalClick,
+    onAddHookClick,
   } = props;
 
   return (

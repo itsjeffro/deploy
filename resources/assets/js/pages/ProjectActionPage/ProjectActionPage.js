@@ -163,18 +163,18 @@ class ProjectActionPage extends React.Component {
 
         	this.setState({
         		beforeHooks: hooks,
-        		errors: []
+            errors: [],
+            isAddHookModalVisible: false,
         	});
         } else if (hook.position === 2) {
         	let hooks = this.state.afterHooks.concat(response.data);
 
         	this.setState({
         		afterHooks: hooks,
-        		errors: []
+            errors: [],
+            isAddHookModalVisible: false,
         	});
         }
-
-        this.handleHideAddHookModal();
       },
       error => {
         let errorResponse = error.response.data;
@@ -185,7 +185,7 @@ class ProjectActionPage extends React.Component {
           return previous.concat(errorResponse[key][0]);
         }, []);
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
       });
   };
 
@@ -209,7 +209,7 @@ class ProjectActionPage extends React.Component {
         this.setState({
         	errors: [],
           [hookPosition]: this.updateHook(hookPosition, hook.id, response.data),
-          isRemoveHookModalVisible: false,
+          isEditHookModalVisible: false,
         });
       },
       error => {
@@ -366,7 +366,7 @@ class ProjectActionPage extends React.Component {
                   <PanelTitle><Icon iconName="code" /> After This Action</PanelTitle>
                   </PanelHeading>
 
-                  {this.renderHooksTable(afterHooks)}
+                  { this.renderHooksTable(afterHooks) }
                 </Panel>
               </div>
             </div>
