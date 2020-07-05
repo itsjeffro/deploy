@@ -1,0 +1,7 @@
+.list-group-item {
+  &.active, 
+  &.active:hover,
+  &.active:focus {
+    z-index: 0;
+  }
+}
