@@ -1,54 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {
-  fetchProjects,
-  projectsCreateFailure,
-  projectsCreateRequest,
-  projectsCreateSuccess
-} from '../../state/projects/projectsActions';
+import { createProject, fetchProjects } from '../../state/projects/actions';
+import { fetchAccountProviders } from '../../state/accountProviders/actions';
 
-import AccountProviderService from '../../services/AccountProvider';
-import AddProjectDialog from './components/AddProjectDialog';
+import AddProjectModal from './components/AddProjectModal';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import ProjectsTable from './components/ProjectsTable';
 import Layout from "../../components/Layout";
-import ProjectService from "../../services/Project";
 import Container from "../../components/Container";
 import Alert from '../../components/Alert';
+import accountProviders from '../../state/accountProviders/reducers';
+import Warnings from './components/Warnings';
 
 class DashboardPage extends React.Component {
   state = {
-    grantedProviders: [],
-    input: {}
+    input: {},
+    isAddProjectModalVisible: false,
   };
 
   /**
    * Fetch data for projects and providers.
    */
   componentDidMount() {
-    const {
-      dispatch,
-      projects
-    } = this.props;
-
-    let accountProviderService = new AccountProviderService;
+    const { dispatch, projects } = this.props;
 
     if (typeof projects.items === 'object' && projects.items.length === 0) {
       dispatch(fetchProjects());
     }
-
-    accountProviderService
-      .index('/api/account-providers')
-      .then(response => {
-        let providers = response.data.filter(provider => {
-          return provider.deploy_access_token;
-        });
-
-        this.setState({ grantedProviders: providers });
-      });
+    
+    dispatch(fetchAccountProviders());
   }
 
   /**
@@ -72,33 +55,22 @@ class DashboardPage extends React.Component {
    */
   handleCreateProjectClick = () => {
     const { dispatch } = this.props;
-    const projectService = new ProjectService();
 
-    dispatch(projectsCreateRequest());
-
-    projectService
-      .post(this.state.input)
-      .then(response => {
-          dispatch(projectsCreateSuccess(response.data));
-          $('#project-create-modal').modal('hide');
-        },
-        error => {
-          dispatch(projectsCreateFailure(error.response));
-        });
+    dispatch(createProject(this.state.input));
   };
 
   /**
    * Handle click for displaying the create project modal.
    */
   handleShowModalClick = () => {
-    $('#project-create-modal').modal('show');
+    this.setState({ isAddProjectModalVisible: true });
   };
 
   /**
    * Handle click for dismissing the create project modal.
    */
   handleDismissModalClick = () => {
-    $('#project-create-modal').modal('hide');
+    this.setState({ isAddProjectModalVisible: false });
   };
 
   /**
@@ -110,14 +82,16 @@ class DashboardPage extends React.Component {
     return window.Deploy.warnings || [];
   }
 
+  /**
+   * Render page.
+   */
   render() {
-    const { projects } = this.props;
+    const { isAddProjectModalVisible } = this.state;
+    const { projects, accountProviders } = this.props;
 
     const items = Object.keys(projects.items).map(key => {
       return projects.items[key];
     });
-
-    const warnings = this.warnings();
 
     return (
       <Layout>
@@ -127,43 +101,30 @@ class DashboardPage extends React.Component {
               <h2>Project List</h2>
             </div>
             <div className="pull-right">
-              <Button color="primary" onClick={this.handleShowModalClick}>
+              <Button color="primary" onClick={ this.handleShowModalClick }>
                 <Icon iconName="plus" /> Add Project
               </Button>
             </div>
-
-            {}
           </Container>
 
-          {warnings.length > 0 ?
-            <Container fluid>
-              <Alert type="warning">
-                <p>The following warnings have occurred:</p>
-
-                <ul>
-                  {warnings.map(warning =>
-                    <li key={ warning.code }>{ warning.message }</li>
-                  )}
-                </ul>
-              </Alert>
-            </Container>
-          : ''}
+          <Warnings warnings={ this.warnings() } />
 
           <Container fluid>
             <Panel>
               <ProjectsTable
-                isFetching={projects.isFetching}
-                projects={items}
+                isFetching={ projects.isFetching }
+                projects={ items }
               />
             </Panel>
           </Container>
 
-          <AddProjectDialog
-            projects={projects}
-            grantedProviders={this.state.grantedProviders}
-            handleCreateProjectClick={this.handleCreateProjectClick}
-            handleDismissModalClick={this.handleDismissModalClick}
-            handleInputChange={this.handleInputChange}
+          <AddProjectModal
+            isVisible={ isAddProjectModalVisible }
+            projects={ projects }
+            grantedProviders={ accountProviders.items }
+            handleCreateProjectClick={ this.handleCreateProjectClick }
+            handleDismissModalClick={ this.handleDismissModalClick }
+            handleInputChange={ this.handleInputChange }
           />
         </div>
       </Layout>
@@ -173,10 +134,9 @@ class DashboardPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    projects: state.projects
+    projects: state.projects,
+    accountProviders: state.accountProviders,
   };
 };
 
-export default connect(
-  mapStateToProps
-)(DashboardPage);
+export default connect(mapStateToProps)(DashboardPage);
