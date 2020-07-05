@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import Panel from '../../components/Panel';
-import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle'; 
+import Panel from '../../../components/Panel';
+import PanelHeading from '../../../components/PanelHeading';
+import PanelTitle from '../../../components/PanelTitle'; 
 
 
 const Sidebar = (props) => {
