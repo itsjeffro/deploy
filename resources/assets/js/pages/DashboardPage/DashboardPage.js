@@ -11,8 +11,6 @@ import Panel from '../../components/Panel';
 import ProjectsTable from './components/ProjectsTable';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
-import Alert from '../../components/Alert';
-import accountProviders from '../../state/accountProviders/reducers';
 import Warnings from './components/Warnings';
 
 class DashboardPage extends React.Component {
