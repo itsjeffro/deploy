@@ -16,6 +16,7 @@ import TextField from '../../components/TextField';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+import Grid from '../../components/Grid';
 
 class ProjectSourceControlEditPage extends React.Component {
   state = {
@@ -117,7 +118,7 @@ class ProjectSourceControlEditPage extends React.Component {
         <div className="content">
           <Container fluid>
             <div className="row">
-              <div className="col-xs-12 col-sm-3">
+              <Grid xs={ 12 } sm={ 3 }>
                 <Panel>
                   <PanelHeading>
                     <PanelTitle>Project settings</PanelTitle>
@@ -138,13 +139,13 @@ class ProjectSourceControlEditPage extends React.Component {
                     >Source control</NavLink>
                   </div>
                 </Panel>
-              </div>
+              </Grid>
 
-              <div className="col-xs-12 col-sm-9">
+              <Grid xs={ 12 } sm={ 9 }>
                 <Panel>
-                <PanelHeading>
-                  <PanelTitle>Source Control</PanelTitle>
-                </PanelHeading>
+                  <PanelHeading>
+                    <PanelTitle>Source Control</PanelTitle>
+                  </PanelHeading>
                   <PanelBody>
                     { project.errors.length ? <AlertErrorValidation errors={ project.errors } /> : '' }
 
@@ -194,7 +195,7 @@ class ProjectSourceControlEditPage extends React.Component {
                     >{ project.isUpdating ? 'Saving...' : 'Save' }</Button>
                   </PanelBody>
                 </Panel>
-              </div>
+              </Grid>
             </div>
           </Container>
         </div>

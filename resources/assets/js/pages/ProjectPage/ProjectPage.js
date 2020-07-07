@@ -24,7 +24,9 @@ import PanelBody from '../../components/PanelBody';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
+import Grid from '../../components/Grid';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+
 import ProjectDetails from './components/ProjectDetails';
 import DeploymentDetails from './components/DeploymentDetails';
 import DeploymentsTable from './components/DeploymentsTable';
@@ -368,17 +370,17 @@ class ProjectPage extends React.Component {
         <div className="content">
           <Container fluid>
             <div className="row">
-              <div className="col-xs-12 col-md-6">
+              <Grid xs={ 12 } md={ 6 }>
                 <ProjectDetails
                   project={ project.item }
                 />
-              </div>
+              </Grid>
 
-              <div className="col-xs-12 col-md-6">
+              <Grid xs={ 12 } md={ 6 }>
                 <DeploymentDetails
                   project={ project.item }
                 />
-              </div>
+              </Grid>
             </div>
 
             <Panel>
@@ -391,6 +393,7 @@ class ProjectPage extends React.Component {
                 </div>
                 <PanelTitle>Servers</PanelTitle>
               </PanelHeading>
+
               <ServersTable
                 servers={ project.item.servers }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
@@ -403,6 +406,7 @@ class ProjectPage extends React.Component {
               <PanelHeading>
                 <PanelTitle>Deployments</PanelTitle>
               </PanelHeading>
+              
               <DeploymentsTable
                 deployments={ deployments.items }
                 onRedeployClick={ this.handleRedeployModal }
@@ -413,6 +417,7 @@ class ProjectPage extends React.Component {
               <PanelHeading>
                 <PanelTitle>Deployment info</PanelTitle>
               </PanelHeading>
+
               <PanelBody>
                 <p>Make requests to the following URL to trigger deployments for this project.</p>
                 <pre>{ Deploy.url + Deploy.path + '/webhook/' + project.item.key }</pre>
