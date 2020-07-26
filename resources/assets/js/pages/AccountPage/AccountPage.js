@@ -1,41 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Deploy } from '../../config';
 
-import AccountProviderService from '../../services/AccountProvider';
-
+import Container from '../../components/Container';
 import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelBody from '../../components/PanelBody';
 import Layout from "../../components/Layout";
+import { fetchAccountProviders } from '../../state/accountProviders/actions';
 
 class AccountPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isFetching: true,
-      providers: []
-    }
-  }
-
   componentDidMount() {
-    let accountProviderService = new AccountProviderService;
+    const { dispatch } = this.props;
 
-    accountProviderService
-      .index('/api/account-providers')
-      .then(response => {
-        this.setState({
-          providers: response.data
-      });
-    });
+    dispatch(fetchAccountProviders());
   }
 
   render() {
-    const { providers } = this.state;
+    const { accountProviders } = this.props;
 
     return (
       <Layout>
@@ -44,7 +30,7 @@ class AccountPage extends React.Component {
             <h2>Account Settings</h2>
           </div>
 
-          <div className="container-fluid">
+          <Container fluid>
             <div className="row">
               <Grid xs={12} sm={3}>
                 <Panel>
@@ -53,13 +39,13 @@ class AccountPage extends React.Component {
                   </PanelHeading>
 
                   <div className="list-group">
-                    <Link to={'/account'} className="list-group-item">Integrations</Link>
+                    <Link to={ '/account' } className="list-group-item">Integrations</Link>
                   </div>
                 </Panel>
               </Grid>
 
               <Grid xs={12} sm={9}>
-                {providers.map(provider =>
+                {accountProviders.items.map(provider =>
                   <Panel key={provider.id}>
                     <PanelHeading>
                       <Icon iconName={provider.friendly_name} /> {provider.name}
@@ -75,11 +61,17 @@ class AccountPage extends React.Component {
                 )}
               </Grid>
             </div>
-          </div>
+          </Container>
         </div>
       </Layout>
     )
   }
 }
 
-export default AccountPage;
+const mapStateToProps = (state) => {
+  return {
+    accountProviders: state.accountProviders,
+  };
+};
+
+export default connect(mapStateToProps)(AccountPage);

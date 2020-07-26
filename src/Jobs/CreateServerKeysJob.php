@@ -2,32 +2,30 @@
 
 namespace Deploy\Jobs;
 
+use Deploy\Events\ProcessorErrorEvent;
 use Deploy\Models\Server;
-use Deploy\Ssh\Key;
+use Exception;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Storage;
 
 class CreateServerKeysJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * @var \Deploy\Models\Server
-     */
+    /** @var Server */
     private $server;
     
-    /**
-     * @var array
-     */
+    /** @var array */
     private $sshKeys;
 
     /**
      * Create a new job instance.
      *
-     * @param \Deploy\Models\Server $server
+     * @param Server $server
      * @param array $sshKeys
      * @return void
      */
@@ -40,35 +38,31 @@ class CreateServerKeysJob implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param  \Deploy\Ssh\Key $server
      * @return void
      */
     public function handle()
     {
-        $this->createKeys($this->server, $this->sshKeys);
-    }
+        try {
+            $keysDirectory = rtrim(config('deploy.ssh_key.path'), '/');
+            
+            Storage::makeDirectory($keysDirectory);
 
-    /**
-     * Create server private and public key.
-     *
-     * @param \Deploy\Models\Server $server
-     * @param array $sshKeys
-     * @return void
-     */
-    protected function createKeys(Server $server, array $sshKeys)
-    {
-        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
-        
-        if (!is_dir($sshKeyPath)) {
-            mkdir($sshKeyPath);
+            $filePath = sprintf('%s/%s', $keysDirectory, $this->server->id);
+
+            Storage::put($filePath, $this->sshKeys['privatekey']);
+
+            $fileExists = Storage::exists($filePath);
+
+            if (!$fileExists) {
+                throw new Exception(sprintf('Could not confirm server private key was created in path [%s]', $filePath));
+            }
+        } catch (Exception $exception) {
+            event(new ProcessorErrorEvent(
+                'Server private key issue',
+                $this->server->project_id,
+                $this->server,
+                $exception
+            ));
         }
-        
-        // Create the associated private key for the public key we created with our new server.
-        file_put_contents($sshKeyPath . $server->id, $sshKeys['privatekey']);
-
-
-        // Give the keys the correct permissions, otherwise
-        // we wont be able to use them for SSH access.
-        chmod($sshKeyPath . $server->id, Key::PRIVATE_KEY_CHMOD);
     }
 }

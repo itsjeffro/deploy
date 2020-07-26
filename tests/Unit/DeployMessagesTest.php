@@ -33,10 +33,17 @@ class DeployMessagesTest extends TestCase
         $config1 = Mockery::mock(Repository::class);
         $config1->shouldReceive('get')->with('broadcasting.default')->andReturn('log');
         $config1->shouldReceive('get')->with('broadcasting.connections.pusher.key')->andReturn('pusher_key_value');
+        $config1->shouldReceive('get')->with('queue.default')->andReturn('database');
 
         $config2 = Mockery::mock(Repository::class);
         $config2->shouldReceive('get')->with('broadcasting.default')->andReturn('pusher');
         $config2->shouldReceive('get')->with('broadcasting.connections.pusher.key')->andReturn(null);
+        $config2->shouldReceive('get')->with('queue.default')->andReturn('redis');
+
+        $config3 = Mockery::mock(Repository::class);
+        $config3->shouldReceive('get')->with('broadcasting.default')->andReturn('pusher');
+        $config3->shouldReceive('get')->with('broadcasting.connections.pusher.key')->andReturn('pusher_key_value');
+        $config3->shouldReceive('get')->with('queue.default')->andReturn('sync');
 
         return [
             'returns BROADCASTER_DRIVER code when pusher is not enabled' => [
@@ -46,6 +53,10 @@ class DeployMessagesTest extends TestCase
             'returns BROADCASTER_CREDENTIALS code when pusher credentials are not set' => [
                 'config' => $config2,
                 'code' => DeployMessages::BROADCASTER_CREDENTIALS,
+            ],
+            'returns QUEUE_CONNECTION code when connection is sync' => [
+                'config' => $config3,
+                'code' => DeployMessages::QUEUE_CONNECTION,
             ]
         ];
     }

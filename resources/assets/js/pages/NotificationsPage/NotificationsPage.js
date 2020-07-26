@@ -5,7 +5,7 @@ import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import NotificationsTable from './components/NotificationsTable';
 import NotificationApi from '../../services/NotificationApi';
-import NotificationDialog from './components/NotificationDialog';
+import NotificationModal from './components/NotificationModal';
 import Pagination from '../../components/Pagination';
 
 class NotificationsPage extends React.Component {
@@ -19,6 +19,7 @@ class NotificationsPage extends React.Component {
       from: 0,
       to: 0,
     },
+    isNotificationModalVisible: false,
   };
 
   componentDidMount() {
@@ -45,13 +46,14 @@ class NotificationsPage extends React.Component {
   }
 
   handleShowModalClick = (item) => {
-    this.setState({ notification: item });
-
-    $('#notification-modal').modal('show');
+    this.setState({ 
+      notification: item,
+      isNotificationModalVisible: true,
+    });
   };
 
   handleDismissModalClick = () => {
-    $('#notification-modal').modal('hide');
+    this.setState({ isNotificationModalVisible: false });
   };
 
   handleMarkAsReadClick = (notificationId) => {
@@ -79,7 +81,11 @@ class NotificationsPage extends React.Component {
   }
 
   render() {
-    const { notifications, notification } = this.state;
+    const { 
+      notifications,
+      notification,
+      isNotificationModalVisible,
+    } = this.state;
 
     return (
       <Layout>
@@ -114,9 +120,10 @@ class NotificationsPage extends React.Component {
             </div>
           </Container>
 
-          <NotificationDialog 
-            notification={ notification }
+          <NotificationModal
+            isVisible={ isNotificationModalVisible }
             onDismissModalClick={ this.handleDismissModalClick }
+            notification={ notification }
           />
         </div>
       </Layout>

@@ -31,7 +31,7 @@ return [
 
     'ssh_key' => [
 
-        'path' => storage_path('app/keys'),
+        'path' => 'keys',
         'bit' => 4096,
         'comment' => 'deploy@domain.com',
 

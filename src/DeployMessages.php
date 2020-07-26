@@ -15,6 +15,9 @@ class DeployMessages
     /** @var string */
     const BROADCASTER_CREDENTIALS = 'BROADCASTER_CREDENTIALS';
 
+    /** @var string */
+    const QUEUE_CONNECTION = 'QUEUE_CONNECTION';
+
     /**
      * @param Repository $config
      */
@@ -33,6 +36,7 @@ class DeployMessages
     {
         $isBroadcastingEnabled = $this->config->get('broadcasting.default') === 'pusher';
         $broadcastingKey = $this->config->get('broadcasting.connections.pusher.key');
+        $isQueueEnabled = strtolower($this->config->get('queue.default')) !== 'sync';
 
         $alerts = [];
 
@@ -47,6 +51,13 @@ class DeployMessages
             $alerts[] = [
                 'code' => self::BROADCASTER_CREDENTIALS,
                 'message' => 'Ensure your Pusher credentials are properly set up'
+            ];
+        }
+
+        if (!$isQueueEnabled) {
+            $alerts[] = [
+                'code' => self::QUEUE_CONNECTION,
+                'message' => 'Set QUEUE_CONNECTION to another value other than "sync"'
             ];
         }
 

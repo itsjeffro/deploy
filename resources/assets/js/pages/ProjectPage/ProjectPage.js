@@ -14,22 +14,27 @@ import {
   projectDeploymentDeploying,
   projectDeploymentDeployed
 } from "../../state/projectDeployments/actions";
-import Alert from '../../components/Alert';
+
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
-import Modal from '../../components/Modal';
 import RepositoryTagBranchService from '../../services/RepositoryTagBranch';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
+import Grid from '../../components/Grid';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+
 import ProjectDetails from './components/ProjectDetails';
 import DeploymentDetails from './components/DeploymentDetails';
 import DeploymentsTable from './components/DeploymentsTable';
 import ServersTable from './components/ServersTable';
+import DeploymentModal from './components/DeploymentModal';
+import RedeploymentModal from './components/RedeploymentModal';
+import RemoveServerModal from './components/RemoveServerModal';
+import ServerKeyModal from './components/ServerKeyModal';
 
 class ProjectPage extends React.Component {
   state = {
@@ -44,7 +49,11 @@ class ProjectPage extends React.Component {
     server: {},
     deployments: [],
     tags: [],
-    branches: []
+    branches: [],
+    isServerKeyModalVisible: false,
+    isRemoveServerModalVisible: false,
+    isDeploymentModalVisible: false,
+    isRedeploymentModalVisible: false,
   };
 
   componentDidMount() {
@@ -73,16 +82,17 @@ class ProjectPage extends React.Component {
     const { dispatch } = this.props;
 
     if (Echo !== null) {
-      Echo.private('project.' + projectId)
-      .listen('.Deploy\\Events\\DeploymentDeploying', e => {
-        dispatch(projectDeploymentDeploying(e.deployment));
-      })
-      .listen('.Deploy\\Events\\DeploymentFinished', e => {
-        dispatch(projectDeploymentDeployed(e.deployment));
-      })
-      .listen('.Deploy\\Events\\ServerConnectionTested', e => {
-        dispatch(updateServerConnectionStatus(e.server.id, e.server.connection_status));
-      });
+      Echo
+        .private('project.' + projectId)
+        .listen('.Deploy\\Events\\DeploymentDeploying', e => {
+          dispatch(projectDeploymentDeploying(e.deployment));
+        })
+        .listen('.Deploy\\Events\\DeploymentFinished', e => {
+          dispatch(projectDeploymentDeployed(e.deployment));
+        })
+        .listen('.Deploy\\Events\\ServerConnectionTested', e => {
+          dispatch(updateServerConnectionStatus(e.server.id, e.server.connection_status));
+        });
     }
   }
 
@@ -98,7 +108,7 @@ class ProjectPage extends React.Component {
   /**
    * Displays deploy modal.
    */
-  handleDeployModal = () => {
+  handleShowDeployModalClick = () => {
     const { project } = this.props;
     const repositoryTagBranchService = new RepositoryTagBranchService;
 
@@ -111,7 +121,7 @@ class ProjectPage extends React.Component {
         });
       });
 
-    $('#deploy-modal').modal('show');
+    this.setState({ isDeploymentModalVisible: true });
   };
 
   /**
@@ -124,33 +134,67 @@ class ProjectPage extends React.Component {
     this.setState(state => {
       let redeploy = Object.assign({}, state.redeploy, {
         commit: deployment.commit,
-        deployment_id: deployment.id
+        deployment_id: deployment.id,
       });
-      return {redeploy: redeploy}
-    });
 
-    $('#redeploy-modal').modal('show');
+      return {
+        isRedeploymentModalVisible: true,
+        redeploy: redeploy 
+      }
+    });
   };
 
   /**
    * Displays server delete confirmation modal.
    *
-   * @param server
+   * @param {object} server
    */
   handleServerRemoveModal = (server) => {
-    this.setState({server: server});
-    $('#server-remove-modal').modal('show');
+    this.setState({
+      isRemoveServerModalVisible: true,
+      server: server,
+    });
   };
 
   /**
    * Displays server ssh key modal.
    *
-   * @param server
+   * @param {object} server
    */
   handleServerKeyModal = (server) => {
-    this.setState({server: server});
-    $('#server-key-modal').modal('show');
+    this.setState({
+      isServerKeyModalVisible: true,
+      server: server,
+    });
   };
+
+  /**
+   * Hide modal.
+   */
+  handleHideDeployModal = () => {
+    this.setState({ isDeploymentModalVisible: false });
+  }
+
+  /**
+   * Hide modal.
+   */
+  handleHideRedeployModal = () => {
+    this.setState({ isRedeploymentModalVisible: false });
+  }
+
+  /**
+   * Hide modal.
+   */
+  handleHideServerRemoveModal = () => {
+    this.setState({ isRemoveServerModalVisible: false });
+  }
+
+  /**
+   * Hide modal.
+   */
+  handleHideServerKeyModal = () => {
+    this.setState({ isServerKeyModalVisible: false });
+  }
 
   /**
    * Handles changing the repository reference when deploying.
@@ -174,7 +218,7 @@ class ProjectPage extends React.Component {
       name: name
     });
 
-    this.setState({deploy: deploy});
+    this.setState({ deploy: deploy });
   };
 
   /**
@@ -185,7 +229,7 @@ class ProjectPage extends React.Component {
       name: event.target.value
     });
 
-    this.setState({deploy: deploy});
+    this.setState({ deploy: deploy });
   };
 
   /**
@@ -217,7 +261,7 @@ class ProjectPage extends React.Component {
       name: name
     }));
 
-    $('#deploy-modal').modal('hide');
+    this.handleHideDeployModal();
   };
 
   /**
@@ -229,7 +273,7 @@ class ProjectPage extends React.Component {
 
     dispatch(createProjectRedeployment(redeploy.deployment_id));
 
-    $('#redeploy-modal').modal('hide');
+    this.handleHideRedeployModal();
   };
 
   /**
@@ -241,7 +285,7 @@ class ProjectPage extends React.Component {
 
     dispatch(removeProjectServer(server.project_id, server.id));
 
-    $('#server-remove-modal').modal('hide');
+    this.handleHideServerRemoveModal();
   };
 
   /**
@@ -259,6 +303,8 @@ class ProjectPage extends React.Component {
   };
 
   /**
+   * Updates specified server in table.
+   *
    * @param prevServers
    * @param server
    * @returns {*}
@@ -273,7 +319,9 @@ class ProjectPage extends React.Component {
   };
 
   /**
-   * @param {array} previousDeployments
+   * Updates specified deployment in table.
+   *
+   * @param {Array} previousDeployments
    * @param deployment
    * @returns {*}
    */
@@ -286,48 +334,6 @@ class ProjectPage extends React.Component {
     });
   };
 
-  /**
-   * @param deployments
-   * @returns {*}
-   */
-  renderDeployments = (deployments) => {
-    if (deployments.length > 0) {
-      return (
-        <div className="table-responsive">
-          <DeploymentsTable
-            deployments={deployments}
-            onRedeployClick={this.handleRedeployModal}
-          />
-        </div>
-      )
-    }
-
-    return (
-      <div className="panel-body text-center">
-        No deployments made yet
-      </div>
-    )
-  };
-
-  /**
-   * @param servers
-   * @returns {*}
-   */
-  renderServers = (servers) => {
-    if (servers.length > 0) {
-      return (
-        <div className="table-responsive">
-          <ServersTable
-            servers={servers}
-            onServerConnectionTestClick={this.handleServerConnectionTestClick}
-            onServerRemoveClick={this.handleServerRemoveModal}
-            onServerKeyClick={this.handleServerKeyModal}
-          />
-        </div>
-      )
-    }
-  };
-
   render() {
     const {
       deploy,
@@ -335,25 +341,25 @@ class ProjectPage extends React.Component {
       server,
       branches,
       tags,
-      projectKey
+      isDeploymentModalVisible,
+      isRedeploymentModalVisible,
+      isServerKeyModalVisible,
+      isRemoveServerModalVisible,
     } = this.state;
 
-    const {
-      project,
-      deployments
-    } = this.props;
+    const { project, deployments } = this.props;
 
     return (
       <Layout
-        project={project.item}
+        project={ project.item }
       >
         <ProjectHeading project={ project.item }>
           <>
             {project.item.servers.length > 0
             ? <Button
               color="primary"
-              onClick={this.handleDeployModal}
-              style={{marginLeft: 5}}
+              onClick={ this.handleShowDeployModalClick }
+              style={{ marginLeft: 5 }}
             >
               <Icon iconName="cloud-upload" /> Deploy
             </Button>
@@ -364,172 +370,94 @@ class ProjectPage extends React.Component {
         <div className="content">
           <Container fluid>
             <div className="row">
-              <div className="col-xs-12 col-md-6">
+              <Grid xs={ 12 } md={ 6 }>
                 <ProjectDetails
-                  project={project.item}
+                  project={ project.item }
                 />
-              </div>
+              </Grid>
 
-              <div className="col-xs-12 col-md-6">
+              <Grid xs={ 12 } md={ 6 }>
                 <DeploymentDetails
-                  project={project.item}
+                  project={ project.item }
                 />
-              </div>
+              </Grid>
             </div>
 
             <Panel>
               <PanelHeading>
-              <div className="pull-right">
-                <Link
-                  className="btn btn-default"
-                  to={'/projects/' + project.item.id + '/servers/create'}
-                ><Icon iconName="plus" /> Add Server</Link>
-              </div>
+                <div className="pull-right">
+                  <Link
+                    className="btn btn-default"
+                    to={ `/projects/${project.item.id}/servers/create` }
+                  ><Icon iconName="plus" /> Add Server</Link>
+                </div>
                 <PanelTitle>Servers</PanelTitle>
               </PanelHeading>
-              {this.renderServers(project.item.servers)}
+
+              <ServersTable
+                servers={ project.item.servers }
+                onServerConnectionTestClick={ this.handleServerConnectionTestClick }
+                onServerRemoveClick={ this.handleServerRemoveModal }
+                onServerKeyClick={ this.handleServerKeyModal }
+              />
             </Panel>
 
             <Panel>
               <PanelHeading>
                 <PanelTitle>Deployments</PanelTitle>
               </PanelHeading>
-              {this.renderDeployments(deployments.items)}
+              
+              <DeploymentsTable
+                deployments={ deployments.items }
+                onRedeployClick={ this.handleRedeployModal }
+              />
             </Panel>
 
             <Panel>
               <PanelHeading>
                 <PanelTitle>Deployment info</PanelTitle>
               </PanelHeading>
+
               <PanelBody>
                 <p>Make requests to the following URL to trigger deployments for this project.</p>
-                <pre>{Deploy.url + Deploy.path + '/webhook/' + project.item.key}</pre>
+                <pre>{ Deploy.url + Deploy.path + '/webhook/' + project.item.key }</pre>
                 <Button
-                  onClick={this.handleRefreshKey}
+                  onClick={ this.handleRefreshKey }
                 >Refresh key</Button>
               </PanelBody>
             </Panel>
           </Container>
 
-          <Modal
-            id="deploy-modal"
-            title="Deploy Project"
-            buttons={[
-              {text: 'Cancel', onPress: () => $('#deploy-modal').modal('hide')},
-              {text: 'Deploy', onPress: () => this.handleDeploymentClick()}
-            ]}
-          >
-            <label>Deploy From</label>
+          <DeploymentModal
+            isVisible={ isDeploymentModalVisible }
+            onModalHide={ this.handleHideDeployModal }
+            onDeploymentClick={ this.handleDeploymentClick }
+            onReferenceChange={ this.handleReferenceChange }
+            onNameChange={ this.handleNameChange }
+            deploy={ deploy }
+            project={ project.item }
+            branches={ branches }
+            tags={ tags }
+          />
 
-            <div className="form-group">
-              <label>
-                <input
-                  name="reference"
-                  value="default"
-                  type="radio"
-                  onChange={this.handleReferenceChange}
-                  checked={'default' === deploy.reference}
-                /> Default Branch ({project.item.branch})
-              </label>
-            </div>
-            <div className="form-group">
-              <label>
-                <input
-                  name="reference"
-                  value="branch"
-                  type="radio"
-                  onChange={this.handleReferenceChange}
-                  checked={'branch' === deploy.reference}
-                /> A Different Branch
-              </label>
-            </div>
-            <div className="form-group">
-              <label>
-                <input
-                  name="reference"
-                  value="tag"
-                  type="radio"
-                  onChange={this.handleReferenceChange}
-                  checked={'tag' === deploy.reference}
-                /> Tag
-              </label>
-            </div>
-            <div className="form-group">
-              <div className="branch-select" style={deploy.reference === 'branch' ? {} : {display: 'none'}}>
-                <label htmlFor="branch-select">Branch</label>
-                <select
-                  className="form-control"
-                  name="branch"
-                  id="branch-select"
-                  onChange={this.handleNameChange}
-                >
-                {branches.map(branch =>
-                  <option
-                    key={'branch' + branch.name}
-                    value={branch.name}
-                  >{branch.name}</option>
-                )}
-                </select>
-              </div>
+          <RedeploymentModal
+            isVisible={ isRedeploymentModalVisible }
+            onModalHide={ this.handleHideRedeployModal }
+            onRedeploymentClick={ this.handleRedeploymentClick }
+            redeploy={ redeploy }
+          />
 
-              <div className="tag-select" style={deploy.reference === 'tag' ? {} : {display: 'none'}}>
-                <label htmlFor="tag-select">Tag</label>
-                <select
-                  className="form-control"
-                  name="tag"
-                  id="tag-select"
-                  onChange={this.handleNameChange}
-                >
-                {tags.map(tag =>
-                  <option
-                    key={'tag' + tag.name}
-                    value={tag.name}
-                  >{tag.name}</option>
-                )}
-                </select>
-              </div>
-            </div>
-          </Modal>
+          <RemoveServerModal
+            isVisible={ isRemoveServerModalVisible }
+            onModalHide={ this.handleHideServerRemoveModal }
+            onRemoveServerClick={ this.handleRemoveServerClick }
+          />
 
-          <Modal
-            id="redeploy-modal"
-            title={'Redeploy Commit (' + redeploy.commit.substr(0,7) + ')'}
-            buttons={[
-              {text: 'Cancel', onPress: () => $('#redeploy-modal').modal('hide')},
-              {text: 'Redeploy', onPress: () => this.handleRedeploymentClick()}
-            ]}
-          >
-            Are you sure you want to redeploy this commit?
-          </Modal>
-
-          <Modal
-            id="server-remove-modal"
-            title="Remove Server"
-            buttons={[
-              {text: 'Cancel', onPress: () => $('#server-remove-modal').modal('hide')},
-              {text: 'Remove Server', onPress: () => this.handleRemoveServerClick()}
-            ]}
-          >
-            Are you sure you want to remove this server from the project?
-          </Modal>
-
-          <Modal
-            id="server-key-modal"
-            title="Server Public Key"
-            buttons={[
-              {text: 'Close', onPress: () => $('#server-key-modal').modal('hide')}
-            ]}
-          >
-            <Alert type="warning">
-              This key must be added to the server`s ~/.ssh/authorized_keys file.
-            </Alert>
-            <div
-              className="well"
-              style={{margin: 0, overflowWrap: 'break-word'}}
-            >
-              {server.public_key}
-            </div>
-          </Modal>
+          <ServerKeyModal
+            isVisible={ isServerKeyModalVisible }
+            onModalHide={ this.handleHideServerKeyModal }
+            server={ server }
+          />
         </div>
       </Layout>
     )
@@ -543,6 +471,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps
-)(ProjectPage);
+export default connect(mapStateToProps)(ProjectPage);

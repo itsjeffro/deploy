@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import AceEditor from 'react-ace';
 
 import { createToast } from '../../state/alert/alertActions';
 import { fetchProject } from '../../state/project/actions';
@@ -9,16 +8,18 @@ import { fetchProject } from '../../state/project/actions';
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';
 import HooksTable from './components/HooksTable';
-import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import Panel from '../../components/Panel';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
-import Modal from '../../components/Modal';
 import Layout from "../../components/Layout";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+import AddHookModal from './components/AddHookModal';
+import EditHookModal from './components/EditHookModal';
+import RemoveHookModal from './components/RemoveHookModal';
+import Container from '../../components/Container';
 
 class ProjectActionPage extends React.Component {
   state = {
@@ -31,7 +32,10 @@ class ProjectActionPage extends React.Component {
       script: '',
       order: 0
     },
-    errors: []
+    errors: [],
+    isAddHookModalVisible: false,
+    isEditHookModalVisible: false,
+    isRemoveHookModalVisible: false,
   };
 
   componentDidMount() {
@@ -65,8 +69,8 @@ class ProjectActionPage extends React.Component {
         <div className="table-responsive hooks-table">
           <HooksTable
           	hooks={hooks}
-          	onHandleEditClick={this.handleEditModalClick}
-          	onHandleRemoveClick={this.handleRemoveModalClick}
+          	onHandleEditClick={ this.handleEditModalClick }
+          	onHandleRemoveClick={ this.handleRemoveModalClick }
           />
         </div>
       )
@@ -97,11 +101,14 @@ class ProjectActionPage extends React.Component {
         action_id: action.id,
         position: position,
         order: 0,
-      }
+      },
+      isAddHookModalVisible: true,
     });
-
-    $('#add-hook-modal').modal('show');
   };
+
+  handleHideAddHookModal = () => {
+    this.setState({ isAddHookModalVisible: false });
+  }
 
   /**
    * Show modal to edit hook.
@@ -111,11 +118,14 @@ class ProjectActionPage extends React.Component {
   handleEditModalClick = (hook) => {
     this.setState({
       hook: hook,
-      errors: []
+      errors: [],
+      isEditHookModalVisible: true,
     });
-
-    $('#edit-hook-modal').modal('show');
   };
+
+  handleHideEditHookModal = () => {
+    this.setState({ isEditHookModalVisible: false });
+  }
 
   /**
    * Show modal to confirm hook remove.
@@ -123,10 +133,15 @@ class ProjectActionPage extends React.Component {
    * @param {object} hook
    */
   handleRemoveModalClick = (hook) => {
-    this.setState({hook: hook});
-
-    $('#remove-hook-modal').modal('show');
+    this.setState({
+      hook: hook,
+      isRemoveHookModalVisible: true,
+    });
   };
+
+  handleHideRemoveHookModal = () => {
+    this.setState({ isRemoveHookModalVisible: false });
+  }
 
   /**
    * Handle click to process hook create.
@@ -148,18 +163,18 @@ class ProjectActionPage extends React.Component {
 
         	this.setState({
         		beforeHooks: hooks,
-        		errors: []
+            errors: [],
+            isAddHookModalVisible: false,
         	});
         } else if (hook.position === 2) {
         	let hooks = this.state.afterHooks.concat(response.data);
 
         	this.setState({
         		afterHooks: hooks,
-        		errors: []
+            errors: [],
+            isAddHookModalVisible: false,
         	});
         }
-
-        $('#add-hook-modal').modal('hide');
       },
       error => {
         let errorResponse = error.response.data;
@@ -170,7 +185,7 @@ class ProjectActionPage extends React.Component {
           return previous.concat(errorResponse[key][0]);
         }, []);
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
       });
   };
 
@@ -193,10 +208,9 @@ class ProjectActionPage extends React.Component {
 
         this.setState({
         	errors: [],
-        	[hookPosition]: this.updateHook(hookPosition, hook.id, response.data)
+          [hookPosition]: this.updateHook(hookPosition, hook.id, response.data),
+          isEditHookModalVisible: false,
         });
-
-        $('#edit-hook-modal').modal('hide');
       },
       error => {
         let errorResponse = error.response.data;
@@ -207,7 +221,7 @@ class ProjectActionPage extends React.Component {
           return previous.concat(errorResponse[key][0]);
         }, []);
 
-        this.setState({errors: errors});
+        this.setState({ errors: errors });
       });
   };
 
@@ -251,7 +265,7 @@ class ProjectActionPage extends React.Component {
         alert('Could not delete hook');
       });
 
-    $('#remove-hook-modal').modal('hide');
+    this.handleHideRemoveHookModal();
   };
 
   /**
@@ -283,7 +297,7 @@ class ProjectActionPage extends React.Component {
         name: value
       });
 
-      return {hook: hook};
+      return { hook: hook };
     });
   };
 
@@ -298,18 +312,20 @@ class ProjectActionPage extends React.Component {
         script: value
       });
 
-      return {hook: hook};
+      return { hook: hook };
     });
   };
 
   render() {
     const { project } = this.props;
     const {
-      action,
       beforeHooks,
       afterHooks,
       errors,
       hook,
+      isAddHookModalVisible,
+      isEditHookModalVisible,
+      isRemoveHookModalVisible,
     } = this.state;
 
     return (
@@ -321,7 +337,7 @@ class ProjectActionPage extends React.Component {
             <Link to={'/projects/' + project.item.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
           </div>
 
-          <div className="container-fluid">
+          <Container fluid>
             <div className="row">
 
               <div className="col-xs-12 col-sm-6">
@@ -350,91 +366,38 @@ class ProjectActionPage extends React.Component {
                   <PanelTitle><Icon iconName="code" /> After This Action</PanelTitle>
                   </PanelHeading>
 
-                  {this.renderHooksTable(afterHooks)}
+                  { this.renderHooksTable(afterHooks) }
                 </Panel>
               </div>
             </div>
-          </div>
+          </Container>
 
-          <Modal
-            id="add-hook-modal"
-            title="Add Deployment Hook"
-            buttons={[
-              {text: 'Cancel', onPress: () => $('#add-hook-modal').modal('hide')},
-              {text: 'Save', onPress: () => this.handleAddHookClick()}
-            ]}
-          >
-            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+          <AddHookModal
+            isVisible={ isAddHookModalVisible }
+            errors={ errors }
+            hook={ hook }
+            onAddHookClick={ this.handleAddHookClick }
+            onInputNameChange={ this.handleInputNameChange }
+            onScriptChange={ this.handleScriptChange }
+            onDismissModalClick={ this.handleHideAddHookModal }
+          />
 
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                className="form-control"
-                name="name"
-                type="text"
-                id="name"
-                onChange={this.handleInputNameChange}
-                value={this.state.hook.name}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="script">Script</label>
-              <AceEditor
-                mode="powershell"
-                theme="github"
-                name="editor-add"
-                onChange={this.handleScriptChange}
-                style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
-                value={this.state.hook.script}
-              />
-              <textarea name="script" style={{display: 'none'}} value={hook.script} readOnly />
-            </div>
-          </Modal>
+          <EditHookModal
+            isVisible={ isEditHookModalVisible }
+            errors={ errors }
+            hook={ hook }
+            onEditHookClick={ this.handleEditHookClick }
+            onInputNameChange={ this.handleInputNameChange }
+            onScriptChange={ this.handleScriptChange }
+            onDismissModalClick={ this.handleHideEditHookModal }
+          />
 
-          <Modal
-            id="edit-hook-modal"
-            title="Edit Deployment Hook"
-            buttons={[
-              {text: 'Cancel', onPress: () => $('#edit-hook-modal').modal('hide')},
-              {text: 'Save', onPress: () => this.handleEditHookClick()}
-            ]}
-          >
-            {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
-
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                className="form-control"
-                name="name"
-                type="text"
-                onChange={this.handleInputNameChange}
-                value={this.state.hook.name}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="script">Script</label>
-              <AceEditor
-                mode="powershell"
-                theme="github"
-                name="editor-edit"
-                value={this.state.hook.script}
-                onChange={this.handleScriptChange}
-                style={{height: 200, width: '100%', fontSize: '15px', lineHeight: '21px'}}
-              />
-              <textarea name="script" style={{display: 'none'}} value={hook.script} readOnly />
-            </div>
-          </Modal>
-
-          <Modal
-            id="remove-hook-modal"
-            title="Remove Deployment Hook"
-            buttons={[
-              {text: 'Cancel', onPress: () => $('#remove-hook-modal').modal('hide')},
-              {text: 'Remove', onPress: () => this.handleRemoveHookClick()}
-            ]}
-          >
-            Are you sure you want to remove "{this.state.hook.name}"?
-          </Modal>
+          <RemoveHookModal
+            isVisible={ isRemoveHookModalVisible }
+            hook={ hook }
+            onRemoveHookClick={ this.handleRemoveHookClick }
+            onDismissModalClick={ this.handleHideRemoveHookModal }
+          />
         </div>
       </Layout>
     )
@@ -447,6 +410,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps
-)(ProjectActionPage);
+export default connect(mapStateToProps)(ProjectActionPage);
