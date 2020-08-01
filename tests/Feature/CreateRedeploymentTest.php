@@ -14,10 +14,14 @@ class CreateRedeploymentTest extends TestCase
 
         $deploymentManager = new RedeploymentManager($deployment);
 
-        $deployment = $deploymentManager->create();
+        $redeployment = $deploymentManager->create();
 
-        $this->assertSame('https://github.com/itsjeffro/deploy.git', $deployment->repository);
-        $this->assertSame('branch', $deployment->reference);
-        $this->assertSame('master', $deployment->branch);
+        $this->assertSame($deployment->repository, $redeployment->repository);
+        $this->assertSame($deployment->reference, $redeployment->reference);
+        $this->assertSame($deployment->branch, $redeployment->branch);
+        $this->assertSame($deployment->committer, $redeployment->committer);
+        $this->assertSame($deployment->committer_avatar, $redeployment->committer_avatar);
+        $this->assertSame($deployment->commit, $redeployment->commit);
+        $this->assertSame($deployment->commit_url, $redeployment->commit_url);
     }
 }
