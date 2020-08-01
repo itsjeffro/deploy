@@ -3,15 +3,20 @@
 namespace Deploy\Tests;
 
 use Deploy\DeployServiceProvider;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
+    use RefreshDatabase;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->withFactories(__DIR__ . '/../database/factories');
 
+        $this->loadLaravelMigrations(['--database' => 'testing']);
+        
         $this->artisan('migrate', ['--database' => 'testing']);
     }
 
@@ -27,6 +32,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         config(['database.default' => 'testing']);
 
         config([
+            'deploy.models.user' => \Deploy\Models\User::class,
             'database.connections.testing' => [
                 'driver' => 'mysql',
                 'username' => env('DB_USERNAME', 'root'),
