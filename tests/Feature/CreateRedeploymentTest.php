@@ -8,7 +8,7 @@ use Deploy\Tests\TestCase;
 
 class CreateRedeploymentTest extends TestCase
 {
-    public function test_successfully_created_deployment()
+    public function test_successfully_created_redeployment()
     {
         $deployment = factory(Deployment::class)->create();
 
