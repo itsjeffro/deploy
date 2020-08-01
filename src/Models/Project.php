@@ -114,6 +114,8 @@ class Project extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        $model = config('deploy.models.user') ?? 'App\User';
+
+        return $this->belongsTo($model);
     }
 }
