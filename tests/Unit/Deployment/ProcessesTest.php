@@ -15,10 +15,6 @@ class ProcessesTest extends TestCase
 {
     public function test_correct_list_of_processes_returned()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-
         $deployment = Mockery::mock(Deployment::class)->makePartial();
         $deployment->id = 1;
 
