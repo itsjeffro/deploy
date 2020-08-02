@@ -2,10 +2,10 @@
 
 namespace Deploy\ProviderOauth\Github;
 
+use Deploy\Contracts\ProviderOauth\ProviderOauthInterface;
 use Deploy\ProviderOauth\AbstractProviderOauth;
-use GuzzleHttp\Client;
 
-class GithubOauth extends AbstractProviderOauth
+class GithubOauth extends AbstractProviderOauth implements ProviderOauthInterface
 {
     /**
      * Authorization scopes.

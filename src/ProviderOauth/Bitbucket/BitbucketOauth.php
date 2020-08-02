@@ -2,9 +2,10 @@
 
 namespace Deploy\ProviderOauth\Bitbucket;
 
+use Deploy\Contracts\ProviderOauth\ProviderOauthInterface;
 use Deploy\ProviderOauth\AbstractProviderOauth;
 
-class BitbucketOauth extends AbstractProviderOauth
+class BitbucketOauth extends AbstractProviderOauth implements ProviderOauthInterface
 {
     /**
      * {@inheritdoc}
