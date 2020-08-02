@@ -15,6 +15,16 @@ class GithubOauth extends AbstractProviderOauth implements ProviderOauthInterfac
     public $scopes = ['repo'];
 
     /**
+     * Returns provider friendly name typically stored in the providers table.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'github';
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getAuthorizeUrl()

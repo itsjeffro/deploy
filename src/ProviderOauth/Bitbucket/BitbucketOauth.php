@@ -8,6 +8,16 @@ use Deploy\ProviderOauth\AbstractProviderOauth;
 class BitbucketOauth extends AbstractProviderOauth implements ProviderOauthInterface
 {
     /**
+     * Returns provider friendly name typically stored in the providers table.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'bitbucket';
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getAuthorizeUrl()
