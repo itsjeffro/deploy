@@ -100,7 +100,7 @@ class ProviderOauthManager
      * 
      * @throws Exception
      */
-    public function getValidatedAccessToken($provider, $user): string
+    private function getValidatedAccessToken($provider, $user): string
     {
         $accessToken = DeployAccessToken::where('provider_id', $provider->id)
             ->where('user_id', $user->id)
@@ -143,7 +143,7 @@ class ProviderOauthManager
      * @return DeployAccessToken
      * @throws Exception
      */
-    public function storeAccessToken($requestedToken)
+    private function storeAccessToken($requestedToken)
     {
         $accessToken = new DeployAccessToken();
         $accessToken->fill([
@@ -170,7 +170,7 @@ class ProviderOauthManager
      *
      * @param ProviderOauthResourceInterface $requestedToken
      */
-    public function storeRefreshToken($requestedToken)
+    private function storeRefreshToken($requestedToken)
     {
         if (DeployRefreshToken::find($requestedToken->getRefreshToken())) {
             DeployRefreshToken::where('id', $requestedToken->getRefreshToken())
@@ -198,7 +198,7 @@ class ProviderOauthManager
      * @return string|null
      * @throws Exception
      */
-    public function formatExpirationDateTime($requestedToken)
+    private function formatExpirationDateTime($requestedToken)
     {
         if ($requestedToken->getExpiration()) {
             $dateTime = new DateTime();
@@ -218,7 +218,7 @@ class ProviderOauthManager
      * @return bool
      * @throws Exception
      */
-    protected function isAccessTokenExpired($token)
+    private function isAccessTokenExpired($token)
     {
         $dateTime = new DateTime;
 
@@ -230,7 +230,7 @@ class ProviderOauthManager
      *
      * @return AbstractProviderOauth
      */
-    protected function getProviderOauthClass()
+    private function getProviderOauthClass()
     {
         $providerName = $this->provider->friendly_name;
 
