@@ -3,6 +3,7 @@
 namespace Deploy\ProviderRepository;
 
 use Deploy\Models\Project;
+use Deploy\ProviderOauth\ProviderOauthFactory;
 use InvalidArgumentException;
 use Deploy\ProviderOauthManager;
 use Deploy\ProviderRepositoryManager;
@@ -135,9 +136,10 @@ class Commit
      */
     protected function getRepositoryManager(Project $project)
     {
-        $oauth = new ProviderOauthManager(config());
+        $providerOauth = ProviderOauthFactory::create($project->provider->friendly_name);
 
-        $oauth->setProvider($project->provider);
+        $oauth = new ProviderOauthManager;
+        $oauth->setProvider($providerOauth);
         $oauth->setUser($project->user);
 
         $providerRepository = new ProviderRepositoryManager();
