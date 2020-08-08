@@ -2,7 +2,6 @@
 
 namespace Deploy\Tests\Unit;
 
-use Deploy\Models\Deployment;
 use Deploy\Processors\AbstractProcessor;
 use Deploy\Processors\DeploymentProcessor;
 use Deploy\ProviderOauthManager;
