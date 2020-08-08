@@ -9,6 +9,6 @@ $factory->define(User::class, function (Generator $faker) {
     return [
         'name' => $faker->firstName(),
         'email' => $faker->email,
-        'password' => $faker->password,
+        'password' => 'password',
     ];
 });
