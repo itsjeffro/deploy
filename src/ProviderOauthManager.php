@@ -49,7 +49,30 @@ class ProviderOauthManager
      */
     public function getAccessToken(): string
     {
-        return $this->getValidatedAccessToken($this->providerOauth, $this->user);
+        $providerOauth = $this->providerOauth;
+
+        $user = $this->user;
+
+        $provider = Provider::where('friendly_name', $providerOauth->getName())->first();
+
+        $accessToken = DeployAccessToken::where('provider_id', $provider->id)
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+
+        if (!$accessToken instanceof DeployAccessToken) {
+            throw new Exception(sprintf('A valid access token was not found for provider [%d]. Try requesting a new one.', $provider->id));
+        }
+
+        if (!$this->providerOauth->hasRefreshToken()) {
+            return $accessToken->id;
+        }
+
+        if (!$this->isAccessTokenExpired($accessToken)) {
+            return $accessToken->id;
+        }
+        
+        return $this->refreshAccessToken($accessToken);
     }
 
     /**
@@ -79,44 +102,18 @@ class ProviderOauthManager
     }
 
     /**
-     * Returns the most recent access token for the user along. If the access token
-     * has an associated refresh token, then that will also be returned as well.
+     * If the provider uses refresh tokens and our access token is now expired. We will get the refresh token
+     * associated with the access token and try to make a request for a new access token from the provider.
      *
-     * @param ProviderOauthInterface $providerOauth
-     * @param User $user
+     * @param DeployAccessToken $accessToken
      * @return string
-     * 
-     * @throws Exception
      */
-    private function getValidatedAccessToken(ProviderOauthInterface $providerOauth, $user): string
+    private function refreshAccessToken(DeployAccessToken $accessToken): string
     {
-        $provider = Provider::where('friendly_name', $providerOauth->getName())->first();
-
-        $accessToken = DeployAccessToken::where('provider_id', $provider->id)
-            ->where('user_id', $user->id)
-            ->orderBy('created_at', 'DESC')
-            ->first();
-
-        if (!$accessToken instanceof DeployAccessToken) {
-            throw new Exception(
-                sprintf('A valid access token was not found for provider [%d]. Try requesting a new one.', $provider->id)
-            );
-        }
-
-        if (!$this->providerOauth->hasRefreshToken()) {
-            return $accessToken->id;
-        }
-
-        if (!$this->isAccessTokenExpired($accessToken)) {
-            return $accessToken->id;
-        }
-        
-        // If the provider uses refresh tokens and our access token is now expired. We will get the refresh token
-        // associated with the access token and try to make a request for a new access token from the provider.
         $refreshToken = DeployRefreshToken::where('deploy_access_token_id', $accessToken->id)->first();
 
         if (!$refreshToken instanceof DeployRefreshToken) {
-            throw new \Exception('Could not find an associated refresh token for the expired access token. Try requesting a new one.');
+            throw new \Exception('Refresh token for the expired access token could not be found. Try requesting a new one.');
         }
 
         $response = $this->providerOauth->refreshAccessToken($refreshToken->id);
