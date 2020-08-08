@@ -7,7 +7,6 @@ use Deploy\Deployment\Processes;
 use Deploy\Models\Action;
 use Deploy\Models\Deployment;
 use Deploy\Models\Project;
-use Deploy\Models\Server;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;

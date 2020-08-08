@@ -34,8 +34,8 @@ class RedeploymentManager
         $deployment->fill([
             'project_id'      => $this->deployment->project->id,
             'started_at'      => (new \DateTime())->format('Y-m-d H:i:s'),
-            'commiter'        => $this->deployment->commiter,
-            'commiter_avatar' => $this->deployment->commiter_avatar,
+            'committer'        => $this->deployment->committer,
+            'committer_avatar' => $this->deployment->committer_avatar,
             'repository'      => $this->deployment->repository,
             'reference'       => $this->deployment->reference,
             'branch'          => $this->deployment->branch,

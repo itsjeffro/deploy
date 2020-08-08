@@ -3,6 +3,7 @@
 namespace Deploy\Http\Controllers;
 
 use Deploy\Models\Provider;
+use Deploy\ProviderOauth\ProviderOauthFactory;
 use Deploy\ProviderOauthManager;
 use Deploy\ProviderRepositoryManager;
 use Illuminate\Http\Request;
@@ -59,15 +60,17 @@ class RepositoryBranchesTagsController extends Controller
     /**
      * Retrieve access token.
      *
-     * @param  \Deploy\Models\Provider $provider
+     * @param Provider $provider
      * @return string
      */
     protected function accessToken($provider)
     {
+        $providerOauth = ProviderOauthFactory::create($provider->friendly_name);
+
         $user = auth()->user();
 
         $providerOauth = $this->providerOauthManager
-            ->setProvider($provider)
+            ->setProvider($providerOauth)
             ->setUser($user);
 
         return $providerOauth->getAccessToken();

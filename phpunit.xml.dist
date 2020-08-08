@@ -12,8 +12,12 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="Deploy Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -31,5 +35,9 @@
     </filter>
     <php>
         <env name="APP_ENV" value="self-testing"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_PORT" value="3306"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value=""/>
     </php>
 </phpunit>

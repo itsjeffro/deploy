@@ -2,10 +2,10 @@
 
 namespace Deploy\ProviderOauth\Github;
 
+use Deploy\Contracts\ProviderOauth\ProviderOauthInterface;
 use Deploy\ProviderOauth\AbstractProviderOauth;
-use GuzzleHttp\Client;
 
-class GithubOauth extends AbstractProviderOauth
+class GithubOauth extends AbstractProviderOauth implements ProviderOauthInterface
 {
     /**
      * Authorization scopes.
@@ -13,6 +13,16 @@ class GithubOauth extends AbstractProviderOauth
      * @var array
      */
     public $scopes = ['repo'];
+
+    /**
+     * Returns provider friendly name typically stored in the providers table.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'github';
+    }
 
     /**
      * {@inheritdoc}

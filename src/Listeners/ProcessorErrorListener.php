@@ -38,7 +38,7 @@ class ProcessorErrorListener
     
             $notification->save();
         } catch (Exception $e) {
-            throw new $event->exception;
+            throw $event->exception;
         }
     }
 }

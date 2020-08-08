@@ -16,6 +16,7 @@ use Deploy\Deployment\CommandParser;
 use DateTime;
 use Deploy\Contracts\Processors\ProcessorInterface;
 use Deploy\Events\ProcessorErrorEvent;
+use Deploy\ProviderOauth\ProviderOauthFactory;
 use Exception;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -322,8 +323,14 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
      */
     protected function getAccessToken()
     {
+        $provider = $this->project
+            ->provider
+            ->friendly_name;
+
+        $providerOauth = ProviderOauthFactory::create($provider);
+
         $oauth = $this->providerOauthManager
-            ->setProvider($this->project->provider)
+            ->setProvider($providerOauth)
             ->setUser($this->project->user);
     
         return $oauth->getAccessToken();

@@ -4,6 +4,13 @@ namespace Deploy\Contracts\ProviderOauth;
 
 interface ProviderOauthInterface
 {
+    /**
+     * Friendly name typically stored in the providers table.
+     *
+     * @return string
+     */
+    public function getName(): string;
+
    /**
      * @return string
      */

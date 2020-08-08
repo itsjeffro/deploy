@@ -3,6 +3,7 @@
 namespace Deploy\Http\Controllers;
 
 use Deploy\Models\Provider;
+use Deploy\ProviderOauth\ProviderOauthFactory;
 use Deploy\ProviderOauthManager;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,7 @@ class ProviderAuthController extends Controller
      */
     public function authorizeUser(string $providerFriendlyName)
     {
-        $provider = Provider::where('friendly_name', $providerFriendlyName)->first();
+        $provider = ProviderOauthFactory::create($providerFriendlyName);
 
         $user = auth()->user();
 
@@ -49,12 +50,12 @@ class ProviderAuthController extends Controller
      */
     public function providerAccessToken(Request $request, string $providerFriendlyName)
     {
-        $provider = Provider::where('friendly_name', $providerFriendlyName)->first();
-
+        $providerOauth = ProviderOauthFactory::create($providerFriendlyName);
+        
         $user = auth()->user();
 
         $this->providerOauthManager
-            ->setProvider($provider)
+            ->setProvider($providerOauth)
             ->setUser($user)
             ->requestAccessToken($request->get('code'));
 
