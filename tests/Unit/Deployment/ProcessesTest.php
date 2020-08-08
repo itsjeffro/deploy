@@ -7,44 +7,43 @@ use Deploy\Deployment\Processes;
 use Deploy\Models\Action;
 use Deploy\Models\Deployment;
 use Deploy\Models\Project;
+use Deploy\Models\Server;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 class ProcessesTest extends TestCase
 {
     public function test_correct_list_of_processes_returned()
     {
-        $deployment = Mockery::mock(Deployment::class)->makePartial();
-        $deployment->id = 1;
+        $deployment = Mockery::mock(Deployment::class);
+        $deployment->shouldReceive('getAttribute')->with('id')->andReturn(1);
 
-        $server = Mockery::mock(stdClass::class);
-        $server->id = 1;
-        $server->name = 'My server';
+        $server = Mockery::mock(Server::class);
+        $server->shouldReceive('getAttribute')->with('id')->andReturn(1);
+        $server->shouldReceive('getAttribute')->with('name')->andReturn('My server');
 
-        $project = Mockery::mock(Project::class)->makePartial();
-        $project->id = 1;
-        $project->servers = [
-            $server
-        ];
+        $project = Mockery::mock(Project::class);
+        $project->shouldReceive('getAttribute')->with('id')->andReturn(1);
+        $project->shouldReceive('getAttribute')->with('servers')->andReturn([$server]);
 
-        $actionCloneRelease = Mockery::mock(Action::class)->makePartial();
-        $actionCloneRelease->id = HookActions::ACTION_CLONE_RELEASE_ID;
-        $actionCloneRelease->name = HookActions::ACTION_CLONE_RELEASE_NAME;
-        $actionCloneRelease->beforeHooks = [];
-        $actionCloneRelease->afterHooks = [];
+        // Actions
+        $actionCloneRelease = Mockery::mock(Action::class);
+        $actionCloneRelease->shouldReceive('getAttribute')->with('id')->andReturn(HookActions::ACTION_CLONE_RELEASE_ID);
+        $actionCloneRelease->shouldReceive('getAttribute')->with('name')->andReturn(HookActions::ACTION_CLONE_RELEASE_NAME);
+        $actionCloneRelease->shouldReceive('getAttribute')->with('beforeHooks')->andReturn([]);
+        $actionCloneRelease->shouldReceive('getAttribute')->with('afterHooks')->andReturn([]);
 
-        $activateNewRelease = Mockery::mock(Action::class)->makePartial();
-        $activateNewRelease->id = HookActions::ACTION_ACTIVATE_RELEASE_ID;
-        $activateNewRelease->name = HookActions::ACTION_ACTIVATE_RELEASE_NAME;
-        $activateNewRelease->beforeHooks = [];
-        $activateNewRelease->afterHooks = [];
+        $activateNewRelease = Mockery::mock(Action::class);
+        $activateNewRelease->shouldReceive('getAttribute')->with('id')->andReturn(HookActions::ACTION_ACTIVATE_RELEASE_ID);
+        $activateNewRelease->shouldReceive('getAttribute')->with('name')->andReturn(HookActions::ACTION_ACTIVATE_RELEASE_NAME);
+        $activateNewRelease->shouldReceive('getAttribute')->with('beforeHooks')->andReturn([]);
+        $activateNewRelease->shouldReceive('getAttribute')->with('afterHooks')->andReturn([]);
 
-        $cleanUp = Mockery::mock(Action::class)->makePartial();
-        $cleanUp->id = HookActions::ACTION_CLEAN_UP_ID;
-        $cleanUp->name = HookActions::ACTION_CLEAN_UP_NAME;
-        $cleanUp->beforeHooks = [];
-        $cleanUp->afterHooks = [];
+        $cleanUp = Mockery::mock(Action::class);
+        $cleanUp->shouldReceive('getAttribute')->with('id')->andReturn(HookActions::ACTION_CLEAN_UP_ID);
+        $cleanUp->shouldReceive('getAttribute')->with('name')->andReturn(HookActions::ACTION_CLEAN_UP_NAME);
+        $cleanUp->shouldReceive('getAttribute')->with('beforeHooks')->andReturn([]);
+        $cleanUp->shouldReceive('getAttribute')->with('afterHooks')->andReturn([]);
 
         $actions = [
             $actionCloneRelease,
