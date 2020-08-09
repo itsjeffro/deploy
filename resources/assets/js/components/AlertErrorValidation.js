@@ -12,8 +12,10 @@ const AlertErrorValidation = props => {
     <Alert type="danger">
       <p>The following errors occurred:</p>
       <ul>
-        {errors.map(error => 
-          <li>{error}</li>
+        {errors.map((error, index) => 
+          <li key={ index }>
+            {error}
+          </li>
         )}
       </ul>
     </Alert>

@@ -7,19 +7,14 @@ import { fetchProject } from '../../state/project/actions';
 
 import ProjectActionService from '../../services/ProjectAction';
 import ProjectActionHookService from '../../services/ProjectActionHook';
-import HooksTable from './components/HooksTable';
-import Button from '../../components/Button';
-import Icon from '../../components/Icon';
-import Panel from '../../components/Panel';
-import PanelHeading from '../../components/PanelHeading';
-import PanelTitle from '../../components/PanelTitle';
-import PanelBody from '../../components/PanelBody';
 import Layout from "../../components/Layout";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import AddHookModal from './components/AddHookModal';
 import EditHookModal from './components/EditHookModal';
 import RemoveHookModal from './components/RemoveHookModal';
 import Container from '../../components/Container';
+import Loader from '../../components/Loader';
+import Hooks from './components/Hooks';
 
 class ProjectActionPage extends React.Component {
   state = {
@@ -55,32 +50,6 @@ class ProjectActionPage extends React.Component {
           afterHooks: response.data.after_hooks,
         });
       });
-  }
-
-  /**
-   * Render hooks table.
-   *
-   * @param {object} hooks
-   * @return {XML}
-   */
-  renderHooksTable(hooks) {
-    if (!this.state.isFetching && hooks !== undefined && hooks.length > 0) {
-      return (
-        <div className="table-responsive hooks-table">
-          <HooksTable
-          	hooks={hooks}
-          	onHandleEditClick={ this.handleEditModalClick }
-          	onHandleRemoveClick={ this.handleRemoveModalClick }
-          />
-        </div>
-      )
-    }
-
-    return (
-      <PanelBody>
-        No hooks have been configured.
-      </PanelBody>
-    )
   }
 
   /**
@@ -319,6 +288,7 @@ class ProjectActionPage extends React.Component {
   render() {
     const { project } = this.props;
     const {
+      isFetching,
       beforeHooks,
       afterHooks,
       errors,
@@ -338,67 +308,44 @@ class ProjectActionPage extends React.Component {
           </div>
 
           <Container fluid>
-            <div className="row">
-
-              <div className="col-xs-12 col-sm-6">
-                <Panel>
-                  <PanelHeading>
-                    <div className="pull-right">
-                    <Button
-                      onClick={() => this.handleAddModalClick(1)}
-                    ><Icon iconName="plus" /> Add Hook</Button>
-                  </div>
-                    <PanelTitle><Icon iconName="code" /> Before This Action</PanelTitle>
-                  </PanelHeading>
-
-                  {this.renderHooksTable(beforeHooks)}
-                </Panel>
-              </div>
-
-              <div className="col-xs-12 col-sm-6">
-                <Panel>
-                  <PanelHeading>
-                    <div className="pull-right">
-                    <Button
-                      onClick={() => this.handleAddModalClick(2)}
-                    ><Icon iconName="plus" /> Add Hook</Button>
-                  </div>
-                  <PanelTitle><Icon iconName="code" /> After This Action</PanelTitle>
-                  </PanelHeading>
-
-                  { this.renderHooksTable(afterHooks) }
-                </Panel>
-              </div>
-            </div>
+            {isFetching ?
+              <Loader /> :
+              <Hooks 
+                beforeHooks={ beforeHooks }
+                afterHooks={ afterHooks }
+                onAddModalClick={ this.handleAddModalClick }
+                onEditModalClick={ this.handleEditModalClick }
+                onRemoveModalClick={ this.handleRemoveModalClick }
+              />}
           </Container>
-
-          <AddHookModal
-            isVisible={ isAddHookModalVisible }
-            errors={ errors }
-            hook={ hook }
-            onAddHookClick={ this.handleAddHookClick }
-            onInputNameChange={ this.handleInputNameChange }
-            onScriptChange={ this.handleScriptChange }
-            onDismissModalClick={ this.handleHideAddHookModal }
-          />
-
-          <EditHookModal
-            isVisible={ isEditHookModalVisible }
-            errors={ errors }
-            hook={ hook }
-            onEditHookClick={ this.handleEditHookClick }
-            onInputNameChange={ this.handleInputNameChange }
-            onScriptChange={ this.handleScriptChange }
-            onDismissModalClick={ this.handleHideEditHookModal }
-          />
-
-          <RemoveHookModal
-            isVisible={ isRemoveHookModalVisible }
-            hook={ hook }
-            onRemoveHookClick={ this.handleRemoveHookClick }
-            onDismissModalClick={ this.handleHideRemoveHookModal }
-          />
         </div>
+
+        <AddHookModal
+          isVisible={ isAddHookModalVisible }
+          errors={ errors }
+          hook={ hook }
+          onAddHookClick={ this.handleAddHookClick }
+          onInputNameChange={ this.handleInputNameChange }
+          onScriptChange={ this.handleScriptChange }
+          onDismissModalClick={ this.handleHideAddHookModal }
+        />
+
+        <EditHookModal
+          isVisible={ isEditHookModalVisible }
+          errors={ errors }
+          hook={ hook }
+          onEditHookClick={ this.handleEditHookClick }
+          onInputNameChange={ this.handleInputNameChange }
+          onScriptChange={ this.handleScriptChange }
+          onDismissModalClick={ this.handleHideEditHookModal }
+        />
+
+        <RemoveHookModal
+          isVisible={ isRemoveHookModalVisible }
+          hook={ hook }
+          onRemoveHookClick={ this.handleRemoveHookClick }
+          onDismissModalClick={ this.handleHideRemoveHookModal }
+        />
       </Layout>
     )
   }
