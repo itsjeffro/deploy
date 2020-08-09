@@ -25,6 +25,7 @@ class EnvironmentRequest extends FormRequest
     {
         return [
             'key' => 'required',
+            'contents' => 'required',
             'servers' => 'array',
         ];
     }
