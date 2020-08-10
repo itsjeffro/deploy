@@ -2,7 +2,7 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Http\Requests\EnvironmentRequest;
+use Deploy\Http\Requests\EnvironmentUnlockRequest;
 use Deploy\Models\Project;
 use Deploy\Models\Environment;
 use Deploy\Environment\EnvironmentEncrypter;
@@ -15,11 +15,11 @@ class ProjectEnvironmentUnlockController extends Controller
      * Unlock environment.
      *
      * @param EnvironmentEncrypter $environmentEncrypter
-     * @param EnvironmentRequest $request
+     * @param EnvironmentUnlockRequest $request
      * @param Project $project
      * @return JsonResponse
      */
-    public function store(EnvironmentEncrypter $environmentEncrypter, EnvironmentRequest $request, Project $project)
+    public function store(EnvironmentEncrypter $environmentEncrypter, EnvironmentUnlockRequest $request, Project $project)
     {
         $this->authorize('view', $project);
 

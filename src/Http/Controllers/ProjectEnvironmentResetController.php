@@ -2,7 +2,7 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Http\Requests\EnvironmentRequest;
+use Deploy\Http\Requests\EnvironmentResetRequest;
 use Deploy\Models\Project;
 use Deploy\Models\Environment;
 use Deploy\Environment\EnvironmentEncrypter;
@@ -13,11 +13,11 @@ class ProjectEnvironmentResetController extends Controller
      * Reset environment.
      *
      * @param EnvironmentEncrypter $environmentEncrypter
-     * @param EnvironmentRequest $request
+     * @param EnvironmentResetRequest $request
      * @param Project $project
      * @return JsonResponse
      */
-    public function update(EnvironmentEncrypter $environmentEncrypter, EnvironmentRequest $request, Project $project)
+    public function update(EnvironmentEncrypter $environmentEncrypter, EnvironmentResetRequest $request, Project $project)
     {
         $this->authorize('view', $project);
 
