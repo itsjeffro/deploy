@@ -1,18 +1,14 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-class NotificationApi {
+class NotificationApi extends BaseApi {
   /**
    * Returns the specified notification.
    * 
    * @param {number} notificationId
    */
   get(notificationId) {
-    return axios.request({
-      method: 'GET',
-      url: `${Deploy.path}/api/notifications/${notificationId}`,
-      responseType: 'json'
-    });
+    return this.getRequest(`/api/notifications/${notificationId}`);
   }
 
   /**
@@ -23,11 +19,7 @@ class NotificationApi {
   list(options) {
     const page = options.page || 1;
 
-    return axios.request({
-      method: 'GET',
-      url: `${Deploy.path}/api/notifications?page=${page}`,
-      responseType: 'json'
-    });
+    return this.getRequest(`/api/notifications?page=${page}`);
   }
 
   /**
@@ -36,11 +28,7 @@ class NotificationApi {
    * @param {number} notificationId 
    */
   markAsRead(notificationId) {
-    return axios.request({
-      method: 'POST',
-      url: `${Deploy.path}/api/notifications/${notificationId}/read`,
-      responseType: 'json'
-    });
+    return this.postRequest(`/api/notifications/${notificationId}/read`);
   }
 }
 

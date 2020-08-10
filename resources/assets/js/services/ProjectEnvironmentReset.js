@@ -1,13 +1,13 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class EnvironmentResetApi {
-    update(project_id, data) {
-        return axios.request({
-            method: 'PUT',
-            url: Deploy.path + '/api/projects/' + project_id + '/environment-reset',
-            data: data,
-            responseType: 'json'
-        });
-    }
+class EnvironmentResetApi extends BaseApi {
+  /**
+   * Resets project environment.
+   */
+  update(project_id, data) {
+    return this.putRequest(`/api/projects/${project_id}/environment-reset`, data);
+  }
 }
+
+export default EnvironmentResetApi;

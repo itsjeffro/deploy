@@ -1,20 +1,14 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectAction {
-    index(project_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/actions',
-            responseType: 'json'
-        });
-    }
+class ProjectAction extends BaseApi {
+  index(project_id) {
+    return this.getRequest('/api/projects/' + project_id + '/actions');
+  }
 
-    get(project_id, action_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/actions/' + action_id,
-            responseType: 'json'
-        });
-    }
+  get(project_id, action_id) {
+    return this.getRequest('/api/projects/' + project_id + '/actions/' + action_id);
+  }
 }
+
+export default ProjectAction;

@@ -1,12 +1,10 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectServerConnection {
-    get(project_id, server_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id + '/test-connection',
-            responseType: 'json'
-        });
-    }
+class ProjectServerConnection extends BaseApi {
+  get(project_id, server_id) {
+    return this.getRequest('/api/projects/' + project_id + '/servers/' + server_id + '/test-connection');
+  }
 }
+
+export default ProjectServerConnection;

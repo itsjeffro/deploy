@@ -1,32 +1,27 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectFolder {
-    list(project_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/folders',
-            responseType: 'json'
-        });
-    }
+class ProjectFolder extends BaseApi {
+  /**
+   * List project's linked folders.
+   */
+  list(project_id) {
+    return this.getRequest(`/api/projects/${project_id}/folders`);
+  }
 
-    delete(project_id, folder_id) {
-        return axios.request({
-            method: 'POST',
-            url: Deploy.path + '/api/projects/' + project_id + '/folders/' + folder_id,
-            data: {
-                '_method' : 'DELETE'
-            },
-            responseType: 'json'
-        });
-    }
+  /**
+   * Deletes one project folder.
+   */
+  delete(project_id, folder_id) {
+    return this.deleteRequest(`/api/projects/${project_id}/folders/${folder_id}`);
+  }
 
-    create(project_id, data) {
-        return axios.request({
-            method: 'POST',
-            url: Deploy.path + '/api/projects/' + project_id + '/folders',
-            data: data,
-            responseType: 'json'
-        });
-    }
+  /**
+   * Creates one project folder.
+   */
+  create(project_id, data) {
+    return this.postRequest(`/api/projects/${project_id}/folders`, data);
+  }
 }
+
+export default ProjectFolder;

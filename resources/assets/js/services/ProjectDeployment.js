@@ -1,29 +1,16 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectDeployment {
-    index(project_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/deployments',
-            responseType: 'json'
-        });
-    }
+export default class ProjectDeployment extends BaseApi {
+  index(project_id) {
+    return this.getRequest(`/api/projects/${project_id}/deployments`);
+  }
 
-    get(project_id, deployment_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/deployments/' + deployment_id,
-            responseType: 'json'
-        });
-    }
-    
-    create(project_id, data) {
-        return axios.request({
-            method: 'POST',
-            url: Deploy.path + '/api/projects/' + project_id + '/deployments',
-            responseType: 'json',
-            data: data
-        });
-    }
+  get(project_id, deployment_id) {
+    return this.getRequest(`/api/projects/${project_id}/deployments/${deployment_id}`);
+  }
+  
+  create(project_id, data) {
+    return this.postRequest(`/api/projects/${project_id}/deployments`, data);
+  }
 }

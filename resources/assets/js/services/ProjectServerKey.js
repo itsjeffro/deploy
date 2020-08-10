@@ -1,12 +1,10 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectServerKey {
-    get(project_id, server_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id + '/public_key',
-            responseType: 'json'
-        });
-    }
+class ProjectServerKey extends BaseApi {
+  get(project_id, server_id) {
+    return this.getRequest('/api/projects/' + project_id + '/servers/' + server_id + '/public_key');
+  }
 }
+
+export default ProjectServerKey;
