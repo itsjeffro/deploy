@@ -20,8 +20,12 @@ import NotificationsPage from './pages/NotificationsPage';
 
 class Application extends React.Component {
   render() {
+    let baseName = Deploy.path.replace(/\/+$/, "");
+
+    baseName = "/" + baseName;
+
     return (
-      <Router basename="/deploy">
+      <Router basename={ baseName }>
         <>
           <Switch>
             <Route exact path="/" component={ DashboardPage } />
