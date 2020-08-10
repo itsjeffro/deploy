@@ -1,46 +1,24 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class Project {
-    get(project_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id,
-            responseType: 'json'
-        });
-    }
+export default class Project extends BaseApi {
+  get(project_id) {
+    return this.getRequest('/api/projects/' + project_id);
+  }
 
-    post(data) {
-        return axios.request({
-            method: 'POST',
-            url: Deploy.path + '/api/projects',
-            data: data,
-            responseType: 'json'
-        });
-    }
+  post(data) {
+    return this.postRequest('/api/projects', data);
+  }
 
-    index() {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects',
-            responseType: 'json'
-        });
-    }
-    
-    update(project_id, data) {
-        return axios.request({
-            method: 'PUT',
-            url: Deploy.path + '/api/projects/' + project_id,
-            data: data,
-            responseType: 'json'
-        });
-    }
-    
-    delete(project_id) {
-        return axios.request({
-            method: 'DELETE',
-            url: Deploy.path + '/api/projects/' + project_id,
-            responseType: 'json'
-        });
-    }
+  index() {
+    return this.getRequest('/api/projects');
+  }
+  
+  update(project_id, data) {
+    return this.putRequest('/api/projects/' + project_id, data);
+  }
+  
+  delete(project_id) {
+    return this.deleteRequest('/api/projects/' + project_id);
+  }
 }

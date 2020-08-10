@@ -1,33 +1,18 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectActionHook {
+class ProjectActionHook extends BaseApi {
   create(project_id, action_id, data) {
-    return axios.request({
-      method: 'POST',
-      url: Deploy.path + '/api/projects/' + project_id + '/actions/' + action_id + '/hooks',
-      data: data,
-      responseType: 'json'
-    });
+    return this.postRequest(`/api/projects/${project_id}'/actions/${action_id}/hooks`, data);
   }
 
   update(project_id, action_id, hook_id, data) {
-    return axios.request({
-      method: 'PUT',
-      url: Deploy.path + '/api/projects/' + project_id + '/actions/' + action_id + '/hooks/' + hook_id,
-      data: data,
-      responseType: 'json'
-    });
+    return this.putRequest(`/api/projects/${project_id}/actions/${action_id}/hooks/${hook_id}`, data);
   }
 
   delete(project_id, action_id, hook_id) {
-    return axios.request({
-      method: 'POST',
-      url: Deploy.path + '/api/projects/' + project_id + '/actions/' + action_id + '/hooks/' + hook_id,
-      data: {
-        '_method' : 'DELETE'
-      },
-      responseType: 'json'
-    });
+    return this.deleteRequest(`/api/projects/${project_id}/actions/${action_id}/hooks/${hook_id}`);
   }
 }
+
+export default ProjectActionHook;

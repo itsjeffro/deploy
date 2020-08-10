@@ -1,12 +1,13 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class AccountProvider {
-    index(endpoint) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + endpoint,
-            responseType: 'json'
-        });
-    }
+class AccountProvider extends BaseApi {
+  /**
+   * List authenticated git providers.
+   */
+  index(endpoint) {
+    return this.getRequest(endpoint);
+  }
 }
+
+export default AccountProvider

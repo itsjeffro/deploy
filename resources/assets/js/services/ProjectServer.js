@@ -1,41 +1,22 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectServer {
-    create(project_id, data) {
-        return axios.request({
-            method: 'POST',
-            url: Deploy.path + '/api/projects/' + project_id + '/servers',
-            responseType: 'json',
-            data: data,
-        });
-    }
+class ProjectServer extends BaseApi {
+  create(project_id, data) {
+    return this.postRequest('/api/projects/' + project_id + '/servers', data);
+  }
 
-    get(project_id, server_id) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id,
-            responseType: 'json'
-        });
-    }
-    
-    put(project_id, server_id, data) {
-        return axios.request({
-            method: 'PUT',
-            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id,
-            responseType: 'json',
-            data: data
-        });
-    }
+  get(project_id, server_id) {
+    return this.getRequest('/api/projects/' + project_id + '/servers/' + server_id);
+  }
+  
+  put(project_id, server_id, data) {
+    return this.putRequest('/api/projects/' + project_id + '/servers/' + server_id, data);
+  }
 
-    delete(project_id, server_id) {
-        return axios.request({
-            method: 'POST',
-            url: Deploy.path + '/api/projects/' + project_id + '/servers/' + server_id,
-            data: {
-                '_method' : 'DELETE'
-            },
-            responseType: 'json'
-        });
-    }
+  delete(project_id, server_id) {
+    return this.deleteRequest('/api/projects/' + project_id + '/servers/' + server_id);
+  }
 }
+
+export default ProjectServer;

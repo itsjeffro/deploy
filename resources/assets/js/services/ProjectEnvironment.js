@@ -1,13 +1,13 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectEnvironmentApi {
-    put(project_id, data) {
-        return axios.request({
-            method: 'PUT',
-            url: Deploy.path + '/api/projects/' + project_id + '/environment',
-            data: data,
-            responseType: 'json'
-        });
-    }
+class ProjectEnvironmentApi extends BaseApi {
+  /**
+   * Update project environment.
+   */
+  put(project_id, data) {
+    return this.putRequest(`/api/projects/${project_id}/environment`, data);
+  }
 }
+
+export default ProjectEnvironmentApi;

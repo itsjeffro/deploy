@@ -1,14 +1,13 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-class RepositoryTagBranch {
-    get(provider_id, repository) {
-        return axios.request({
-            method: 'GET',
-            url: Deploy.path + '/api/repositories/branches-tags?provider_id=' + provider_id + '&repository=' + repository,
-            responseType: 'json'
-        });
-    }
+class RepositoryTagBranch extends BaseApi {
+  /**
+   * Returns a list of tags and branches associated with the git repository.
+   */
+  get(provider_id, repository) {
+    return this.getRequest(`/api/repositories/branches-tags?provider_id=${provider_id}&repository=${repository}`);
+  }
 }
 
 export default RepositoryTagBranch;

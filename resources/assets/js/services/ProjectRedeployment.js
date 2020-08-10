@@ -1,13 +1,10 @@
 import '../bootstrap';
-import { Deploy } from '../config';
+import BaseApi from './Api/BaseApi';
 
-export default class ProjectRedeployment {
-    create(data) {
-        return axios.request({
-            method: 'POST',
-            url: Deploy.path + '/api/redeployments',
-            responseType: 'json',
-            data: data
-        });
-    }
+class ProjectRedeployment extends BaseApi {
+  create(data) {
+    return this.postRequest('/api/redeployments', data);
+  }
 }
+
+export default ProjectRedeployment;
