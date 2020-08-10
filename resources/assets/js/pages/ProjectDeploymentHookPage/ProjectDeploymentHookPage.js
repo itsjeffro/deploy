@@ -110,7 +110,7 @@ class ProjectDeploymentHookPage extends React.Component {
 
         <div className="content">
           <Container fluid>
-            {isFetching ? <Loader /> : this.renderActionsTable(project.item, actions)}
+            { isFetching ? <Loader /> : this.renderActionsTable(project.item, actions) }
           </Container>
         </div>
       </Layout>

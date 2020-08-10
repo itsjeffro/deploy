@@ -130,12 +130,6 @@ class ProjectServerController extends Controller
      */
     protected function createKeys(Server $server)
     {
-        $sshKeyPath = rtrim(config('deploy.ssh_key.path'), '/') . '/';
-        
-        if (!is_dir($sshKeyPath)) {
-            mkdir($sshKeyPath);
-        }
-            
         $sshKeys = $this->sshKey
             ->generate('id_rsa', config('deploy.ssh_key.comment'));
         
