@@ -3,7 +3,7 @@
 namespace Deploy\Http\Controllers;
 
 use Deploy\Http\Requests\EnvironmentRequest;
-use Deploy\Jobs\WriteEnvironmemtJob;
+use Deploy\Jobs\WriteEnvironmentJob;
 use Deploy\Models\Project;
 use Deploy\Models\Environment;
 use Deploy\Environment\EnvironmentEncrypter;
@@ -49,7 +49,7 @@ class ProjectEnvironmentController extends Controller
             $environment->environmentServers()->sync($servers);
         }
 
-        dispatch(new WriteEnvironmemtJob($project, $environment, $request->get('key')));
+        dispatch(new WriteEnvironmentJob($project, $environment, $request->get('key')));
 
         return response()->json(null, 204);
     }
