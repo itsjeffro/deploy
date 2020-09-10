@@ -53,7 +53,7 @@ class AccountPage extends React.Component {
                     <PanelBody>
                       <a
                         className="btn btn-default"
-                        href={Deploy.path + '/authorize/' + provider.friendly_name}
+                        href={ `${Deploy.url}/${Deploy.path}/authorize/${provider.friendly_name}` }
                         title={'Connect to ' + provider.name}
                       >{provider.deploy_access_token ? 'Refresh Token' : 'Connect to ' + provider.name}</a>
                     </PanelBody>
