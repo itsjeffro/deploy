@@ -14,7 +14,7 @@ class CreateDeployAccessTokensTable extends Migration
     public function up()
     {
         Schema::create('deploy_access_tokens', function (Blueprint $table) {
-            $table->string('id', 100)->primary();
+            $table->string('id', 255)->primary();
             $table->integer('user_id')->index();
             $table->integer('provider_id')->nullable()->unsigned();
             $table->text('scopes')->nullable();

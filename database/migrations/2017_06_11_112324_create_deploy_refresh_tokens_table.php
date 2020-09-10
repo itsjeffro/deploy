@@ -14,8 +14,8 @@ class CreateDeployRefreshTokensTable extends Migration
     public function up()
     {
         Schema::create('deploy_refresh_tokens', function (Blueprint $table) {
-            $table->string('id', 100)->primary();
-            $table->string('deploy_access_token_id', 100)->index();
+            $table->string('id', 255)->primary();
+            $table->string('deploy_access_token_id', 255)->index();
             $table->boolean('revoked');
             $table->dateTime('expires_at');
         });
