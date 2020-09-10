@@ -12,13 +12,13 @@ use Deploy\Models\Hook;
 use Deploy\Models\Notification;
 use Deploy\Models\Process;
 use Deploy\Resources\ProjectResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
     /**
      * List projects.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -29,15 +29,12 @@ class ProjectController extends Controller
 
     /**
      * Create project.
-     *
-     * @param  \Deploy\Http\Requests\ProjectRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(ProjectRequest $request)
+    public function store(ProjectRequest $request): JsonResponse
     {
         $project = new Project();
         $project->fill([
-            'key'=> str_random(40),
+            'key'=> Str::random(40),
             'user_id' => auth()->id(),
             'name'=> $request->get('name'),
             'provider_id' => $request->get('provider_id'),
@@ -53,11 +50,8 @@ class ProjectController extends Controller
 
     /**
      * Display project details and server setup.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(Project $project): JsonResponse
     {
         $this->authorize('view', $project);
 
@@ -76,12 +70,8 @@ class ProjectController extends Controller
 
     /**
      * Update project.
-     *
-     * @param  \Deploy\Http\Requests\ProjectGeneralRequest $request
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(ProjectGeneralRequest $request, Project $project)
+    public function update(ProjectGeneralRequest $request, Project $project): JsonResponse
     {
         $this->authorize('update', $project);
 
@@ -93,11 +83,8 @@ class ProjectController extends Controller
 
     /**
      * Delete project.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): JsonResponse
     {
         $this->authorize('delete', $project);
 
