@@ -40,9 +40,7 @@ export const fetchAccountProviders = () => {
     accountProviderService
       .index('/api/account-providers')
       .then(response => {
-        let providers = response.data.filter(provider => {
-          return provider.deploy_access_token;
-        });
+        let providers = response.data;
 
         dispatch(fetchAccountProvidersSuccess(providers));
       }, error => {
