@@ -55,6 +55,7 @@ class Project extends Model
         'repository',
         'branch',
         'deploy_on_push',
+        'releases',
     ];
 
     /**
