@@ -27,6 +27,7 @@ class ProjectGeneralRequest extends FormRequest
             'name' => 'required',
             'repository' => 'required',
             'branch' => 'required',
+            'releases' => 'required|integer|min:1|max:100',
         ];
     }
 }
