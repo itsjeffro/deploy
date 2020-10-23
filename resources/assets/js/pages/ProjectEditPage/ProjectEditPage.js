@@ -27,6 +27,7 @@ class ProjectEditPage extends React.Component {
     isUpdated: false,
     project: {
       name: '',
+      releases: 5,
       deploy_on_push: '',
     },
     errors: [],
@@ -196,6 +197,17 @@ class ProjectEditPage extends React.Component {
                         type="text"
                         onChange={ this.handleInputChange }
                         value={ this.state.project.name }
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="name">Releases to keep</label>
+                      <input
+                        className="form-control"
+                        name="releases"
+                        type="number"
+                        onChange={ this.handleInputChange }
+                        value={ this.state.project.releases }
                       />
                     </div>
 
