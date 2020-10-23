@@ -12,6 +12,7 @@ use Deploy\Models\Hook;
 use Deploy\Models\Notification;
 use Deploy\Models\Process;
 use Deploy\Resources\ProjectResource;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -37,7 +38,7 @@ class ProjectController extends Controller
     {
         $project = new Project();
         $project->fill([
-            'key'=> str_random(40),
+            'key'=> Str::random(40),
             'user_id' => auth()->id(),
             'name'=> $request->get('name'),
             'provider_id' => $request->get('provider_id'),
