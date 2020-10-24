@@ -4,6 +4,7 @@ namespace Deploy\Tests;
 
 use Deploy\DeployServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\Router;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -29,6 +30,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
+        config(['deploy.middleware' => 'bindings']);
+
         config(['database.default' => 'testing']);
 
         config([
