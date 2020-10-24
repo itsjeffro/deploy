@@ -5,20 +5,19 @@ import { Redirect } from 'react-router-dom';
 import { fetchProjects, deleteProject } from '../../state/projects/actions';
 import { createToast } from "../../state/alert/alertActions";
 import ProjectService from '../../services/Project';
-
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import Panel from '../../components/Panel';
+import TextField from '../../components/TextField';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 import PanelBody from '../../components/PanelBody';
-import Modal from '../../components/Modal';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
-import Sidebar from './components/Sidebar';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import DeleteProjectModal from './components/DeleteProjectModal';
+import { fetchAccountProviders } from '../../state/accountProviders/actions';
 
 class ProjectEditPage extends React.Component {
   state = {
@@ -27,8 +26,11 @@ class ProjectEditPage extends React.Component {
     isUpdated: false,
     project: {
       name: '',
-      releases: 5,
+      releases: '',
       deploy_on_push: '',
+      provider_id: null,
+      repository: '',
+      branch: '',
     },
     errors: [],
     isDeleteProjectModalVisible: false,
@@ -46,6 +48,8 @@ class ProjectEditPage extends React.Component {
     } = this.props;
 
     dispatch(fetchProjects());
+
+    dispatch(fetchAccountProviders());
 
     if (projects.items[project_id] !== undefined) {
       this.setState({
@@ -96,10 +100,20 @@ class ProjectEditPage extends React.Component {
   handleProjectUpdateClick = () => {
     const { dispatch } = this.props;
     const { project } = this.state;
+
     const projectService = new ProjectService;
 
+    const data = {
+      name: project.name,
+      provider_id: project.provider_id,
+      repository: project.repository,
+      branch: project.branch,
+      releases: project.releases,
+      deploy_on_push: project.deploy_on_push,
+    };
+
     projectService
-      .update(project.id, project)
+      .update(project.id, data)
       .then(response => {
         this.setState({
           isUpdated: true,
@@ -155,6 +169,7 @@ class ProjectEditPage extends React.Component {
 
     const {
       projects,
+      accountProviders,
       match: {
         params: {
           project_id
@@ -177,10 +192,6 @@ class ProjectEditPage extends React.Component {
         <div className="content">
           <Container fluid>
             <div className="row">
-              <Grid xs={12} sm={3}>
-                <Sidebar project={ project } />
-              </Grid>
-
               <Grid xs={12} sm={9}>
                 <Panel>
                   <PanelHeading>
@@ -201,6 +212,46 @@ class ProjectEditPage extends React.Component {
                     </div>
 
                     <div className="form-group">
+                      <label>Project provider</label>
+
+                      {(accountProviders.items || []).map((grantedProvider) =>
+                        <div key={ grantedProvider.id }>
+                          <label htmlFor={ grantedProvider.name }>
+                            <input
+                              name="provider_id"
+                              type="radio"
+                              value={ grantedProvider.id }
+                              id={ grantedProvider.name }
+                              onChange={ this.handleInputChange }
+                              checked={ parseInt(this.state.project.provider_id) === grantedProvider.id }
+                            /> { grantedProvider.name }
+                          </label>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="form-group">
+                      <TextField
+                        id="repository"
+                        label="Repository"
+                        onChange={ this.handleInputChange }
+                        name="repository"
+                        value={ this.state.project.repository }
+                        placeholder="user/repository"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <TextField
+                        id="branch"
+                        label="Branch"
+                        onChange={ this.handleInputChange }
+                        name="branch"
+                        value={ this.state.project.branch }
+                      />
+                    </div>
+
+                    <div className="form-group">
                       <label htmlFor="name">Releases to keep</label>
                       <input
                         className="form-control"
@@ -212,6 +263,8 @@ class ProjectEditPage extends React.Component {
                     </div>
 
                     <div className="form-group">
+                      <label>Deploy on push</label>
+
                       <div className="checkbox">
                         <label>
                           <input
@@ -220,17 +273,15 @@ class ProjectEditPage extends React.Component {
                             value="1"
                             onChange={ this.handleInputChange }
                             checked={ this.state.project.deploy_on_push }
-                          /> Deploy when code is pushed to
+                          /> Deploy when the repository has been pushed to
                         </label>
                       </div>
                     </div>
 
-                    <div className="form-group">
-                      <Button
-                        color="primary"
-                        onClick={ this.handleProjectUpdateClick }
-                      >Save</Button>
-                    </div>
+                    <Button
+                      color="primary"
+                      onClick={ this.handleProjectUpdateClick }
+                    >Save</Button>
                   </PanelBody>
                 </Panel>
 
@@ -264,7 +315,8 @@ class ProjectEditPage extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    projects: state.projects
+    projects: state.projects,
+    accountProviders: state.accountProviders,
   };
 };
 
