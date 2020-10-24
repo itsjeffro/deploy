@@ -1,6 +1,6 @@
 <?php
 
-namespace Deploy\Tests\Feature;
+namespace Deploy\Tests\Integration;
 
 use Deploy\DeploymentManager;
 use Deploy\Models\Project;
