@@ -19,10 +19,8 @@ class ListProjectsTest extends TestCase
             ->json('GET', route('projects.index'));
 
         $response->assertStatus(200);
-        $response->assertJson([
-            [
-                'name' => 'My first project',
-            ]
+        $response->assertJsonFragment([
+            'name' => 'My first project',
         ]);
     }
 }
