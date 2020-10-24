@@ -6,7 +6,6 @@ import DashboardPage from './pages/DashboardPage';
 import ProjectPage from './pages/ProjectPage';
 import ProjectDeploymentPage from './pages/ProjectDeploymentPage';
 import ProjectEditPage from './pages/ProjectEditPage';
-import ProjectSourceControlEditPage from './pages/ProjectSourceControlEditPage';
 import ProjectEnvironmentUnlockPage from './pages/ProjectEnvironmentUnlockPage';
 import ProjectEnvironmentResetPage from './pages/ProjectEnvironmentResetPage';
 import ProjectServerCreatePage from './pages/ProjectServerCreatePage';
@@ -39,7 +38,6 @@ class Application extends React.Component {
             <Route path="/projects/:project_id/deployments/:deployment_id" component={ ProjectDeploymentPage} />
             <Route path="/projects/:project_id/folders/create" component={ ProjectLinkedFolderCreatePage} />
             <Route path="/projects/:project_id/folders" component={ ProjectLinkedFolderPage} />
-            <Route path="/projects/:project_id/settings/source-control" component={ ProjectSourceControlEditPage} />
             <Route path="/projects/:project_id/settings" component={ ProjectEditPage} />
             <Route path="/projects/:project_id" component={ ProjectPage} />
             <Route path="/account" component={ AccountPage} />
