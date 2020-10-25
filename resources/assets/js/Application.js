@@ -16,6 +16,7 @@ import ProjectDeploymentHookPage from './pages/ProjectDeploymentHookPage';
 import ProjectLinkedFolderPage from './pages/ProjectLinkedFolderPage';
 import AccountPage from './pages/AccountPage';
 import NotificationsPage from './pages/NotificationsPage';
+import ServersPage from './pages/ServersPage';
 
 class Application extends React.Component {
   render() {
@@ -40,6 +41,7 @@ class Application extends React.Component {
             <Route path="/projects/:project_id/folders" component={ ProjectLinkedFolderPage} />
             <Route path="/projects/:project_id/settings" component={ ProjectEditPage} />
             <Route path="/projects/:project_id" component={ ProjectPage} />
+            <Route path="/servers" component={ ServersPage} />
             <Route path="/account" component={ AccountPage} />
           </Switch>
           <Alert/>
