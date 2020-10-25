@@ -22,6 +22,7 @@ class ProjectResource extends JsonResource
             'provider_id' => $this->provider_id,
             'repository' => $this->repository,
             'branch' => $this->branch,
+            'releases' => $this->releases,
             'deploy_on_push' => $this->deploy_on_push,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),

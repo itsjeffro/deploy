@@ -8,19 +8,16 @@ use Deploy\Models\Project;
 use Deploy\Models\Environment;
 use Deploy\Environment\EnvironmentEncrypter;
 use Deploy\Models\Server;
+use Illuminate\Http\JsonResponse;
 
 class ProjectEnvironmentController extends Controller
 {
     /**
      * Update environment.
      *
-     * @param EnvironmentEncrypter $environmentEncrypter
-     * @param EnvironmentRequest $request
-     * @param Project $project
-     * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(EnvironmentEncrypter $environmentEncrypter, EnvironmentRequest $request, Project $project)
+    public function update(EnvironmentEncrypter $environmentEncrypter, EnvironmentRequest $request, Project $project): JsonResponse
     {
         $this->authorize('view', $project);
 

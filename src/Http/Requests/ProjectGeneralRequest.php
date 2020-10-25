@@ -25,8 +25,10 @@ class ProjectGeneralRequest extends FormRequest
     {
         return [
             'name' => 'required',
+            'provider_id' => 'required',
             'repository' => 'required',
             'branch' => 'required',
+            'releases' => 'required|integer|min:1|max:100',
         ];
     }
 }

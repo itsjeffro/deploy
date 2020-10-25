@@ -5,6 +5,12 @@ namespace Deploy\Deployment;
 class Scripts
 {
     /**
+     * The number of releases to keep on the project's server.
+     * @var int
+     */
+    const DEFAULT_RELEASES = 5;
+
+    /**
      * Instantiate DeploymentScripts.
      *
      * @param object $project
@@ -68,10 +74,14 @@ class Scripts
      */
     public function stepCleanUp()
     {
+        $releasesToKeep = $this->project->releases ?? self::DEFAULT_RELEASES;
+
         return '
             cd {{ project }}
 
-            purging=$(ls -dt {{ releases }}/* | tail -n +5)
+            echo "Number of releases to keep: ' . $releasesToKeep . '";
+
+            purging=$(ls -dt {{ releases }}/* | tail -n +' . ($releasesToKeep + 1) . ')
 
             if [ "$purging" != "" ]; then
                 echo "Purging old releases:";
