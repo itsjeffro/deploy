@@ -17,7 +17,7 @@
     "bootstrap-sass": "^3.4.1",
     "cross-env": "^3.2.3",
     "jest": "^26.1.0",
-    "laravel-mix": "^5.0.4",
+    "laravel-mix": "^5.0.7",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "resolve-url-loader": "^2.3.1",
