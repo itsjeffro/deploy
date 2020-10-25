@@ -11,12 +11,6 @@ const ServersTable = props => {
     onServerKeyClick
   } = props;
 
-  if (servers.length === 0) {
-    return (
-      <></>
-    )
-  }
-
   return (
     <div className="table-responsive">
       <table className="table">
@@ -32,13 +26,13 @@ const ServersTable = props => {
           </tr>
         </thead>
         <tbody>
-          {servers.map(server =>
+          {servers.map((server) =>
             <ServersTableRow
-              key={server.id}
-              server={server}
-              onServerConnectionTestClick={onServerConnectionTestClick}
-              onServerRemoveClick={onServerRemoveClick}
-              onServerKeyClick={onServerKeyClick}
+              key={ server.id }
+              server={ server }
+              onServerConnectionTestClick={ onServerConnectionTestClick }
+              onServerRemoveClick={ onServerRemoveClick }
+              onServerKeyClick={ onServerKeyClick }
             />
           )}
         </tbody>
