@@ -12,12 +12,17 @@ const Drawer = (props) => {
       <h2>Deploy</h2>
       <ul>
         <li>
-          <NavLink to={'/'} activeClassName="active">
+          <NavLink to={'/'} activeClassName="active" exact>
             <Icon iconName="desktop" />Dashboard
           </NavLink>
         </li>
         <li>
-          <NavLink to="/notifications" activeClassName="active">
+          <NavLink to={'/servers'} activeClassName="active" exact>
+            <i className="fa fa-server"></i>Servers
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/notifications" activeClassName="active" exact>
             <Icon iconName="bell" />Notifications
           </NavLink>
         </li>
