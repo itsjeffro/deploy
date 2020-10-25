@@ -7,11 +7,26 @@ import Container from "../../components/Container";
 import ServersTable from './components/ServersTable';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
+import ServerApi from '../../services/Api/ServerApi';
 
 class ServersPage extends React.Component {
+  state = {
+    servers: {
+      items: [],
+    },
+  };
 
   componentDidMount() {
-    //
+    const serverApi = new ServerApi();
+
+    serverApi.list({})
+      .then(response => {
+        let servers = {
+          items: response.data.data,
+        };
+
+        this.setState({ servers: servers });
+      });
   }
 
   handleServerConnectionTestClick = () => {
@@ -30,8 +45,12 @@ class ServersPage extends React.Component {
     //
   }
 
+  handleHideModalClick = () => {
+    //
+  }
+
   render() {
-    const { servers } = this.props;
+    const { servers } = this.state;
 
     return (
       <Layout>
@@ -50,7 +69,7 @@ class ServersPage extends React.Component {
           <Container fluid>
             <Panel>
               <ServersTable
-                servers={ servers }
+                servers={ servers.items }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
                 onServerRemoveClick={ this.handleServerRemoveModal }
                 onServerKeyClick={ this.handleServerKeyModal }
