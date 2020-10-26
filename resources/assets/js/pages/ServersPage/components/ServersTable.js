@@ -22,6 +22,7 @@ const ServersTable = props => {
             <th>Port</th>
             <th>Project Path</th>
             <th>Connection Status</th>
+            <th className="text-center">Projects</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
