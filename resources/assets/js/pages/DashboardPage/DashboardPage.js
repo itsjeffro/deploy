@@ -96,7 +96,7 @@ class DashboardPage extends React.Component {
         <div className="content">
           <Container fluid>
             <div className="pull-left heading">
-              <h2>Project List</h2>
+              <h2>Dashboard</h2>
             </div>
             <div className="pull-right">
               <Button color="primary" onClick={ this.handleShowModalClick }>
