@@ -8,12 +8,19 @@ import ServersTable from './components/ServersTable';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import ServerApi from '../../services/Api/ServerApi';
+import ServerKeyModal from '../../components/ServerKeyModal';
+import RemoveServerModal from './components/RemoveServerModal';
+import CreateServerModal from './components/CreateServerModal';
 
 class ServersPage extends React.Component {
   state = {
     servers: {
       items: [],
     },
+    server: {},
+    isCreateServerModalVisible: false,
+    isServerKeyModalVisible: false,
+    isRemoveServerModalVisible: false,
   };
 
   componentDidMount() {
@@ -37,30 +44,58 @@ class ServersPage extends React.Component {
     //
   }
 
-  handleServerKeyModal = () => {
-    //
+  handleServerKeyModal = (server) => {
+    this.setState({
+      isServerKeyModalVisible: true,
+      server: server,
+    });
+  };
+
+  handleHideServerKeyModal = () => {
+    this.setState({ isServerKeyModalVisible: false });
   }
 
-  handleShowModalClick = () => {
-    //
+  handleServerRemoveModal = (server) => {
+    this.setState({
+      isRemoveServerModalVisible: true,
+      server: server,
+    });
+  };
+
+  handleHideServerRemoveModal = () => {
+    this.setState({ isRemoveServerModalVisible: false });
   }
 
-  handleHideModalClick = () => {
+  handleRemoveServerClick = () => {
     //
+  }
+  
+  handleShowCreateServerModalClick = () => {
+    this.setState({ isCreateServerModalVisible: true });
+  }
+
+  handleHideCreateServerModalClick = () => {
+    this.setState({ isCreateServerModalVisible: false });
   }
 
   render() {
-    const { servers } = this.state;
+    const {
+      servers,
+      server,
+      isServerKeyModalVisible,
+      isRemoveServerModalVisible,
+      isCreateServerModalVisible,
+    } = this.state;
 
     return (
       <Layout>
         <div className="content">
           <Container fluid>
             <div className="pull-left heading">
-              <h2>Servers List</h2>
+              <h2>Servers</h2>
             </div>
             <div className="pull-right">
-              <Button color="primary" onClick={ this.handleShowModalClick }>
+              <Button color="primary" onClick={ this.handleShowCreateServerModalClick }>
                 <Icon iconName="plus" /> Add Server
               </Button>
             </div>
@@ -76,6 +111,26 @@ class ServersPage extends React.Component {
               />
             </Panel>
           </Container>
+
+          <RemoveServerModal
+            isVisible={ isRemoveServerModalVisible }
+            onModalHide={ this.handleHideServerRemoveModal }
+            onRemoveServerClick={ this.handleRemoveServerClick }
+          />
+
+          <CreateServerModal
+            isVisible={ isCreateServerModalVisible }
+            onCreateServerClick={ this.handleHideCreateServerModalClick }
+            onHideModalClick={ this.handleHideCreateServerModalClick }
+            onInputChange={ this.handleHideCreateServerModalClick }
+            server={ server }
+          />
+
+          <ServerKeyModal
+            isVisible={ isServerKeyModalVisible }
+            onModalHide={ this.handleHideServerKeyModal }
+            server={ server }
+          />
         </div>
       </Layout>
     )
