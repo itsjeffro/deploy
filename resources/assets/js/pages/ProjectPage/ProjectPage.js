@@ -14,7 +14,6 @@ import {
   projectDeploymentDeploying,
   projectDeploymentDeployed
 } from "../../state/projectDeployments/actions";
-
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
@@ -26,7 +25,6 @@ import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import Grid from '../../components/Grid';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
-
 import ProjectDetails from './components/ProjectDetails';
 import DeploymentDetails from './components/DeploymentDetails';
 import DeploymentsTable from './components/DeploymentsTable';
@@ -34,7 +32,7 @@ import ServersTable from './components/ServersTable';
 import DeploymentModal from './components/DeploymentModal';
 import RedeploymentModal from './components/RedeploymentModal';
 import RemoveServerModal from './components/RemoveServerModal';
-import ServerKeyModal from './components/ServerKeyModal';
+import ServerKeyModal from '../../components/ServerKeyModal';
 
 class ProjectPage extends React.Component {
   state = {
