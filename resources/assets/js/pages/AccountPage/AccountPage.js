@@ -27,7 +27,7 @@ class AccountPage extends React.Component {
       <Layout>
         <div className="content">
           <div className="container-fluid heading">
-            <h2>Account Settings</h2>
+            <h2>My Account</h2>
           </div>
 
           <Container fluid>
