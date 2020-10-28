@@ -214,7 +214,9 @@ class ProjectEditPage extends React.Component {
                     <div className="form-group">
                       <label>Project provider</label>
 
-                      {(accountProviders.items || []).map((grantedProvider) =>
+                      { (accountProviders.items || [])
+                        .filter((grantedProvider) => grantedProvider.is_connected)
+                        .map((grantedProvider) =>
                         <div key={ grantedProvider.id }>
                           <label htmlFor={ grantedProvider.name }>
                             <input
@@ -227,7 +229,7 @@ class ProjectEditPage extends React.Component {
                             /> { grantedProvider.name }
                           </label>
                         </div>
-                      )}
+                      ) }
                     </div>
 
                     <div className="form-group">
