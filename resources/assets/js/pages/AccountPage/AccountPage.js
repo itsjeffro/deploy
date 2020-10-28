@@ -12,6 +12,7 @@ import PanelHeading from '../../components/PanelHeading';
 import PanelBody from '../../components/PanelBody';
 import Layout from "../../components/Layout";
 import { fetchAccountProviders } from '../../state/accountProviders/actions';
+import ProvidersList from './components/ProvidersList';
 
 class AccountPage extends React.Component {
   componentDidMount() {
@@ -45,6 +46,8 @@ class AccountPage extends React.Component {
               </Grid>
 
               <Grid xs={12} sm={9}>
+                { accountProviders.items.length === 0 ? <ProvidersList /> : '' }
+                
                 {accountProviders.items.map(provider =>
                   <Panel key={provider.id}>
                     <PanelHeading>
@@ -53,9 +56,9 @@ class AccountPage extends React.Component {
                     <PanelBody>
                       <a
                         className="btn btn-default"
-                        href={Deploy.path + '/authorize/' + provider.friendly_name}
+                        href={ '/' + Deploy.path + '/authorize/' + provider.friendly_name }
                         title={'Connect to ' + provider.name}
-                      >{provider.deploy_access_token ? 'Refresh Token' : 'Connect to ' + provider.name}</a>
+                      >{ provider.is_connected ? 'Refresh Token' : 'Connect to ' + provider.name }</a>
                     </PanelBody>
                   </Panel>
                 )}
