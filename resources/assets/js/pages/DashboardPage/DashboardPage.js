@@ -119,7 +119,7 @@ class DashboardPage extends React.Component {
           <AddProjectModal
             isVisible={ isAddProjectModalVisible }
             projects={ projects }
-            grantedProviders={ accountProviders.items }
+            accountProviders={ accountProviders.items }
             handleCreateProjectClick={ this.handleCreateProjectClick }
             handleDismissModalClick={ this.handleDismissModalClick }
             handleInputChange={ this.handleInputChange }

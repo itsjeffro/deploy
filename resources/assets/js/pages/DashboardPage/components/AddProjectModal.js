@@ -4,10 +4,10 @@ import AlertErrorValidation from '../../../components/AlertErrorValidation';
 import TextField from '../../../components/TextField';
 import Modal from '../../../components/Modal';
 
-const AddProjectModal = props => {
+const AddProjectModal = (props) => {
   const {
     isVisible,
-    grantedProviders,
+    accountProviders,
     handleCreateProjectClick,
     handleDismissModalClick,
     handleInputChange,
@@ -49,26 +49,28 @@ const AddProjectModal = props => {
       <div className="form-group">
         <label>Providers</label>
 
-        {grantedProviders.map(grantedProvider => (
-          <div key={grantedProvider.id}>
-            <label htmlFor={grantedProvider.name}>
+        { accountProviders
+          .filter((accountProvider) => accountProvider.is_connected)
+          .map((accountProvider) => (
+          <div key={ accountProvider.id }>
+            <label htmlFor={accountProvider.name}>
               <input 
                 name="provider_id"
                 type="radio"
-                value={grantedProvider.id}
-                id={grantedProvider.name}
-                onChange={e => handleInputChange(e)}
-              /> {grantedProvider.name}
+                value={ accountProvider.id }
+                id={ accountProvider.name }
+                onChange={ (e) => handleInputChange(e) }
+              /> { accountProvider.name }
             </label>
           </div>
-        ))}
+        )) }
       </div>
 
       <div className="form-group">
         <TextField 
           id="repository" 
           label="Respository" 
-          onChange={e => handleInputChange(e)} 
+          onChange={ (e) => handleInputChange(e) } 
           name="repository"
           placeholder="user/repository"
         />
