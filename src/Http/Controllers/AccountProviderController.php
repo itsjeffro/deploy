@@ -3,22 +3,30 @@
 namespace Deploy\Http\Controllers;
 
 use Deploy\Models\Provider;
+use Deploy\Resources\ProviderResource;
+use Illuminate\Http\JsonResponse;
 
 class AccountProviderController extends Controller
 {
     /**
-     * List granted providers.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * AccountProviderController construct.
      */
-    public function index()
+    public function __construct(Provider $provider)
     {
-        $providers = Provider::with(['deployAccessToken' => function ($query) {
-            return $query->where('user_id', auth()->id());
-        }])
-        ->get();
+        $this->provider = $provider;
+    }
 
+    /**
+     * List granted providers.
+     */
+    public function index(): JsonResponse
+    {
+        $providers = $this->provider
+            ->with(['deployAccessToken' => function ($query) {
+                return $query->where('user_id', auth()->id());
+            }])
+            ->get();
 
-        return response()->json($providers);
+        return response()->json(ProviderResource::collection($providers));
     }
 }
