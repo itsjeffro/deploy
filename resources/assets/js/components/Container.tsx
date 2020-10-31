@@ -4,8 +4,8 @@ const Container = (props) => {
   const { fluid } = props;
 
   return (
-    <div className={fluid ? 'container-fluid' : 'container'}>
-      {props.children}
+    <div className={ fluid ? 'container-fluid' : 'container' }>
+      { props.children }
     </div>
   )
 }
