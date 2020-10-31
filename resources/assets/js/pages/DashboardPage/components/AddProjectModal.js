@@ -12,6 +12,7 @@ const AddProjectModal = (props) => {
     handleDismissModalClick,
     handleInputChange,
     projects,
+    input,
   } = props;
 
   const addProjectText = projects.isCreating ? 'Working...' : 'Add Project';
@@ -41,6 +42,7 @@ const AddProjectModal = (props) => {
           label="Project Name" 
           onChange={ e => handleInputChange(e) } 
           name="name"
+          value={ input.name || '' }
         />
       </div>
 
@@ -52,18 +54,19 @@ const AddProjectModal = (props) => {
         { accountProviders
           .filter((accountProvider) => accountProvider.is_connected)
           .map((accountProvider) => (
-          <div key={ accountProvider.id }>
-            <label htmlFor={accountProvider.name}>
-              <input 
-                name="provider_id"
-                type="radio"
-                value={ accountProvider.id }
-                id={ accountProvider.name }
-                onChange={ (e) => handleInputChange(e) }
-              /> { accountProvider.name }
-            </label>
-          </div>
-        )) }
+            <div key={ accountProvider.id }>
+              <label htmlFor={accountProvider.name}>
+                <input 
+                  name="provider_id"
+                  type="radio"
+                  value={ accountProvider.id }
+                  id={ accountProvider.name }
+                  onChange={ (e) => handleInputChange(e) }
+                  checked={ input.provider_id == accountProvider.id }
+                /> { accountProvider.name }
+              </label>
+            </div>
+          )) }
       </div>
 
       <div className="form-group">
@@ -73,6 +76,7 @@ const AddProjectModal = (props) => {
           onChange={ (e) => handleInputChange(e) } 
           name="repository"
           placeholder="user/repository"
+          value={ input.repository || '' }
         />
       </div>
     </Modal>
