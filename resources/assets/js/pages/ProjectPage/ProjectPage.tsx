@@ -116,7 +116,7 @@ class ProjectPage extends React.Component<any, any> {
 
     repositoryTagBranchService
       .get(project.item.provider_id, project.item.repository)
-      .then(response => {
+      .then((response) => {
         this.setState({
           branches: response.data.branches,
           tags: response.data.tags
@@ -130,16 +130,17 @@ class ProjectPage extends React.Component<any, any> {
    * Displays redeploy modal.
    */
   handleRedeployModal = (deployment: any): void => {
-    this.setState(state => {
-      let redeploy = Object.assign({}, state.redeploy, {
-        commit: deployment.commit,
-        deployment_id: deployment.id,
-      });
+    const { redeploy } = this.state;
 
-      return {
-        isRedeploymentModalVisible: true,
-        redeploy: redeploy 
-      }
+    const deploy = {
+      ...redeploy,
+      commit: deployment.commit,
+      deployment_id: deployment.id,
+    };
+
+    this.setState({
+      isRedeploymentModalVisible: true,
+      redeploy: deploy 
     });
   };
 
@@ -192,11 +193,11 @@ class ProjectPage extends React.Component<any, any> {
   }
 
   /**
-   * Handles changing the repository reference when deploying.
+   * Handles changing the reference (tag or branch) type to deploy.
    */
   handleReferenceChange = (event: any): void => {
     const reference = event.target.value;
-    const { tags, branches } = this.state;
+    const { tags, branches, deploy } = this.state;
 
     let name = '';
 
@@ -206,23 +207,27 @@ class ProjectPage extends React.Component<any, any> {
         name = branches[0].name;
     }
 
-    let deploy = Object.assign({}, this.state.deploy, {
-      reference: reference,
-      name: name
+    this.setState({ 
+      deploy: {
+        ...deploy,
+        reference: reference,
+        name: name,
+      }
     });
-
-    this.setState({ deploy: deploy });
   };
 
   /**
-   * @param event
+   * Handles setting the refernece (tag or branch) name to deploy.
    */
   handleNameChange = (event: any): void => {
-    let deploy = Object.assign({}, this.state.deploy, {
-      name: event.target.value
-    });
+    const { deploy } = this.state;
 
-    this.setState({ deploy: deploy });
+    this.setState({ 
+      deploy: {
+        ...deploy,
+        name: event.target.value,
+      }
+    });
   };
 
   /**
@@ -251,7 +256,7 @@ class ProjectPage extends React.Component<any, any> {
       name: name
     }));
 
-    this.handleHideDeployModal();
+    this.handleHideDeployModal(); 
   };
 
   /**
@@ -279,40 +284,18 @@ class ProjectPage extends React.Component<any, any> {
   };
 
   /**
-   * Remove the specified server from the servers table.
-   */
-  removeServer = (server_id: number): void => {
-    this.setState(state => {
-      const servers = state.servers.filter(server => {
-        return server.id !== server_id;
-      });
-
-      return {servers: servers}
-    });
-  };
-
-  /**
-   * Updates specified server in table.
-   */
-  updateServerConnection = (prevServers: any[], server: any): any[] => {
-    return prevServers.map((prevServer) => {
-      if (prevServer.id === server.id) {
-        return Object.assign({}, prevServer, {connection_status: server.connection_status});
-      }
-      return Object.assign({}, prevServer);
-    });
-  };
-
-  /**
-   * Updates specified deployment in table.
+   * Updates specified deployment status in table.
    */
   updateDeploymentStatus = (previousDeployments: any[], deployment: any): any[] => {
     return previousDeployments.map((previousDeployment) => {
       if (previousDeployment.id === deployment.id) {
-        return Object.assign({}, previousDeployment, {status: deployment.status});
+        return {
+          ...previousDeployment,
+          status: deployment.status,
+        };
       }
 
-      return Object.assign({}, previousDeployment);
+      return { ...previousDeployment };
     });
   };
 
@@ -402,7 +385,7 @@ class ProjectPage extends React.Component<any, any> {
 
               <PanelBody>
                 <p>Make requests to the following URL to trigger deployments for this project.</p>
-                <pre>{ Deploy.url + Deploy.path + '/webhook/' + project.item.key }</pre>
+                <pre>{ Deploy.url + '/' + Deploy.path + '/webhook/' + project.item.key }</pre>
                 <Button
                   onClick={ this.handleRefreshKey }
                 >Refresh key</Button>
