@@ -1,8 +1,9 @@
 import * as React from 'react';
 
+import ServerModelInterface from '../../../interfaces/model/ServerModelInterface';
 import ServersTableRow from './ServersTableRow';
 
-const ServersTable = props => {
+const ServersTable = (props: PropsInterface) => {
   const {
     servers,
     onServerConnectionTestClick,
@@ -27,23 +28,30 @@ const ServersTable = props => {
             <th>Port</th>
             <th>Project Path</th>
             <th>Connection Status</th>
-            <th>&nbsp;</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {servers.map(server =>
+          {servers.map((server) =>
             <ServersTableRow
-              key={server.id}
-              server={server}
-              onServerConnectionTestClick={onServerConnectionTestClick}
-              onServerRemoveClick={onServerRemoveClick}
-              onServerKeyClick={onServerKeyClick}
+              key={ server.id }
+              server={ server }
+              onServerConnectionTestClick={ onServerConnectionTestClick }
+              onServerRemoveClick={ onServerRemoveClick }
+              onServerKeyClick={ onServerKeyClick }
             />
           )}
         </tbody>
       </table>
     </div>
   )
+}
+
+interface PropsInterface {
+  servers: ServerModelInterface[]
+  onServerConnectionTestClick: any
+  onServerRemoveClick: any
+  onServerKeyClick: any
 }
 
 export default ServersTable;

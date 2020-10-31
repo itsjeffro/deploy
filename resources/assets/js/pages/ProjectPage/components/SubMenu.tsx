@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
+import ProjectModelInterface from '../../../interfaces/model/ProjectModelInterface';
 
-const SubMenu = (props) => {
+const SubMenu = (props: PropsInterface) => {
   const { project } = props;
 
   return (
@@ -15,5 +16,9 @@ const SubMenu = (props) => {
     </div>
   )
 };
+
+interface PropsInterface {
+  project: ProjectModelInterface
+}
 
 export default SubMenu;
