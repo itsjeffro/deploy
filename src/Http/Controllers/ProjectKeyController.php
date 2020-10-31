@@ -4,6 +4,7 @@ namespace Deploy\Http\Controllers;
 
 use Deploy\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProjectKeyController extends Controller
 {
@@ -18,7 +19,7 @@ class ProjectKeyController extends Controller
     {
         $this->authorize('update', $project);
 
-        $project->key = str_random(40);
+        $project->key = Str::random(40);
         $project->save();
 
         return response()->json([
