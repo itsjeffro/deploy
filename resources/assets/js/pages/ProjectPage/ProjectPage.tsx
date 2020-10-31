@@ -2,11 +2,6 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { Deploy } from '../../config';
-import { fetchProject } from '../../state/project/actions';
-import { updateProjectKey } from '../../state/project/actions/key';
-import { testServerConnection, updateServerConnectionStatus } from '../../state/project/actions/serverConnectionTest';
-import { removeProjectServer } from '../../state/project/actions/removeProjectServer';
 import {
   fetchProjectDeployments,
   createProjectDeployment,
@@ -15,6 +10,11 @@ import {
   projectDeploymentDeployed
 } from "../../state/projectDeployments/actions";
 
+import { Deploy } from '../../config';
+import { fetchProject } from '../../state/project/actions';
+import { updateProjectKey } from '../../state/project/actions/key';
+import { testServerConnection, updateServerConnectionStatus } from '../../state/project/actions/serverConnectionTest';
+import { removeProjectServer } from '../../state/project/actions/removeProjectServer';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
@@ -26,7 +26,6 @@ import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import Grid from '../../components/Grid';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
-
 import ProjectDetails from './components/ProjectDetails';
 import DeploymentDetails from './components/DeploymentDetails';
 import DeploymentsTable from './components/DeploymentsTable';
@@ -78,10 +77,8 @@ class ProjectPage extends React.Component<any, any> {
 
   /**
    * Listen for project related events.
-   *
-   * @param {number} projectId
    */
-  listenForEvents = (projectId) => {
+  listenForEvents = (projectId: number): void => {
     const { dispatch } = this.props;
     const echoWindow: any = window;
     const Echo = echoWindow.Echo;
@@ -104,7 +101,7 @@ class ProjectPage extends React.Component<any, any> {
   /**
    * Refreshes project deployment hook key.
    */
-  handleRefreshKey = () => {
+  handleRefreshKey = (): void => {
     const { dispatch, project } = this.props;
 
     dispatch(updateProjectKey(project.item.id));
@@ -113,7 +110,7 @@ class ProjectPage extends React.Component<any, any> {
   /**
    * Displays deploy modal.
    */
-  handleShowDeployModalClick = () => {
+  handleShowDeployModalClick = (): void => {
     const { project } = this.props;
     const repositoryTagBranchService = new RepositoryTagBranchService;
 
@@ -131,11 +128,8 @@ class ProjectPage extends React.Component<any, any> {
 
   /**
    * Displays redeploy modal.
-   *
-   * @param event
-   * @param deployment
    */
-  handleRedeployModal = (event, deployment) => {
+  handleRedeployModal = (deployment: any): void => {
     this.setState(state => {
       let redeploy = Object.assign({}, state.redeploy, {
         commit: deployment.commit,
@@ -151,10 +145,8 @@ class ProjectPage extends React.Component<any, any> {
 
   /**
    * Displays server delete confirmation modal.
-   *
-   * @param {object} server
    */
-  handleServerRemoveModal = (server) => {
+  handleServerRemoveModal = (server: object): void => {
     this.setState({
       isRemoveServerModalVisible: true,
       server: server,
@@ -163,10 +155,8 @@ class ProjectPage extends React.Component<any, any> {
 
   /**
    * Displays server ssh key modal.
-   *
-   * @param {object} server
    */
-  handleServerKeyModal = (server) => {
+  handleServerKeyModal = (server: object): void => {
     this.setState({
       isServerKeyModalVisible: true,
       server: server,
@@ -176,37 +166,35 @@ class ProjectPage extends React.Component<any, any> {
   /**
    * Hide modal.
    */
-  handleHideDeployModal = () => {
+  handleHideDeployModal = (): void => {
     this.setState({ isDeploymentModalVisible: false });
   }
 
   /**
    * Hide modal.
    */
-  handleHideRedeployModal = () => {
+  handleHideRedeployModal = (): void => {
     this.setState({ isRedeploymentModalVisible: false });
   }
 
   /**
    * Hide modal.
    */
-  handleHideServerRemoveModal = () => {
+  handleHideServerRemoveModal = (): void => {
     this.setState({ isRemoveServerModalVisible: false });
   }
 
   /**
    * Hide modal.
    */
-  handleHideServerKeyModal = () => {
+  handleHideServerKeyModal = (): void => {
     this.setState({ isServerKeyModalVisible: false });
   }
 
   /**
    * Handles changing the repository reference when deploying.
-   *
-   * @param event
    */
-  handleReferenceChange = (event) => {
+  handleReferenceChange = (event: any): void => {
     const reference = event.target.value;
     const { tags, branches } = this.state;
 
@@ -229,7 +217,7 @@ class ProjectPage extends React.Component<any, any> {
   /**
    * @param event
    */
-  handleNameChange = (event) => {
+  handleNameChange = (event: any): void => {
     let deploy = Object.assign({}, this.state.deploy, {
       name: event.target.value
     });
@@ -239,11 +227,8 @@ class ProjectPage extends React.Component<any, any> {
 
   /**
    * Handles testing the server connection.
-   *
-   * @param event
-   * @param server_id
    */
-  handleServerConnectionTestClick = (event, server_id) => {
+  handleServerConnectionTestClick = (event: any, server_id: number): void => {
     event.preventDefault();
 
     const { dispatch, project } = this.props;
@@ -254,7 +239,7 @@ class ProjectPage extends React.Component<any, any> {
   /**
    * Handles processing the deployment when the button is clicked.
    */
-  handleDeploymentClick = () => {
+  handleDeploymentClick = (): void => {
     const { dispatch, project } = this.props;
     const { deploy } = this.state;
 
@@ -272,7 +257,7 @@ class ProjectPage extends React.Component<any, any> {
   /**
    * Handles processing the redeployment when the button is clicked.
    */
-  handleRedeploymentClick = () => {
+  handleRedeploymentClick = (): void => {
     const { dispatch } = this.props;
     const { redeploy } = this.state;
 
@@ -284,7 +269,7 @@ class ProjectPage extends React.Component<any, any> {
   /**
    * Handles processing the removal of the server from the project when the button is clicked.
    */
-  handleRemoveServerClick = () => {
+  handleRemoveServerClick = (): void => {
     const { server } = this.state;
     const { dispatch } = this.props;
 
@@ -295,27 +280,22 @@ class ProjectPage extends React.Component<any, any> {
 
   /**
    * Remove the specified server from the servers table.
-   *
-   * @param server_id
    */
-  removeServer = (server_id) => {
+  removeServer = (server_id: number): void => {
     this.setState(state => {
       const servers = state.servers.filter(server => {
         return server.id !== server_id;
       });
+
       return {servers: servers}
     });
   };
 
   /**
    * Updates specified server in table.
-   *
-   * @param prevServers
-   * @param server
-   * @returns {*}
    */
-  updateServerConnection = (prevServers, server) => {
-    return prevServers.map(prevServer => {
+  updateServerConnection = (prevServers: any[], server: any): any[] => {
+    return prevServers.map((prevServer) => {
       if (prevServer.id === server.id) {
         return Object.assign({}, prevServer, {connection_status: server.connection_status});
       }
@@ -325,16 +305,13 @@ class ProjectPage extends React.Component<any, any> {
 
   /**
    * Updates specified deployment in table.
-   *
-   * @param {Array} previousDeployments
-   * @param deployment
-   * @returns {*}
    */
-  updateDeploymentStatus = (previousDeployments, deployment) => {
-    return previousDeployments.map(previousDeployment => {
+  updateDeploymentStatus = (previousDeployments: any[], deployment: any): any[] => {
+    return previousDeployments.map((previousDeployment) => {
       if (previousDeployment.id === deployment.id) {
         return Object.assign({}, previousDeployment, {status: deployment.status});
       }
+
       return Object.assign({}, previousDeployment);
     });
   };
