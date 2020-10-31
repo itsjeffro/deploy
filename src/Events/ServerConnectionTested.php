@@ -44,4 +44,19 @@ class ServerConnectionTested implements ShouldBroadcastNow
     {
         return new PrivateChannel('project.' . $this->server->project_id);
     }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return [
+            'server' => [
+                'id' => $this->server->id,
+                'connection_status' => (int) $this->server->connection_status,
+            ],
+        ];
+    }
 }
