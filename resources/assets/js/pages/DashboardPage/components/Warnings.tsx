@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Container from '../../../components/Container';
-import Alert from '../../../components/Container';
+import Alert from '../../../components/Alert';
 
 const Warnings = (props) => {
   const { warnings } = props;
