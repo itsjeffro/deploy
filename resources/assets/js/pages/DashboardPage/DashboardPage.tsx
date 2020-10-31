@@ -1,9 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { createProject, fetchProjects } from '../../state/projects/actions';
 import { fetchAccountProviders } from '../../state/accountProviders/actions';
-
 import AddProjectModal from './components/AddProjectModal';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
@@ -13,7 +12,7 @@ import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import Warnings from './components/Warnings';
 
-class DashboardPage extends React.Component {
+class DashboardPage extends React.Component<any, any> {
   state = {
     input: {},
     isAddProjectModalVisible: false,
@@ -22,7 +21,7 @@ class DashboardPage extends React.Component {
   /**
    * Fetch data for projects and providers.
    */
-  componentDidMount() {
+  componentDidMount(): void {
     const { dispatch, projects } = this.props;
 
     if (typeof projects.items === 'object' && projects.items.length === 0) {
@@ -33,11 +32,22 @@ class DashboardPage extends React.Component {
   }
 
   /**
+   * Update state when component props update.
+   */
+  componentWillReceiveProps(nextProps: any): void {
+    const { projects } = this.props;
+
+    if (nextProps.projects.isCreated !== projects.isCreated && nextProps.projects.isCreated) {
+      this.setState({ isAddProjectModalVisible: false, input: {} });
+    }
+  }
+
+  /**
    * Handle input change from the project add form.
    *
    * @param {object} event
    */
-  handleInputChange = (event) => {
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -45,13 +55,13 @@ class DashboardPage extends React.Component {
     let input = Object.assign({}, this.state.input);
     input[name] = value;
 
-    this.setState({input: input});
+    this.setState({ input: input });
   };
 
   /**
    * Handles creating the project once the form button is clicked.
    */
-  handleCreateProjectClick = () => {
+  handleCreateProjectClick = (): void => {
     const { dispatch } = this.props;
 
     dispatch(createProject(this.state.input));
@@ -60,14 +70,14 @@ class DashboardPage extends React.Component {
   /**
    * Handle click for displaying the create project modal.
    */
-  handleShowModalClick = () => {
+  handleShowModalClick = (): void => {
     this.setState({ isAddProjectModalVisible: true });
   };
 
   /**
    * Handle click for dismissing the create project modal.
    */
-  handleDismissModalClick = () => {
+  handleDismissModalClick = (): void => {
     this.setState({ isAddProjectModalVisible: false });
   };
 
@@ -76,15 +86,17 @@ class DashboardPage extends React.Component {
    *
    * @returns {array}
    */
-  warnings = () => {
-    return window.Deploy.warnings || [];
+  warnings = (): any[] => {
+    const config: any = window;
+
+    return config.Deploy.warnings || [];
   }
 
   /**
    * Render page.
    */
   render() {
-    const { isAddProjectModalVisible } = this.state;
+    const { isAddProjectModalVisible, input } = this.state;
     const { projects, accountProviders } = this.props;
 
     const items = Object.keys(projects.items).map(key => {
@@ -123,6 +135,7 @@ class DashboardPage extends React.Component {
             handleCreateProjectClick={ this.handleCreateProjectClick }
             handleDismissModalClick={ this.handleDismissModalClick }
             handleInputChange={ this.handleInputChange }
+            input={ input }
           />
         </div>
       </Layout>
