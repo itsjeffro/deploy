@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { fetchProjects, deleteProject } from '../../state/projects/actions';
+import { fetchProjects, deleteProject, updateProject } from '../../state/projects/actions';
 import { createToast } from "../../state/alert/alertActions";
 import ProjectService from '../../services/Project';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
@@ -61,6 +61,7 @@ class ProjectEditPage extends React.Component<any, any> {
 
   componentWillReceiveProps(nextProps, nextContext) {
     const {
+      dispatch,
       projects,
       match: {
         params: {
@@ -69,20 +70,28 @@ class ProjectEditPage extends React.Component<any, any> {
       }
     } = this.props;
 
+    // Handle project change
     if (projects.items !== nextProps.projects.items) {
       this.setState({
         project: nextProps.projects.items[project_id]
       });
     }
+
+    // Handle project delete
+    if (nextProps.projects.isDeleted !== projects.isDeleted && nextProps.projects.isDeleted) {
+      this.setState({ isDeleteProjectModalVisible: false, isDeleted: true });
+    }
+
+    // Handle project update
+    if (nextProps.projects.isUpdated !== projects.isUpdated && nextProps.projects.isUpdated) {
+      dispatch(createToast('Project updated successfully.'));
+    }
   }
 
   /**
    * Handle project input change.
-   *
-   * @param {object} event
-   * @return {void}
    */
-  handleInputChange = (event) => {
+  handleInputChange = (event: any): void => {
     const target = event.target;
     const name = target.name;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -98,11 +107,9 @@ class ProjectEditPage extends React.Component<any, any> {
   /**
    * Handle project update.
    */
-  handleProjectUpdateClick = () => {
+  handleProjectUpdateClick = (): void => {
     const { dispatch } = this.props;
     const { project } = this.state;
-
-    const projectService = new ProjectService;
 
     const data = {
       name: project.name,
@@ -113,32 +120,13 @@ class ProjectEditPage extends React.Component<any, any> {
       deploy_on_push: project.deploy_on_push,
     };
 
-    projectService
-      .update(project.id, data)
-      .then(response => {
-        this.setState({
-          isUpdated: true,
-          errors: []
-        });
-
-        dispatch(createToast('Project updated successfully.'));
-      },
-      error => {
-        let errorResponse = error.response.data;
-        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-
-        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-            return previous.concat(errorResponse[key][0]);
-          }, []);
-
-        this.setState({ errors: errors });
-      });
+    dispatch(updateProject(project.id, data));
   };
 
   /**
    * Handle project delete.
    */
-  handleProjectDeleteClick = () => {
+  handleProjectDeleteClick = (): void => {
     const { dispatch } = this.props;
     const { project } = this.state;
 
@@ -146,16 +134,16 @@ class ProjectEditPage extends React.Component<any, any> {
   };
 
   /**
-   * @returns {void}
+   * Show delet project modal.
    */
-  handleShowDeleteProjectModalClick = () => {
+  handleShowDeleteProjectModalClick = (): void => {
     this.setState({ isDeleteProjectModalVisible: true });
   };
 
   /**
-   * @returns {void}
+   * Hide delete project modal.
    */
-  handleHideDeleteProjectModalClick = () => {
+  handleHideDeleteProjectModalClick = (): void => {
     this.setState({ isDeleteProjectModalVisible: false });
   };
 
@@ -164,7 +152,6 @@ class ProjectEditPage extends React.Component<any, any> {
       isDeleted,
       isUpdated,
       project,
-      errors,
       isDeleteProjectModalVisible,
     } = this.state;
 
@@ -193,13 +180,13 @@ class ProjectEditPage extends React.Component<any, any> {
         <div className="content">
           <Container fluid>
             <div className="row">
-              <Grid xs={12} sm={9}>
+              <Grid xs={12} sm={12} lg={9}>
                 <Panel>
                   <PanelHeading>
                     <PanelTitle>General Settings</PanelTitle>
                   </PanelHeading>
                   <PanelBody>
-                    {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+                    { projects.errors.length ? <AlertErrorValidation errors={ projects.errors } /> : '' }
 
                     <div className="form-group">
                       <label htmlFor="name">Project name</label>
@@ -284,7 +271,7 @@ class ProjectEditPage extends React.Component<any, any> {
                     <Button
                       color="primary"
                       onClick={ this.handleProjectUpdateClick }
-                    >Save</Button>
+                    >{ projects.isUpdating ? 'Working...' : 'Save' }</Button>
                   </PanelBody>
                 </Panel>
 
