@@ -11,6 +11,7 @@ import ProjectsTable from './components/ProjectsTable';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import Warnings from './components/Warnings';
+import { createToast } from '../../state/alert/alertActions';
 
 class DashboardPage extends React.Component<any, any> {
   state = {
@@ -35,10 +36,12 @@ class DashboardPage extends React.Component<any, any> {
    * Update state when component props update.
    */
   componentWillReceiveProps(nextProps: any): void {
-    const { projects } = this.props;
+    const { projects, dispatch } = this.props;
 
     if (nextProps.projects.isCreated !== projects.isCreated && nextProps.projects.isCreated) {
       this.setState({ isAddProjectModalVisible: false, input: {} });
+      
+      dispatch(createToast('Project created successfully.'));
     }
   }
 
