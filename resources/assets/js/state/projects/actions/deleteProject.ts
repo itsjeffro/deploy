@@ -2,34 +2,20 @@ import { PROJECTS_DELETE_REQUEST, PROJECTS_DELETE_SUCCESS, PROJECTS_DELETE_FAILU
 import { createToast } from '../../alert/alertActions';
 import ProjectService from '../../../services/Project';
 
-/**
- * @returns {void}
- */
-export const deleteProjectRequest = () =>({
+export const deleteProjectRequest = (): object =>({
   type: PROJECTS_DELETE_REQUEST
 });
 
-/**
- * @param {int} projectId
- * @returns {void}
- */
-export const deleteProjectSuccess = (projectId) =>({
+export const deleteProjectSuccess = (projectId: number): object =>({
   type: PROJECTS_DELETE_SUCCESS,
   project_id: projectId
 });
 
-/**
- * @returns {void}
- */
-export const deleteProjectFailure = () =>({
+export const deleteProjectFailure = (): object =>({
   type: PROJECTS_DELETE_FAILURE
 });
 
-/**
- * @param {*} projectId
- * @returns {void}
- */
-export const deleteProject = (projectId) => {
+export const deleteProject = (projectId: number): object => {
   return (dispatch) => {
     const projectService = new ProjectService;
 
