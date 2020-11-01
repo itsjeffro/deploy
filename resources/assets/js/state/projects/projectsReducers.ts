@@ -29,6 +29,7 @@ const initialState = {
 
 const projects = (state = initialState, action) => {
   switch(action.type) {
+    // Fetch
     case PROJECTS_REQUEST:
       return {
         ...state,
@@ -46,6 +47,7 @@ const projects = (state = initialState, action) => {
         }, {}),
       };
 
+    // Create
     case PROJECTS_CREATE_REQUEST:
       return {
         ...state,
@@ -73,11 +75,13 @@ const projects = (state = initialState, action) => {
         isCreated: false,
       };
 
+    // Update
     case PROJECTS_UPDATE_REQUEST:
       return {
         ...state,
         errors: [],
         isUpdating: true,
+        isUpdated: false,
       };
 
     case PROJECTS_UPDATE_SUCCESS:
@@ -85,13 +89,24 @@ const projects = (state = initialState, action) => {
         ...state,
         errors: [],
         isUpdating: false,
+        isUpdated: true,
       };
 
+    case PROJECTS_UPDATE_FAILURE:
+      return {
+        ...state,
+        errors: buildAlertFromResponse(action.errors),
+        isUpdating: false,
+        isUpdated: false,
+      };
+
+    // Delete
     case PROJECTS_DELETE_REQUEST:
       return {
         ...state,
         errors: [],
-        isDeleting: true
+        isDeleting: true,
+        isDeleted: false,
       };
 
     case PROJECTS_DELETE_SUCCESS:
@@ -99,11 +114,13 @@ const projects = (state = initialState, action) => {
         ...state,
         errors: [],
         isDeleting: false,
+        isDeleted: true,
         items: Object.keys(state.items).reduce((previous, key) => {
-          if (action.project_id !== key) {
+          if (action.project_id != key) {
             previous[key] = state.items[key];
-            return previous;
           }
+
+          return previous;
         }, {}),
       };
 
