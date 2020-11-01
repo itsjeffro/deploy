@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 
 import { fetchProjects, deleteProject, updateProject } from '../../state/projects/actions';
 import { createToast } from "../../state/alert/alertActions";
-import ProjectService from '../../services/Project';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
@@ -33,7 +32,6 @@ class ProjectEditPage extends React.Component<any, any> {
       repository: '',
       branch: '',
     },
-    errors: [],
     isDeleteProjectModalVisible: false,
   };
 
@@ -303,7 +301,7 @@ class ProjectEditPage extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     projects: state.projects,
     accountProviders: state.accountProviders,
