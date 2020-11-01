@@ -1,34 +1,21 @@
 import { PROJECTS_UPDATE_REQUEST, PROJECTS_UPDATE_SUCCESS, PROJECTS_UPDATE_FAILURE } from '../projectsConstants';
 import ProjectService from '../../../services/Project';
 
-/**
- * @returns {void}
- */
-export const updateProjectRequest = () =>({
+export const updateProjectRequest = (): object =>({
   type: PROJECTS_UPDATE_REQUEST
 });
 
-/**
- * @param {object} project
- * @returns {void}
- */
-export const updateProjectSuccess = (project) =>({
+export const updateProjectSuccess = (project: object): object =>({
   type: PROJECTS_UPDATE_SUCCESS,
   project: project
 });
 
-/**
- * @returns {void}
- */
-export const updateProjectFailure = () =>({
-  type: PROJECTS_UPDATE_FAILURE
+export const updateProjectFailure = (errors: any[]): object =>({
+  type: PROJECTS_UPDATE_FAILURE,
+  errors: errors,
 });
 
-/**
- * @param {int} project_id
- * @param {object} data
- */
-export const updateProject = (project_id, data) => {
+export const updateProject = (project_id: number, data: object) => {
   return (dispatch) => {
     const projectService = new ProjectService;
 
@@ -36,11 +23,11 @@ export const updateProject = (project_id, data) => {
 
     projectService
       .update(project_id, data)
-      .then(response => {
+      .then((response) => {
         dispatch(updateProjectSuccess(response.data));
       },
-      error => {
-        dispatch(updateProjectFailure());
+      (error) => {
+        dispatch(updateProjectFailure(error.response));
       });
   }
 };
