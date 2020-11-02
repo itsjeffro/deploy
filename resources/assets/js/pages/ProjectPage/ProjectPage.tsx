@@ -388,7 +388,7 @@ class ProjectPage extends React.Component<any, any> {
                 <pre>{ Deploy.url + '/' + Deploy.path + '/webhook/' + project.item.key }</pre>
                 <Button
                   onClick={ this.handleRefreshKey }
-                >Refresh key</Button>
+                >{ project.isKeyUpdating ? 'Working...' : 'Refresh key' }</Button>
               </PanelBody>
             </Panel>
           </Container>
