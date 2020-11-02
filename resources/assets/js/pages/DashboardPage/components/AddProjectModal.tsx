@@ -55,7 +55,7 @@ const AddProjectModal = (props) => {
           .filter((accountProvider) => accountProvider.is_connected)
           .map((accountProvider) => (
             <div key={ accountProvider.id }>
-              <label htmlFor={accountProvider.name}>
+              <label className="form-control-label" htmlFor={accountProvider.name}>
                 <input 
                   name="provider_id"
                   type="radio"
