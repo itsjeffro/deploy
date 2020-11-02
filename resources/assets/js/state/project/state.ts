@@ -11,4 +11,5 @@ export const initialState = {
   errors: [],
   isFetching: false,
   isUpdating: false,
+  isKeyUpdating: false,
 };
