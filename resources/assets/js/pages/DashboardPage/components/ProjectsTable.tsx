@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import DataGrid from '../../../components/DataGrid/DataGrid';
 
 import Icon from '../../../components/Icon'
 
@@ -33,38 +34,29 @@ const ProjectsTable = (props) => {
     return project.last_deployment.created_at;
   };
 
+  const repositoryType = (project: any) => (
+    <>
+      <Icon iconName={ project.provider.friendly_name } /> {project.repository}
+    </>
+  );
+
+  const columns = [
+    { field: 'name', headerName: 'Name' },
+    { field: 'repository', headerName: 'Repository' },
+    { field: 'last_deployed', headerName: 'Last Deployed' },
+    { field: 'actions', headerName: '', align: 'right' },
+  ];
+
+  const rows = projects.map((project) => ({
+    name: <strong><Link to={ '/projects/' + project.id }>{ project.name }</Link></strong>,
+    repository: repositoryType(project),
+    last_deployed: lastDeployment(project),
+    actions: <Link className="btn btn-default" to={ '/projects/' + project.id }>Setup</Link>,
+  }));
+
   return (
     <div className="table-responsive">
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Repository</th>
-            <th>Last Deployed</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.map(project => (
-            <tr key={project.id}>
-              <td>
-                <strong>
-                  <Link to={'/projects/' + project.id}>{project.name}</Link>
-                </strong>
-              </td>
-              <td>
-                <Icon iconName={project.provider.friendly_name} /> {project.repository}
-              </td>
-              <td>
-                {lastDeployment(project)}
-              </td>
-              <td className="text-right">
-                <Link className="btn btn-default" to={'/projects/' + project.id}>Setup</Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DataGrid columns={ columns } rows={ rows } />
     </div>
   )
 }
