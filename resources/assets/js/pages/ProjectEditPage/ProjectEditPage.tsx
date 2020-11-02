@@ -182,16 +182,13 @@ class ProjectEditPage extends React.Component<any, any> {
                   <PanelBody>
                     { projects.errors.length ? <AlertErrorValidation errors={ projects.errors } /> : '' }
 
-                    <div className="form-group">
-                      <label htmlFor="name">Project name</label>
-                      <input
-                        className="form-control"
-                        name="name"
-                        type="text"
-                        onChange={ this.handleInputChange }
-                        value={ this.state.project.name }
-                      />
-                    </div>
+                    <TextField
+                      label="Project name"
+                      id="name"
+                      onChange={ this.handleInputChange }
+                      name="name"
+                      value={ this.state.project.name }
+                    />
 
                     <div className="form-group">
                       <label>Project provider</label>
@@ -214,37 +211,31 @@ class ProjectEditPage extends React.Component<any, any> {
                       ) }
                     </div>
 
-                    <div className="form-group">
-                      <TextField
-                        id="repository"
-                        label="Repository"
-                        onChange={ this.handleInputChange }
-                        name="repository"
-                        value={ this.state.project.repository }
-                        placeholder="user/repository"
-                      />
-                    </div>
+                    <TextField
+                      id="repository"
+                      label="Repository"
+                      onChange={ this.handleInputChange }
+                      name="repository"
+                      value={ this.state.project.repository }
+                      placeholder="user/repository"
+                    />
 
-                    <div className="form-group">
-                      <TextField
-                        id="branch"
-                        label="Branch"
-                        onChange={ this.handleInputChange }
-                        name="branch"
-                        value={ this.state.project.branch }
-                      />
-                    </div>
+                    <TextField
+                      id="branch"
+                      label="Branch"
+                      onChange={ this.handleInputChange }
+                      name="branch"
+                      value={ this.state.project.branch }
+                    />
 
-                    <div className="form-group">
-                      <label htmlFor="name">Releases to keep</label>
-                      <input
-                        className="form-control"
-                        name="releases"
-                        type="number"
-                        onChange={ this.handleInputChange }
-                        value={ this.state.project.releases }
-                      />
-                    </div>
+                    <TextField
+                      id="releases"
+                      label="Releases to keep"
+                      onChange={ this.handleInputChange }
+                      name="releases"
+                      type="number"
+                      value={ this.state.project.releases }
+                    />
 
                     <div className="form-group">
                       <label>Deploy on push</label>
