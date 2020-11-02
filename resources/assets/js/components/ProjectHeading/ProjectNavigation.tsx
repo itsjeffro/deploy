@@ -8,7 +8,7 @@ const ProjectNavigation = (props) => {
   } = props;
 
   return (
-    <ul className="project-navigation">
+    <ul className="project-nav__menu">
       <li>
         <NavLink to={'/projects/' + project.id} activeClassName="active" exact>
           <i className="fa fa-dashboard"></i>Overview
