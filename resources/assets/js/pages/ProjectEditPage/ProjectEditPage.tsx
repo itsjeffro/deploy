@@ -204,7 +204,7 @@ class ProjectEditPage extends React.Component<any, any> {
                         .filter((grantedProvider) => grantedProvider.is_connected)
                         .map((grantedProvider) =>
                         <div key={ grantedProvider.id }>
-                          <label htmlFor={ grantedProvider.name }>
+                          <label className="form-control-label" htmlFor={ grantedProvider.name }>
                             <input
                               name="provider_id"
                               type="radio"
