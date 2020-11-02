@@ -7,6 +7,7 @@ import NotificationsTable from './components/NotificationsTable';
 import NotificationApi from '../../services/NotificationApi';
 import NotificationModal from './components/NotificationModal';
 import Pagination from '../../components/Pagination';
+import PanelHeading from '../../components/PanelHeading';
 
 class NotificationsPage extends React.Component<any, any> {
   state = {
@@ -26,7 +27,7 @@ class NotificationsPage extends React.Component<any, any> {
     this.loadNotifications(1);
   }
 
-  loadNotifications(page) {
+  loadNotifications(page: number): void {
     const notificationApi = new NotificationApi;
 
     notificationApi
@@ -45,18 +46,18 @@ class NotificationsPage extends React.Component<any, any> {
       });
   }
 
-  handleShowModalClick = (item) => {
+  handleShowModalClick = (item: object): void => {
     this.setState({ 
       notification: item,
       isNotificationModalVisible: true,
     });
   };
 
-  handleDismissModalClick = () => {
+  handleDismissModalClick = (): void => {
     this.setState({ isNotificationModalVisible: false });
   };
 
-  handleMarkAsReadClick = (notificationId) => {
+  handleMarkAsReadClick = (notificationId: number): void => {
     const notificationApi = new NotificationApi;
 
     notificationApi
@@ -66,7 +67,7 @@ class NotificationsPage extends React.Component<any, any> {
       });
   }
 
-  handlePageChangeClick = (page) => {
+  handlePageChangeClick = (page: number): void => {
     const { notifications } = this.state;
 
     let total = notifications.totalItems;
@@ -98,6 +99,9 @@ class NotificationsPage extends React.Component<any, any> {
 
           <Container fluid>
             <Panel>
+              <PanelHeading>
+                <h5 className="panel-title">Notification List</h5>
+              </PanelHeading>
               <NotificationsTable
                 onShowModalClick={ this.handleShowModalClick }
                 onMarkAsReadClick={ this.handleMarkAsReadClick }

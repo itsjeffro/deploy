@@ -12,6 +12,7 @@ import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import Warnings from './components/Warnings';
 import { createToast } from '../../state/alert/alertActions';
+import PanelHeading from '../../components/PanelHeading';
 
 class DashboardPage extends React.Component<any, any> {
   state = {
@@ -47,8 +48,6 @@ class DashboardPage extends React.Component<any, any> {
 
   /**
    * Handle input change from the project add form.
-   *
-   * @param {object} event
    */
   handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
@@ -111,7 +110,7 @@ class DashboardPage extends React.Component<any, any> {
         <div className="content">
           <Container fluid>
             <div className="pull-left heading">
-              <h2>Project List</h2>
+              <h2>Dashboard</h2>
             </div>
             <div className="pull-right">
               <Button color="primary" onClick={ this.handleShowModalClick }>
@@ -124,6 +123,9 @@ class DashboardPage extends React.Component<any, any> {
 
           <Container fluid>
             <Panel>
+              <PanelHeading>
+                <h5 className="panel-title">Project List</h5>
+              </PanelHeading>
               <ProjectsTable
                 isFetching={ projects.isFetching }
                 projects={ items }
