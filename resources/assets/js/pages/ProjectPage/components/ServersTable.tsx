@@ -13,7 +13,9 @@ const ServersTable = (props: PropsInterface) => {
 
   if (servers.length === 0) {
     return (
-      <></>
+      <div className="panel-body text-center">
+        No servers added yet
+      </div>
     )
   }
 

@@ -9,6 +9,14 @@ const HooksTable = props => {
     onHandleRemoveClick
   } = props;
 
+  if (hooks.length === 0) {
+    return (
+      <div className="panel-body text-center">
+        No hooks added yet
+      </div>
+    )
+  }
+
   return (
     <div className="table-responsive hooks-table">
       <table className="table">

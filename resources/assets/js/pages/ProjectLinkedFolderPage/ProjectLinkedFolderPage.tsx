@@ -115,8 +115,8 @@ class ProjectLinkedFolderPage extends React.Component<any, any> {
     }
 
     return (
-      <div className="panel-body hooks-placeholder">
-        No folders have been added.
+      <div className="panel-body hooks-placeholder text-center">
+        No folders have been added
       </div>
     )
   };
