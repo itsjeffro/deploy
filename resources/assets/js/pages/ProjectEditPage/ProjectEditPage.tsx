@@ -51,9 +51,7 @@ class ProjectEditPage extends React.Component<any, any> {
     dispatch(fetchAccountProviders());
 
     if (projects.items[project_id] !== undefined) {
-      this.setState({
-        project: projects.items[project_id]
-      });
+      this.setState({ project: projects.items[project_id] });
     }
   }
 
@@ -70,9 +68,7 @@ class ProjectEditPage extends React.Component<any, any> {
 
     // Handle project change
     if (projects.items !== nextProps.projects.items) {
-      this.setState({
-        project: nextProps.projects.items[project_id]
-      });
+      this.setState({ project: nextProps.projects.items[project_id] || {} });
     }
 
     // Handle project delete
