@@ -9,7 +9,11 @@ import {
   TEST_SERVER_CONNECTION_REQUEST,
   UPDATE_SERVER_CONNECTION_STATUS,
   PROJECT_SERVER_REMOVE_SUCCESS,
+  PROJECT_SERVER_UPDATE_REQUEST,
+  PROJECT_SERVER_UPDATE_SUCCESS,
+  PROJECT_SERVER_UPDATE_FAILURE,
 } from './constants';
+import { buildAlertFromResponse } from '../../utils/alert';
 
 const project = (state = initialState, action) => {
   switch(action.type) {
@@ -97,6 +101,31 @@ const project = (state = initialState, action) => {
             return server.id !== action.serverId;
           })
         }
+      };
+
+    // Server update
+    case PROJECT_SERVER_UPDATE_REQUEST:
+      return {
+        ...state,
+        errors: [],
+        isUpdating: true,
+        isUpdated: false,
+      };
+
+    case PROJECT_SERVER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        errors: [],
+        isUpdating: false,
+        isUpdated: true,
+      };
+
+    case PROJECT_SERVER_UPDATE_FAILURE:
+      return {
+        ...state,
+        errors: buildAlertFromResponse(action.errors),
+        isUpdating: false,
+        isUpdated: false,
       };
 
     default:
