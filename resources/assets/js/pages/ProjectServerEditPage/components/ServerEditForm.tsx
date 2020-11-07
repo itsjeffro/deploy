@@ -7,7 +7,8 @@ import PanelHeading from '../../../components/PanelHeading';
 import PanelTitle from '../../../components/PanelTitle';
 
 const ServerEditForm = (props: any) => {
-  const { 
+  const {
+    isUpdating,
     errors,
     onClick,
     onInputChange,
@@ -49,7 +50,7 @@ const ServerEditForm = (props: any) => {
           <input className="form-control" name="project_path" type="text" id="project_path" onChange={ (e) => onInputChange(e) } value={ server.project_path } />
         </div>
 
-        <Button color="primary" onClick={ () => onClick() }>Save Server</Button>
+        <Button color="primary" onClick={ () => onClick() }>{ isUpdating ? 'Working...' : 'Save Server' }</Button>
       </PanelBody>
     </Panel>
   )
