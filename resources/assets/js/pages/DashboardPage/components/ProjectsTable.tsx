@@ -18,7 +18,7 @@ const ProjectsTable = (props) => {
     return <div className="panel-body">Add a project to get started!</div>;
   }
 
-  const lastDeployment = (project) => {
+  const lastDeployment = (project: any) => {
     if (project.last_deployment.duration === null) {
       return 'N/A';
     }
@@ -47,12 +47,14 @@ const ProjectsTable = (props) => {
     { field: 'actions', headerName: '', align: 'right' },
   ];
 
-  const rows = projects.map((project) => ({
-    name: <strong><Link to={ '/projects/' + project.id }>{ project.name }</Link></strong>,
-    repository: repositoryType(project),
-    last_deployed: lastDeployment(project),
-    actions: <Link className="btn btn-default" to={ '/projects/' + project.id }>Setup</Link>,
-  }));
+  const rows = projects.map((project: any) => {
+    return {
+      name: <strong><Link to={ '/projects/' + project.id }>{ project.name }</Link></strong>,
+      repository: repositoryType(project),
+      last_deployed: lastDeployment(project),
+      actions: <Link className="btn btn-default" to={ '/projects/' + project.id }>Setup</Link>,
+    };
+  });
 
   return (
     <div className="table-responsive">
