@@ -10,14 +10,16 @@ import {fetchProject} from "../../state/project/actions";
 import Container from '../../components/Container';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import ServerEditForm from './components/ServerEditForm';
+import ServerModelInterface from '../../interfaces/model/ServerModelInterface';
+import ProjectModelInterface from '../../interfaces/model/ProjectModelInterface';
+import { updateProjectServer } from '../../state/project/actions/updateProjectServer';
 
 class ProjectServerEditPage extends React.Component<any> {
   state = {
-    isFetching: true,
-    isUpdated: false,
     project: {},
+    serverId: null,
     server: {},
-    errors: [],
+    isUpdated: false,
   };
 
   componentDidMount() {
@@ -31,18 +33,28 @@ class ProjectServerEditPage extends React.Component<any> {
       }
     } = this.props;
 
-    const projectServerService = new ProjectServerService;
-
     dispatch(fetchProject(project_id));
 
-    projectServerService
-      .get(project_id, server_id)
-      .then((response) => {
-        this.setState({
-          isFetching: false,
-          server: response.data,
-        });
-      });
+    this.setState({ serverId: server_id });
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    const { serverId } = this.state;
+    const { dispatch, project } = this.props;
+
+    // Handle project change
+    if (project.item !== nextProps.project.item) {
+      const server = this.getProjectServerById(nextProps.project.item, parseInt(serverId))
+
+      this.setState({ server: server });
+    }
+
+    // Handler project server update
+    if (nextProps.project.isUpdated !== project.isUpdated && nextProps.project.isUpdated) {
+      this.setState({ isUpdated: true });
+
+      dispatch(createToast('Server updated successfully.'));
+    }
   }
 
   /**
@@ -63,36 +75,37 @@ class ProjectServerEditPage extends React.Component<any> {
    * Handles updating a server.
    */
   handleClick = (): void => {
-    const { dispatch } = this.props;
-    const { project_id, server_id } = this.props.match.params;
-    const projectServerService = new ProjectServerService;
-
-    projectServerService
-      .put(project_id, server_id, this.state.server)
-      .then((response) => {
-        dispatch(createToast('Server updated successfully.'));
-
-        this.setState({isUpdated: true});
+    const { 
+      dispatch,
+      match: {
+        params: {
+          project_id, 
+          server_id,
+        },
       },
-      (error) => {
-        let errorResponse = error.response.data;
+    } = this.props;
 
-        errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
+    const { server } = this.state;
 
-        const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-          return previous.concat(errorResponse[key][0]);
-        }, []);
-
-        this.setState({errors: errors});
-      });
+    dispatch(updateProjectServer(project_id, server_id, server));
   };
+
+  public getProjectServerById(project: ProjectModelInterface, serverId: number): any {
+    const projectServers = project.servers || [];
+
+    const filteredServers = projectServers.filter((server: ServerModelInterface) => {
+      return server.id === serverId;
+    });
+
+    return filteredServers[0] || {};
+  }
 
   render() {
     const { project } = this.props;
-    const { server, isFetching, isUpdated, errors } = this.state;
+    const { server, isUpdated } = this.state;
 
     if (isUpdated) {
-      return <Redirect to={ '/projects/' + project.item.id } />
+      return <Redirect to={ `projects/${ project.id }`} />
     }
 
     return (
@@ -101,13 +114,14 @@ class ProjectServerEditPage extends React.Component<any> {
 
         <div className="content">
           <Container fluid>
-            { isFetching ? 
+            { project.isFetching ? 
               <Loader /> : 
               <ServerEditForm 
+                isUpdating={ project.isUpdating }
                 server={ server } 
                 onClick={ this.handleClick } 
                 onInputChange={ this.handleInputChange }
-                errors={ errors }
+                errors={ project.errors }
               /> 
             }
           </Container>
