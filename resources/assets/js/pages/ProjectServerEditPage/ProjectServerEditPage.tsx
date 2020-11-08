@@ -90,6 +90,9 @@ class ProjectServerEditPage extends React.Component<any> {
     dispatch(updateProjectServer(project_id, server_id, server));
   };
 
+  /**
+   * Returns the the project's specified server by its server id.
+   */
   public getProjectServerById(project: ProjectModelInterface, serverId: number): any {
     const projectServers = project.servers || [];
 
