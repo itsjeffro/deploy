@@ -21,6 +21,7 @@ class NotificationsPage extends React.Component<any, any> {
       to: 0,
     },
     isNotificationModalVisible: false,
+    isFetching: true,
   };
 
   componentDidMount() {
@@ -42,7 +43,7 @@ class NotificationsPage extends React.Component<any, any> {
           to: response.data.meta.to,
         }
   
-        this.setState({ notifications: notifications });
+        this.setState({ isFetching: false, notifications: notifications });
       });
   }
 
@@ -82,11 +83,7 @@ class NotificationsPage extends React.Component<any, any> {
   }
 
   render() {
-    const { 
-      notifications,
-      notification,
-      isNotificationModalVisible,
-    } = this.state;
+    const { notifications, notification, isNotificationModalVisible, isFetching } = this.state;
 
     return (
       <Layout>
@@ -103,6 +100,7 @@ class NotificationsPage extends React.Component<any, any> {
                 <h5 className="panel-title">Notification List</h5>
               </PanelHeading>
               <NotificationsTable
+                isLoading={ isFetching }
                 onShowModalClick={ this.handleShowModalClick }
                 onMarkAsReadClick={ this.handleMarkAsReadClick }
                 items={ notifications.items }
