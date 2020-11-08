@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
-import { createProjectServer } from '../../state/project/actions/createProjectServer';
-import { fetchProject } from "../../state/project/actions";
+import { fetchProject, createProjectServer } from '../../state/project/actions';
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';

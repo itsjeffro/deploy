@@ -3,16 +3,14 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
-import ProjectServerService from '../../services/ProjectServer';
+import { fetchProject, updateProjectServer } from '../../state/project/actions';
 import Loader from '../../components/Loader';
 import Layout from '../../components/Layout';
-import {fetchProject} from "../../state/project/actions";
 import Container from '../../components/Container';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import ServerEditForm from './components/ServerEditForm';
 import ServerModelInterface from '../../interfaces/model/ServerModelInterface';
 import ProjectModelInterface from '../../interfaces/model/ProjectModelInterface';
-import { updateProjectServer } from '../../state/project/actions/updateProjectServer';
 
 class ProjectServerEditPage extends React.Component<any> {
   state = {
