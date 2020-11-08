@@ -3,18 +3,18 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
-import ProjectServerService from '../../services/ProjectServer';
+import { createProjectServer } from '../../state/project/actions/createProjectServer';
+import { fetchProject } from "../../state/project/actions";
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import Layout from '../../components/Layout';
-import { fetchProject } from "../../state/project/actions";
 import Container from '../../components/Container';
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 
-class ProjectServerCreatePage extends React.Component<any> {
+class ProjectServerCreatePage extends React.Component<any, any> {
   state = {
     isFetching: true,
     isCreated: false,
@@ -25,13 +25,11 @@ class ProjectServerCreatePage extends React.Component<any> {
       project_path: '',
       connect_as: '',
     },
-    errors: [],
   };
 
   componentDidMount() {
     const {
       dispatch,
-      project,
       match: {
         params: {
           project_id,
@@ -42,64 +40,50 @@ class ProjectServerCreatePage extends React.Component<any> {
     dispatch(fetchProject(project_id));
   }
 
+  componentWillReceiveProps(nextProps: any) {
+    const { dispatch, project } = this.props;
+
+    // Handler project server create
+    if (nextProps.project.isCreated !== project.isCreated && nextProps.project.isCreated) {
+      dispatch(createToast('Server created successfully.'));
+      
+      this.setState({ isCreated: true });
+    }
+  }
+
   /**
    * Handle input change when creating a server.
-   *
-   * @param {object} event
    */
-  handleInputChange = (event) => {
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const name = event.target.name;
     const value = event.target.value;
 
     this.setState((state: any) => {
-      const server = Object.assign({}, state.server, {
+      const server = {
+        ...state.server,
         [name]: value
-      });
+      };
 
-      return {server: server}
+      return { server: server };
     });
   };
 
   /**
    * Handle click for creating a server.
-   *
-   * @param {object} event
    */
-  handleClick = (event) => {
+  handleClick = (): void => {
     const { dispatch, project } = this.props;
     const { server } = this.state;
-    const projectServerService = new ProjectServerService;
 
-    projectServerService
-      .create(project.item.id, server)
-      .then(response => {
-          dispatch(createToast('Server created successfully.'));
-
-          this.setState({isCreated: true});
-        },
-        error => {
-          let errorResponse = error.response.data;
-
-          errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
-
-          const errors = Object.keys(errorResponse).reduce(function(previous, key) {
-            return previous.concat(errorResponse[key][0]);
-          }, []);
-
-          this.setState({errors: errors});
-        });
+    dispatch(createProjectServer(project.item.id, server));
   };
 
   render() {
     const { project } = this.props;
-
-    const {
-      isCreated,
-      errors
-    } = this.state;
+    const { isCreated } = this.state;
 
     if (isCreated) {
-      return <Redirect to={'/projects/' + project.item.id} />
+      return <Redirect to={ `/projects/${ project.item.id }` } />
     }
 
     return (
@@ -114,7 +98,7 @@ class ProjectServerCreatePage extends React.Component<any> {
               </PanelHeading>
 
               <div className="panel-body">
-                {errors.length ? <AlertErrorValidation errors={errors} /> : ''}
+                { project.errors.length ? <AlertErrorValidation errors={ project.errors } /> : '' }
 
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
@@ -175,7 +159,7 @@ class ProjectServerCreatePage extends React.Component<any> {
                   />
                 </div>
 
-                <Button color="primary" onClick={this.handleClick}>Save Server</Button>
+                <Button color="primary" onClick={ this.handleClick }>{ project.isCreating ? 'Working...' : 'Save Server' }</Button>
               </div>
             </Panel>
           </Container>
@@ -185,7 +169,7 @@ class ProjectServerCreatePage extends React.Component<any> {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     project: state.project,
   };
