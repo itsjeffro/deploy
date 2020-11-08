@@ -1,17 +1,27 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import PanelBody from '../../../components/PanelBody';
 
 const NotificationsTable = (props) => {
   const { 
     items,
     onShowModalClick,
     onMarkAsReadClick,
+    isLoading,
   } = props;
 
   const reasons = {
     'info': 'info',
     'error': 'danger',
   };
+
+  if (isLoading) {
+    return <PanelBody>Loading...</PanelBody>
+  }
+
+  if (items.length === 0) {
+    return <PanelBody>No notifications</PanelBody>
+  }
 
   return (
     <div className="table-responsive">
