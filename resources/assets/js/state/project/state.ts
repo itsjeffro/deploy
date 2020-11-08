@@ -9,6 +9,8 @@ export const initialState = {
     environment_servers: [],
   },
   errors: [],
+  isCreating: false,
+  isCreated: false,
   isFetching: false,
   isUpdating: false,
   isUpdated: false,
