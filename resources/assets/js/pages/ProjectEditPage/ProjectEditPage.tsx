@@ -174,7 +174,7 @@ class ProjectEditPage extends React.Component<any, any> {
         <div className="content">
           <Container fluid>
             <div className="row">
-              <Grid xs={12} sm={12} lg={9}>
+              <Grid xs={ 12 }>
                 <Panel>
                   <PanelHeading>
                     <PanelTitle>General Settings</PanelTitle>
