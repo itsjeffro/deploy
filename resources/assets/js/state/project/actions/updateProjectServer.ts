@@ -17,7 +17,7 @@ import ProjectServer from '../../../services/ProjectServer';
   
   export const updateProjectServer = (projectId: number, serverId: number, data: object) => {
     return (dispatch: any) => {
-    const projectServerApi = new ProjectServer();
+      const projectServerApi = new ProjectServer();
   
       dispatch(updateProjectServerRequest());
   
