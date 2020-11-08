@@ -17,6 +17,7 @@ import Container from "../../components/Container";
 import {fetchProject} from "../../state/project/actions";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import RemoveLinkedFolderModal from './components/RemoveLinkedFolderModal';
+import ProjectModelInterface from '../../interfaces/model/ProjectModelInterface';
 
 class ProjectLinkedFolderPage extends React.Component<any, any> {
   state = {
@@ -25,7 +26,8 @@ class ProjectLinkedFolderPage extends React.Component<any, any> {
     folders: [],
     folder: {
       id: null,
-    }
+    },
+    projectId: null,
   };
 
   componentDidMount() {
@@ -38,13 +40,15 @@ class ProjectLinkedFolderPage extends React.Component<any, any> {
       }
     } = this.props;
 
+    this.setState({ projectId: project_id });
+
     const projectFolderService = new ProjectFolderService;
 
     dispatch(fetchProject(project_id));
 
     projectFolderService
       .list(project_id)
-      .then(response => {
+      .then((response) => {
         this.setState({
           folders: response.data,
           isFetching: false
@@ -53,9 +57,9 @@ class ProjectLinkedFolderPage extends React.Component<any, any> {
   }
 
   /**
-   * @param {object} folder
+   * Handles showing the modal to prompt the user to remove the target folder.
    */
-  modalLinkedFolderRemoveShow = (folder) => {
+  modalLinkedFolderRemoveShow = (folder): void => {
     this.setState({
       folder: folder,
       isRemoveLinkedFolderModalVisible: true,
@@ -63,35 +67,33 @@ class ProjectLinkedFolderPage extends React.Component<any, any> {
   };
 
   /**
-   * @returns {void}
+   * Handles removing the target folder.
    */
-  handleLinkedFolderRemoveClick = () => {
+  handleLinkedFolderRemoveClick = (): void => {
     const { folder } = this.state;
     const { project, dispatch } = this.props;
     const projectFolderService = new ProjectFolderService;
 
     projectFolderService
       .delete(project.item.id, folder.id)
-      .then(response => {
+      .then((response) => {
         dispatch(createToast('Folder removed successfully.'));
 
         this.removeFolder(folder.id);
 
         this.setState({ isRemoveLinkedFolderModalVisible: false });
       },
-      error => {
+      (error) => {
         alert('Could not delete linked folder');
       });
   };
 
   /**
    * Filter out specified folder from state.
-   *
-   * @param {int} folder_id
    */
-  removeFolder = (folder_id) => {
-    this.setState(state => {
-      const folders = state.folders.filter(folder => {
+  removeFolder = (folder_id: number) => {
+    this.setState((state) => {
+      const folders = state.folders.filter((folder) => {
         return folder.id !== folder_id;
       });
       return {folders: folders}
@@ -99,80 +101,38 @@ class ProjectLinkedFolderPage extends React.Component<any, any> {
   };
 
   /**
-   * Render folders table.
-   *
-   * @param {array} folders
-   * @returns {XML}
+   * Handle hiding the modal repsonsibe for prompting the user to remove the target folder.
    */
-  renderFoldersTable = (folders) => {
-    if (folders !== undefined && folders.length > 0) {
-      return (
-        <FoldersTable
-          folders={folders}
-          modalLinkedFolderRemoveShow={ this.modalLinkedFolderRemoveShow }
-        />
-      )
-    }
-
-    return (
-      <div className="panel-body hooks-placeholder text-center">
-        No folders have been added
-      </div>
-    )
-  };
-
-  /**
-   * @param {bool} isFetching
-   * @param {object} project
-   * @param {array} folders
-   * @returns {XML}
-   */
-  renderFoldersContent = (isFetching, project, folders) => {
-    if (isFetching) {
-      return <Loader />;
-    }
-
-    return (
-      <>
-        <Panel>
-          <PanelHeading>
-            <div className="pull-right">
-	          <Link
-	            className="btn btn-default"
-	            to={'/projects/' + project.id + '/folders/create'}
-	          ><Icon iconName="plus" /> Add Linked Folder</Link>
-	        </div>
-            <PanelTitle>Linked Folders</PanelTitle>
-          </PanelHeading>
-          { this.renderFoldersTable(folders) }
-        </Panel>
-      </>
-    )
-  };
-
-  /**
-   * @returns {void}
-   */
-  handleHideRemoveLinkedFolderModal = () => {
+  handleHideRemoveLinkedFolderModal = (): void => {
     this.setState({ isRemoveLinkedFolderModalVisible: false });
   }
 
   render() {
     const { project } = this.props;
-
-    const { 
-      folders,
-      isFetching,
-      isRemoveLinkedFolderModalVisible,
-     } = this.state;
+    const { folders, isFetching, isRemoveLinkedFolderModalVisible, projectId } = this.state;
 
     return (
-      <Layout project={project.item}>
+      <Layout project={ project.item }>
         <ProjectHeading project={ project.item } />
 
         <div className="content">
           <Container fluid>
-            { this.renderFoldersContent(isFetching, project.item, folders) }
+            <Panel>
+              <PanelHeading>
+                <div className="pull-right">
+                  <Link
+                    className="btn btn-default"
+                    to={ `/projects/${ projectId }/folders/create` }
+                  ><Icon iconName="plus" /> Add Linked Folder</Link>
+                </div>
+                <PanelTitle>Linked Folders</PanelTitle>
+              </PanelHeading>
+              <FoldersTable
+                isLoading={ isFetching }
+                folders={ folders }
+                modalLinkedFolderRemoveShow={ this.modalLinkedFolderRemoveShow }
+              />
+            </Panel>
           </Container>
 
           <RemoveLinkedFolderModal
