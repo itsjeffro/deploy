@@ -1,6 +1,7 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 
-const TextField = (props) => {
+const TextField = (props: any): JSX.Element => {
   const {
     id,
     label,
@@ -27,5 +28,15 @@ const TextField = (props) => {
     </div>
   )
 }
+
+TextField.propTypes = {
+  id: PropTypes.string,
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  name: PropTypes.string,
+  type: PropTypes.string,
+  value: PropTypes.string,
+  placeholder: PropTypes.any,
+};
 
 export default TextField;
