@@ -15,6 +15,13 @@ body, html {
 .header {
   background: #111;
   padding: 15px 18px;
+  display: flex;
+  flex-direction: row;
+
+  &__branding {
+    margin-right: auto;
+    color: #fff;
+  }
 }
 
 .body {
