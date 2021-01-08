@@ -3,7 +3,7 @@
 namespace Deploy;
 
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +27,7 @@ class DeployServiceProvider extends ServiceProvider
         $this->registerMigrations();
         $this->registerPolicies();
 
-        Resource::withoutWrapping();
+        JsonResource::withoutWrapping();
     }
 
     /**

@@ -9,16 +9,15 @@ const Drawer = (props) => {
 
   return (
     <div className="drawer">
-      <h2>Deploy</h2>
       <ul>
         <li>
-          <NavLink to={'/'} activeClassName="active" exact>
+          <NavLink to="/" activeClassName="active" exact>
             <Icon iconName="desktop" />Dashboard
           </NavLink>
         </li>
         <li>
-          <NavLink to={'/servers'} activeClassName="active" exact>
-            <i className="fa fa-server"></i>Servers
+          <NavLink to="/servers" activeClassName="active" exact>
+            <Icon iconName="server" />Servers
           </NavLink>
         </li>
         <li>
@@ -27,10 +26,6 @@ const Drawer = (props) => {
           </NavLink>
         </li>
       </ul>
-
-      <div className="drawer__account">
-        <NavLink to={'/account'} activeClassName="active">My Account</NavLink>
-      </div>
     </div>
   )
 };
