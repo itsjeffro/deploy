@@ -26,6 +26,20 @@
   }
 }
 
+.modal-content {
+  border-radius: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0);
+}
+
+.modal-header {
+  background-color: #e0e0e045;
+  border-color: #d6d6ee;
+  h4 {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
 @keyframes slideIn {
   from { opacity: 0; top: -100px; }
   to   { opacity: .5; top: 0; }
