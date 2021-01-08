@@ -11,6 +11,7 @@ import ServerApi from '../../services/Api/ServerApi';
 import ServerKeyModal from '../../components/ServerKeyModal';
 import RemoveServerModal from './components/RemoveServerModal';
 import CreateServerModal from './components/CreateServerModal';
+import PanelHeading from "../../components/PanelHeading";
 
 class ServersPage extends React.Component {
   state = {
@@ -103,6 +104,9 @@ class ServersPage extends React.Component {
 
           <Container fluid>
             <Panel>
+              <PanelHeading>
+                <h5 className="panel-title">Server List</h5>
+              </PanelHeading>
               <ServersTable
                 servers={ servers.items }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
