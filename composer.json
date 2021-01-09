@@ -9,7 +9,8 @@
     }
   ],
   "scripts": {
-    "test": "php ./vendor/phpunit/phpunit/phpunit --colors=always -v --testdox"
+    "test": "php ./vendor/phpunit/phpunit/phpunit --colors=always -v --testdox",
+    "test-coverage": "php ./vendor/phpunit/phpunit/phpunit --coverage-html coverage"
   },
   "autoload": {
     "psr-4": {
