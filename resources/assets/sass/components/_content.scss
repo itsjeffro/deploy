@@ -12,18 +12,6 @@ body, html {
   height: 100%;
 }
 
-.header {
-  background: #111;
-  padding: 15px 18px;
-  display: flex;
-  flex-direction: row;
-
-  &__branding {
-    margin-right: auto;
-    color: #fff;
-  }
-}
-
 .body {
   display: flex;
   height: 100%;
@@ -45,25 +33,13 @@ body, html {
   width: 100%;
 }
 
-.heading {
-  margin-bottom: 1em;
-  h2 {
-    font-weight: 600;
-    margin: .5em 0;
-    font-size: 18px;
-  }
-}
-
 .project-nav {
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-
   @media (max-width: 768px) {
     padding: 15px 0 0;
   }
 
   &__heading {
-    padding: 15px 20px 0;
+    padding: 30px 20px 0;
     max-width: 1200px;
     margin: 0 auto;
   }
@@ -79,38 +55,28 @@ body, html {
   h2 {
     font-weight: 600;
     margin: .4em 0;
-    font-size: 18px;
-    color: #0889d0;
+    font-size: 20px;
   }
 }
 
 .project-nav__menu {
   li {
     display: inline-block;
+    margin-right: 25px;
   }
 
   a {
-    color: #111;
     display: block;
-    padding: 18px 15px;
-    border-bottom: 1px solid transparent;
-    font-size: 13px;
-    &:hover, &:focus {
-      text-decoration: none;
-      .fa {
-        color: #2a3239;
-      }
-    }
+    padding: 10px 0;
+    color: $text-color;
+
     &.active {
-      border-bottom-color: #ff3000;
-      .fa {
-        color: #111;
-      }
+      color: darken($text-color, 50%);
     }
   }
 
   .fa {
-    margin-right: 8px;
-    color: #959da5;
+    margin-right: 6px;
+    opacity: .5;
   }
 }
