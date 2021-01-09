@@ -53,9 +53,8 @@ body, html {
   }
 
   h2 {
-    font-weight: 600;
     margin: .4em 0;
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 
@@ -78,5 +77,14 @@ body, html {
   .fa {
     margin-right: 6px;
     opacity: .5;
+  }
+}
+
+.heading {
+  margin-bottom: 18px;
+
+  h2 {
+    margin: 8px 0;
+    font-size: 18px;
   }
 }
