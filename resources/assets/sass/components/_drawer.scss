@@ -1,29 +1,30 @@
 .drawer {
-  background: $navbar-default-bg;
+  background: $drawer-bg;
+  border-right: 1px solid rgba(0,0,0,.12);
   min-width: 260px;
   width: 260px;
   display: flex;
   flex-direction: column;
   padding: 20px 0;
+  color: #111;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    left: -260px;
+  }
+
+  .fa {
+    margin-right: 18px;
+    display: inline-block;
+    opacity: .5;
+  }
 
   a {
-    color: #fff;
+    color: #111;
     display: block;
-    padding: 7px 15px;
-  }
-
-  &>ul>li>a {
-    color: #fff;
-    padding-top: 9px;
-    padding-bottom: 9px;
-  }
-
-  ul ul {
-    padding-left: 0;
-
-    a {
-      padding-left: 15px;
-    }
+    padding: 7px 18px;
   }
 
   h2 {
@@ -45,27 +46,16 @@
     padding: 0;
   }
 
-  .fa {
-    width: 25px;
-    display: inline-block;
-    color: #959da5;
+  &>ul>li>a {
+    padding-top: 9px;
+    padding-bottom: 9px;
   }
 
-  @media (max-width: 768px) {
-    position: fixed;
-    z-index: 1;
-    height: 100%;
-    left: -260px;
-  }
-}
+  ul ul {
+    padding-left: 0;
 
-.drawer__account {
-  align-self: flex-end;
-  width: 100%;
-
-  a {
-    background: rgba(0, 0, 0, .12);
-    padding-top: 14px;
-    padding-bottom: 14px;
+    a {
+      padding-left: 15px;
+    }
   }
 }
