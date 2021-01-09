@@ -10,7 +10,7 @@ class Layout extends React.Component<any> {
       <div className="layout">
         <header>
           <div className="header">
-            <div className="header__branding">Deploy</div>
+            <div className="header__branding"><h1>Deploy</h1></div>
   
             <div className="header__account">
               <NavLink to={ '/account' } activeClassName="active">My Account</NavLink>
