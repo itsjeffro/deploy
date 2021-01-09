@@ -8,6 +8,9 @@
       "email": "jefftoddnielsen@gmail.com"
     }
   ],
+  "scripts": {
+    "test": "php ./vendor/phpunit/phpunit/phpunit --colors=always -v --testdox"
+  },
   "autoload": {
     "psr-4": {
       "Deploy\\": "src/"
