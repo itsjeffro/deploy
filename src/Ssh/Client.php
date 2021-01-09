@@ -6,14 +6,10 @@ use Symfony\Component\Process\Process;
 
 class Client
 {
-    /**
-     * @var \Deploy\Ssh\Host
-     */
+    /** @var \Deploy\Ssh\Host */
     public $host;
     
-    /**
-     * @var string
-     */
+    /** @var string */
     public $script;
 
     /**
@@ -24,12 +20,9 @@ class Client
     public $timeout = 300;
     
     /**
-     * Instantiate.
-     *
-     * @param \use Deploy\Ssh\Host $host
-     * @param string $script
+     * Client construct.
      */
-    public function __construct(Host $host, $script = '')
+    public function __construct(Host $host, string $script = '')
     {
         $this->host = $host;
         $this->script = $script;
@@ -37,30 +30,24 @@ class Client
     
     /**
      * Get host instance.
-     *
-     * @return \Deploy\Ssh\Host
      */
-    public function getHost()
+    public function getHost(): Host
     {
         return $this->host;
     }
     
     /**
      * Get script for processor to run.
-     *
-     * @return string
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->script;
     }
 
     /**
      * Start a SSH process.
-     *
-     * @return Process
      */
-    public function getProcess()
+    public function getProcess(): Process
     {
         $host = $this->getHost();
         $command = $this->getScript();
@@ -73,7 +60,7 @@ class Client
                 .$delimiter;
         }
 
-        $ssh = "ssh $sshArguments $host $command";
+        $ssh = ["ssh $sshArguments $host $command"];
 
         $process = new Process($ssh);
 
@@ -86,7 +73,7 @@ class Client
      * @param  integer $seconds
      * @return self
      */
-    public function setTimeout($seconds)
+    public function setTimeout($seconds): self
     {
         $this->timeout = $seconds;
 
@@ -95,11 +82,8 @@ class Client
     
     /**
      * Initialize multiplexing.
-     *
-     * @param  Host $host
-     * @return string
      */
-    public function initializeMultiplexing(Host $host)
+    public function initializeMultiplexing(Host $host): string
     {
         if (!$this->isMultiplexingEnabled()) {
             return $host->getSshArguments();
@@ -110,7 +94,7 @@ class Client
                 ->getSshArguments();
 
         if (!$this->isMultiplexingInitialized($host, $sshArguments)) {
-            $masterProcess = new Process("ssh -N $sshArguments $host");
+            $masterProcess = new Process(["ssh -N $sshArguments $host"]);
             $masterProcess
                 ->disableOutput()
                 ->run();
@@ -121,14 +105,10 @@ class Client
     
     /**
      * Check of there is an open master connection being persisted.
-     *
-     * @param  Host $host
-     * @param  string $sshArguments
-     * @return bool
      */
-    public function isMultiplexingInitialized(Host $host, $sshArguments)
+    public function isMultiplexingInitialized(Host $host, string $sshArguments): bool
     {
-        $checkMasterProcess = new Process("ssh -O check $sshArguments $host 2>&1");
+        $checkMasterProcess = new Process(["ssh -O check $sshArguments $host 2>&1"]);
         $checkMasterProcess->run();
 
         $isMasterRunning = (bool) preg_match('/Master running/', $checkMasterProcess->getOutput()) ? true : false;
@@ -138,11 +118,9 @@ class Client
     
     /**
      * Get value for ssh_multiplexing from the deploy config.
-     *
-     * @return bool
      */
-    public function isMultiplexingEnabled()
+    public function isMultiplexingEnabled(): bool
     {
-        return config('deploy.ssh_multiplexing');
+        return config('deploy.ssh_multiplexing', false);
     }
 }
