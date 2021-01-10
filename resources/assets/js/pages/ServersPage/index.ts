@@ -1,3 +1,3 @@
-import ServersPage from './ServersPage';
+import ServersPage from "./ServersPage";
 
 export default ServersPage;

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 import Panel from '../../components/Panel';
@@ -7,34 +7,26 @@ import Container from "../../components/Container";
 import ServersTable from './components/ServersTable';
 import Button from '../../components/Button';
 import Icon from '../../components/Icon';
-import ServerApi from '../../services/Api/ServerApi';
 import ServerKeyModal from '../../components/ServerKeyModal';
 import RemoveServerModal from './components/RemoveServerModal';
 import CreateServerModal from './components/CreateServerModal';
 import PanelHeading from "../../components/PanelHeading";
+import {deleteServer, listServers} from "../../state/servers/actions";
 
-class ServersPage extends React.Component {
+class ServersPage extends React.Component<any, any> {
   state = {
-    servers: {
-      items: [],
+    server: {
+      id: 0,
     },
-    server: {},
     isCreateServerModalVisible: false,
     isServerKeyModalVisible: false,
     isRemoveServerModalVisible: false,
   };
 
   componentDidMount() {
-    const serverApi = new ServerApi();
-
-    serverApi.list({})
-      .then(response => {
-        let servers = {
-          items: response.data.data,
-        };
-
-        this.setState({ servers: servers });
-      });
+    const { dispatch } = this.props;
+    
+    dispatch(listServers());
   }
 
   handleServerConnectionTestClick = () => {
@@ -64,7 +56,10 @@ class ServersPage extends React.Component {
   };
 
   handleDeleteServerClick = () => {
-    //
+    const { dispatch } = this.props;
+    const { server } = this.state;
+    
+    dispatch(deleteServer(server.id));
   };
   
   handleShowCreateServerModalClick = () => {
@@ -77,12 +72,13 @@ class ServersPage extends React.Component {
 
   render() {
     const {
-      servers,
       server,
       isServerKeyModalVisible,
       isRemoveServerModalVisible,
       isCreateServerModalVisible,
     } = this.state;
+    
+    const { servers } = this.props;
 
     return (
       <Layout>
@@ -104,7 +100,7 @@ class ServersPage extends React.Component {
                 <h5 className="panel-title">Server List</h5>
               </PanelHeading>
               <ServersTable
-                servers={ servers.items }
+                servers={ servers.items || [] }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
                 onServerRemoveClick={ this.handleServerDeleteModal }
                 onServerKeyClick={ this.handleServerKeyModal }
@@ -114,6 +110,7 @@ class ServersPage extends React.Component {
 
           <RemoveServerModal
             isVisible={ isRemoveServerModalVisible }
+            isDeleting={ servers.isDeleting }
             onModalHide={ this.handleHideServerDeleteModal }
             onRemoveServerClick={ this.handleDeleteServerClick }
           />
@@ -139,7 +136,7 @@ class ServersPage extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    servers: state.servers || [],
+    servers: state.servers,
   };
 };
 
