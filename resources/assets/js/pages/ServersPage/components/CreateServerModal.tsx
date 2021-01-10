@@ -1,7 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 
 import AlertErrorValidation from '../../../components/AlertErrorValidation';
-import TextField from '../../../components/TextField';
 import Modal from '../../../components/Modal';
 
 const CreateServerModal = (props) => {

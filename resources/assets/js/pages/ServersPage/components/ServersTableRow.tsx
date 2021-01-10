@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from '../../../components/Button';
@@ -12,16 +12,16 @@ const ServersTableRow = props => {
     onServerKeyClick
   } = props;
 
-  let status = <span><i className="status-circle text-warning"></i> Unknown</span>;
+  let status = <span><i className="status-circle text-warning">{ '' }</i> Unknown</span>;
 
   if (server.connection_status === 0) {
-    status = <span><i className="status-circle text-danger"></i> Failed <Icon iconName="refresh fa-fw"/></span>;
+    status = <span><i className="status-circle text-danger">{ '' }</i> Failed <Icon iconName="refresh fa-fw"/></span>;
   } else if (server.connection_status === 1) {
-    status = <span><i className="status-circle text-success"></i> Successful <Icon iconName="refresh fa-fw"/></span>;
+    status = <span><i className="status-circle text-success">{ '' }</i> Successful <Icon iconName="refresh fa-fw"/></span>;
   } else if (server.connection_status === 2) {
-    status = <span><i className="status-circle text-warning"></i> Connecting <Icon iconName="refresh fa-fw fa-spin"/></span>;
+    status = <span><i className="status-circle text-warning">{ '' }</i> Connecting <Icon iconName="refresh fa-fw fa-spin"/></span>;
   } else {
-    status = <span><i className="status-circle text-warning"></i> Unknown <Icon iconName="refresh fa-fw"/></span>;
+    status = <span><i className="status-circle text-warning">{ '' }</i> Unknown <Icon iconName="refresh fa-fw"/></span>;
   }
 
   return (
@@ -38,7 +38,7 @@ const ServersTableRow = props => {
           onClick={e => onServerConnectionTestClick(e, server.id)}
         >{status}</a>
       </td>
-      <td className="text-center"> { 0 }</td>
+      <td className="text-center"> { (server.projects || []).length }</td>
       <td className="text-right">
         <Link
           className="btn btn-default"
@@ -59,6 +59,6 @@ const ServersTableRow = props => {
       </td>
     </tr>
   );
-}
+};
 
 export default ServersTableRow;
