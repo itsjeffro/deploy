@@ -70,6 +70,10 @@ Route::group(['prefix' => 'api'], function() {
 
     // Servers
     Route::get('servers', 'ServerController@index')->name('servers.index');
+    Route::get('servers/{server}', 'ServerController@show')->name('servers.show');
+    Route::put('servers/{server}', 'ServerController@update')->name('servers.update');
+    Route::delete('servers/{server}', 'ServerController@destroy')->name('servers.destroy');
+    Route::post('servers', 'ServerController@store')->name('servers.create');
 });
 
 // Provider auth
