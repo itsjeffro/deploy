@@ -39,4 +39,14 @@ class Server extends Model
     {
         return $this->belongsTo('Deploy\Models\Project', 'project_id');
     }
+
+    /**
+     * Projects that the server belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
 }
