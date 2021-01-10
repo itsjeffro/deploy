@@ -5,6 +5,7 @@ import projectReducers from './project/reducers';
 import projectsReducers from './projects/projectsReducers';
 import projectDeploymentReducers from './projectDeployments/reducers';
 import accountProvidersReducers from './accountProviders/reducers';
+import serversReducers from "./servers/serversReducers";
 
 export default combineReducers({
   alert: alertReducers,
@@ -12,4 +13,5 @@ export default combineReducers({
   projects: projectsReducers,
   projectDeployments: projectDeploymentReducers,
   accountProviders: accountProvidersReducers,
+  servers: serversReducers,
 });
