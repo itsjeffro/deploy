@@ -8,15 +8,15 @@ const DataGrid = (props: any) => {
     <table className="table">
       <thead>
         <tr>
-          {columns.map((column: any, index: number) => (
+          { (columns || [] ).map((column: any, index: number) => (
             <th key={ `c:${ index }`}>{ column.headerName }</th>
-          ))}
+          )) }
         </tr>
       </thead>
       <tbody>
-        {rows.map((row: any, index: number) => (
+        { (rows || []).map((row: any, index: number) => (
           <DataRow key={ `r:${ index }` } rowIndex={ index } row={ row } columns={ columns } />
-        ))}
+        )) }
       </tbody>
     </table>
   );
