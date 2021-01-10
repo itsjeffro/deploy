@@ -39,11 +39,7 @@ class ServersPage extends React.Component {
 
   handleServerConnectionTestClick = () => {
     //
-  }
-
-  handleServerRemoveModal = () => {
-    //
-  }
+  };
 
   handleServerKeyModal = (server) => {
     this.setState({
@@ -54,30 +50,30 @@ class ServersPage extends React.Component {
 
   handleHideServerKeyModal = () => {
     this.setState({ isServerKeyModalVisible: false });
-  }
+  };
 
-  handleServerRemoveModal = (server) => {
+  handleServerDeleteModal = (server) => {
     this.setState({
       isRemoveServerModalVisible: true,
       server: server,
     });
   };
 
-  handleHideServerRemoveModal = () => {
+  handleHideServerDeleteModal = () => {
     this.setState({ isRemoveServerModalVisible: false });
-  }
+  };
 
-  handleRemoveServerClick = () => {
+  handleDeleteServerClick = () => {
     //
-  }
+  };
   
   handleShowCreateServerModalClick = () => {
     this.setState({ isCreateServerModalVisible: true });
-  }
+  };
 
   handleHideCreateServerModalClick = () => {
     this.setState({ isCreateServerModalVisible: false });
-  }
+  };
 
   render() {
     const {
@@ -110,7 +106,7 @@ class ServersPage extends React.Component {
               <ServersTable
                 servers={ servers.items }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
-                onServerRemoveClick={ this.handleServerRemoveModal }
+                onServerRemoveClick={ this.handleServerDeleteModal }
                 onServerKeyClick={ this.handleServerKeyModal }
               />
             </Panel>
@@ -118,8 +114,8 @@ class ServersPage extends React.Component {
 
           <RemoveServerModal
             isVisible={ isRemoveServerModalVisible }
-            onModalHide={ this.handleHideServerRemoveModal }
-            onRemoveServerClick={ this.handleRemoveServerClick }
+            onModalHide={ this.handleHideServerDeleteModal }
+            onRemoveServerClick={ this.handleDeleteServerClick }
           />
 
           <CreateServerModal
