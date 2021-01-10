@@ -1,3 +1,1 @@
-import ProjectServerEditPage from './ProjectServerEditPage';
-
-export default ProjectServerEditPage;
+export * from './ServerEditPage';

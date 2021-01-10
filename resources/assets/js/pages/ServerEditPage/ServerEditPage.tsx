@@ -1,22 +1,21 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
-import { fetchProject, updateProjectServer } from '../../state/project/actions';
 import Loader from '../../components/Loader';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import ServerEditForm from './components/ServerEditForm';
-import ServerModelInterface from '../../interfaces/model/ServerModelInterface';
-import ProjectModelInterface from '../../interfaces/model/ProjectModelInterface';
+import { getServer, updateServer } from "../../state/servers/actions";
+import DataGrid from "../../components/DataGrid/DataGrid";
+import PanelHeading from "../../components/PanelHeading";
+import ProjectsTable from "../DashboardPage/components/ProjectsTable";
+import Panel from "../../components/Panel";
 
-class ProjectServerEditPage extends React.Component<any> {
+class ServerEditPage extends React.Component<any> {
   state = {
-    project: {},
     serverId: null,
-    server: {},
+    input: {},
     isUpdated: false,
   };
 
@@ -26,31 +25,25 @@ class ProjectServerEditPage extends React.Component<any> {
       match: {
         params: {
           server_id,
-          project_id,
         }
       }
     } = this.props;
 
-    dispatch(fetchProject(project_id));
+    dispatch(getServer(server_id));
 
     this.setState({ serverId: server_id });
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    const { serverId } = this.state;
-    const { dispatch, project } = this.props;
+    const { dispatch, servers } = this.props;
 
-    // Handle project change
-    if (project.item !== nextProps.project.item) {
-      const server = this.getProjectServerById(nextProps.project.item, parseInt(serverId))
-
-      this.setState({ server: server });
+    // Handle server change
+    if (servers.item !== nextProps.servers.item) {
+      this.setState({ input: nextProps.servers.item || {} });
     }
 
-    // Handler project server update
-    if (nextProps.project.isUpdated !== project.isUpdated && nextProps.project.isUpdated) {
-      this.setState({ isUpdated: true });
-
+    // Handler server update
+    if (nextProps.servers.isUpdated !== servers.isUpdated && nextProps.servers.isUpdated) {
       dispatch(createToast('Server updated successfully.'));
     }
   }
@@ -63,10 +56,12 @@ class ProjectServerEditPage extends React.Component<any> {
     const name = target.name;
     const value = target.value;
 
-    let server = Object.assign({}, this.state.server);
-    server[name] = value;
+    let server = {
+      ...this.state.input,
+      [name]: value,
+    };
 
-    this.setState({server: server});
+    this.setState({ input: server });
   };
 
   /**
@@ -77,53 +72,52 @@ class ProjectServerEditPage extends React.Component<any> {
       dispatch,
       match: {
         params: {
-          project_id, 
           server_id,
         },
       },
     } = this.props;
 
-    const { server } = this.state;
+    const { input } = this.state;
 
-    dispatch(updateProjectServer(project_id, server_id, server));
+    dispatch(updateServer(server_id, input));
   };
 
-  /**
-   * Returns the the project's specified server by its server id.
-   */
-  public getProjectServerById(project: ProjectModelInterface, serverId: number): any {
-    const projectServers = project.servers || [];
-
-    const filteredServers = projectServers.filter((server: ServerModelInterface) => {
-      return server.id === serverId;
-    });
-
-    return filteredServers[0] || {};
-  }
-
   render() {
-    const { project } = this.props;
-    const { server, isUpdated } = this.state;
-
-    if (isUpdated) {
-      return <Redirect to={ `projects/${ project.id }`} />
-    }
+    const { servers } = this.props;
+    const { input } = this.state;
+  
+    const columns = [
+      { field: 'name', headerName: 'Project name' },
+    ];
 
     return (
-      <Layout project={ project.item }>
-        <ProjectHeading project={ project.item } />
-
+      <Layout>
         <div className="content">
+          <div className="container-fluid heading">
+            <h2>Edit server</h2>
+          </div>
+          
           <Container fluid>
-            { project.isFetching ? 
-              <Loader /> : 
-              <ServerEditForm 
-                isUpdating={ project.isUpdating }
-                server={ server } 
-                onClick={ this.handleClick } 
-                onInputChange={ this.handleInputChange }
-                errors={ project.errors }
-              /> 
+            { servers.isFetching
+              ? <Loader />
+              : <>
+                <ServerEditForm
+                  isUpdating={ servers.isUpdating }
+                  server={ input }
+                  onClick={ this.handleClick }
+                  onInputChange={ this.handleInputChange }
+                  errors={ servers.errors }
+                />
+                <Panel>
+                  <PanelHeading>
+                    <h5 className="panel-title">Projects using this server</h5>
+                  </PanelHeading>
+                  <DataGrid
+                    columns={ columns }
+                    rows={ servers.item.projects }
+                  />
+                </Panel>
+              </>
             }
           </Container>
         </div>
@@ -134,10 +128,10 @@ class ProjectServerEditPage extends React.Component<any> {
 
 const mapStateToProps = (state: any) => {
   return {
-    project: state.project,
+    servers: state.servers,
   };
 };
 
 export default connect(
   mapStateToProps
-)(ProjectServerEditPage);
+)(ServerEditPage);
