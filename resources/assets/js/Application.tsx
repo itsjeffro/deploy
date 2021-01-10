@@ -10,7 +10,6 @@ import ProjectEditPage from './pages/ProjectEditPage';
 import ProjectEnvironmentUnlockPage from './pages/ProjectEnvironmentUnlockPage';
 import ProjectEnvironmentResetPage from './pages/ProjectEnvironmentResetPage';
 import ProjectServerCreatePage from './pages/ProjectServerCreatePage';
-import ProjectServerEditPage from './pages/ProjectServerEditPage';
 import ProjectLinkedFolderCreatePage from './pages/ProjectLinkedFolderCreatePage';
 import ProjectActionPage from './pages/ProjectActionPage';
 import ProjectDeploymentHookPage from './pages/ProjectDeploymentHookPage';
@@ -18,7 +17,8 @@ import ProjectLinkedFolderPage from './pages/ProjectLinkedFolderPage';
 import AccountPage from './pages/AccountPage';
 import NotificationsPage from './pages/NotificationsPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
-import ServersPage from './pages/ServersPage';
+import ServersPage from "./pages/ServersPage";
+import ServerEditPage from "./pages/ServerEditPage/ServerEditPage";
 
 class Application extends React.Component {
   render() {
@@ -33,7 +33,6 @@ class Application extends React.Component {
             <Route path="/projects/:project_id/deployment-hooks/actions/:action_id" component={ ProjectActionPage} />
             <Route path="/projects/:project_id/deployment-hooks" component={ ProjectDeploymentHookPage} />
             <Route path="/projects/:project_id/servers/create" component={ ProjectServerCreatePage} />
-            <Route path="/projects/:project_id/servers/:server_id/edit" component={ ProjectServerEditPage} />
             <Route path="/projects/:project_id/environment-unlock" component={ ProjectEnvironmentUnlockPage} />
             <Route path="/projects/:project_id/environment-reset" component={ ProjectEnvironmentResetPage} />
             <Route path="/projects/:project_id/deployments/:deployment_id" component={ ProjectDeploymentPage} />
@@ -41,6 +40,7 @@ class Application extends React.Component {
             <Route path="/projects/:project_id/folders" component={ ProjectLinkedFolderPage} />
             <Route path="/projects/:project_id/settings" component={ ProjectEditPage} />
             <Route path="/projects/:project_id" component={ ProjectPage} />
+            <Route path="/servers/:server_id/edit" component={ ServerEditPage } />
             <Route path="/servers" component={ ServersPage} />
             <Route path="/account" component={ AccountPage} />
             <Route component={ NotFoundPage } />
