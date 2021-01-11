@@ -1,38 +1,30 @@
-import {
-  PROJECT_SERVER_REMOVE_REQUEST,
-  PROJECT_SERVER_REMOVE_SUCCESS,
-  PROJECT_SERVER_REMOVE_FAILURE
-} from '../constants';
-
-import ProjectServerService from "../../../services/ProjectServer";
+import * as constants from '../constants';
+import ProjectServerApi from "../../../services/Api/ProjectServerApi";
 import { createToast } from "../../alert/alertActions";
 
-export const projectServerRemoveRequest = () =>({
-  type: PROJECT_SERVER_REMOVE_REQUEST,
+export const projectServerRemoveRequest = () => ({
+  type: constants.PROJECT_SERVER_REMOVE_REQUEST,
 });
 
-export const projectServerRemoveSuccess = (serverId) =>({
-  type: PROJECT_SERVER_REMOVE_SUCCESS,
+export const projectServerRemoveSuccess = (serverId: number): object => ({
+  type: constants.PROJECT_SERVER_REMOVE_SUCCESS,
   serverId: serverId,
 });
 
-export const projectServerRemoveFailure = (error) =>({
-  type: PROJECT_SERVER_REMOVE_FAILURE,
+export const projectServerRemoveFailure = (error): object => ({
+  type: constants.PROJECT_SERVER_REMOVE_FAILURE,
 });
 
 /**
  * Remove server from project.
- *
- * @param {number} projectId
- * @param {number} serverId
  */
-export const removeProjectServer = (projectId, serverId) => {
+export const removeProjectServer = (projectId: number, serverId: number) => {
   return (dispatch) => {
     dispatch(projectServerRemoveRequest());
 
-    const projectServerService = new ProjectServerService;
-
-    projectServerService
+    const projectServerApi = new ProjectServerApi;
+  
+    projectServerApi
       .delete(projectId, serverId)
       .then(response => {
           dispatch(projectServerRemoveSuccess(serverId));

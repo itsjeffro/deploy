@@ -1,27 +1,27 @@
 import * as constants from '../constants';
-import ProjectServer from '../../../services/ProjectServer';
+import ServerApi from '../../../services/Api/ServerApi';
 
-export const createProjectServerRequest = () =>({
+export const createProjectServerRequest = (): object =>({
   type: constants.PROJECT_SERVER_CREATE_REQUEST
 });
 
-export const createProjectServerSuccess = () =>({
+export const createProjectServerSuccess = (): object =>({
   type: constants.PROJECT_SERVER_CREATE_SUCCESS,
 });
 
-export const createProjectServerFailure = (errors: any[]) =>({
+export const createProjectServerFailure = (errors: any[]): object =>({
   type: constants.PROJECT_SERVER_CREATE_FAILURE,
   errors: errors,
 });
 
 export const createProjectServer = (projectId: number, data: object) => {
   return (dispatch: any) => {
-    const projectServerApi = new ProjectServer();
+    const serverApi = new ServerApi();
 
     dispatch(createProjectServerRequest());
-
-    projectServerApi
-      .create(projectId, data)
+  
+    serverApi
+      .create(data)
       .then((response: any) => {
           dispatch(createProjectServerSuccess());
         },
