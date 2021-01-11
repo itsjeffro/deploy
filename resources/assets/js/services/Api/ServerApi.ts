@@ -31,6 +31,13 @@ class ServerApi extends BaseApi {
   delete(serverId: number): any {
     return this.deleteRequest(`/api/servers/${ serverId }`);
   }
+  
+  /**
+   * Create server.
+   */
+  create(data: object): any {
+    return this.deleteRequest(`/api/servers`);
+  }
 }
 
 export default ServerApi;
