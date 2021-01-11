@@ -19,12 +19,12 @@ const RemoveServerModal = (props) => {
           onPress: () => onModalHide()
         },
         {
-          text: 'Remove Server',
+          text: 'Remove Server from project',
           onPress: () => onRemoveServerClick()
         }
       ]}
     >
-      Are you sure you want to remove this server from the project?
+      This server will be removed, not deleted. Are you sure you want to remove this server from this project?
     </Modal>
   )
 }
