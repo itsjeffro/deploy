@@ -3,24 +3,16 @@
 namespace Deploy\Http\Controllers;
 
 use Deploy\Jobs\TestConnectionJob;
-use Deploy\Models\Project;
 use Deploy\Models\Server;
+use Illuminate\Http\JsonResponse;
 
-class ProjectServerTestConnectionController extends Controller
+class ServerTestConnectionController extends Controller
 {
     /**
      * Get server connection status.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Server $server
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Project $project, Server $server)
+    public function show(Server $server): JsonResponse
     {
-        if ($project->id !== $server->project_id) {
-            abort(404, 'Not found.');
-        }
-
         $this->authorize('view', $server);
 
         dispatch(new TestConnectionJob($server));
