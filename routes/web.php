@@ -33,12 +33,7 @@ Route::group(['prefix' => 'api'], function() {
 
     // Project's servers
     Route::post('projects/{project}/servers', 'ProjectServerController@store')->name('project-servers.store');
-    Route::get('projects/{project}/servers/{server}', 'ProjectServerController@show')->name('project-servers.show');
-    Route::put('projects/{project}/servers/{server}', 'ProjectServerController@update')->name('project-servers.update');
     Route::delete('projects/{project}/servers/{server}', 'ProjectServerController@destroy')->name('project-servers.destroy');
-
-    // Project's server test connection
-    Route::get('projects/{project}/servers/{server}/test-connection', 'ProjectServerTestConnectionController@show')->name('project-server-test-connection.show');
 
     // Project's folders
     Route::get('projects/{project}/folders', 'ProjectFoldersController@index')->name('project-folders.index');
@@ -74,6 +69,9 @@ Route::group(['prefix' => 'api'], function() {
     Route::put('servers/{server}', 'ServerController@update')->name('servers.update');
     Route::delete('servers/{server}', 'ServerController@destroy')->name('servers.destroy');
     Route::post('servers', 'ServerController@store')->name('servers.create');
+
+    // Project's server test connection
+    Route::get('servers/{server}/test-connection', 'ServerTestConnectionController@show')->name('server-test-connection.show');
 });
 
 // Provider auth
