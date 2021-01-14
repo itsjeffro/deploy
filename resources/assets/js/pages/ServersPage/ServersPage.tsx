@@ -12,7 +12,7 @@ import RemoveServerModal from './components/RemoveServerModal';
 import CreateServerModal from './components/CreateServerModal';
 import PanelHeading from "../../components/PanelHeading";
 import {createServer, deleteServer, listServers} from "../../state/servers/actions";
-import {createProjectServer} from "../../state/project/actions";
+import {createToast} from "../../state/alert/alertActions";
 
 class ServersPage extends React.Component<any, any> {
   state = {
@@ -29,6 +29,21 @@ class ServersPage extends React.Component<any, any> {
     const { dispatch } = this.props;
 
     dispatch(listServers());
+  }
+
+  /**
+   * Update state when component props update.
+   */
+  componentWillReceiveProps(nextProps: any): void {
+    const { servers, dispatch } = this.props;
+
+    if (nextProps.servers.isCreated !== servers.isCreated && nextProps.servers.isCreated) {
+      this.setState({ isCreateServerModalVisible: false, input: {} });
+
+      dispatch(createToast('Server created successfully.'));
+
+      dispatch(listServers());
+    }
   }
 
   handleServerConnectionTestClick = () => {
