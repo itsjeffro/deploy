@@ -11,13 +11,15 @@ import ServerKeyModal from '../../components/ServerKeyModal';
 import RemoveServerModal from './components/RemoveServerModal';
 import CreateServerModal from './components/CreateServerModal';
 import PanelHeading from "../../components/PanelHeading";
-import {deleteServer, listServers} from "../../state/servers/actions";
+import {createServer, deleteServer, listServers} from "../../state/servers/actions";
+import {createProjectServer} from "../../state/project/actions";
 
 class ServersPage extends React.Component<any, any> {
   state = {
     server: {
       id: 0,
     },
+    input: {},
     isCreateServerModalVisible: false,
     isServerKeyModalVisible: false,
     isRemoveServerModalVisible: false,
@@ -25,7 +27,7 @@ class ServersPage extends React.Component<any, any> {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    
+
     dispatch(listServers());
   }
 
@@ -58,10 +60,10 @@ class ServersPage extends React.Component<any, any> {
   handleDeleteServerClick = () => {
     const { dispatch } = this.props;
     const { server } = this.state;
-    
+
     dispatch(deleteServer(server.id));
   };
-  
+
   handleShowCreateServerModalClick = () => {
     this.setState({ isCreateServerModalVisible: true });
   };
@@ -70,14 +72,41 @@ class ServersPage extends React.Component<any, any> {
     this.setState({ isCreateServerModalVisible: false });
   };
 
+  /**
+   * Handle input change when creating a server.
+   */
+  handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState((state: any) => {
+      const server = {
+        ...state.input,
+        [name]: value
+      };
+
+      return { input: server };
+    });
+  };
+
+  /**
+   * Handle click for creating a server.
+   */
+  handleCreateServerClick = (): void => {
+    const { dispatch } = this.props;
+    const { input } = this.state;
+
+    dispatch(createServer(input));
+  };
+
   render() {
     const {
-      server,
       isServerKeyModalVisible,
       isRemoveServerModalVisible,
       isCreateServerModalVisible,
+      input,
     } = this.state;
-    
+
     const { servers } = this.props;
 
     return (
@@ -100,6 +129,7 @@ class ServersPage extends React.Component<any, any> {
                 <h5 className="panel-title">Server List</h5>
               </PanelHeading>
               <ServersTable
+                isLoading={ servers.isFetching }
                 servers={ servers.items || [] }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
                 onServerRemoveClick={ this.handleServerDeleteModal }
@@ -117,16 +147,18 @@ class ServersPage extends React.Component<any, any> {
 
           <CreateServerModal
             isVisible={ isCreateServerModalVisible }
-            onCreateServerClick={ this.handleHideCreateServerModalClick }
             onHideModalClick={ this.handleHideCreateServerModalClick }
-            onInputChange={ this.handleHideCreateServerModalClick }
-            server={ server }
+            onInputChange={ this.handleInputChange }
+            onCreateServerClick={ this.handleCreateServerClick }
+            input={ input }
+            isCreating={ servers.isCreating }
+            errors={ servers.errors }
           />
 
           <ServerKeyModal
             isVisible={ isServerKeyModalVisible }
             onModalHide={ this.handleHideServerKeyModal }
-            server={ server }
+            server={ {} }
           />
         </div>
       </Layout>
