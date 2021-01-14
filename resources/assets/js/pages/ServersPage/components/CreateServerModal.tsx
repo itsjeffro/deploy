@@ -9,7 +9,9 @@ const CreateServerModal = (props) => {
     onCreateServerClick,
     onHideModalClick,
     onInputChange,
-    server,
+    input,
+    isCreating,
+    errors,
   } = props;
 
   return (
@@ -22,12 +24,12 @@ const CreateServerModal = (props) => {
           onPress: () => onHideModalClick()
         },
         {
-          text: server.isCreating ? 'Working...' : 'Create Server',
+          text: isCreating ? 'Working...' : 'Create Server',
           onPress: () => onCreateServerClick()
         }
       ]}
     >
-      { (server.errors || []).length ? <AlertErrorValidation errors={ server.errors } /> : '' }
+      { (errors || []).length ? <AlertErrorValidation errors={ errors } /> : '' }
 
       <div className="form-group">
         <label htmlFor="name">Name</label>
@@ -37,7 +39,7 @@ const CreateServerModal = (props) => {
           type="text"
           id="name"
           onChange={ (e) => onInputChange(e) }
-          value={ server.name }
+          value={ input.name }
         />
       </div>
 
@@ -50,7 +52,7 @@ const CreateServerModal = (props) => {
             type="text"
             id="ip_address"
             onChange={ (e) => onInputChange(e) }
-            value={ server.ip_address }
+            value={ input.ip_address }
           />
         </div>
 
@@ -62,7 +64,7 @@ const CreateServerModal = (props) => {
             type="text"
             id="port"
             onChange={ (e) => onInputChange(e) }
-            value={ server.port }
+            value={ input.port }
             placeholder="22"
           />
         </div>
@@ -76,7 +78,7 @@ const CreateServerModal = (props) => {
           type="text"
           id="connect_as"
           onChange={ (e) => onInputChange(e) }
-          value={ server.connect_as }
+          value={ input.connect_as }
         />
       </div>
 
@@ -88,7 +90,7 @@ const CreateServerModal = (props) => {
           type="text"
           id="project_path"
           onChange={ (e) => onInputChange(e) }
-          value={ server.project_path }
+          value={ input.project_path }
         />
       </div>
     </Modal>
