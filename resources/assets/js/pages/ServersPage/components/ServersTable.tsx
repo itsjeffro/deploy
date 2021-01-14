@@ -1,14 +1,24 @@
 import * as React from 'react';
 
 import ServersTableRow from './ServersTableRow';
+import PanelBody from "../../../components/PanelBody";
 
 const ServersTable = props => {
   const {
+    isLoading,
     servers,
     onServerConnectionTestClick,
     onServerRemoveClick,
     onServerKeyClick
   } = props;
+
+  if (isLoading) {
+    return <PanelBody>Loading...</PanelBody>
+  }
+
+  if (servers.length === 0) {
+    return <PanelBody>No servers</PanelBody>
+  }
 
   return (
     <div className="table-responsive">
