@@ -32,6 +32,10 @@ class CreateProjectServerTable extends Migration
                 'server_id' => $server->id,
             ]);
         }
+
+        Schema::table('servers', function (Blueprint $table) {
+            $table->integer('project_id')->unsigned()->nullable()->change();
+        });
     }
 
     /**
