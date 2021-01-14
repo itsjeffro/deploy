@@ -36,7 +36,7 @@ class ServerApi extends BaseApi {
    * Create server.
    */
   create(data: object): any {
-    return this.deleteRequest(`/api/servers`);
+    return this.postRequest(`/api/servers`, data);
   }
 }
 
