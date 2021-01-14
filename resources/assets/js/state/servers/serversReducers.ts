@@ -39,7 +39,32 @@ const serversReducers = (state = initialState, action) => {
         isUpdating: false,
         isUpdated: false,
       };
-  
+
+    // Create server
+    case constants.SERVER_CREATE_REQUEST:
+      return {
+        ...state,
+        errors: [],
+        isCreating: true,
+        isCreated: false,
+      };
+
+    case constants.SERVER_CREATE_SUCCESS:
+      return {
+        ...state,
+        errors: [],
+        isCreating: false,
+        isCreated: true,
+      };
+
+    case constants.SERVER_CREATE_FAILURE:
+      return {
+        ...state,
+        errors: buildAlertFromResponse(action.errors),
+        isCreating: false,
+        isCreated: false,
+      };
+
     // Get server
     case constants.SERVER_REQUEST:
       return {
@@ -93,6 +118,7 @@ const serversReducers = (state = initialState, action) => {
         ...state,
         items: [],
         errors: [],
+        isFetching: true,
       };
   
     case constants.SERVERS_SUCCESS:
@@ -100,13 +126,14 @@ const serversReducers = (state = initialState, action) => {
         ...state,
         items: action.servers,
         errors: [],
+        isFetching: false,
       };
   
     case constants.SERVERS_FAILURE:
       return {
         ...state,
         items: [],
-        errors: [],
+        isFetching: false,
       };
       
     default:
