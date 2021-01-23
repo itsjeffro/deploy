@@ -1,6 +1,14 @@
 import * as React from 'react';
 
-const Grid = (props) => {
+interface PropsInterface {
+  xs?: number
+  sm?: number
+  md?: number
+  lg?: number
+  children?: any
+}
+
+const Grid = (props: PropsInterface) => {
   const {
     xs,
     sm,
@@ -16,8 +24,8 @@ const Grid = (props) => {
   ];
     
   return (
-    <div className={styles.join(' ').trim()}>
-      {props.children}
+    <div className={ styles.join(' ').trim() }>
+      { props.children }
     </div>
   )
 };

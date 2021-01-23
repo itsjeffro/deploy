@@ -4,8 +4,6 @@ import {NavLink} from "react-router-dom";
 
 class Layout extends React.Component<any> {
   render() {
-    const { project } = this.props;
-
     return (
       <div className="layout">
         <header>
@@ -19,7 +17,7 @@ class Layout extends React.Component<any> {
         </header>
         
         <div className="body">
-          <Drawer project={project} />
+          <Drawer />
   
           <main className="main-content">
             { this.props.children }

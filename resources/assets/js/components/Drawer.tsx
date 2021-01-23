@@ -3,10 +3,6 @@ import { NavLink } from "react-router-dom";
 import Icon from './Icon';
 
 const Drawer = (props) => {
-  const {
-    project,
-  } = props;
-
   return (
     <div className="drawer">
       <ul>
