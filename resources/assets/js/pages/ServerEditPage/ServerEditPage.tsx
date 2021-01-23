@@ -7,10 +7,9 @@ import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import ServerEditForm from './components/ServerEditForm';
 import { getServer, updateServer } from "../../state/servers/actions";
-import DataGrid from "../../components/DataGrid/DataGrid";
 import PanelHeading from "../../components/PanelHeading";
-import ProjectsTable from "../DashboardPage/components/ProjectsTable";
 import Panel from "../../components/Panel";
+import ProjectsTable from "./components/ProjectsTable";
 
 class ServerEditPage extends React.Component<any> {
   state = {
@@ -112,10 +111,7 @@ class ServerEditPage extends React.Component<any> {
                   <PanelHeading>
                     <h5 className="panel-title">Projects using this server</h5>
                   </PanelHeading>
-                  <DataGrid
-                    columns={ columns }
-                    rows={ servers.item.projects }
-                  />
+                  <ProjectsTable projects={ servers.item.projects || [] } />
                 </Panel>
               </>
             }
