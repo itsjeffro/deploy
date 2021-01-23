@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from "react-router-dom";
 
 import Panel from '../../components/Panel';
 import Layout from "../../components/Layout";
 import Container from "../../components/Container";
 import ServersTable from './components/ServersTable';
-import Button from '../../components/Button';
 import Icon from '../../components/Icon';
 import ServerKeyModal from '../../components/ServerKeyModal';
 import RemoveServerModal from './components/RemoveServerModal';
-import CreateServerModal from './components/CreateServerModal';
 import PanelHeading from "../../components/PanelHeading";
-import {createServer, deleteServer, listServers} from "../../state/servers/actions";
-import {createToast} from "../../state/alert/alertActions";
+import { createServer, deleteServer, listServers } from "../../state/servers/actions";
+import { createToast } from "../../state/alert/alertActions";
+import Button from "../../components/Button";
 
 class ServersPage extends React.Component<any, any> {
   state = {
@@ -20,7 +20,7 @@ class ServersPage extends React.Component<any, any> {
       id: 0,
     },
     input: {},
-    isCreateServerModalVisible: false,
+    isAddServerModalVisible: false,
     isServerKeyModalVisible: false,
     isRemoveServerModalVisible: false,
   };
@@ -61,6 +61,9 @@ class ServersPage extends React.Component<any, any> {
     this.setState({ isServerKeyModalVisible: false });
   };
 
+  /**
+   * Show "delete server" modal.
+   */
   handleServerDeleteModal = (server) => {
     this.setState({
       isRemoveServerModalVisible: true,
@@ -68,23 +71,21 @@ class ServersPage extends React.Component<any, any> {
     });
   };
 
+  /**
+   * Hide "delete server" modal.
+   */
   handleHideServerDeleteModal = () => {
     this.setState({ isRemoveServerModalVisible: false });
   };
 
+  /**
+   * Delete server on click.
+   */
   handleDeleteServerClick = () => {
     const { dispatch } = this.props;
     const { server } = this.state;
 
     dispatch(deleteServer(server.id));
-  };
-
-  handleShowCreateServerModalClick = () => {
-    this.setState({ isCreateServerModalVisible: true });
-  };
-
-  handleHideCreateServerModalClick = () => {
-    this.setState({ isCreateServerModalVisible: false });
   };
 
   /**
@@ -118,8 +119,7 @@ class ServersPage extends React.Component<any, any> {
     const {
       isServerKeyModalVisible,
       isRemoveServerModalVisible,
-      isCreateServerModalVisible,
-      input,
+      server,
     } = this.state;
 
     const { servers } = this.props;
@@ -132,9 +132,9 @@ class ServersPage extends React.Component<any, any> {
               <h2>Servers</h2>
             </div>
             <div className="pull-right">
-              <Button color="primary" onClick={ this.handleShowCreateServerModalClick }>
-                <Icon iconName="plus" /> Add Server
-              </Button>
+              <NavLink className="btn btn-primary" to="/servers/create">
+                <Icon iconName="plus" /> Create Server
+              </NavLink>
             </div>
           </Container>
 
@@ -160,20 +160,10 @@ class ServersPage extends React.Component<any, any> {
             onRemoveServerClick={ this.handleDeleteServerClick }
           />
 
-          <CreateServerModal
-            isVisible={ isCreateServerModalVisible }
-            onHideModalClick={ this.handleHideCreateServerModalClick }
-            onInputChange={ this.handleInputChange }
-            onCreateServerClick={ this.handleCreateServerClick }
-            input={ input }
-            isCreating={ servers.isCreating }
-            errors={ servers.errors }
-          />
-
           <ServerKeyModal
             isVisible={ isServerKeyModalVisible }
             onModalHide={ this.handleHideServerKeyModal }
-            server={ {} }
+            server={ server }
           />
         </div>
       </Layout>
@@ -181,7 +171,7 @@ class ServersPage extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     servers: state.servers,
   };
