@@ -37,6 +37,7 @@ class Project extends Model
         'environmentServers',
         'user',
         'servers',
+        'servers.server',
         'folders',
         'lastDeployment',
         'provider',
@@ -87,7 +88,7 @@ class Project extends Model
      */
     public function servers()
     {
-        return $this->hasMany('Deploy\Models\Server');
+        return $this->hasMany(ProjectServer::class);
     }
 
     /**
