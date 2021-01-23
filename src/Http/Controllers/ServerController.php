@@ -8,7 +8,9 @@ use Deploy\Jobs\DeleteServerKeysJob;
 use Deploy\Models\ProjectServer;
 use Deploy\Models\Server;
 use Deploy\Ssh\Key;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
+use Exception;
 
 class ServerController extends Controller
 {
@@ -51,29 +53,41 @@ class ServerController extends Controller
 
     /**
      * Create server.
+     *
+     * @throws Exception
      */
     public function store(ServerRequest $request): JsonResponse
     {
-        $userId = auth()->id();
+        DB::beginTransaction();
 
-        $server = new Server();
-        $server->fill([
-            'user_id'      => $userId,
-            'name'         => $request->get('name'),
-            'ip_address'   => $request->get('ip_address'),
-            'port'         => $request->get('port'),
-            'connect_as'   => $request->get('connect_as'),
-            'project_path' => $request->get('project_path'),
-        ]);
-        $server->save();
+        try {
+            $userId = auth()->id();
 
-        $server = $this->createKeys($server);
+            $server = new Server();
+            $server->fill([
+                'user_id' => $userId,
+                'name' => $request->get('name'),
+                'ip_address' => $request->get('ip_address'),
+                'port' => $request->get('port'),
+                'connect_as' => $request->get('connect_as'),
+                'project_path' => $request->get('project_path'),
+            ]);
+            $server->save();
 
-        if ($request->has('project_id')) {
-            $projectServer = new ProjectServer();
-            $projectServer->project_id = $request->input('project_id');
-            $projectServer->server_id = $request->input('server_id');
-            $projectServer->save();
+            $server = $this->createKeys($server);
+
+            if ($request->has('project_id')) {
+                $projectServer = new ProjectServer();
+                $projectServer->project_id = $request->input('project_id');
+                $projectServer->server_id = $server->id;
+                $projectServer->save();
+            }
+
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            throw $exception;
         }
 
         return response()->json($server, 201);
