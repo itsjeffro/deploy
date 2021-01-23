@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Select from 'react-select'
 
 import { createToast } from '../../state/alert/alertActions';
-import { createServer, listServers } from "../../state/servers/actions";
+import {addProjectServer, createServer, listServers} from "../../state/servers/actions";
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
@@ -24,12 +24,13 @@ class ProjectServerCreatePage extends React.Component<any, any> {
     selectedServerOption: 'new-server',
     isFetching: true,
     isCreated: false,
-    server: {
+    input: {
+      server_id: null,
       name: '',
-      port: '',
       ip_address: '',
-      project_path: '',
+      port: '',
       connect_as: '',
+      project_path: '',
     },
   };
 
@@ -68,13 +69,13 @@ class ProjectServerCreatePage extends React.Component<any, any> {
     const name = event.target.name;
     const value = event.target.value;
 
-    this.setState((state: any) => {
-      const server = {
-        ...state.server,
+    this.setState((prevState: any) => {
+      const input = {
+        ...prevState.input,
         [name]: value
       };
 
-      return { server: server };
+      return { input: input };
     });
   };
 
@@ -82,17 +83,52 @@ class ProjectServerCreatePage extends React.Component<any, any> {
    * Handle click for creating a server.
    */
   handleSaveServerClick = (): void => {
-    const { dispatch } = this.props;
-    const { server } = this.state;
+    const { dispatch, project } = this.props;
+    const { input, selectedServerOption } = this.state;
 
-    dispatch(createServer(server));
+    const requestPayload = {
+      ...input,
+      project_id: project.item.id,
+    }
+
+    if (selectedServerOption === 'new-server') {
+      dispatch(createServer(requestPayload));
+    } else {
+      dispatch(addProjectServer(project.item.id, requestPayload));
+    }
   };
 
   /**
    * handle changing selected server option.
    */
   handleServerOptionChange = (event: any, value: string): void => {
-    this.setState({ selectedServerOption: value });
+    this.setState((prevState) => {
+      const serverId = (value === 'new-server') ? null : prevState.input.server_id;
+
+      return {
+        selectedServerOption: value,
+        input: {
+          ...prevState.input,
+          server_id: serverId,
+        }
+      };
+    });
+  }
+
+  /**
+   * Handle existing server option select change.
+   */
+  handleServerChange = (option): void => {
+    let serverId = option ? option.value : null;
+
+    this.setState((prevState) => {
+      const input = {
+        ...prevState.input,
+        server_id: serverId,
+      };
+
+      return { input: input };
+    });
   }
 
   /**
@@ -103,10 +139,10 @@ class ProjectServerCreatePage extends React.Component<any, any> {
     const { isCreated, selectedServerOption } = this.state;
 
     if (isCreated) {
-      return <Redirect to={ `/servers` } />
+      return <Redirect to={ `/projects/${ project.item.id }` } />
     }
 
-    const serverOptions = servers.items.map((server) => ({
+    const serverOptions = servers.items.map((server: any) => ({
       label: server.name,
       value: server.id,
     }));
@@ -156,7 +192,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
                     <label htmlFor="name">Server</label>
                     <Select
                       options={ serverOptions }
-                      onChange={ (value) => console.log(value) }
+                      onChange={ (option) => this.handleServerChange(option) }
                       isClearable
                     />
                   </div> : '' }
@@ -170,7 +206,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
                       type="text"
                       id="name"
                       onChange={this.handleInputChange}
-                      value={this.state.server.name}
+                      value={this.state.input.name}
                     />
                   </div> : '' }
 
@@ -182,7 +218,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
                         id="ip_address"
                         name="ip_address"
                         onChange={ this.handleInputChange }
-                        value={ this.state.server.ip_address }
+                        value={ this.state.input.ip_address }
                       />
                     </Grid>
                     <Grid xs={ 4 } md={ 3 }>
@@ -191,7 +227,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
                         id="port"
                         name="port"
                         onChange={ this.handleInputChange }
-                        value={ this.state.server.port }
+                        value={ this.state.input.port }
                       />
                     </Grid>
                   </div> : '' }
@@ -202,7 +238,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
                     id="connect_as"
                     name="connect_as"
                     onChange={ this.handleInputChange }
-                    value={ this.state.server.connect_as }
+                    value={ this.state.input.connect_as }
                   /> : '' }
 
                 <TextField
@@ -210,7 +246,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
                   id="project_path"
                   name="project_path"
                   onChange={ this.handleInputChange }
-                  value={ this.state.server.project_path }
+                  value={ this.state.input.project_path }
                 />
 
                 <Button
