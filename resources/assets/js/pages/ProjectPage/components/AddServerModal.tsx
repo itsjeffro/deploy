@@ -1,9 +1,22 @@
 import * as React from 'react';
+import Select from 'react-select'
 
 import AlertErrorValidation from '../../../components/AlertErrorValidation';
 import Modal from '../../../components/Modal';
+import Grid from "../../../components/Grid";
 
-const CreateServerModal = (props) => {
+interface PropsInterface {
+  isVisible: boolean
+  onCreateServerClick: Function
+  onHideModalClick: Function
+  onInputChange: Function
+  isCreating: boolean
+  input: any
+  errors: any[]
+  servers: any[]
+}
+
+const AddServerModal = (props: PropsInterface) => {
   const {
     isVisible,
     onCreateServerClick,
@@ -12,24 +25,66 @@ const CreateServerModal = (props) => {
     input,
     isCreating,
     errors,
+    servers,
   } = props;
+
+  const serverOptions = servers.map((server) => ({
+    label: server.name,
+    value: server.id,
+  }));
 
   return (
     <Modal
       isVisible={ isVisible }
-      title="Create Server"
+      title="Add Server"
       buttons={[
         {
           text: 'Cancel', 
           onPress: () => onHideModalClick()
         },
         {
-          text: isCreating ? 'Working...' : 'Create Server',
+          text: isCreating ? 'Working...' : 'Add Server',
           onPress: () => onCreateServerClick()
         }
       ]}
     >
       { (errors || []).length ? <AlertErrorValidation errors={ errors } /> : '' }
+
+      <div className="form-group">
+        <label htmlFor="name">Server options</label>
+        <div className="row">
+          <Grid sm={ 12 }>
+            <label className="form-control-label" htmlFor="new-server">
+              <input
+                name="server_options"
+                type="radio"
+                value="new-server"
+                id="new-server"
+              /> Create a new server and SSH key
+            </label>
+          </Grid>
+
+          <Grid sm={ 12 }>
+            <label className="form-control-label" htmlFor="existing-server">
+              <input
+                name="server_options"
+                type="radio"
+                value="existing-server"
+                id="existing-server"
+              /> Use an existing server and SSH key
+            </label>
+          </Grid>
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="name">Server</label>
+        <Select
+          options={ serverOptions }
+          onChange={ (value) => console.log(value) }
+          isClearable
+        />
+      </div>
 
       <div className="form-group">
         <label htmlFor="name">Name</label>
@@ -97,4 +152,4 @@ const CreateServerModal = (props) => {
   )
 };
 
-export default CreateServerModal;
+export default AddServerModal;
