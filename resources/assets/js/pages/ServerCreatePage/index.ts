@@ -1,3 +1,3 @@
-import ProjectServerCreatePage from './ProjectServerCreatePage';
+import ServerCreatePage from './ServerCreatePage';
 
-export default ProjectServerCreatePage;
+export default ServerCreatePage;
