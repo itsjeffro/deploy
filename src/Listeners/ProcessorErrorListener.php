@@ -20,9 +20,6 @@ class ProcessorErrorListener
 
     /**
      * Handle the event.
-     *
-     * @param ProcessorError $event
-     * @return void
      */
     public function handle(ProcessorErrorEvent $event)
     {
@@ -30,15 +27,31 @@ class ProcessorErrorListener
             $notification = new Notification();
 
             $notification->subject = $event->subject;
-            $notification->project_id = $event->projectId;
+            $notification->user_id = $event->userId;
             $notification->model_type = $event->modelType;
             $notification->model_id = $event->modelId;
-            $notification->contents = $event->exception->getMessage();
+            $notification->contents = $this->resolveExceptionMessage($event);
             $notification->reason = Notification::ERROR_TYPE;
     
             $notification->save();
         } catch (Exception $e) {
-            throw $event->exception;
+            throw $e;
         }
+    }
+
+    /**
+     * Return exception message.
+     */
+    protected function resolveExceptionMessage(ProcessorErrorEvent $event): string
+    {
+        if (is_string($event->exception)) {
+            return $event->exception;
+        }
+
+        if (method_exists($event->exception, 'getMessage')) {
+            return $event->exception->getMessage();
+        }
+
+        return 'No exception message';
     }
 }

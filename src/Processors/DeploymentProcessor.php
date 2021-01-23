@@ -95,10 +95,15 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
                     break;
                 }
             }
-        } catch (ProcessFailedException | Exception $e) {
+        } catch (ProcessFailedException | Exception $exception) {
             $status = Deployment::FAILED;
             
-            event(new ProcessorErrorEvent('Deployment issue', $this->deployment->project_id, $this->deployment, $e));
+            event(new ProcessorErrorEvent(
+                'Deployment issue',
+                $this->deployment->project->user_id,
+                $this->deployment,
+                $exception
+            ));
         }
         
         $this->updateRemainingProcessesAsCancelled($this->deployment);

@@ -7,8 +7,6 @@ use Deploy\Events\ProcessorErrorEvent;
 use Deploy\Events\ServerConnectionTested;
 use Deploy\Models\Server;
 use Deploy\Ssh\Client;
-use Exception;
-use Illuminate\Contracts\Events\Dispatcher;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ServerConnectionProcessor extends AbstractProcessor implements ProcessorInterface
@@ -55,10 +53,10 @@ class ServerConnectionProcessor extends AbstractProcessor implements ProcessorIn
             }
             
             $successful = true;
-        } catch (ProcessFailedException | Exception $exception) {
+        } catch (ProcessFailedException | \Exception $exception) {
             event(new ProcessorErrorEvent(
                 'Server connection test issue',
-                $this->server->project_id,
+                $this->server->user_id,
                 $this->server,
                 $exception
             ));

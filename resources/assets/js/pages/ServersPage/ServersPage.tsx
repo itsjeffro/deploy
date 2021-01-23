@@ -12,7 +12,6 @@ import RemoveServerModal from './components/RemoveServerModal';
 import PanelHeading from "../../components/PanelHeading";
 import { createServer, deleteServer, listServers } from "../../state/servers/actions";
 import { createToast } from "../../state/alert/alertActions";
-import Button from "../../components/Button";
 
 class ServersPage extends React.Component<any, any> {
   state = {
