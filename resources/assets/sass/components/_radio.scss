@@ -1,0 +1,16 @@
+.form-control-label {
+  &__tile {
+    box-shadow: 0 1px 1px rgba(0,0,0,.12);
+    padding: 15px;
+    border: 1px solid $input-border;
+    border-radius: 2px;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}
+
+.form-control-label__tile {
+  input[type="radio"] {
+    margin: 4px 10px 0 0;
+  }
+}
