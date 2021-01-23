@@ -3,17 +3,16 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { createToast } from '../../state/alert/alertActions';
-import { fetchProject, createProjectServer } from '../../state/project/actions';
+import { createServer } from "../../state/servers/actions";
 import AlertErrorValidation from '../../components/AlertErrorValidation';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
 import PanelHeading from '../../components/PanelHeading';
 import PanelTitle from '../../components/PanelTitle';
 
-class ProjectServerCreatePage extends React.Component<any, any> {
+class ServerCreatePage extends React.Component<any, any> {
   state = {
     isFetching: true,
     isCreated: false,
@@ -26,24 +25,11 @@ class ProjectServerCreatePage extends React.Component<any, any> {
     },
   };
 
-  componentDidMount() {
-    const {
-      dispatch,
-      match: {
-        params: {
-          project_id,
-        }
-      }
-    } = this.props;
-
-    dispatch(fetchProject(project_id));
-  }
-
   componentWillReceiveProps(nextProps: any) {
-    const { dispatch, project } = this.props;
+    const { dispatch, servers } = this.props;
 
     // Handler project server create
-    if (nextProps.project.isCreated !== project.isCreated && nextProps.project.isCreated) {
+    if (nextProps.servers.isCreated !== servers.isCreated && nextProps.servers.isCreated) {
       dispatch(createToast('Server created successfully.'));
       
       this.setState({ isCreated: true });
@@ -71,25 +57,27 @@ class ProjectServerCreatePage extends React.Component<any, any> {
    * Handle click for creating a server.
    */
   handleClick = (): void => {
-    const { dispatch, project } = this.props;
+    const { dispatch } = this.props;
     const { server } = this.state;
 
-    dispatch(createProjectServer(project.item.id, server));
+    dispatch(createServer(server));
   };
 
   render() {
-    const { project } = this.props;
+    const { servers } = this.props;
     const { isCreated } = this.state;
 
     if (isCreated) {
-      return <Redirect to={ `/projects/${ project.item.id }` } />
+      return <Redirect to={ `/servers` } />
     }
 
     return (
-      <Layout project={ project.item }>
-        <ProjectHeading project={ project.item } />
-
+      <Layout>
         <div className="content">
+          <div className="container-fluid heading">
+            <h2>Create server</h2>
+          </div>
+
           <Container fluid>
             <Panel>
               <PanelHeading>
@@ -97,7 +85,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
               </PanelHeading>
 
               <div className="panel-body">
-                { project.errors.length ? <AlertErrorValidation errors={ project.errors } /> : '' }
+                { servers.errors.length ? <AlertErrorValidation errors={ servers.errors } /> : '' }
 
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
@@ -158,7 +146,7 @@ class ProjectServerCreatePage extends React.Component<any, any> {
                   />
                 </div>
 
-                <Button color="primary" onClick={ this.handleClick }>{ project.isCreating ? 'Working...' : 'Save Server' }</Button>
+                <Button color="primary" onClick={ this.handleClick }>{ servers.isCreating ? 'Working...' : 'Save Server' }</Button>
               </div>
             </Panel>
           </Container>
@@ -170,10 +158,10 @@ class ProjectServerCreatePage extends React.Component<any, any> {
 
 const mapStateToProps = (state) => {
   return {
-    project: state.project,
+    servers: state.servers,
   };
 };
 
 export default connect(
   mapStateToProps
-)(ProjectServerCreatePage);
+)(ServerCreatePage);
