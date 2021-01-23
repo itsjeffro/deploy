@@ -75,8 +75,6 @@ class ProjectPage extends React.Component<any, any> {
 
     dispatch(fetchProjectDeployments(project_id));
 
-    dispatch(listServers());
-
     this.listenForEvents(project_id);
   }
 
