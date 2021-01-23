@@ -17,5 +17,6 @@ trait PolicyMap
         'Deploy\Models\Process' => 'Deploy\Policies\ProcessPolicy',
         'Deploy\Models\Folder' => 'Deploy\Policies\FolderPolicy',
         'Deploy\Models\Notification' => 'Deploy\Policies\NotificationPolicy',
+        'Deploy\Models\ProjectServer' => 'Deploy\Policies\ProjectServerPolicy',
     ];
 }
