@@ -69,6 +69,13 @@ class ServerController extends Controller
 
         $server = $this->createKeys($server);
 
+        if ($request->has('project_id')) {
+            $projectServer = new ProjectServer();
+            $projectServer->project_id = $request->input('project_id');
+            $projectServer->server_id = $request->input('server_id');
+            $projectServer->save();
+        }
+
         return response()->json($server, 201);
     }
 
