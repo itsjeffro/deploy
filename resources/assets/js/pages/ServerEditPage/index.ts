@@ -1,1 +1,3 @@
-export * from './ServerEditPage';
+import ServerEditPage from './ServerEditPage';
+
+export default ServerEditPage;
