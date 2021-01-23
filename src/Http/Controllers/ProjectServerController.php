@@ -2,7 +2,7 @@
 
 namespace Deploy\Http\Controllers;
 
-use Deploy\Http\Requests\ServerRequest;
+use Deploy\Http\Requests\ProjectServerRequest;
 use Deploy\Models\Project;
 use Deploy\Models\ProjectServer;
 use Deploy\Models\Server;
@@ -13,7 +13,7 @@ class ProjectServerController extends Controller
     /**
      * Assign server to project.
      */
-    public function store(ServerRequest $request, Project $project)
+    public function store(ProjectServerRequest $request, Project $project)
     {
         return response()->json(null, 201);
     }
