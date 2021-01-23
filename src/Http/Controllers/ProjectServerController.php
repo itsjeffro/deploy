@@ -15,6 +15,13 @@ class ProjectServerController extends Controller
      */
     public function store(ProjectServerRequest $request, Project $project)
     {
+        $this->authorize('update', $project);
+
+        $projectServer = new ProjectServer();
+        $projectServer->project_id = $project->id;
+        $projectServer->server_id = $request->input('server_id');
+        $projectServer->save();
+
         return response()->json(null, 201);
     }
 
@@ -33,7 +40,7 @@ class ProjectServerController extends Controller
 
         $this->authorize('delete', $projectServer);
 
-        $server->delete();
+        $projectServer->delete();
 
         return response()->json(null, 204);
     }
