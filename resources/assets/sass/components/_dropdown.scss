@@ -1,0 +1,75 @@
+.dropdown {
+  position: relative;
+
+  &__input {
+    padding-right: 2.6em;
+  }
+
+  &__icon {
+    cursor: pointer;
+    position: absolute;
+    width: auto;
+    height: auto;
+    line-height: 1.21428571em;
+    top: .78571429em;
+    right: 1em;
+    z-index: 3;
+    margin: -.7em;
+    padding: .9em;
+    opacity: .8;
+    display: inline-block;
+    /** font awesome */
+    font: normal normal normal 14px/1 FontAwesome;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  &__menu {
+    background: #fff;
+  }
+}
+
+.dropdown__icon {
+  &::before {
+    content: "\F0D7";
+  }
+}
+
+.dropdown__menu {
+  box-shadow: 0 1px 2px rgba(0,0,0,.22);
+  display: none;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 11;
+  max-height: 16.02857143rem;
+  overflow-y: auto;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    border-top: 1px solid rgba(0,0,0,.12);
+    padding: 0;
+    margin: 0;
+  }
+
+  span {
+    display: block;
+    cursor: pointer;
+    padding: .5em 0.9em;
+
+    &:hover {
+      background: rgba(0,0,0,.12);
+    }
+  }
+
+  &.visible {
+    display: block;
+  }
+}
