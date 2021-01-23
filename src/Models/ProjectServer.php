@@ -3,6 +3,7 @@
 namespace Deploy\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProjectServer extends Model
 {
@@ -29,4 +30,20 @@ class ProjectServer extends Model
         'project_id',
         'server_id',
     ];
+
+    /**
+     * Server relationship.
+     */
+    public function server(): BelongsTo
+    {
+        return $this->belongsTo(Server::class);
+    }
+
+    /**
+     * Project relationship.
+     */
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
 }
