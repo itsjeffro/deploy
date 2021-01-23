@@ -34,6 +34,8 @@ import DeploymentModal from './components/DeploymentModal';
 import RedeploymentModal from './components/RedeploymentModal';
 import RemoveServerModal from './components/RemoveServerModal';
 import ServerKeyModal from '../../components/ServerKeyModal';
+import AddServerModal from "./components/AddServerModal";
+import {listServers} from "../../state/servers/actions";
 
 class ProjectPage extends React.Component<any, any> {
   state = {
@@ -56,6 +58,7 @@ class ProjectPage extends React.Component<any, any> {
     isRemoveServerModalVisible: false,
     isDeploymentModalVisible: false,
     isRedeploymentModalVisible: false,
+    isAddServerModalVisible: false,
   };
 
   componentDidMount() {
@@ -71,6 +74,8 @@ class ProjectPage extends React.Component<any, any> {
     dispatch(fetchProject(project_id));
 
     dispatch(fetchProjectDeployments(project_id));
+
+    dispatch(listServers());
 
     this.listenForEvents(project_id);
   }
@@ -299,6 +304,20 @@ class ProjectPage extends React.Component<any, any> {
     });
   };
 
+  /**
+   * Show "add server" modal.
+   */
+  handleShowAddServerModal = () => {
+    this.setState({ isAddServerModalVisible: true });
+  };
+
+  /**
+   * Show "add server" modal.
+   */
+  handleHideAddServerModal = () => {
+    this.setState({ isAddServerModalVisible: false });
+  };
+
   render() {
     const {
       deploy,
@@ -433,6 +452,7 @@ const mapStateToProps = state => {
   return {
     project: state.project,
     deployments: state.projectDeployments,
+    servers: state.servers,
   };
 };
 
