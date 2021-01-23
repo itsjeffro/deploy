@@ -65,7 +65,7 @@ class ProjectController extends Controller
             ])
             ->find($project->id);
 
-        return response()->json($project);
+        return response()->json(new ProjectResource($project));
     }
 
     /**
