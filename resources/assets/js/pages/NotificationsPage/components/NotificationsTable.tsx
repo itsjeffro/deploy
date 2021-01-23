@@ -29,7 +29,7 @@ const NotificationsTable = (props) => {
         <thead>
           <tr>
             <th>Subject</th>
-            <th>Project</th>
+            <th>Source</th>
             <th>Reason</th>
             <th>Date</th>
             <th></th>
@@ -37,6 +37,14 @@ const NotificationsTable = (props) => {
         </thead>
         <tbody>
           {items.map(item => {
+            let sourceLink = '';
+
+            if (item.model_type == 'Deploy\\Models\\Project') {
+              sourceLink = `/projects/${ item.model_id }`;
+            } else if (item.model_type == 'Deploy\\Models\\Server') {
+              sourceLink = `/servers/${ item.model_id }/edit`;
+            }
+
             return (
               <tr key={ item.id }>
                 <td>
@@ -44,7 +52,7 @@ const NotificationsTable = (props) => {
                   <a href="#" onClick={ e => onShowModalClick(item)}>{ item.subject }</a>
                 </td>
                 <td>
-                  <Link to={ '/projects/' + item.project.id }>{ item.project.name }</Link>
+                  <Link to={ sourceLink }>{ sourceLink }</Link>
                 </td>
                 <td>
                   <span className={`label label-${reasons[item.reason]}`}>

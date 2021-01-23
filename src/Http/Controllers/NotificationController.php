@@ -4,6 +4,7 @@ namespace Deploy\Http\Controllers;
 
 use Deploy\Models\Notification;
 use Deploy\Resources\NotificationResource;
+use Illuminate\Http\JsonResponse;
 
 class NotificationController extends Controller
 {
@@ -11,7 +12,7 @@ class NotificationController extends Controller
     private $notification;
 
     /**
-     * @param Notification $notification
+     * NotificationController constructor.
      */
     public function __construct(Notification $notification)
     {
@@ -19,20 +20,15 @@ class NotificationController extends Controller
     }
 
     /**
-     * Return list of notfications that belong to the currently logged in user.
-     *
-     * @return JsonResponse
+     * Return list of notifications that belong to the currently logged in user.
      */
     public function index()
     {
         $userId = auth()->user()->id;
 
         $notifications = $this->notification
-            ->with('project')
-            ->whereHas('project', function ($query) use ($userId) {
-                return $query->where('user_id', $userId);
-            })
             ->where('is_read', 0)
+            ->where('user_id', $userId)
             ->orderBy('id', 'desc')
             ->paginate();
 
@@ -41,9 +37,6 @@ class NotificationController extends Controller
 
     /**
      * Returns notification that belongs to users attached to associated projects.
-     *
-     * @param Notification $notification
-     * @return JsonResponse
      */
     public function show(Notification $notification)
     {
@@ -59,11 +52,8 @@ class NotificationController extends Controller
 
     /**
      * Mark notification as read.
-     *
-     * @param Notification $notification
-     * @return JsonResponse
      */
-    public function markAsRead(Notification $notification)
+    public function markAsRead(Notification $notification): JsonResponse
     {
         $this->authorize('markAsRead', $notification);
 
