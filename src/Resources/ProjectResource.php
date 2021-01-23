@@ -28,10 +28,12 @@ class ProjectResource extends JsonResource
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'environment_servers' => $this->environmentServers,
             'user' => $this->user,
-            'servers' => $this->servers,
+            'servers' => ProjectServerResource::collection($this->servers),
             'folders' => $this->folders,
             'last_deployment' => $this->lastDeployment,
             'provider' => $this->provider,
+            'daily_deployments_count' => $this->daily_deployments_count,
+            'weekly_deployments_count' => $this->weekly_deployments_count,
         ];
     }
 }
