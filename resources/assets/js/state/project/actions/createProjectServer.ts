@@ -1,5 +1,6 @@
 import * as constants from '../constants';
 import ServerApi from '../../../services/Api/ServerApi';
+import ProjectServerApi from "../../../services/Api/ProjectServerApi";
 
 export const createProjectServerRequest = (): object =>({
   type: constants.PROJECT_SERVER_CREATE_REQUEST
@@ -16,12 +17,12 @@ export const createProjectServerFailure = (errors: any[]): object =>({
 
 export const createProjectServer = (projectId: number, data: object) => {
   return (dispatch: any) => {
-    const serverApi = new ServerApi();
+    const projectServerApi = new ProjectServerApi();
 
     dispatch(createProjectServerRequest());
   
-    serverApi
-      .create(data)
+    projectServerApi
+      .create(projectId, data)
       .then((response: any) => {
           dispatch(createProjectServerSuccess());
         },
