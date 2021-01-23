@@ -135,6 +135,31 @@ const serversReducers = (state = initialState, action) => {
         items: [],
         isFetching: false,
       };
+
+    // Add server to project
+    case constants.PROJECT_SERVER_ADD_REQUEST:
+      return {
+        ...state,
+        errors: [],
+        isCreating: true,
+        isCreated: false,
+      };
+
+    case constants.PROJECT_SERVER_ADD_SUCCESS:
+      return {
+        ...state,
+        errors: [],
+        isCreating: false,
+        isCreated: true,
+      };
+
+    case constants.PROJECT_SERVER_ADD_FAILURE:
+      return {
+        ...state,
+        errors: buildAlertFromResponse(action.errors),
+        isCreating: false,
+        isCreated: false,
+      };
       
     default:
       return state;
