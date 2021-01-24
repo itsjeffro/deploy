@@ -3,6 +3,11 @@
 namespace Deploy\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Project extends Model
 {
@@ -37,7 +42,7 @@ class Project extends Model
         'environmentServers',
         'user',
         'servers',
-        'servers.server',
+        'servers.projectServer',
         'folders',
         'lastDeployment',
         'provider',
@@ -62,41 +67,41 @@ class Project extends Model
     /**
      * Get project environment servers.
      */
-    public function environmentServers()
+    public function environmentServers(): HasManyThrough
     {
-        return $this->hasManyThrough('Deploy\Models\EnvironmentServer', 'Deploy\Models\Environment');
+        return $this->hasManyThrough(EnvironmentServer::class, Environment::class);
     }
 
     /**
      * Get deployments for the project.
      */
-    public function deployments()
+    public function deployments(): HasMany
     {
-        return $this->hasMany('Deploy\Models\Deployment');
+        return $this->hasMany(Deployment::class);
     }
 
     /**
      * Get symlink folders for the project.
      */
-    public function folders()
+    public function folders(): HasMany
     {
-        return $this->hasMany('Deploy\Models\Folder');
+        return $this->hasMany(Folder::class);
     }
 
     /**
      * Get servers for the project.
      */
-    public function servers()
+    public function servers():BelongsToMany
     {
-        return $this->hasMany(ProjectServer::class);
+        return $this->belongsToMany(Server::class);
     }
 
     /**
      * Get the last deployment for the project.
      */
-    public function lastDeployment()
+    public function lastDeployment(): HasOne
     {
-        return $this->hasOne('Deploy\Models\Deployment')
+        return $this->hasOne(Deployment::class)
             ->latest()
             ->withDefault([
                 'duration' => null,
@@ -106,15 +111,15 @@ class Project extends Model
     /**
      * Get provider.
      */
-    public function provider()
+    public function provider(): BelongsTo
     {
-        return $this->belongsTo('Deploy\Models\Provider');
+        return $this->belongsTo(Provider::class);
     }
 
     /**
      * Project belongs to one user.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         $model = config('deploy.models.user') ?? 'App\User';
 
