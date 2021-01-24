@@ -60,20 +60,17 @@ class Client
                 .$delimiter;
         }
 
-        $ssh = ["ssh $sshArguments $host $command"];
+        $ssh = "ssh $sshArguments $host $command";
 
-        $process = new Process($ssh);
+        $process = Process::fromShellCommandline($ssh);
 
         return $process->setTimeout($this->timeout);
     }
 
     /**
      * Sets the time in seconds for timeout.
-     *
-     * @param  integer $seconds
-     * @return self
      */
-    public function setTimeout($seconds): self
+    public function setTimeout(int $seconds): self
     {
         $this->timeout = $seconds;
 
@@ -94,7 +91,7 @@ class Client
                 ->getSshArguments();
 
         if (!$this->isMultiplexingInitialized($host, $sshArguments)) {
-            $masterProcess = new Process(["ssh -N $sshArguments $host"]);
+            $masterProcess = Process::fromShellCommandline("ssh -N $sshArguments $host");
             $masterProcess
                 ->disableOutput()
                 ->run();
@@ -108,12 +105,10 @@ class Client
      */
     public function isMultiplexingInitialized(Host $host, string $sshArguments): bool
     {
-        $checkMasterProcess = new Process(["ssh -O check $sshArguments $host 2>&1"]);
+        $checkMasterProcess = Process::fromShellCommandline("ssh -O check $sshArguments $host 2>&1");
         $checkMasterProcess->run();
 
-        $isMasterRunning = (bool) preg_match('/Master running/', $checkMasterProcess->getOutput()) ? true : false;
-
-        return $isMasterRunning;
+        return (bool) preg_match('/Master running/', $checkMasterProcess->getOutput());
     }
     
     /**
