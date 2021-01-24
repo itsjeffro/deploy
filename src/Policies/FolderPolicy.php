@@ -22,36 +22,24 @@ class FolderPolicy
 
     /**
      * Show project's folder belonging to user.
-     *
-     * @param \App\User $user
-     * @param \Deploy\Models\Folder $folder
-     * @return bool
      */
-    public function view(User $user, Folder $folder)
+    public function view($user, Folder $folder): bool
     {
         return $user->id === $folder->project->user_id;
     }
 
     /**
      * Update project's folder belonging to user.
-     *
-     * @param \App\User $user
-     * @param \Deploy\Models\Folder $folder
-     * @return bool
      */
-    public function update(User $user, Folder $folder)
+    public function update($user, Folder $folder): bool
     {
         return $user->id === $folder->project->user_id;
     }
 
     /**
      * Delete project's folder belonging to user.
-     *
-     * @param \App\User $user
-     * @param \Deploy\Models\Folder $folder
-     * @return bool
      */
-    public function delete(User $user, Folder $folder)
+    public function delete($user, Folder $folder): bool
     {
         return $user->id === $folder->project->user_id;
     }
