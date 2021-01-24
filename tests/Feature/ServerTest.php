@@ -7,7 +7,7 @@ use Deploy\Models\User;
 use Deploy\Tests\TestCase;
 use Illuminate\Support\Facades\Bus;
 
-class CreateServerTest extends TestCase
+class ServerTest extends TestCase
 {
     public function test_successfully_create_server()
     {
