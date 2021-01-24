@@ -16,7 +16,7 @@ class CreateServerTest extends TestCase
         $project = factory(Project::class)->create();
         $user = $project->user;
 
-        $route = route('project-servers.store', $project);
+        $route = route('servers.create', $project);
 
         $response = $this->actingAs($user)
             ->json('POST', $route, [
@@ -43,15 +43,13 @@ class CreateServerTest extends TestCase
         $this->assertSame('ssh-rsa', $publicKey[0]);
     }
 
-    public function test_user_cannot_create_server_that_doesnt_belong_to_them()
+    public function test_unauthorized_user_cannot_create_server()
     {
         $project = factory(Project::class)->create();
-        $user = factory(User::class)->create();
 
-        $route = route('project-servers.store', $project);
+        $route = route('servers.create', $project);
 
-        $response = $this->actingAs($user)
-            ->json('POST', $route, [
+        $response = $this->json('POST', $route, [
                 'name' => 'Project server',
                 'ip_address' => '127.0.0.1',
                 'port' => '22',
