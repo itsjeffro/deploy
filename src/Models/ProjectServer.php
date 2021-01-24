@@ -29,6 +29,7 @@ class ProjectServer extends Model
     public $fillable = [
         'project_id',
         'server_id',
+        'project_path',
     ];
 
     /**
