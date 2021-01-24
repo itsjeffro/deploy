@@ -19,6 +19,7 @@ class CreateProjectServerTable extends Migration
             $table->increments('id');
             $table->integer('project_id')->unsigned()->nullable();
             $table->integer('server_id')->unsigned()->nullable();
+            $table->string('project_path')->nullable();
 
             $table->foreign('project_id')->references('id')->on('projects');
             $table->foreign('server_id')->references('id')->on('servers');
@@ -30,6 +31,7 @@ class CreateProjectServerTable extends Migration
             ProjectServer::create([
                 'project_id' => $server->project_id,
                 'server_id' => $server->id,
+                'project_path' => $server->project_path,
             ]);
         }
 
