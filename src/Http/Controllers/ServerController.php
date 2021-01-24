@@ -58,6 +58,8 @@ class ServerController extends Controller
      */
     public function store(ServerRequest $request): JsonResponse
     {
+        $this->authorize('create', Server::class);
+
         DB::beginTransaction();
 
         try {
