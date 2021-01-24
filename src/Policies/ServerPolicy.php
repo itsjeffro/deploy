@@ -12,46 +12,41 @@ class ServerPolicy
 
     /**
      * Create a new policy instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         //
     }
     
-    /* Show server belonging to user.
-     *
-     * @param \App\User $user
-     * @param \Deploy\Models\Server $server
-     * @return bool
+    /**
+     * Show server belonging to user.
      */
-    public function view(User $user, Server $server)
+    public function view($user, Server $server): bool
     {
         return $user->id === $server->user_id;
     }
     
     /**
      * Update server belonging to user.
-     *
-     * @param \App\User $user
-     * @param \Deploy\Models\Server $server
-     * @return bool
      */
-    public function update(User $user, Server $server)
+    public function update($user, Server $server): bool
     {
         return $user->id === $server->user_id;
     }
     
     /**
      * Delete server belonging to user.
-     *
-     * @param  \App\User $user
-     * @param  \Deploy\Models\Server $server
-     * @return bool
      */
-    public function delete(User $user, Server $server)
+    public function delete($user, Server $server): bool
     {
         return $user->id === $server->user_id;
+    }
+
+    /**
+     * Creating a server.
+     */
+    public function create($user)
+    {
+        return $user !== null;
     }
 }
