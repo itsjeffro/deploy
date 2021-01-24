@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from "react-router-dom";
 import DataGrid from "../../../components/DataGrid/DataGrid";
 import PanelBody from "../../../components/PanelBody";
 
@@ -13,6 +14,12 @@ const ProjectsTable = (props: PropsInterface) => {
     { field: 'name', headerName: 'Project name' },
   ];
 
+  const rows = projects.map((project) => {
+    return {
+      name: <Link to={ `/projects/${ project.id }` }>{ project.name }</Link>
+    }
+  })
+
   if (projects.length === 0) {
     return <PanelBody>No projects</PanelBody>
   }
@@ -20,7 +27,7 @@ const ProjectsTable = (props: PropsInterface) => {
   return (
     <DataGrid
       columns={ columns }
-      rows={ projects }
+      rows={ rows }
     />
   )
 };
