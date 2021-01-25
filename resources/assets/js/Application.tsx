@@ -10,6 +10,7 @@ import ProjectEditPage from './pages/ProjectEditPage';
 import ProjectEnvironmentUnlockPage from './pages/ProjectEnvironmentUnlockPage';
 import ProjectEnvironmentResetPage from './pages/ProjectEnvironmentResetPage';
 import ProjectServerCreatePage from './pages/ProjectServerCreatePage';
+import ProjectServerEditPage from './pages/ProjectServerEditPage';
 import ProjectLinkedFolderCreatePage from './pages/ProjectLinkedFolderCreatePage';
 import ProjectActionPage from './pages/ProjectActionPage';
 import ProjectDeploymentHookPage from './pages/ProjectDeploymentHookPage';
@@ -34,6 +35,7 @@ class Application extends React.Component {
             <Route path="/projects/:project_id/deployment-hooks/actions/:action_id" component={ ProjectActionPage} />
             <Route path="/projects/:project_id/deployment-hooks" component={ ProjectDeploymentHookPage} />
             <Route path="/projects/:project_id/servers/create" component={ ProjectServerCreatePage } />
+            <Route path="/projects/:project_id/servers/:server_id/edit" component={ ProjectServerEditPage } />
             <Route path="/projects/:project_id/environment-unlock" component={ ProjectEnvironmentUnlockPage} />
             <Route path="/projects/:project_id/environment-reset" component={ ProjectEnvironmentResetPage} />
             <Route path="/projects/:project_id/deployments/:deployment_id" component={ ProjectDeploymentPage} />
