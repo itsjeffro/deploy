@@ -29,7 +29,6 @@ const ServersTable = props => {
             <th>Connect As</th>
             <th>IP Address</th>
             <th>Port</th>
-            <th>Project Path</th>
             <th>Connection Status</th>
             <th className="text-center">Projects</th>
             <th>&nbsp;</th>

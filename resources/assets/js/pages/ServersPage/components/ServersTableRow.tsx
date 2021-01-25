@@ -30,7 +30,6 @@ const ServersTableRow = props => {
       <td>{ server.connect_as }</td>
       <td>{ server.ip_address }</td>
       <td>{ server.port }</td>
-      <td>{ server.project_path }</td>
       <td>
         <a
           className="status-text"
