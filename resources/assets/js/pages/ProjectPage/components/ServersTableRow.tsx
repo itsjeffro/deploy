@@ -7,6 +7,7 @@ import ServerModelInterface from '../../../interfaces/model/ServerModelInterface
 
 const ServersTableRow = (props: PropsInterface) => {
   const {
+    projectId,
     server,
     onServerConnectionTestClick,
     onServerRemoveClick,
@@ -43,7 +44,7 @@ const ServersTableRow = (props: PropsInterface) => {
         <Link
           className="btn btn-default"
           style={{marginRight: 5}}
-          to={ '/projects/' + server.project_id + '/servers/' + server.id + '/edit' }
+          to={ '/projects/' + projectId + '/servers/' + server.id + '/edit' }
         >Edit</Link>
 
         <Button
@@ -62,9 +63,10 @@ const ServersTableRow = (props: PropsInterface) => {
 }
 
 interface PropsInterface {
-  server: ServerModelInterface,
-  onServerConnectionTestClick: any,
-  onServerRemoveClick: any,
+  projectId: number
+  server: ServerModelInterface
+  onServerConnectionTestClick: any
+  onServerRemoveClick: any
   onServerKeyClick: any
 }
 

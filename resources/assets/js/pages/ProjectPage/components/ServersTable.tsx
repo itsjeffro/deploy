@@ -5,6 +5,7 @@ import ServersTableRow from './ServersTableRow';
 
 const ServersTable = (props: PropsInterface) => {
   const {
+    projectId,
     servers,
     onServerConnectionTestClick,
     onServerRemoveClick,
@@ -37,6 +38,7 @@ const ServersTable = (props: PropsInterface) => {
           {servers.map((server) =>
             <ServersTableRow
               key={ server.id }
+              projectId={ projectId }
               server={ server }
               onServerConnectionTestClick={ onServerConnectionTestClick }
               onServerRemoveClick={ onServerRemoveClick }
@@ -50,6 +52,7 @@ const ServersTable = (props: PropsInterface) => {
 }
 
 interface PropsInterface {
+  projectId: number
   servers: ServerModelInterface[]
   onServerConnectionTestClick: any
   onServerRemoveClick: any
