@@ -7,6 +7,7 @@ use Deploy\Jobs\CreateServerKeysJob;
 use Deploy\Jobs\DeleteServerKeysJob;
 use Deploy\Models\ProjectServer;
 use Deploy\Models\Server;
+use Deploy\Resources\ServerResource;
 use Deploy\Ssh\Key;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
@@ -28,27 +29,24 @@ class ServerController extends Controller
     /**
      * Get servers.
      */
-    public function index(): JsonResponse
+    public function index()
     {
         $user = auth()->id();
 
-        $servers = Server::with(['projects'])
-            ->where('user_id', $user)
+        $servers = Server::where('user_id', $user)
             ->paginate();
 
-        return response()->json($servers);
+        return ServerResource::collection($servers);
     }
 
     /**
      * Return specified server.
      */
-    public function show(Server $server): JsonResponse
+    public function show(Server $server)
     {
         $this->authorize('view', $server);
 
-        $server = $server->load(['projects']);
-
-        return response()->json($server);
+        return new ServerResource($server);
     }
 
     /**
