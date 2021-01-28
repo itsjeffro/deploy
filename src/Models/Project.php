@@ -41,8 +41,6 @@ class Project extends Model
     protected $with = [
         'environmentServers',
         'user',
-        'servers',
-        'servers.projectServer',
         'folders',
         'lastDeployment',
         'provider',
@@ -124,5 +122,13 @@ class Project extends Model
         $model = config('deploy.models.user') ?? 'App\User';
 
         return $this->belongsTo($model);
+    }
+
+    /**
+     * Links between project and server.
+     */
+    public function projectServers(): HasMany
+    {
+        return $this->hasMany(ProjectServer::class);
     }
 }
