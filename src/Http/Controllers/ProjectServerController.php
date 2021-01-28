@@ -11,6 +11,39 @@ use Illuminate\Http\JsonResponse;
 class ProjectServerController extends Controller
 {
     /**
+     * List project's servers.
+     */
+    public function index(Project $project)
+    {
+        $this->authorize('view', $project);
+
+        $projectServers = ProjectServer::with(['server'])
+            ->where('project_id', '=', $project->id)
+            ->paginate();
+
+        return $projectServers;
+    }
+
+    /**
+     * Get project's server.
+     */
+    public function show(Project $project, Server $server)
+    {
+        $projectServer = ProjectServer::with(['server'])
+            ->where('project_id', '=', $project->id)
+            ->where('server_id', '=', $server->id)
+            ->first();
+
+        if (!$projectServer instanceof ProjectServer) {
+            abort(404, 'Not found.');
+        }
+
+        $this->authorize('view', $project);
+
+        return $projectServer;
+    }
+
+    /**
      * Assign server to project.
      */
     public function store(ProjectServerRequest $request, Project $project)
@@ -20,9 +53,32 @@ class ProjectServerController extends Controller
         $projectServer = new ProjectServer();
         $projectServer->project_id = $project->id;
         $projectServer->server_id = $request->input('server_id');
+        $projectServer->project_path = $request->input('project_path');
         $projectServer->save();
 
         return response()->json(null, 201);
+    }
+
+    /**
+     * Update project server pivot record.
+     */
+    public function update(ProjectServerRequest $request, Project $project, Server $server)
+    {
+        $projectServer = ProjectServer::where('project_id', '=', $project->id)
+            ->where('server_id', '=', $server->id)
+            ->first();
+
+        if (!$projectServer instanceof ProjectServer) {
+            abort(404, 'Not found.');
+        }
+
+        $this->authorize('update', $projectServer);
+
+        $projectServer->server_id = $request->input('server_id');
+        $projectServer->project_path = $request->input('project_path');
+        $projectServer->save();
+
+        return response()->json($projectServer, 200);
     }
 
     /**
