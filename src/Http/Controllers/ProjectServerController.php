@@ -13,7 +13,7 @@ class ProjectServerController extends Controller
     /**
      * List project's servers.
      */
-    public function index(Project $project)
+    public function index(Project $project): JsonResponse
     {
         $this->authorize('view', $project);
 
@@ -21,13 +21,13 @@ class ProjectServerController extends Controller
             ->where('project_id', '=', $project->id)
             ->paginate();
 
-        return $projectServers;
+        return response()->json($projectServers);
     }
 
     /**
      * Get project's server.
      */
-    public function show(Project $project, Server $server)
+    public function show(Project $project, Server $server): JsonResponse
     {
         $projectServer = ProjectServer::with(['server'])
             ->where('project_id', '=', $project->id)
@@ -40,13 +40,13 @@ class ProjectServerController extends Controller
 
         $this->authorize('view', $project);
 
-        return $projectServer;
+        return response()->json($projectServer);
     }
 
     /**
      * Assign server to project.
      */
-    public function store(ProjectServerRequest $request, Project $project)
+    public function store(ProjectServerRequest $request, Project $project): JsonResponse
     {
         $this->authorize('update', $project);
 
@@ -62,7 +62,7 @@ class ProjectServerController extends Controller
     /**
      * Update project server pivot record.
      */
-    public function update(ProjectServerRequest $request, Project $project, Server $server)
+    public function update(ProjectServerRequest $request, Project $project, Server $server): JsonResponse
     {
         $projectServer = ProjectServer::where('project_id', '=', $project->id)
             ->where('server_id', '=', $server->id)
