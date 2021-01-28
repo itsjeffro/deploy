@@ -31,7 +31,6 @@ class ProjectServerRequest extends FormRequest
     {
         return [
             'server_id' => 'required',
-            'project_id' => 'required',
             'project_path' => 'required',
         ];
     }
