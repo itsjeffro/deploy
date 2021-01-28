@@ -32,6 +32,9 @@ Route::group(['prefix' => 'api'], function() {
     Route::delete('projects/{project}/actions/{action}/hooks/{hook}', 'ProjectActionHooksController@destroy')->name('project-action-hooks.destroy');
 
     // Project's servers
+    Route::get('projects/{project}/servers', 'ProjectServerController@index')->name('project-servers.index');
+    Route::get('projects/{project}/servers/{server}', 'ProjectServerController@show')->name('project-servers.show');
+    Route::put('projects/{project}/servers/{server}', 'ProjectServerController@update')->name('project-servers.update');
     Route::post('projects/{project}/servers', 'ProjectServerController@store')->name('project-servers.store');
     Route::delete('projects/{project}/servers/{server}', 'ProjectServerController@destroy')->name('project-servers.destroy');
 
