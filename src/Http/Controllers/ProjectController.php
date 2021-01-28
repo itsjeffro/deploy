@@ -55,7 +55,8 @@ class ProjectController extends Controller
     {
         $this->authorize('view', $project);
 
-        $project = $project->withCount([
+        $project = $project::with(['servers'])
+            ->withCount([
                 'deployments as daily_deployments_count' => function ($query) {
                     $query->byToday(1);
                 },
