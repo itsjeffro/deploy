@@ -16,7 +16,7 @@ class ProjectServerResource extends JsonResource
     {
         return [
             'id' => $this->server_id,
-            'project_id' => $this->project_id,
+            'project_server_id' => $this->id,
             'name' => $this->server->name,
             'connect_as' => $this->server->connect_as,
             'ip_address' => $this->server->ip_address,
