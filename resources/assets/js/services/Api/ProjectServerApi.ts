@@ -2,12 +2,20 @@ import '../../bootstrap';
 import BaseApi from './BaseApi';
 
 class ProjectServerApi extends BaseApi {
-  create(project_id, data) {
-    return this.postRequest('/api/projects/' + project_id + '/servers', data);
+  create(projectId, data) {
+    return this.postRequest('/api/projects/' + projectId + '/servers', data);
   }
 
-  delete(project_id, server_id) {
-    return this.deleteRequest('/api/projects/' + project_id + '/servers/' + server_id);
+  get(projectId, serverId) {
+    return this.getRequest(`/api/projects/${ projectId }/servers/${ serverId }`);
+  }
+
+  update(projectId, serverId, data) {
+    return this.putRequest(`/api/projects/${ projectId }/servers/${ serverId }`, data);
+  }
+
+  delete(projectId, serverId) {
+    return this.deleteRequest(`/api/projects/${ projectId }/servers/${ serverId }`);
   }
 }
 
