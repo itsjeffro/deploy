@@ -45,11 +45,6 @@ const ServerEditForm = (props: any) => {
           <input className="form-control" name="connect_as" type="text" id="connect_as" onChange={ (e) => onInputChange(e) } value={ server.connect_as } />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="project_path">Project Path</label>
-          <input className="form-control" name="project_path" type="text" id="project_path" onChange={ (e) => onInputChange(e) } value={ server.project_path } />
-        </div>
-
         <Button color="primary" onClick={ () => onClick() }>{ isUpdating ? 'Working...' : 'Save Server' }</Button>
       </PanelBody>
     </Panel>
