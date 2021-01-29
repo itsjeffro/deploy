@@ -34,8 +34,6 @@ import DeploymentModal from './components/DeploymentModal';
 import RedeploymentModal from './components/RedeploymentModal';
 import RemoveServerModal from './components/RemoveServerModal';
 import ServerKeyModal from '../../components/ServerKeyModal';
-import AddServerModal from "./components/AddServerModal";
-import {listServers} from "../../state/servers/actions";
 
 class ProjectPage extends React.Component<any, any> {
   state = {
@@ -279,9 +277,9 @@ class ProjectPage extends React.Component<any, any> {
    */
   handleRemoveServerClick = (): void => {
     const { server } = this.state;
-    const { dispatch } = this.props;
+    const { project, dispatch } = this.props;
 
-    dispatch(removeProjectServer(server.project_id, server.id));
+    dispatch(removeProjectServer(project.item.id, server.id));
 
     this.handleHideServerRemoveModal();
   };
@@ -377,6 +375,7 @@ class ProjectPage extends React.Component<any, any> {
               </PanelHeading>
 
               <ServersTable
+                projectId={ project.item.id }
                 servers={ project.item.servers }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
                 onServerRemoveClick={ this.handleServerRemoveModal }
