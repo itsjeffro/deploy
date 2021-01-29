@@ -134,17 +134,6 @@ class ServerCreatePage extends React.Component<any, any> {
                     value={this.state.server.connect_as}
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="project_path">Project Path</label>
-                  <input
-                    className="form-control"
-                    name="project_path"
-                    type="text"
-                    id="project_path"
-                    onChange={this.handleInputChange}
-                    value={this.state.server.project_path}
-                  />
-                </div>
 
                 <Button color="primary" onClick={ this.handleClick }>{ servers.isCreating ? 'Working...' : 'Save Server' }</Button>
               </div>
