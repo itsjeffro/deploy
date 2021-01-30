@@ -22,7 +22,16 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::where('user_id', auth()->id())->get();
+        $projects = Project::withCount([
+                'deployments as daily_deployments_count' => function ($query) {
+                    $query->byToday(1);
+                },
+                'deployments as weekly_deployments_count' => function ($query) {
+                    $query->byDaysAgo(7);
+                }
+            ])
+            ->where('user_id', auth()->id())
+            ->get();
 
         return ProjectResource::collection($projects);
     }
@@ -55,8 +64,7 @@ class ProjectController extends Controller
     {
         $this->authorize('view', $project);
 
-        $project = $project::with(['servers'])
-            ->withCount([
+        $project = $project::withCount([
                 'deployments as daily_deployments_count' => function ($query) {
                     $query->byToday(1);
                 },
