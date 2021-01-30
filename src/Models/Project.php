@@ -39,11 +39,12 @@ class Project extends Model
      * @var array
      */
     protected $with = [
+        'projectServers',
         'environmentServers',
-        'user',
         'folders',
         'lastDeployment',
         'provider',
+        'user',
     ];
 
     /**
