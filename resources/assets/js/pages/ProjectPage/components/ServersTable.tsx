@@ -6,13 +6,13 @@ import ServersTableRow from './ServersTableRow';
 const ServersTable = (props: PropsInterface) => {
   const {
     projectId,
-    servers,
+    projectServers,
     onServerConnectionTestClick,
     onServerRemoveClick,
     onServerKeyClick
   } = props;
 
-  if (servers.length === 0) {
+  if (projectServers.length === 0) {
     return (
       <div className="panel-body text-center">
         No servers added yet
@@ -31,20 +31,20 @@ const ServersTable = (props: PropsInterface) => {
             <th>Port</th>
             <th>Project Path</th>
             <th>Connection Status</th>
-            <th></th>
+            <th>{ '' }</th>
           </tr>
         </thead>
         <tbody>
-          {servers.map((server) =>
+          { projectServers.map((projectServer) =>
             <ServersTableRow
-              key={ server.id }
+              key={ projectServer.server_id }
               projectId={ projectId }
-              server={ server }
+              projectServer={ projectServer }
               onServerConnectionTestClick={ onServerConnectionTestClick }
               onServerRemoveClick={ onServerRemoveClick }
               onServerKeyClick={ onServerKeyClick }
             />
-          )}
+          ) }
         </tbody>
       </table>
     </div>
@@ -53,7 +53,7 @@ const ServersTable = (props: PropsInterface) => {
 
 interface PropsInterface {
   projectId: number
-  servers: ServerModelInterface[]
+  projectServers: any[]
   onServerConnectionTestClick: any
   onServerRemoveClick: any
   onServerKeyClick: any

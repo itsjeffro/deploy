@@ -4,58 +4,47 @@ import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
 import ServerModelInterface from '../../../interfaces/model/ServerModelInterface';
+import ServerConnection from "./ServerConnection";
 
 const ServersTableRow = (props: PropsInterface) => {
   const {
     projectId,
-    server,
+    projectServer,
     onServerConnectionTestClick,
     onServerRemoveClick,
     onServerKeyClick,
   } = props;
 
-  let status = <span><i className="status-circle text-warning"></i> Unknown</span>;
-
-  if (server.connection_status === 0) {
-    status = <span><i className="status-circle text-danger"></i> Failed <Icon iconName="refresh fa-fw"/></span>;
-  } else if (server.connection_status === 1) {
-    status = <span><i className="status-circle text-success"></i> Successful <Icon iconName="refresh fa-fw"/></span>;
-  } else if (server.connection_status === 2) {
-    status = <span><i className="status-circle text-warning"></i> Connecting <Icon iconName="refresh fa-fw fa-spin"/></span>;
-  } else {
-    status = <span><i className="status-circle text-warning"></i> Unknown <Icon iconName="refresh fa-fw"/></span>;
-  }
-
   return (
     <tr>
-      <td>{ server.name }</td>
-      <td>{ server.connect_as }</td>
-      <td>{ server.ip_address }</td>
-      <td>{ server.port }</td>
-      <td>{ server.project_path }</td>
+      <td>{ projectServer.server.name }</td>
+      <td>{ projectServer.server.connect_as }</td>
+      <td>{ projectServer.server.ip_address }</td>
+      <td>{ projectServer.server.port }</td>
+      <td>{ projectServer.project_path }</td>
       <td>
         <a
           className="status-text"
           href="#"
-          onClick={e => onServerConnectionTestClick(e, server.id)}
-        >{status}</a>
+          onClick={ (e) => onServerConnectionTestClick(e, projectServer.server_id) }
+        ><ServerConnection server={ projectServer.server } /></a>
       </td>
       <td className="text-right">
         <Link
           className="btn btn-default"
-          style={{marginRight: 5}}
-          to={ '/projects/' + projectId + '/servers/' + server.id + '/edit' }
+          style={ { marginRight: 5 } }
+          to={ '/projects/' + projectId + '/servers/' + projectServer.server_id + '/edit' }
         >Edit</Link>
 
         <Button
           color="default"
-          style={ {marginRight: 5} }
-          onClick={ () => onServerKeyClick(server) }
+          style={ { marginRight: 5 } }
+          onClick={ () => onServerKeyClick(projectServer.server) }
         ><Icon iconName="key" /></Button>
 
         <Button
           color="default"
-          onClick={ () => onServerRemoveClick(server) }
+          onClick={ () => onServerRemoveClick(projectServer.server) }
         ><Icon iconName="times" /></Button>
       </td>
     </tr>
@@ -64,7 +53,7 @@ const ServersTableRow = (props: PropsInterface) => {
 
 interface PropsInterface {
   projectId: number
-  server: ServerModelInterface
+  projectServer: any
   onServerConnectionTestClick: any
   onServerRemoveClick: any
   onServerKeyClick: any
