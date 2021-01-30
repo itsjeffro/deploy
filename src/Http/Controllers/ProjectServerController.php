@@ -19,7 +19,7 @@ class ProjectServerController extends Controller
 
         $projectServers = ProjectServer::with(['server'])
             ->where('project_id', '=', $project->id)
-            ->paginate();
+            ->get();
 
         return response()->json($projectServers);
     }
