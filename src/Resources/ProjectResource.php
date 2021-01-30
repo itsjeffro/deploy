@@ -28,7 +28,7 @@ class ProjectResource extends JsonResource
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
             'environment_servers' => $this->environmentServers,
             'user' => $this->user,
-            'servers' => $this->servers,
+            'servers' => $this->projectServers,
             'folders' => $this->folders,
             'last_deployment' => $this->lastDeployment,
             'provider' => $this->provider,

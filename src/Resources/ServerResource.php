@@ -22,6 +22,7 @@ class ServerResource extends JsonResource
             'connect_as' => $this->connect_as,
             'connection_status' => $this->connection_status,
             'public_key' => $this->public_key,
+            'projects' => $this->projects,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
