@@ -9,12 +9,11 @@ import {
   projectDeploymentDeploying,
   projectDeploymentDeployed
 } from "../../state/projectDeployments/actions";
-
 import { Deploy } from '../../config';
 import { fetchProject } from '../../state/project/actions';
-import { updateProjectKey } from '../../state/project/actions/key';
-import { testServerConnection, updateServerConnectionStatus } from '../../state/project/actions/serverConnectionTest';
-import { removeProjectServer } from '../../state/project/actions/removeProjectServer';
+import { updateProjectKey } from '../../state/project/actions';
+import { testServerConnection } from '../../state/project/actions';
+import { removeProjectServer } from '../../state/project/actions';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 import Panel from '../../components/Panel';
@@ -34,6 +33,8 @@ import DeploymentModal from './components/DeploymentModal';
 import RedeploymentModal from './components/RedeploymentModal';
 import RemoveServerModal from './components/RemoveServerModal';
 import ServerKeyModal from '../../components/ServerKeyModal';
+import ProjectServerApi from "../../services/Api/ProjectServerApi";
+import { fetchMe } from "../../state/auth/authActions";
 
 class ProjectPage extends React.Component<any, any> {
   state = {
@@ -49,6 +50,7 @@ class ProjectPage extends React.Component<any, any> {
       id: null,
       project_id: null,
     },
+    projectServers: [],
     deployments: [],
     tags: [],
     branches: [],
@@ -73,20 +75,44 @@ class ProjectPage extends React.Component<any, any> {
 
     dispatch(fetchProjectDeployments(project_id));
 
-    this.listenForEvents(project_id);
+    dispatch(fetchMe());
+
+    const projectServerApi = new ProjectServerApi();
+
+    projectServerApi
+      .list(project_id)
+      .then((response) => {
+        this.setState({ projectServers: response.data });
+      })
+      .catch((error) => {
+        console.log(error.response);
+      })
+  }
+
+  /**
+   * Update state when component props update.
+   */
+  componentWillReceiveProps(nextProps: any): void {
+    const { auth } = this.props;
+
+    if (nextProps.auth.user !== auth.user && nextProps.auth.user) {
+      const user = nextProps.auth.user;
+
+      this.listenForEvents(user.id);
+    }
   }
 
   /**
    * Listen for project related events.
    */
-  listenForEvents = (projectId: number): void => {
+  listenForEvents = (userId: number): void => {
     const { dispatch } = this.props;
     const echoWindow: any = window;
     const Echo = echoWindow.Echo;
 
     if (Echo !== null) {
       Echo
-        .private('project.' + projectId)
+        .private(`user.${ userId }`)
         .listen('.Deploy\\Events\\DeploymentDeploying', e => {
           dispatch(projectDeploymentDeploying(e.deployment));
         })
@@ -94,9 +120,32 @@ class ProjectPage extends React.Component<any, any> {
           dispatch(projectDeploymentDeployed(e.deployment));
         })
         .listen('.Deploy\\Events\\ServerConnectionTested', e => {
-          dispatch(updateServerConnectionStatus(e.server.id, e.server.connection_status));
+          this.updateServerConnectionStatus(e.server.id, e.server.connection_status);
         });
     }
+  }
+
+  /**
+   * Update server status.
+   */
+  updateServerConnectionStatus = (serverId: number, connectionStatus: number) => {
+    this.setState((prevState) => {
+      const projectServers = prevState.projectServers.map((projectServer) => {
+        if (projectServer.server_id !== serverId) {
+          return projectServer;
+        }
+
+        return {
+          ...projectServer,
+          server: {
+            ...projectServer.server,
+            connection_status: connectionStatus,
+          },
+        }
+      });
+
+      return { projectServers: projectServers };
+    })
   }
 
   /**
@@ -239,6 +288,8 @@ class ProjectPage extends React.Component<any, any> {
 
     const { dispatch, project } = this.props;
 
+    this.updateServerConnectionStatus(server_id, 2);
+
     dispatch(testServerConnection(project.item.id, server_id));
   };
 
@@ -321,6 +372,7 @@ class ProjectPage extends React.Component<any, any> {
       server,
       branches,
       tags,
+      projectServers,
       isDeploymentModalVisible,
       isRedeploymentModalVisible,
       isServerKeyModalVisible,
@@ -376,7 +428,7 @@ class ProjectPage extends React.Component<any, any> {
 
               <ServersTable
                 projectId={ project.item.id }
-                servers={ project.item.servers }
+                projectServers={ projectServers }
                 onServerConnectionTestClick={ this.handleServerConnectionTestClick }
                 onServerRemoveClick={ this.handleServerRemoveModal }
                 onServerKeyClick={ this.handleServerKeyModal }
@@ -450,6 +502,7 @@ const mapStateToProps = state => {
     project: state.project,
     deployments: state.projectDeployments,
     servers: state.servers,
+    auth: state.auth,
   };
 };
 
