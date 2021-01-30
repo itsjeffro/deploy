@@ -1,0 +1,1 @@
+export const FETCH_ME_SUCCESS = 'FETCH_ME_SUCCESS';
