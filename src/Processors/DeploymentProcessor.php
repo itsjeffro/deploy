@@ -19,6 +19,7 @@ use Deploy\Contracts\Processors\ProcessorInterface;
 use Deploy\Events\ProcessorErrorEvent;
 use Deploy\ProviderOauth\ProviderOauthFactory;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class DeploymentProcessor extends AbstractProcessor implements ProcessorInterface
@@ -296,11 +297,22 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     public function getProviderTarball(): string
     {
         if ($this->project->provider_id === 1) {
-            return '--header="Authorization: Bearer ' . $this->getAccessToken() . '" https://bitbucket.org/' . $this->project->repository . '/get/' . $this->deployment->commit . '.tar.gz';
+            return '--header="Authorization: Bearer '
+                . $this->getAccessToken()
+                . '" https://bitbucket.org/'
+                . $this->project->repository
+                . '/get/'
+                . $this->deployment->commit
+                . '.tar.gz';
         }
         
         if ($this->project->provider_id === 2) {
-            return 'https://api.github.com/repos/' . $this->project->repository . '/tarball/' . $this->deployment->commit . '?access_token=' . $this->getAccessToken();
+            return '--header="Authorization: Bearer '
+                . $this->getAccessToken()
+                . '" https://api.github.com/repos/'
+                . $this->project->repository
+                . '/tarball/'
+                . $this->deployment->commit;
         }
         
         return '';
