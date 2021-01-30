@@ -6,6 +6,10 @@ class ProjectServerApi extends BaseApi {
     return this.postRequest('/api/projects/' + projectId + '/servers', data);
   }
 
+  list(projectId) {
+    return this.getRequest(`/api/projects/${ projectId }/servers`);
+  }
+
   get(projectId, serverId) {
     return this.getRequest(`/api/projects/${ projectId }/servers/${ serverId }`);
   }
