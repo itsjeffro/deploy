@@ -2,6 +2,7 @@
 
 namespace Deploy\Processors;
 
+use Deploy\Models\ProjectServer;
 use Deploy\ProviderOauthManager;
 use Deploy\Models\Deployment;
 use Deploy\Models\Process;
@@ -36,7 +37,10 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     
     /** @var Scripts */
     private $deploymentScripts;
-    
+
+    /** @var ProviderOauthManager */
+    private $providerOauthManager;
+
     /**
      * @param ProviderOauthManager $providerOauthManager
      * @return void
@@ -49,11 +53,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
 
     /**
      * Set project.
-     *
-     * @param Project $project
-     * @return self
      */
-    public function setProject($project)
+    public function setProject(Project $project): self
     {
         $this->project = $project;
         $this->deploymentScripts = new Scripts($project);
@@ -63,11 +64,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
 
     /**
      * Set deployment associated with project.
-     *
-     * @param Project $project
-     * @return self
      */
-    public function setDeployment($deployment)
+    public function setDeployment(Deployment $deployment): self
     {
         $this->deployment = $deployment;
 
@@ -77,7 +75,7 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     /**
      * {@inheritDoc}
      */
-    public function fire()
+    public function fire(): void
     {
         $status = Deployment::FINISHED;
         
@@ -112,11 +110,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
 
     /**
      * Run through each process in a sequence. Gather exit codes and output.
-     *
-     * @param  array $sequence
-     * @return integer
      */
-    public function runSequence(array $sequence)
+    public function runSequence(array $sequence): int
     {
         $exitCode = 0;
         
@@ -164,12 +159,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     
     /**
      * Update the deployment with the fetched commit data.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Deployment $deployment
-     * @return void
      */
-    public function updateDeploymentCommitData(Project $project, Deployment $deployment)
+    public function updateDeploymentCommitData(Project $project, Deployment $deployment): void
     {
         $commit = new Commit($deployment->reference, $deployment->branch);
         $commitData = $commit->getByProject($project);
@@ -186,10 +177,9 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     /**
      * Update deployment as deploying.
      *
-     * @param  \Deploy\Models\Deployment $deployment
-     * @return null
+     * @param Deployment $deployment
      */
-    public function updateDeploymentAsDeploying($deployment)
+    public function updateDeploymentAsDeploying($deployment): void
     {
         $deployment->fill([
             'status' => 3,
@@ -203,11 +193,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     
     /**
      * Update deployment as finished.
-     *
-     * @param  integer $status
-     * @return void
      */
-    public function updateDeploymentAsFinished($status)
+    public function updateDeploymentAsFinished(int $status): void
     {
         $deployment = $this->deployment;
         $deployment->fill([
@@ -224,10 +211,9 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     /**
      * Update any remaining processes as cancelled.
      *
-     * @param  \Deploy\Models\Deployment $deployment
-     * @return void
+     * @param Deployment $deployment
      */
-    public function updateRemainingProcessesAsCancelled($deployment)
+    public function updateRemainingProcessesAsCancelled($deployment): void
     {
         $processes = $deployment->processes()
             ->where('status', 0)
@@ -243,9 +229,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
      * Calculate duration from step progress.
      *
      * @param Deployment $deployment
-     * @return integer
      */
-    public function calculateDuration($deployment)
+    public function calculateDuration($deployment): int
     {
         $duration = 0;
         
@@ -260,16 +245,19 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
      * Return process' parsed script.
      *
      * @param Process $process
-     * @return string
      */
-    public function getScript($process)
+    public function getScript($process): string
     {
+        $projectServer = ProjectServer::where('project_id', $this->project->id)
+            ->where('server_id', $process->server->id)
+            ->firstOrFail();
+
         $commandParser = new CommandParser([
             'symlink'      => 'ln -nfs',
             'repository'   => $this->getProviderTarball(),
-            'project'      => $process->server->project_path,
-            'releases'     => $process->server->project_path . '/releases',
-            'release'      => $process->server->project_path . '/releases/' . $this->time,
+            'project'      => $projectServer->project_path,
+            'releases'     => $projectServer->project_path . '/releases',
+            'release'      => $projectServer->project_path . '/releases/' . $this->time,
             'time'         => $this->time,
         ]);
         
@@ -281,10 +269,9 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     /**
      * Return script for action or action hook.
      *
-     * @param  \Deploy\Models\Process $process
-     * @return string
+     * @param Process $process
      */
-    public function getHookScript($process)
+    public function getHookScript($process): string
     {
         if ($process->hook_id) {
             return $process->hook->script;
@@ -305,10 +292,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     
     /**
      * Get link for provider tarball.
-     *
-     * @return string
      */
-    public function getProviderTarball()
+    public function getProviderTarball(): string
     {
         if ($this->project->provider_id === 1) {
             return '--header="Authorization: Bearer ' . $this->getAccessToken() . '" https://bitbucket.org/' . $this->project->repository . '/get/' . $this->deployment->commit . '.tar.gz';
@@ -323,10 +308,8 @@ class DeploymentProcessor extends AbstractProcessor implements ProcessorInterfac
     
     /**
      * Return provider access token from project user.
-     *
-     * @return string
      */
-    protected function getAccessToken()
+    protected function getAccessToken(): string
     {
         $provider = $this->project
             ->provider
