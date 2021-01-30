@@ -33,7 +33,12 @@ class ServerController extends Controller
     {
         $user = auth()->id();
 
-        $servers = Server::where('user_id', $user)
+        $servers = Server::with([
+                'projects' => function ($query) {
+                    $query->select('projects.id', 'name');
+                }
+            ])
+            ->where('user_id', $user)
             ->paginate();
 
         return ServerResource::collection($servers);
