@@ -19,11 +19,8 @@ class CommandParser
 
     /**
      * Parse commands into theor correct value specified from the constructor.
-     *
-     * @param  array $script
-     * @return string
      */
-    public function parseScript($script)
+    public function parseScript(string $script)
     {
         $pattern = '/{{\s*(.+?)\s*}}(\r?\n)?/s';
 
