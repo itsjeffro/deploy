@@ -18,6 +18,7 @@ import PanelBody from "../../components/PanelBody";
 import Grid from "../../components/Grid";
 import Project from "../../services/Project";
 import ProjectServerApi from "../../services/Api/ProjectServerApi";
+import {buildAlertFromResponse} from "../../utils/alert";
 
 class ProjectServerEditPage extends React.Component<any, any> {
   state = {
@@ -35,7 +36,6 @@ class ProjectServerEditPage extends React.Component<any, any> {
     },
     project: {
       id: null,
-      servers: [],
     },
     input: {
       server_id: '',
@@ -129,7 +129,7 @@ class ProjectServerEditPage extends React.Component<any, any> {
         dispatch(createToast('Server updated successfully.'));
       })
       .catch((error) => {
-        this.setState({ errors: error.response, isUpdating: false });
+        this.setState({ errors: buildAlertFromResponse(error.response), isUpdating: false });
       });
   };
 
@@ -160,7 +160,7 @@ class ProjectServerEditPage extends React.Component<any, any> {
         input: {
           ...prevState.input,
           server_id: server.id,
-          project_path: server.project_path,
+          project_path: '',
         },
       };
     });
