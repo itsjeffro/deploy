@@ -75,6 +75,9 @@ Route::group(['prefix' => 'api'], function() {
 
     // Project's server test connection
     Route::get('servers/{server}/test-connection', 'ServerTestConnectionController@show')->name('server-test-connection.show');
+
+    // Auth
+    Route::get('auth/user', 'AuthController@user');
 });
 
 // Provider auth
