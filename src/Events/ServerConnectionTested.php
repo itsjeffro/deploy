@@ -42,7 +42,7 @@ class ServerConnectionTested implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('project.' . $this->server->project_id);
+        return new PrivateChannel('user.' . $this->server->user_id);
     }
 
     /**

@@ -39,7 +39,7 @@ class DeploymentDeploying implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('project.' . $this->deployment->project_id);
+        return new PrivateChannel('user.' . $this->deployment->project->user_id);
     }
 
     /**

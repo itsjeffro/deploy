@@ -2,6 +2,7 @@
 
 namespace Deploy\Events;
 
+use Deploy\Models\Project;
 use Deploy\Models\Server;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -44,6 +45,8 @@ class EnvironmentSyncing implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('project.' . $this->projectId);
+        $project = Project::where('id', $this->projectId)->first();
+
+        return new PrivateChannel('user.' . $project->user_id);
     }
 }
