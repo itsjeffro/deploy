@@ -18,6 +18,9 @@ import EnvironmentServersTable from './components/EnvironmentServersTable';
 import { buildAlertFromResponse } from '../../utils/alert';
 import Layout from "../../components/Layout";
 import ProjectHeading from '../../components/ProjectHeading/ProjectHeading';
+import ProjectServerApi from "../../services/Api/ProjectServerApi";
+import { createToast } from "../../state/alert/alertActions";
+import {fetchMe} from "../../state/auth/authActions";
 
 class ProjectEnvironmentUnlockPage extends React.Component<any, any> {
   constructor(props) {
@@ -29,6 +32,7 @@ class ProjectEnvironmentUnlockPage extends React.Component<any, any> {
         contents: '',
         servers: [],
       },
+      projectServers: [],
       errors: [],
       status: {},
       unlocked: false
@@ -46,91 +50,135 @@ class ProjectEnvironmentUnlockPage extends React.Component<any, any> {
    * Listen for environment updates when component has mounted.
    */
   componentDidMount() {
-    const {
-      dispatch,
-      project,
-      match
-    } = this.props;
-
+    const { dispatch, project, match } = this.props;
     const projectId = match.params.project_id;
-    const echoWindow: any = window;
-    const Echo = echoWindow.Echo;
-
-    this.setState(prevState => {
-      const environment = {
-        ...prevState.environment,
-        servers: project.item.environment_servers.map(server => {
-          return server.server_id;
-        }, []),
-      };
-
-      return {environment: environment};
-    });
 
     dispatch(fetchProject(projectId));
 
-    if (Echo !== null) {
-      Echo.private('project.' + projectId)
-        .listen('.Deploy\\Events\\EnvironmentSyncing', (e) => {
-          let serverId = e.serverId;
-          let serverStatus = e.status;
+    dispatch(fetchMe());
 
-          this.setState(prevState => {
+    this.setProjectServers(projectId);
+
+    this.setEnvironment(project);
+  }
+
+  /**
+   * Update state when component props update.
+   */
+  componentWillReceiveProps(nextProps: any): void {
+    const { auth } = this.props;
+
+    if (nextProps.auth.user !== auth.user && nextProps.auth.user) {
+      const user = nextProps.auth.user;
+
+      this.listenForEvents(user.id);
+    }
+  }
+
+  /**
+   * Listen for Echo related events.
+   */
+  listenForEvents = (userId: number): void => {
+    const echoWindow: any = window;
+    const Echo = echoWindow.Echo;
+
+    if (Echo !== null) {
+      Echo.private(`user.${ userId }`)
+        .listen('.Deploy\\Events\\EnvironmentSyncing', (e) => {
+          const serverId = e.serverId;
+          const serverStatus = e.status;
+
+          this.setState((prevState) => {
             const status = {
               ...prevState.status,
               [serverId]: serverStatus
             };
 
-            return { status: status }
+            return { status: status };
           });
         })
         .listen('.Deploy\\Events\\EnvironmentSynced', (e) => {
-          let serverId = e.serverId;
-          let serverStatus = e.status;
+          const serverId = e.serverId;
+          const serverStatus = e.status;
 
-          this.setState(prevState => {
+          this.setState((prevState) => {
             const status = {
               ...prevState.status,
               [serverId]: serverStatus
             };
 
-            return { status: status }
+            return { status: status };
           });
         });
     }
   }
 
   /**
-   * Handle input change.
-   *
-   * @param {object} event
+   * Setup environment.
    */
-  handleInputChange(event) {
+  setEnvironment = (project: any) => {
+    this.setState((prevState) => {
+      const projectServers = project.item.environment_servers;
+
+      const servers = projectServers.map((server) => {
+        return server.server_id;
+      }, []);
+
+      const environment = {
+        ...prevState.environment,
+        servers: servers,
+      };
+
+      return { environment: environment };
+    });
+  }
+
+  /**
+   * Setup project servers.
+   */
+  setProjectServers = (projectId: number) => {
+    const projectServerApi = new ProjectServerApi();
+
+    projectServerApi.list(projectId)
+      .then((response) => {
+        this.setState({ projectServers: response.data })
+      })
+      .catch((error) => {
+        console.log(error.response);
+      })
+  }
+
+  /**
+   * Handle input change.
+   */
+  handleInputChange = (event): void => {
     const value = event.target.value;
     const name = event.target.name;
 
-    this.setState(state => {
-      let environment = Object.assign({}, state.environment, {
+    this.setState((prevState) => {
+      let environment = {
+        ...prevState.environment,
         [name]: value
-      });
-      return {environment: environment}
+      };
+
+      return { environment: environment }
     });
   }
 
   /**
    * Handle environment unlock click.
    */
-  handleClick() {
+  handleClick = (): void => {
     const { environment } = this.state;
     const { project } = this.props;
     const projectEnvironmentUnlockService = new ProjectEnvironmentUnlockService;
 
     projectEnvironmentUnlockService
       .post(project.item.id, environment)
-      .then(response => {
+      .then((response) => {
       	this.setState({errors: []});
 
-        this.setState(state => {
+        this.setState((state) => {
           let environment = Object.assign({}, state.environment, response.data);
 
           return {
@@ -139,65 +187,57 @@ class ProjectEnvironmentUnlockPage extends React.Component<any, any> {
           }
         });
       },
-      error => {
-        this.setState({
-          errors: buildAlertFromResponse(error.response)
-        });
+      (error) => {
+        this.setState({ errors: buildAlertFromResponse(error.response) });
       });
   }
 
   /**
    * Handle environment update click.
    */
-  handleUpdateClick() {
-    const { project } = this.props;
+  handleUpdateClick = (): void => {
+    const { project, dispatch } = this.props;
     const { environment } = this.state;
     const projectEnvironmentService = new ProjectEnvironmentService;
 
     projectEnvironmentService
       .put(project.item.id, environment)
-      .then(response => {
-        this.setState({
-          errors: []
-        });
+      .then((response) => {
+        this.setState({ errors: [] });
+
+        dispatch(createToast('Updated environment successfully.'));
       },
-      error => {
-        this.setState({
-          errors: buildAlertFromResponse(error.response)
-        });
+      (error) => {
+        this.setState({ errors: buildAlertFromResponse(error.response) });
       });
   }
 
   /**
    * Handle cancel environment update click.
    */
-  handleCancelClick() {
-    this.setState(state => {
-      let environment = Object.assign({}, state.environment, {
+  handleCancelClick = (): void => {
+    this.setState((prevState) => ({
+      ...prevState,
+      environment: {
+        ...prevState.environment,
         key: null,
         contents: null
-      });
-
-      return {
-        environment: environment,
-        unlocked: false
-      }
-    });
+      },
+      unlocked: false
+    }));
   }
 
   /**
    * Handle click for adding to servers that should be synced.
-   *
-   * @param {int} server_id
    */
-  handleSyncServerClick(serverId) {
-    this.setState(prevState => {
+  handleSyncServerClick = (serverId: number): void => {
+    this.setState((prevState) => {
       let environmentServers = prevState.environment.servers;
 
       if (environmentServers.indexOf(serverId) === -1) {
         environmentServers.push(serverId);
       } else {
-        environmentServers = environmentServers.filter(environmentServer => {
+        environmentServers = environmentServers.filter((environmentServer) => {
           return environmentServer !== serverId;
         });
       }
@@ -207,31 +247,25 @@ class ProjectEnvironmentUnlockPage extends React.Component<any, any> {
         servers: environmentServers,
       };
 
-      return {environment: environment};
+      return { environment: environment };
     });
   }
 
   /**
-   * @param {Array} environmentServers
-   * @returns {Array}
+   * Map environment servers.
    */
-  mapEnvironmentServers(environmentServers) {
-    return (environmentServers||[]).map(environmentServer => {
+  mapEnvironmentServers = (environmentServers: any[]): any[] => {
+    return (environmentServers || []).map(environmentServer => {
       return parseInt(environmentServer.server_id);
     });
   }
 
+  /**
+   * Render component.
+   */
   render() {
-    const {
-      environment,
-      errors,
-      status,
-      unlocked
-    } = this.state;
-
-    const {
-      project
-    } = this.props;
+    const { environment,  errors,  status,  unlocked,  projectServers } = this.state;
+    const { project } = this.props;
 
     if (project.isFetching) {
       return (
@@ -298,7 +332,7 @@ class ProjectEnvironmentUnlockPage extends React.Component<any, any> {
 
                 <Grid xs={12} md={4}>
                   <EnvironmentServersTable
-                    project={ project.item }
+                    projectServers={ projectServers }
                     syncedServers={ environment.servers }
                     status={ status }
                     onSyncServerClick={this.handleSyncServerClick}
@@ -363,6 +397,7 @@ class ProjectEnvironmentUnlockPage extends React.Component<any, any> {
 const mapStateToProps = state => {
   return {
     project: state.project,
+    auth: state.auth,
   };
 };
 

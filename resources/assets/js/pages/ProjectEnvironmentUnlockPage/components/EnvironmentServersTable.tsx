@@ -7,7 +7,7 @@ import PanelTitle from '../../../components/PanelTitle';
 const EnvironmentServersTable = (props) => {
   const {
     onSyncServerClick,
-    project,
+    projectServers,
     syncedServers,
     status,
   } = props;
@@ -25,8 +25,8 @@ const EnvironmentServersTable = (props) => {
           </tr>
           </thead>
           <tbody>
-          {(project.servers||[]).map(server => {
-            const statusId = status[server.id];
+          { (projectServers || []).map((projectServer) => {
+            const statusId = status[projectServer.server_id];
 
             let statusText = '';
 
@@ -39,20 +39,20 @@ const EnvironmentServersTable = (props) => {
             }
 
             return (
-              <tr key={server.id}>
+              <tr key={ projectServer.server.id }>
                 <td>
                   <input
                     type="checkbox"
                     name="is_synced_to"
-                    id={'server-' + server.id}
-                    value={server.id}
-                    checked={syncedServers.indexOf(server.id) >= 0}
-                    onChange={() => onSyncServerClick(server.id)}
-                  /> <label htmlFor={'server-' + server.id}>{server.name} ({server.ip_address}) { statusText || '' } </label>
+                    id={'server-' + projectServer.server_id}
+                    value={projectServer.server_id}
+                    checked={ syncedServers.indexOf(projectServer.server_id) >= 0 }
+                    onChange={() => onSyncServerClick(projectServer.server_id)}
+                  /> <label htmlFor={'server-' + projectServer.server_id}>{ projectServer.server.name } ({ projectServer.server.ip_address }) { statusText || '' } </label>
                 </td>
               </tr>
             )
-          })}
+          }) }
           </tbody>
         </table>
       </div>
