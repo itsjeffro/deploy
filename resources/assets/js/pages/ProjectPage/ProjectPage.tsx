@@ -103,7 +103,7 @@ class ProjectPage extends React.Component<any, any> {
   }
 
   /**
-   * Listen for project related events.
+   * Listen for Echo related events.
    */
   listenForEvents = (userId: number): void => {
     const { dispatch } = this.props;
