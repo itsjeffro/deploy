@@ -4,6 +4,7 @@ namespace Deploy\Http\Controllers;
 
 use Deploy\Models\Project;
 use Deploy\Models\Action;
+use Illuminate\Http\JsonResponse;
 
 class ProjectActionsController extends Controller
 {
@@ -14,8 +15,6 @@ class ProjectActionsController extends Controller
 
     /**
      * Instantiate ProjectActionsController
-     *
-     * @param \Deploy\Models\Action $action
      */
     public function __construct(Action $action)
     {
@@ -24,11 +23,8 @@ class ProjectActionsController extends Controller
 
     /**
      * List actions.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Project $project)
+    public function index(Project $project): JsonResponse
     {
         $this->authorize('view', $project);
 
@@ -41,12 +37,8 @@ class ProjectActionsController extends Controller
 
     /**
      * List hooks belonging to specified project's actions.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Action $action
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Project $project, Action $action)
+    public function show(Project $project, Action $action): JsonResponse
     {
         $this->authorize('view', $project);
 

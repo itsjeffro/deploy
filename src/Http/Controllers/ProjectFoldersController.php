@@ -5,16 +5,14 @@ namespace Deploy\Http\Controllers;
 use Deploy\Http\Requests\FolderRequest;
 use Deploy\Models\Folder;
 use Deploy\Models\Project;
+use Illuminate\Http\JsonResponse;
 
 class ProjectFoldersController extends Controller
 {
     /**
      * List folders from project.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Project $project)
+    public function index(Project $project): JsonResponse
     {
         $this->authorize('view', $project);
 
@@ -28,12 +26,8 @@ class ProjectFoldersController extends Controller
 
     /**
      * Store folder link.
-     *
-     * @param  \Deploy\Http\Requests\FolderRequest $request
-     * @param  \Deploy\Models\Project $project
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(FolderRequest $request, Project $project)
+    public function store(FolderRequest $request, Project $project): JsonResponse
     {
         $this->authorize('view', $project);
 
@@ -48,12 +42,8 @@ class ProjectFoldersController extends Controller
 
     /**
      * Delete folder link.
-     *
-     * @param  \Deploy\Models\Project $project
-     * @param  \Deploy\Models\Folder $folder
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Project $project, Folder $folder)
+    public function destroy(Project $project, Folder $folder): JsonResponse
     {
         if ($project->id !== $folder->project_id) {
             abort(404, 'Not found.');

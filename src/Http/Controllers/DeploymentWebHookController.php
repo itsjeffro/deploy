@@ -6,17 +6,15 @@ use Deploy\Models\Project;
 use Deploy\Jobs\DeployJob;
 use Deploy\ProviderRepository\Reference;
 use Deploy\DeploymentManager;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DeploymentWebHookController extends Controller
 {
     /**
      * Store deployment queue triggered by webhook.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, $key)
+    public function store(Request $request, string $key): JsonResponse
     {
         $project = Project::where('key', $key)
             ->where('deploy_on_push', 1)

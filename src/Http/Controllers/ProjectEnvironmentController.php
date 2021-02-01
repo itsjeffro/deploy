@@ -12,18 +12,28 @@ use Illuminate\Http\JsonResponse;
 
 class ProjectEnvironmentController extends Controller
 {
+    /** @var EnvironmentEncrypter */
+    private $environmentEncrypter;
+
+    /**
+     * ProjectEnvironmentController constructor.
+     */
+    public function __construct(EnvironmentEncrypter $environmentEncrypter)
+    {
+        $this->environmentEncrypter = $environmentEncrypter;
+    }
+
     /**
      * Update environment.
-     *
-     * @throws AuthorizationException
      */
-    public function update(EnvironmentEncrypter $environmentEncrypter, EnvironmentRequest $request, Project $project): JsonResponse
+    public function update(EnvironmentRequest $request, Project $project): JsonResponse
     {
         $this->authorize('view', $project);
 
         $environment = Environment::where('project_id', $project->id)->first();
 
-        $encrypter = $environmentEncrypter->setKey($request->get('key'));
+        $encrypter = $this->environmentEncrypter
+            ->setKey($request->get('key'));
 
         if (!$environment) {
             return response()->json(

@@ -5,6 +5,7 @@ namespace Deploy\Http\Controllers;
 use Deploy\Models\Provider;
 use Deploy\ProviderOauth\ProviderOauthFactory;
 use Deploy\ProviderOauthManager;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProviderAuthController extends Controller
@@ -13,7 +14,7 @@ class ProviderAuthController extends Controller
     private $providerOauthManager;
 
     /**
-     * @param ProviderOauthManager $providerOauthManager
+     * ProviderAuthController constructor.
      */
     public function __construct(ProviderOauthManager $providerOauthManager)
     {
@@ -23,11 +24,8 @@ class ProviderAuthController extends Controller
     /**
      * Redirect the logged in user to their chosen provider so that they can
      * authorize this application to access the user's information.
-     *
-     * @param string $providerFriendlyName
-     * @return RedirectResponse
      */
-    public function authorizeUser(string $providerFriendlyName)
+    public function authorizeUser(string $providerFriendlyName): RedirectResponse
     {
         $provider = ProviderOauthFactory::create($providerFriendlyName);
 
@@ -43,12 +41,8 @@ class ProviderAuthController extends Controller
 
     /**
      * Retrieve the access token from the provider.
-     *
-     * @param Request $request
-     * @param string $providerFriendlyName
-     * @return RedirectResponse
      */
-    public function providerAccessToken(Request $request, string $providerFriendlyName)
+    public function providerAccessToken(Request $request, string $providerFriendlyName): RedirectResponse
     {
         $providerOauth = ProviderOauthFactory::create($providerFriendlyName);
         

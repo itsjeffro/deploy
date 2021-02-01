@@ -6,6 +6,7 @@ use Deploy\Models\Provider;
 use Deploy\ProviderOauth\ProviderOauthFactory;
 use Deploy\ProviderOauthManager;
 use Deploy\ProviderRepositoryManager;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class RepositoryBranchesTagsController extends Controller
@@ -17,8 +18,7 @@ class RepositoryBranchesTagsController extends Controller
     private $providerRepositoryManager;
 
     /**
-     * @param ProviderOauthManager $providerOauthManager
-     * @param ProviderRepositoryManager $providerRepositoryManager
+     * RepositoryBranchesTagsController constructor.
      */
     public function __construct(
         ProviderOauthManager $providerOauthManager,
@@ -30,11 +30,8 @@ class RepositoryBranchesTagsController extends Controller
 
     /**
      * Return repository's branch list.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $providerId = $request->get('provider_id');
         $repository = $request->get('repository');
@@ -59,11 +56,8 @@ class RepositoryBranchesTagsController extends Controller
 
     /**
      * Retrieve access token.
-     *
-     * @param Provider $provider
-     * @return string
      */
-    protected function accessToken($provider)
+    protected function accessToken(Provider $provider): string
     {
         $providerOauth = ProviderOauthFactory::create($provider->friendly_name);
 
