@@ -7,6 +7,7 @@ use Deploy\Events\EnvironmentSynced;
 use Deploy\Events\EnvironmentSyncing;
 use Deploy\Models\Environment;
 use Deploy\Models\Project;
+use Deploy\Models\ProjectServer;
 use Deploy\Models\Server;
 use Deploy\Ssh\Client;
 use Deploy\Environment\EnvironmentEncrypter;
@@ -85,10 +86,20 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
             ->decrypt($this->environment->contents);
 
         // Loop through each server to spin up a processor to run our script.
-        foreach ($this->project->servers as $server) {
+        $serverIds = $this->project
+            ->servers
+            ->pluck('id');
+
+        $projectServers = ProjectServer::where('project_id', $this->project->id)
+            ->whereIn('server_id', $serverIds)
+            ->get();
+
+        foreach ($projectServers as $projectServer) {
+            $server = $projectServer->server;
+
             $client = new Client(
                 $this->getHost($server),
-                $this->script($server, $decryptedContents)
+                $this->script($projectServer->project_path, $decryptedContents)
             );
             
             $processors[] = [
@@ -130,13 +141,9 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
 
     /**
      * Return script to create .env with it's contents.
-     *
-     * @param Server $server
-     * @param string $contents
-     * @return string
      */
-    public function script(Server $server, string $contents)
+    public function script(string $serverProjectPath, string $contents): string
     {
-        return 'cd ' . $server->project_path . ' && echo "' . $contents . '" > .env';
+        return 'cd ' . $serverProjectPath . ' && echo "' . $contents . '" > .env';
     }
 }
