@@ -2,15 +2,15 @@
 
 namespace Deploy\Deployment;
 
+use Exception;
+
 class CommandParser
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $values;
 
     /**
-     * @param array $values
+     * CommandParser constructor.
      */
     public function __construct(array $values)
     {
@@ -18,9 +18,11 @@ class CommandParser
     }
 
     /**
-     * Parse commands into theor correct value specified from the constructor.
+     * Parse commands into there correct value specified from the constructor.
+
+     * @throws Exception
      */
-    public function parseScript(string $script)
+    public function parseScript(string $script): string
     {
         $pattern = '/{{\s*(.+?)\s*}}(\r?\n)?/s';
 
@@ -36,16 +38,14 @@ class CommandParser
     }
 
     /**
-     * Parse commands into theor correct value specified from the constructor.
-     *
-     * @param  string $command
-     * @throws \Exception
-     * @return string
+     * Parse commands into there correct value specified from the constructor.
+
+     * @throws Exception
      */
-    public function resolveCommand($command)
+    public function resolveCommand(string $command): string
     {
         if (!array_key_exists($command, $this->values)) {
-            throw new \Exception('Command "'.$command.'" is not defined.');
+            throw new Exception('Command "'.$command.'" is not defined.');
         }
 
         return $this->values[$command];
