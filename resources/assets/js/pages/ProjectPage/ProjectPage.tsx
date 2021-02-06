@@ -10,7 +10,7 @@ import {
   projectDeploymentDeployed
 } from "../../state/projectDeployments/actions";
 import { Deploy } from '../../config';
-import { fetchProject } from '../../state/project/actions';
+import {fetchProject, projectServerRemoveFailure, projectServerRemoveSuccess} from '../../state/project/actions';
 import { updateProjectKey } from '../../state/project/actions';
 import { removeProjectServer } from '../../state/project/actions';
 import Icon from '../../components/Icon';
@@ -35,6 +35,7 @@ import ServerKeyModal from '../../components/ServerKeyModal';
 import ProjectServerApi from "../../services/Api/ProjectServerApi";
 import { fetchMe } from "../../state/auth/authActions";
 import { testServerConnection } from "../../state/servers/actions";
+import {createToast} from "../../state/alert/alertActions";
 
 class ProjectPage extends React.Component<any, any> {
   state = {
@@ -72,21 +73,15 @@ class ProjectPage extends React.Component<any, any> {
     } = this.props;
 
     dispatch(fetchProject(project_id));
-
     dispatch(fetchProjectDeployments(project_id));
-
     dispatch(fetchMe());
 
     const projectServerApi = new ProjectServerApi();
 
     projectServerApi
       .list(project_id)
-      .then((response) => {
-        this.setState({ projectServers: response.data });
-      })
-      .catch((error) => {
-        console.log(error.response);
-      })
+      .then((response) => this.setState({ projectServers: response.data }))
+      .catch((error) => console.log(error.response))
   }
 
   /**
@@ -330,9 +325,24 @@ class ProjectPage extends React.Component<any, any> {
     const { server } = this.state;
     const { project, dispatch } = this.props;
 
-    dispatch(removeProjectServer(project.item.id, server.id));
+    const projectServerApi = new ProjectServerApi;
 
-    this.handleHideServerRemoveModal();
+    projectServerApi
+      .delete(project.item.id, server.id)
+      .then((response) => {
+        this.handleHideServerRemoveModal();
+
+        this.setState((prevState) => {
+          const projectServers = prevState.projectServers.filter((projectServer) => {
+            return projectServer.id != server.id
+          });
+
+          return { projectServers: projectServers };
+        });
+
+        dispatch(createToast('Server removed successfully.'));
+      })
+      .catch((error) => console.log(error.response));
   };
 
   /**
@@ -365,6 +375,9 @@ class ProjectPage extends React.Component<any, any> {
     this.setState({ isAddServerModalVisible: false });
   };
 
+  /**
+   * Render component.
+   */
   render() {
     const {
       deploy,
@@ -501,7 +514,6 @@ const mapStateToProps = state => {
   return {
     project: state.project,
     deployments: state.projectDeployments,
-    servers: state.servers,
     auth: state.auth,
   };
 };
