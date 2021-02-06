@@ -43,43 +43,6 @@ const project = (state = initialState, action) => {
         }
       };
 
-    // Server connection test
-    case constants.TEST_SERVER_CONNECTION_REQUEST:
-      return {
-        ...state,
-        item: {
-          ...state.item,
-          servers: state.item.servers.map(server => {
-            if (server.id === action.serverId) {
-              return {
-                ...server,
-                connection_status: 2,
-              }
-            } else {
-              return server;
-            }
-          })
-        }
-      };
-
-    case constants.UPDATE_SERVER_CONNECTION_STATUS:
-      return {
-        ...state,
-        item: {
-          ...state.item,
-          servers: state.item.servers.map(server => {
-            if (server.id === action.serverId) {
-              return {
-                ...server,
-                connection_status: action.connectionStatus,
-              }
-            } else {
-              return server;
-            }
-          })
-        }
-      };
-
     // Server remove
     case constants.PROJECT_SERVER_REMOVE_SUCCESS:
       return {
