@@ -35,8 +35,10 @@ class CreateProjectServerTable extends Migration
             ]);
         }
 
+        /** @TODO The columns below will be removed in v3 */
         Schema::table('servers', function (Blueprint $table) {
             $table->integer('project_id')->unsigned()->nullable()->change();
+            $table->string('project_path')->nullable()->change();
         });
     }
 
