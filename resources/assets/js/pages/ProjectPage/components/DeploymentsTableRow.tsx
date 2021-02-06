@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Button from '../../../components/Button';
 import Icon from '../../../components/Icon';
+import DateTime from "../../../services/DateTime";
 
 const DeploymentsTableRow = (props) => {
   const {
@@ -30,9 +31,11 @@ const DeploymentsTableRow = (props) => {
     status = <span className="text-success"><i className="fa fa-check"></i> Deployed</span>;
   }
 
+  let startedAt = new DateTime(deployment.started_at);
+
   return (
     <tr>
-      <td>{ deployment.started_at }</td>
+      <td>{ startedAt.format('Y-m-d H:i:s') }</td>
       <td>{ committer }</td>
       <td>{ commit }</td>
       <td className="deployment-status text-center">
