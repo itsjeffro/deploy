@@ -11,6 +11,7 @@ const initialState = {
   isUpdating: false,
   isUpdated: false,
   isDeleting: false,
+  isDeleted: false,
 };
 
 const serversReducers = (state = initialState, action) => {
@@ -101,8 +102,12 @@ const serversReducers = (state = initialState, action) => {
     case constants.SERVER_DELETE_SUCCESS:
       return {
         ...state,
+        items: state.items.filter((item) => {
+          return item.id !== action.serverId;
+        }),
         errors: [],
         isDeleting: false,
+        isDeleted: true,
       };
   
     case constants.SERVER_DELETE_FAILURE:
@@ -159,6 +164,36 @@ const serversReducers = (state = initialState, action) => {
         errors: buildAlertFromResponse(action.errors),
         isCreating: false,
         isCreated: false,
+      };
+
+    // Server connection test (sending)
+    case constants.TEST_SERVER_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        items: state.items.map((server) => {
+          if (server.id === action.serverId) {
+            return {
+              ...server,
+              connection_status: 2,
+            }
+          }
+          return server;
+        })
+      };
+
+    // Update server's connection status (received)
+    case constants.UPDATE_SERVER_CONNECTION:
+      return {
+        ...state,
+        items: state.items.map((server) => {
+          if (server.id === action.serverId) {
+            return {
+              ...server,
+              connection_status: action.connectionStatus,
+            }
+          }
+          return server;
+        })
       };
       
     default:
