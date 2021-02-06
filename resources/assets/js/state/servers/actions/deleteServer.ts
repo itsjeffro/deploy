@@ -5,8 +5,9 @@ export const deleteServerRequest = (): object =>({
   type: constant.SERVER_DELETE_REQUEST,
 });
 
-export const deleteServerSuccess = (): object =>({
+export const deleteServerSuccess = (serverId: number): object =>({
   type: constant.SERVER_DELETE_SUCCESS,
+  serverId: serverId,
 });
 
 export const deleteServerFailure = (errors: any[]): object =>({
@@ -23,7 +24,7 @@ export const deleteServer = (serverId: number) => {
     serverApi
       .delete(serverId)
       .then((response) => {
-          dispatch(deleteServerSuccess());
+          dispatch(deleteServerSuccess(serverId));
         },
         (error) => {
           dispatch(deleteServerFailure(error.response));
