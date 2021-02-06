@@ -75,7 +75,6 @@ class ServerController extends Controller
                 'ip_address' => $request->get('ip_address'),
                 'port' => $request->get('port'),
                 'connect_as' => $request->get('connect_as'),
-                'project_path' => $request->get('project_path'),
             ]);
             $server->save();
 
@@ -85,6 +84,7 @@ class ServerController extends Controller
                 $projectServer = new ProjectServer();
                 $projectServer->project_id = $request->input('project_id');
                 $projectServer->server_id = $server->id;
+                $projectServer->project_path = $request->get('project_path');
                 $projectServer->save();
             }
 
