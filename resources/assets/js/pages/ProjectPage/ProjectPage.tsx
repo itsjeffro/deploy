@@ -12,7 +12,6 @@ import {
 import { Deploy } from '../../config';
 import { fetchProject } from '../../state/project/actions';
 import { updateProjectKey } from '../../state/project/actions';
-import { testServerConnection } from '../../state/project/actions';
 import { removeProjectServer } from '../../state/project/actions';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
@@ -35,6 +34,7 @@ import RemoveServerModal from './components/RemoveServerModal';
 import ServerKeyModal from '../../components/ServerKeyModal';
 import ProjectServerApi from "../../services/Api/ProjectServerApi";
 import { fetchMe } from "../../state/auth/authActions";
+import { testServerConnection } from "../../state/servers/actions/testServerConnection";
 
 class ProjectPage extends React.Component<any, any> {
   state = {
@@ -286,11 +286,11 @@ class ProjectPage extends React.Component<any, any> {
   handleServerConnectionTestClick = (event: any, server_id: number): void => {
     event.preventDefault();
 
-    const { dispatch, project } = this.props;
+    const { dispatch } = this.props;
 
     this.updateServerConnectionStatus(server_id, 2);
 
-    dispatch(testServerConnection(project.item.id, server_id));
+    dispatch(testServerConnection(server_id));
   };
 
   /**
