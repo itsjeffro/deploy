@@ -34,7 +34,7 @@ import RemoveServerModal from './components/RemoveServerModal';
 import ServerKeyModal from '../../components/ServerKeyModal';
 import ProjectServerApi from "../../services/Api/ProjectServerApi";
 import { fetchMe } from "../../state/auth/authActions";
-import { testServerConnection } from "../../state/servers/actions/testServerConnection";
+import { testServerConnection } from "../../state/servers/actions";
 
 class ProjectPage extends React.Component<any, any> {
   state = {
