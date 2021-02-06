@@ -2,16 +2,18 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from "react-router-dom";
 
-import Panel from '../../components/Panel';
+import ServerKeyModal from '../../components/ServerKeyModal';
 import Layout from "../../components/Layout";
+import Panel from '../../components/Panel';
 import Container from "../../components/Container";
 import ServersTable from './components/ServersTable';
 import Icon from '../../components/Icon';
-import ServerKeyModal from '../../components/ServerKeyModal';
 import RemoveServerModal from './components/RemoveServerModal';
 import PanelHeading from "../../components/PanelHeading";
-import { createServer, deleteServer, listServers } from "../../state/servers/actions";
+import { createServer, deleteServer, listServers, testServerConnection } from "../../state/servers/actions";
 import { createToast } from "../../state/alert/alertActions";
+import { fetchMe } from "../../state/auth/authActions";
+import { updateServerConnection } from "../../state/servers/actions/updateServerConnection";
 
 class ServersPage extends React.Component<any, any> {
   state = {
@@ -28,13 +30,15 @@ class ServersPage extends React.Component<any, any> {
     const { dispatch } = this.props;
 
     dispatch(listServers());
+
+    dispatch(fetchMe());
   }
 
   /**
    * Update state when component props update.
    */
   componentWillReceiveProps(nextProps: any): void {
-    const { servers, dispatch } = this.props;
+    const { servers, dispatch, auth } = this.props;
 
     if (nextProps.servers.isCreated !== servers.isCreated && nextProps.servers.isCreated) {
       this.setState({ isCreateServerModalVisible: false, input: {} });
@@ -43,27 +47,67 @@ class ServersPage extends React.Component<any, any> {
 
       dispatch(listServers());
     }
+
+    if (nextProps.servers.isDeleted !== servers.isDeleted && nextProps.servers.isDeleted) {
+      dispatch(createToast('Server deleted successfully.'));
+
+      this.setState({ isRemoveServerModalVisible: false });
+    }
+
+    if (nextProps.auth.user !== auth.user && nextProps.auth.user) {
+      const user = nextProps.auth.user;
+
+      this.listenForEvents(user.id);
+    }
   }
 
-  handleServerConnectionTestClick = () => {
-    //
+  /**
+   * Listen for Echo related events.
+   */
+  listenForEvents = (userId: number): void => {
+    const { dispatch } = this.props;
+    const echoWindow: any = window;
+    const Echo = echoWindow.Echo;
+
+    if (Echo !== null) {
+      Echo
+        .private(`user.${ userId }`)
+        .listen('.Deploy\\Events\\ServerConnectionTested', e => {
+          dispatch(updateServerConnection(e.server.id, e.server.connection_status));
+        });
+    }
+  }
+
+  /**
+   * Process server connection test.
+   */
+  handleServerConnectionTestClick = (event, serverId) => {
+    const { dispatch } = this.props;
+
+    dispatch(testServerConnection(serverId));
   };
 
-  handleServerKeyModal = (server) => {
+  /**
+   * Display serve key modal.
+   */
+  handleServerKeyModal = (server): void => {
     this.setState({
       isServerKeyModalVisible: true,
       server: server,
     });
   };
 
-  handleHideServerKeyModal = () => {
+  /**
+   * Hide server key modal.
+   */
+  handleHideServerKeyModal = (): void => {
     this.setState({ isServerKeyModalVisible: false });
   };
 
   /**
    * Show "delete server" modal.
    */
-  handleServerDeleteModal = (server) => {
+  handleServerDeleteModal = (server): void => {
     this.setState({
       isRemoveServerModalVisible: true,
       server: server,
@@ -73,14 +117,14 @@ class ServersPage extends React.Component<any, any> {
   /**
    * Hide "delete server" modal.
    */
-  handleHideServerDeleteModal = () => {
+  handleHideServerDeleteModal = (): void => {
     this.setState({ isRemoveServerModalVisible: false });
   };
 
   /**
    * Delete server on click.
    */
-  handleDeleteServerClick = () => {
+  handleDeleteServerClick = (): void => {
     const { dispatch } = this.props;
     const { server } = this.state;
 
@@ -114,6 +158,9 @@ class ServersPage extends React.Component<any, any> {
     dispatch(createServer(input));
   };
 
+  /**
+   * Render component.
+   */
   render() {
     const {
       isServerKeyModalVisible,
@@ -173,6 +220,7 @@ class ServersPage extends React.Component<any, any> {
 const mapStateToProps = (state) => {
   return {
     servers: state.servers,
+    auth: state.auth,
   };
 };
 
