@@ -12,16 +12,6 @@ class ProjectServerPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Show project server belonging to user.
      */
     public function view($user, ProjectServer $projectServer): bool

@@ -11,23 +11,11 @@ class ProcessPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Show deploymentStepProgress belonging to user.
      *
-     * @param \App\User $user
-     * @param \Deploy\Models\Process $process
-     * @return bool
+     * @param mixed $user
      */
-    public function view(User $user, Process $process)
+    public function view($user, Process $process): bool
     {
         return $user->id === $process->deployment->project->user_id;
     }

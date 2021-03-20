@@ -11,16 +11,6 @@ class FolderPolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Show project's folder belonging to user.
      */
     public function view($user, Folder $folder): bool

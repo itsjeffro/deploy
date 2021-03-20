@@ -9,14 +9,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class ServerPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
     
     /**
      * Show server belonging to user.

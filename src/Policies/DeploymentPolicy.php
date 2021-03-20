@@ -12,9 +12,7 @@ class DeploymentPolicy
     /**
      * Show deployment belonging to user.
      *
-     * @param $user
-     * @param Deployment $deployment
-     * @return bool
+     * @param mixed $user
      */
     public function view($user, Deployment $deployment): bool
     {
