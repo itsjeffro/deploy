@@ -13,11 +13,9 @@ class NotificationPolicy
     /**
      * Show notification belonging to user.
      *
-     * @param User $user
-     * @param Notification $notification
-     * @return bool
+     * @param mixed $user
      */
-    public function view(User $user, Notification $notification)
+    public function view($user, Notification $notification): bool
     {
         return (int) $user->id === (int) $notification->user_id;
     }
@@ -25,11 +23,9 @@ class NotificationPolicy
     /**
      * Mark notification belong to user as read.
      *
-     * @param User $user
-     * @param Notification $notification
-     * @return bool
+     * @param mixed $user
      */
-    public function markAsRead(User $user, Notification $notification)
+    public function markAsRead($user, Notification $notification): bool
     {
         return (int) $user->id === (int) $notification->user_id;
     }
