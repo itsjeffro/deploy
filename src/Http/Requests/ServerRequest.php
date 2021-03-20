@@ -28,6 +28,8 @@ class ServerRequest extends FormRequest
             'ip_address' => 'required|ip',
             'port' => 'required|integer',
             'connect_as' => 'required',
+            'project_id' => 'numeric',
+            'project_path' => 'required_with:project_id',
         ];
     }
 }
