@@ -2,6 +2,8 @@
 
 namespace Deploy\Jobs;
 
+use Deploy\Models\Deployment;
+use Deploy\Models\Project;
 use Deploy\Processors\DeploymentProcessor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -21,14 +23,14 @@ class DeployJob implements ShouldQueue
     public $tries = 5;
     
     /** @var Deployment */
-    private $deployment;
+    protected $deployment;
 
     /** @var Project */
-    private $project;
+    protected $project;
 
     /**
      * Instantiate constructor.
-     * 
+     *
      * @param $deployment
      * @param $project
      * @return void
@@ -42,7 +44,6 @@ class DeployJob implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param DeploymentProcessor $deploymentProcessor
      * @return void
      */
     public function handle(DeploymentProcessor $processor)
@@ -51,5 +52,15 @@ class DeployJob implements ShouldQueue
             ->setDeployment($this->deployment)
             ->setProject($this->project)
             ->fire();
+    }
+
+    public function getDeployment(): Deployment
+    {
+        return $this->deployment;
+    }
+
+    public function getProject(): Project
+    {
+        return $this->project;
     }
 }
