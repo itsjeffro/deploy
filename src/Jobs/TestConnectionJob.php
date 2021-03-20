@@ -40,4 +40,9 @@ class TestConnectionJob implements ShouldQueue
             ->setServer($this->server)
             ->fire();
     }
+
+    public function getServer(): Server
+    {
+        return $this->server;
+    }
 }
