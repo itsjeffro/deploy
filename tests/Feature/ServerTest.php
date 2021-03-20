@@ -9,52 +9,49 @@ use Illuminate\Support\Facades\Bus;
 
 class ServerTest extends TestCase
 {
+    /**
+     * @group server
+     */
     public function test_successfully_create_server()
     {
         Bus::fake();
 
-        $project = factory(Project::class)->create();
-        $user = $project->user;
-
-        $route = route('servers.create', $project);
+        $user = factory(User::class)->create();
 
         $response = $this->actingAs($user)
-            ->json('POST', $route, [
+            ->json('POST', route('servers.create'), [
                 'name' => 'Project server',
                 'ip_address' => '127.0.0.1',
                 'port' => '22',
                 'connect_as' => 'user',
-                'project_path' => '/var/www/html',
             ]);
 
-        $response->assertStatus(201);
-        $response->assertJsonFragment([
+        $response
+            ->assertStatus(201)
+            ->assertJsonFragment([
+            'user_id' => $user->id,
             'name' => 'Project server',
             'ip_address' => '127.0.0.1',
             'port' => '22',
             'connect_as' => 'user',
-            'project_path' => '/var/www/html',
         ]);
 
         $json = $response->json();
-
         $publicKey = explode(' ', $json['public_key']);
 
         $this->assertSame('ssh-rsa', $publicKey[0]);
     }
 
+    /**
+     * @group server
+     */
     public function test_unauthorized_user_cannot_create_server()
     {
-        $project = factory(Project::class)->create();
-
-        $route = route('servers.create', $project);
-
-        $response = $this->json('POST', $route, [
+        $response = $this->json('POST', route('servers.create'), [
                 'name' => 'Project server',
                 'ip_address' => '127.0.0.1',
                 'port' => '22',
                 'connect_as' => 'user',
-                'project_path' => '/var/www/html',
             ]);
 
         $response->assertStatus(403);
