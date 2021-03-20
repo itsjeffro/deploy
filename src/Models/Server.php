@@ -57,4 +57,14 @@ class Server extends Model
     {
         return $this->hasOne(ProjectServer::class);
     }
+
+    /**
+     * Belongs to one user.
+     */
+    public function user(): BelongsTo
+    {
+        $userModel = config('deploy.models.user', '\App\User');
+
+        return $this->belongsTo($userModel);
+    }
 }
