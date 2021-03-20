@@ -33,8 +33,10 @@ class ProjectActionHooksController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $hook = new Hook;
-        $hook->fill($request->all());
+        $hook = new Hook();
+        $hook->project_id = $project->id;
+        $hook->action_id = $action->id;
+        $hook->fill($request->validated());
         $hook->save();
 
         return response()->json($hook, 201);
