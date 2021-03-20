@@ -5,20 +5,23 @@ namespace Deploy\Tests\Feature;
 use Deploy\Models\Project;
 use Deploy\Tests\TestCase;
 
-class UnlockProjectEnvironmentTest extends TestCase
+class EnvironmentUnlockTest extends TestCase
 {
+    /**
+     * @group environment
+     */
     public function test_validation_error_is_returned_using_invalid_key()
     {
         $project = factory(Project::class)->create();
         $user = $project->user;
         $route = route('project-environment-unlock.store', $project);
 
-        $setuplEnvironmentResponse = $this->actingAs($user)
+        $setupEnvironmentResponse = $this->actingAs($user)
             ->json('POST', $route, [
                 'key' => 'initial_key',
             ]);
 
-        $setuplEnvironmentResponse->assertStatus(200);
+        $setupEnvironmentResponse->assertStatus(200);
 
         $invalidKeyResponse = $this->actingAs($user)
             ->json('POST', $route, [
@@ -33,6 +36,9 @@ class UnlockProjectEnvironmentTest extends TestCase
         ]);
     }
 
+    /**
+     * @group environment
+     */
     public function test_successfully_unlock_existing_environment()
     {
         $project = factory(Project::class)->create();
