@@ -13,11 +13,9 @@ class HookPolicy
     /**
      * Determine whether the user can view the deploymentHook.
      *
-     * @param  \App\User  $user
-     * @param  \Deploy\Models\Hook  $hook
-     * @return mixed
+     * @param mixed $user
      */
-    public function view(User $user, Hook $hook)
+    public function view($user, Hook $hook): bool
     {
         return $user->id === $hook->project->user->id;
     }
@@ -25,10 +23,10 @@ class HookPolicy
     /**
      * Determine whether the user can create deploymentHooks.
      *
-     * @param  \App\User  $user
+     * @param mixed $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         //
     }
@@ -36,11 +34,9 @@ class HookPolicy
     /**
      * Determine whether the user can update the deploymentHook.
      *
-     * @param  \App\User  $user
-     * @param  \Deploy\Models\Hook  $hook
-     * @return mixed
+     * @param mixed $user
      */
-    public function update(User $user, Hook $hook)
+    public function update($user, Hook $hook): bool
     {
         return $user->id === $hook->project->user->id;
     }
@@ -48,11 +44,9 @@ class HookPolicy
     /**
      * Determine whether the user can delete the deploymentHook.
      *
-     * @param  \App\User  $user
-     * @param  \Deploy\Models\Hook  $hook
-     * @return mixed
+     * @param mixed $user
      */
-    public function delete(User $user, Hook $hook)
+    public function delete($user, Hook $hook): bool
     {
         return $user->id === $hook->project->user->id;
     }
