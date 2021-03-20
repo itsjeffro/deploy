@@ -3,6 +3,7 @@
 namespace Deploy\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Process extends Model
 {
@@ -42,6 +43,14 @@ class Process extends Model
         'deployment_id',
         'server_id',
     ];
+
+    /**
+     * Deployment step progress has one server.
+     */
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
 
     /**
      * Deployment step progress has one server.
