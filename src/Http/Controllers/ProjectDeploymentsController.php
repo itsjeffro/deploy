@@ -8,6 +8,7 @@ use Deploy\Http\Requests\DeploymentRequest;
 use Deploy\Jobs\DeployJob;
 use Deploy\ProviderRepository\Reference;
 use Deploy\DeploymentManager;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
 class ProjectDeploymentsController extends Controller
@@ -30,6 +31,8 @@ class ProjectDeploymentsController extends Controller
 
     /**
      * Show deployment.
+     *
+     * @throws AuthorizationException
      */
     public function show(Project $project, Deployment $deployment): JsonResponse
     {
@@ -49,6 +52,8 @@ class ProjectDeploymentsController extends Controller
 
     /**
      * Create deployment and dispatch queue.
+     *
+     * @throws AuthorizationException
      */
     public function store(DeploymentRequest $request, Project $project): JsonResponse
     {
