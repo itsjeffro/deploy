@@ -6,12 +6,12 @@ use Deploy\Http\Requests\ProjectRequest;
 use Deploy\Http\Requests\ProjectGeneralRequest;
 use Deploy\Models\Project;
 use Deploy\Models\Deployment;
-use Deploy\Models\Server;
+use Deploy\Models\ProjectServer;
 use Deploy\Models\Environment;
 use Deploy\Models\Hook;
-use Deploy\Models\Notification;
 use Deploy\Models\Process;
 use Deploy\Resources\ProjectResource;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 
@@ -59,6 +59,8 @@ class ProjectController extends Controller
 
     /**
      * Display project details and server setup.
+     *
+     * @throws AuthorizationException
      */
     public function show(Project $project): JsonResponse
     {
@@ -79,6 +81,8 @@ class ProjectController extends Controller
 
     /**
      * Update project.
+     *
+     * @throws AuthorizationException
      */
     public function update(ProjectGeneralRequest $request, Project $project): JsonResponse
     {
@@ -92,13 +96,12 @@ class ProjectController extends Controller
 
     /**
      * Delete project.
+     *
+     * @throws AuthorizationException
      */
     public function destroy(Project $project): JsonResponse
     {
         $this->authorize('delete', $project);
-
-        // Remove notifications associated with project
-        Notification::where('project_id', $project->id)->forceDelete();
 
         // Remove env associated with project
         Environment::where('project_id', $project->id)->delete();
@@ -108,8 +111,8 @@ class ProjectController extends Controller
         Hook::where('project_id', $project->id)->delete();
         Deployment::where('project_id', $project->id)->delete();
 
-        // Remove server associated with project
-        Server::where('project_id', $project->id)->forceDelete();
+        // Remove servers from project. Notes: Servers will not be deleted.
+        ProjectServer::where('project_id', $project->id)->delete();
 
         $project->delete();
 
