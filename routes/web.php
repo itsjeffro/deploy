@@ -62,9 +62,9 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('repositories/branches-tags', 'RepositoryBranchesTagsController@index')->name('repository-branches-tags.index');
 
     // Notification
-    Route::get('notifications', 'NotificationController@index');
-    Route::get('notifications/{notification}', 'NotificationController@show');
-    Route::post('notifications/{notification}/read', 'NotificationController@markAsRead');
+    Route::get('notifications', 'NotificationController@index')->name('notifications.index');
+    Route::get('notifications/{notification}', 'NotificationController@show')->name('notifications.show');
+    Route::post('notifications/{notification}/read', 'NotificationController@markAsRead')->name('notifications.mark-as-read');
 
     // Servers
     Route::get('servers', 'ServerController@index')->name('servers.index');
