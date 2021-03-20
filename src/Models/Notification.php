@@ -3,6 +3,7 @@
 namespace Deploy\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Notification extends Model
@@ -24,11 +25,19 @@ class Notification extends Model
 
     /**
      * Belongs to one project.
-     *
-     * @return BelongsTo
      */
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    /**
+     * Belongs to one user.
+     */
+    public function user(): BelongsTo
+    {
+        $userModel = config('deploy.models.user', User::class);
+
+        return $this->belongsTo($userModel);
     }
 }
