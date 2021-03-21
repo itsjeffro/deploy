@@ -9,6 +9,11 @@ use Illuminate\Http\JsonResponse;
 class AccountProviderController extends Controller
 {
     /**
+     * @var Provider
+     */
+    private $provider;
+
+    /**
      * AccountProviderController construct.
      */
     public function __construct(Provider $provider)
