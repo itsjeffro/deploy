@@ -7,6 +7,9 @@ use Deploy\Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
+    /**
+     * @group project
+     */
     public function test_owner_can_view_their_projects()
     {
         $project = factory(Project::class)->create([
@@ -24,6 +27,9 @@ class ProjectTest extends TestCase
         ]);
     }
 
+    /**
+     * @group project
+     */
     public function test_owner_can_view_their_own_project()
     {
         $project = factory(Project::class)->create([
@@ -42,6 +48,9 @@ class ProjectTest extends TestCase
             ]);
     }
 
+    /**
+     * @group project
+     */
     public function test_owner_can_update_their_project()
     {
         $project = factory(Project::class)->create();
@@ -67,6 +76,9 @@ class ProjectTest extends TestCase
             ]);
     }
 
+    /**
+     * @group project
+     */
     public function test_owner_can_delete_their_project()
     {
         $project = factory(Project::class)->create();
