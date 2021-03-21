@@ -2,6 +2,7 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -35,4 +36,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * User has many servers.
+     */
+    public function servers(): HasMany
+    {
+        return $this->hasMany(Server::class);
+    }
 }
