@@ -67,4 +67,9 @@ class DeleteServerKeysJob implements ShouldQueue
             ));
         }
     }
+
+    public function getServer(): Server
+    {
+        return $this->server;
+    }
 }
