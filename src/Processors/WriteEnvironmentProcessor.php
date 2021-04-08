@@ -87,8 +87,8 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
 
         // Loop through each server to spin up a processor to run our script.
         $serverIds = $this->project
-            ->servers
-            ->pluck('id');
+            ->environmentServers()
+            ->pluck('server_id');
 
         $projectServers = ProjectServer::where('project_id', $this->project->id)
             ->whereIn('server_id', $serverIds)

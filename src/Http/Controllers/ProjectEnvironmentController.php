@@ -45,16 +45,24 @@ class ProjectEnvironmentController extends Controller
         $environment->contents = $encrypter->encrypt($request->get('contents'));
         $environment->save();
 
-        // Sync servers to environment
-        $servers = Server::where('project_id', $project->id)
+        // @TODO Move server check to request
+        $servers = Server::where('user_id', $project->user_id)
             ->whereIn('id', $request->get('servers'))
             ->get()
             ->pluck('id')
             ->toArray();
 
-        if (is_array($servers)) {
-            $environment->environmentServers()->sync($servers);
+        if (empty($servers)) {
+            return response()->json([
+                'errors' => [
+                    'servers' => [
+                        'No servers were provided',
+                    ]
+                ]
+            ], 422);
         }
+
+        $environment->environmentServers()->sync($servers);
 
         dispatch(new WriteEnvironmentJob($project, $environment, $request->get('key')));
 
