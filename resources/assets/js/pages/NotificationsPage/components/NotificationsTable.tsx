@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import PanelBody from '../../../components/PanelBody';
+import DateTime from "../../../services/DateTime";
 
 const NotificationsTable = (props) => {
   const { 
@@ -45,6 +46,8 @@ const NotificationsTable = (props) => {
               sourceLink = `/servers/${ item.model_id }/edit`;
             }
 
+            const createdAt = new DateTime(item.created_at);
+
             return (
               <tr key={ item.id }>
                 <td>
@@ -60,7 +63,7 @@ const NotificationsTable = (props) => {
                   </span>
                 </td>
                 <td>
-                  { item.created_at }
+                  { createdAt.format('Y-m-d h:i:s A') }
                 </td>
                 <td className="text-right" width="15%">
                   <button 

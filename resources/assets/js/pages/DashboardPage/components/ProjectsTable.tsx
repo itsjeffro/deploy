@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import DataGrid from '../../../components/DataGrid/DataGrid';
 
 import Icon from '../../../components/Icon'
+import DateTime from "../../../services/DateTime";
 
 const ProjectsTable = (props) => {
   const {
@@ -24,14 +25,18 @@ const ProjectsTable = (props) => {
     }
 
     if (project.last_deployment.status === 0) {
+      const failedAt = new DateTime(project.last_deployment.created_at);
+
       return (
         <span className="text-danger" title="Failed deployment">
-          <Icon iconName="times" /> {project.last_deployment.created_at}
+          <Icon iconName="times" /> { failedAt.format('Y-m-d h:i:s A') }
         </span>
       );
     }
 
-    return project.last_deployment.created_at;
+    const createdAt = new DateTime(project.last_deployment.created_at);
+
+    return createdAt.format('Y-m-d h:i:s A');
   };
 
   const repositoryType = (project: any) => (

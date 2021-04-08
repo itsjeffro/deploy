@@ -35,7 +35,7 @@ const DeploymentsTableRow = (props) => {
 
   return (
     <tr>
-      <td>{ startedAt.format('Y-m-d H:i:s') }</td>
+      <td>{ startedAt.format('Y-m-d h:i:s A') }</td>
       <td>{ committer }</td>
       <td>{ commit }</td>
       <td className="deployment-status text-center">
