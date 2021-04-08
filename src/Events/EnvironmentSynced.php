@@ -19,7 +19,7 @@ class EnvironmentSynced implements ShouldBroadcastNow
     public $serverId;
 
     /** @var int */
-    public $projectId;
+    public $userId;
 
     /** @var int */
     public $status;
@@ -34,7 +34,7 @@ class EnvironmentSynced implements ShouldBroadcastNow
     public function __construct(Server $server, int $status)
     {
         $this->serverId = $server->id;
-        $this->projectId = $server->project_id;
+        $this->userId = $server->user_id;
         $this->status = $status;
     }
 
@@ -45,8 +45,6 @@ class EnvironmentSynced implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        $project = Project::where('id', $this->projectId)->first();
-
-        return new PrivateChannel('user.' . $project->user_id);
+        return new PrivateChannel('user.' . $this->userId);
     }
 }
