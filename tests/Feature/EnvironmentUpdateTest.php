@@ -3,6 +3,8 @@
 namespace Deploy\Tests\Feature;
 
 use Deploy\Models\Environment;
+use Deploy\Models\Project;
+use Deploy\Models\Server;
 use Deploy\Tests\TestCase;
 use Illuminate\Support\Facades\Bus;
 
@@ -16,18 +18,23 @@ class EnvironmentUpdateTest extends TestCase
         Bus::fake();
 
         $environment = factory(Environment::class)->create();
+
         $user = $environment->project->user;
 
-        $route = route('project-environment.update', $environment->project);
+        $server = factory(Server::class)->create([
+            'user_id' => $user->id,
+        ]);
 
-        $request = [
-            'key' => '123',
-            'contents' => 'FOO=BAR',
-            'servers' => [],
-        ];
+        $environment->environmentServers()->sync($server);
 
         $response = $this->actingAs($user)
-            ->json('PUT', $route, $request);
+            ->json('PUT', route('project-environment.update', $environment->project), [
+                'key' => '123',
+                'contents' => 'FOO=BAR',
+                'servers' => [
+                    $server->id,
+                ],
+            ]);
 
         $response->assertStatus(204);
     }
