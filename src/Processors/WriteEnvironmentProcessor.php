@@ -124,12 +124,12 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
                 }
 
                 $status = Environment::SYNCED;
-            } catch (ProcessFailedException | Exception $exception) {
+            } catch (ProcessFailedException $exception) {
                 event(new ProcessorErrorEvent(
                     'Environment server issue',
                     $this->project->user_id,
                     $server,
-                    $exception
+                    $exception->getProcess()->getErrorOutput()
                 ));
                 
                 $status = Environment::FAILED_SYNC;

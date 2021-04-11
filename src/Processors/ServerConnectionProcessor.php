@@ -53,12 +53,12 @@ class ServerConnectionProcessor extends AbstractProcessor implements ProcessorIn
             }
             
             $successful = true;
-        } catch (ProcessFailedException | \Exception $exception) {
+        } catch (ProcessFailedException $exception) {
             event(new ProcessorErrorEvent(
                 'Server connection test issue',
                 $this->server->user_id,
                 $this->server,
-                $exception
+                $exception->getProcess()->getErrorOutput()
             ));
         }
         
