@@ -8,33 +8,36 @@ use Deploy\Events\EnvironmentSyncing;
 use Deploy\Models\Environment;
 use Deploy\Models\Project;
 use Deploy\Models\ProjectServer;
-use Deploy\Models\Server;
 use Deploy\Ssh\Client;
 use Deploy\Environment\EnvironmentEncrypter;
 use Deploy\Events\ProcessorErrorEvent;
-use Exception;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorInterface
 {
-    /** @var Project */
+    /**
+     * @var Project
+     */
     private $project;
 
-    /** @var Environment */
+    /**
+     * @var Environment
+     */
     private $environment;
 
-    /** @var EnvironmentEncrypter */
+    /**
+     * @var EnvironmentEncrypter
+     */
     private $environmentEncrypter;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $key;
 
     /**
      * Instantiate EnvironmentProcessor.
-     *
-     * @param EnvironmentEncrypter  $environmentEncrypter
-     * @return void
      */
     public function __construct(EnvironmentEncrypter $environmentEncrypter)
     {
@@ -42,10 +45,9 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
     }
 
     /**
-     * @param Project $project
-     * @return self
+     * Set project.
      */
-    public function setProject(Project $project)
+    public function setProject(Project $project): self
     {
         $this->project = $project;
 
@@ -53,10 +55,9 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
     }
 
     /**
-     * @param Environment $environment
-     * @return self
+     * Set environment
      */
-    public function setEnvironment(Environment $environment)
+    public function setEnvironment(Environment $environment): self
     {
         $this->environment = $environment;
 
@@ -64,10 +65,9 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
     }
 
     /**
-     * @param string $key
-     * @return self
+     * Set decryption key.
      */
-    public function setKey(string $key)
+    public function setKey(string $key): self
     {
         $this->key = $key;
 
@@ -77,7 +77,7 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
     /**
      * {@inheritDoc}
      */
-    public function fire()
+    public function fire(): void
     {
         $processors = [];
 
@@ -103,7 +103,9 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
             );
             
             $processors[] = [
-                'process' => $client->getProcess(),
+                'process' => $client
+                    ->setTimeout(30)
+                    ->getProcess(),
                 'server' => $server,
             ];
         }
@@ -124,12 +126,18 @@ class WriteEnvironmentProcessor extends AbstractProcessor implements ProcessorIn
                 }
 
                 $status = Environment::SYNCED;
-            } catch (ProcessFailedException $exception) {
+            } catch (ProcessFailedException | ProcessTimedOutException $exception) {
+                $message = $exception->getProcess()->getErrorOutput();
+
+                if ($exception instanceof ProcessTimedOutException) {
+                    $message = 'Process timed out trying trying to connect to server. Make sure the server details are correct.';
+                }
+
                 event(new ProcessorErrorEvent(
                     'Environment server issue',
                     $this->project->user_id,
                     $server,
-                    $exception->getProcess()->getErrorOutput()
+                    $message
                 ));
                 
                 $status = Environment::FAILED_SYNC;

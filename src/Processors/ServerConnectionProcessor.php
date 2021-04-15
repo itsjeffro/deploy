@@ -8,24 +8,19 @@ use Deploy\Events\ServerConnectionTested;
 use Deploy\Models\Server;
 use Deploy\Ssh\Client;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 
 class ServerConnectionProcessor extends AbstractProcessor implements ProcessorInterface
 {
-    /** @var Server */
+    /**
+     * @var Server
+     */
     public $server;
-
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Set server.
-     *
-     * @param Server $server
-     * @return self
      */
-    public function setServer(Server $server)
+    public function setServer(Server $server): self
     {
         $this->server = $server;
 
@@ -35,7 +30,7 @@ class ServerConnectionProcessor extends AbstractProcessor implements ProcessorIn
     /**
      * {@inheritDoc}
      */
-    public function fire()
+    public function fire(): void
     {
         $successful = false;
         
@@ -53,12 +48,18 @@ class ServerConnectionProcessor extends AbstractProcessor implements ProcessorIn
             }
             
             $successful = true;
-        } catch (ProcessFailedException $exception) {
+        } catch (ProcessFailedException | ProcessTimedOutException $exception) {
+            $message = $exception->getProcess()->getErrorOutput();
+
+            if ($exception instanceof ProcessTimedOutException) {
+                $message = 'Process timed out trying to connect to server. Make sure the server details are correct.';
+            }
+
             event(new ProcessorErrorEvent(
                 'Server connection test issue',
                 $this->server->user_id,
                 $this->server,
-                $exception->getProcess()->getErrorOutput()
+                $message
             ));
         }
         
