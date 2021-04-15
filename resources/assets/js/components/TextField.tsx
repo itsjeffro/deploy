@@ -9,12 +9,15 @@ const TextField = (props: any): JSX.Element => {
     name,
     type,
     value,
-    placeholder
+    placeholder,
+    isRequired
   } = props;
 
   return (
     <div className="form-group">
-      { label ? <label htmlFor={ id }>{ label }</label> : '' }
+      { label
+        ? <label htmlFor={ id }>{ label } { isRequired ? <span className="text-danger">*</span> : ''}</label>
+        : '' }
 
       <input 
         className="form-control" 
@@ -28,15 +31,5 @@ const TextField = (props: any): JSX.Element => {
     </div>
   )
 }
-
-TextField.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  name: PropTypes.string,
-  type: PropTypes.string,
-  value: PropTypes.string,
-  placeholder: PropTypes.any,
-};
 
 export default TextField;

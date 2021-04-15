@@ -188,6 +188,7 @@ class ProjectEditPage extends React.Component<any, any> {
                       onChange={ this.handleInputChange }
                       name="name"
                       value={ this.state.project.name }
+                      isRequired
                     />
 
                     <div className="form-group">
@@ -218,6 +219,7 @@ class ProjectEditPage extends React.Component<any, any> {
                       name="repository"
                       value={ this.state.project.repository }
                       placeholder="user/repository"
+                      isRequired
                     />
 
                     <TextField
@@ -226,6 +228,7 @@ class ProjectEditPage extends React.Component<any, any> {
                       onChange={ this.handleInputChange }
                       name="branch"
                       value={ this.state.project.branch }
+                      isRequired
                     />
 
                     <TextField
@@ -235,6 +238,7 @@ class ProjectEditPage extends React.Component<any, any> {
                       name="releases"
                       type="number"
                       value={ this.state.project.releases }
+                      isRequired
                     />
 
                     <div className="form-group">

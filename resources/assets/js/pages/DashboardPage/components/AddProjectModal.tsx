@@ -39,10 +39,11 @@ const AddProjectModal = (props) => {
       <div className="form-group">
         <TextField 
           id="name" 
-          label="Project Name" 
+          label="Project Name"
           onChange={ e => handleInputChange(e) } 
           name="name"
           value={ input.name || '' }
+          isRequired
         />
       </div>
 
@@ -77,6 +78,7 @@ const AddProjectModal = (props) => {
           name="repository"
           placeholder="user/repository"
           value={ input.repository || '' }
+          isRequired
         />
       </div>
     </Modal>
