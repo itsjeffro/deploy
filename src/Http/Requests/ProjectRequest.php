@@ -2,6 +2,7 @@
 
 namespace Deploy\Http\Requests;
 
+use Deploy\Models\Project;
 use Deploy\Models\Provider;
 use Deploy\ProviderOauth\ProviderOauthFactory;
 use Deploy\ProviderOauthManager;
@@ -40,9 +41,17 @@ class ProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'provider_id' => 'required',
-            'repository' => 'required',
+            'name' => [
+                'required',
+                'max:255',
+            ],
+            'provider_id' => [
+                'required',
+            ],
+            'repository' => [
+                'required',
+                'max:255',
+            ],
         ];
     }
 
@@ -57,6 +66,10 @@ class ProjectRequest extends FormRequest
         $validator->after(function ($validator) {
             if ($this->isInvalidRepository()) {
                 $validator->errors()->add('repository', 'The repository provided is invalid or could be private.');
+            }
+
+            if ($this->hasReachedProjectLimit()) {
+                $validator->errors()->add('id', 'You have reached your project limit.');
             }
         });
     }
@@ -98,5 +111,21 @@ class ProjectRequest extends FormRequest
         }
 
         return empty($response);
+    }
+
+    /**
+     * Determines if the user has reached their project limit.
+     */
+    protected function hasReachedProjectLimit(): bool
+    {
+        $user = auth()->user();
+
+        if (!method_exists($user, 'projectLimit') || is_null($user->projectLimit())) {
+            return false;
+        }
+
+        $projectCount = Project::where('user_id', $user->id)->count();
+
+        return $projectCount >= $user->projectLimit();
     }
 }
