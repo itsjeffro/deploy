@@ -26,10 +26,6 @@ class EnvironmentSyncing implements ShouldBroadcastNow
 
     /**
      * Create a new event instance.
-     *
-     * @param int $serverId
-     * @param int $status
-     * @return void
      */
     public function __construct(Server $server, int $status)
     {
