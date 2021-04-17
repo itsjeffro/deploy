@@ -44,21 +44,6 @@ const projectDeployments = (state = initialState, action) => {
         isCreating: false
       };
     case PROJECT_DEPLOYMENT_DEPLOYING:
-      let isDeploymentPresent = false;
-
-      for (let i = 0; state.items.length < i; i++) {
-        if (state.items[i].id === action.deployment.id) {
-          isDeploymentPresent = true;
-        }
-      }
-
-      if (isDeploymentPresent) {
-        return {
-          ...state,
-          items: state.items,
-        }
-      }
-
       return {
         ...state,
         items: [action.deployment].concat(state.items.slice(0, 4)),

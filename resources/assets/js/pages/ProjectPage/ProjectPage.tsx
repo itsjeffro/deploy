@@ -34,7 +34,7 @@ import ServerKeyModal from '../../components/ServerKeyModal';
 import ProjectServerApi from "../../services/Api/ProjectServerApi";
 import { fetchMe } from "../../state/auth/authActions";
 import { testServerConnection } from "../../state/servers/actions";
-import {createToast} from "../../state/alert/alertActions";
+import { createToast } from "../../state/alert/alertActions";
 
 class ProjectPage extends React.Component<any, any> {
   state = {
@@ -96,16 +96,29 @@ class ProjectPage extends React.Component<any, any> {
     }
   }
 
+  componentWillUnmount(): void {
+    const { auth } = this.props;
+    const user = auth.user;
+    const self: any = window;
+
+    if (self.Echo !== null) {
+      self.Echo
+        .private(`user.${ user ? user.id : '' }`)
+        .stopListening('.Deploy\\Events\\DeploymentDeploying')
+        .stopListening('.Deploy\\Events\\DeploymentFinished')
+        .stopListening('.Deploy\\Events\\ServerConnectionTested');
+    }
+  }
+
   /**
    * Listen for Echo related events.
    */
   listenForEvents = (userId: number): void => {
     const { dispatch } = this.props;
-    const echoWindow: any = window;
-    const Echo = echoWindow.Echo;
+    const self: any = window;
 
-    if (Echo !== null) {
-      Echo
+    if (self.Echo !== null) {
+      self.Echo
         .private(`user.${ userId }`)
         .listen('.Deploy\\Events\\DeploymentDeploying', e => {
           dispatch(projectDeploymentDeploying(e.deployment));
