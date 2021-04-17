@@ -9,6 +9,7 @@ use Deploy\Models\Environment;
 use Deploy\Environment\EnvironmentEncrypter;
 use Deploy\Models\Server;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Crypt;
 
 class ProjectEnvironmentController extends Controller
 {
@@ -64,7 +65,11 @@ class ProjectEnvironmentController extends Controller
 
         $environment->environmentServers()->sync($servers);
 
-        dispatch(new WriteEnvironmentJob($project, $environment, $request->get('key')));
+        // Encrypt the user's environment key before dispatching the queue event not passed
+        // in the jobs's payload in plaintext. We will decrypt when the job is processed.
+        $encryptedKey = Crypt::encryptString($request->get('key'));
+
+        dispatch(new WriteEnvironmentJob($project, $environment, $encryptedKey));
 
         return response()->json(null, 204);
     }

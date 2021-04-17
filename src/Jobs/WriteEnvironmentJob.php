@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Crypt;
 
 class WriteEnvironmentJob implements ShouldQueue
 {
@@ -22,27 +23,30 @@ class WriteEnvironmentJob implements ShouldQueue
      */
     public $tries = 5;
 
-    /** @var Project */
+    /**
+     * @var Project
+     */
     private $project;
 
-    /** @var Environment */
+    /**
+     * @var Environment
+     */
     private $environment;
 
-    /** @var WriteEnvironmentProcessor */
+    /**
+     * @var WriteEnvironmentProcessor
+     */
     protected $writeEnvironmentProcessor;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $key;
 
     /**
      * Create a new job instance.
-     *
-     * @param Project $project
-     * @param Environment $environment
-     * @param string $key
-     * @return void
      */
-    public function __construct(Project $project, Environment $environment, $key)
+    public function __construct(Project $project, Environment $environment, string $key)
     {
         $this->project = $project;
         $this->environment = $environment;
@@ -51,16 +55,21 @@ class WriteEnvironmentJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @param WriteEnvironmentProcessor $processor
-     * @return void
      */
     public function handle(WriteEnvironmentProcessor $processor)
     {
         $processor
             ->setProject($this->project)
             ->setEnvironment($this->environment)
-            ->setKey($this->key)
+            ->setKey($this->getDecryptedKey())
             ->fire();
+    }
+
+    /**
+     * Returns the decrypted environment key.
+     */
+    public function getDecryptedKey(): string
+    {
+        return Crypt::decryptString($this->key);
     }
 }
