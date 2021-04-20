@@ -3,6 +3,7 @@ import * as React from 'react';
 import AlertErrorValidation from '../../../components/AlertErrorValidation';
 import TextField from '../../../components/TextField';
 import Modal from '../../../components/Modal';
+import {NavLink} from "react-router-dom";
 
 const AddProjectModal = (props) => {
   const {
@@ -16,6 +17,8 @@ const AddProjectModal = (props) => {
   } = props;
 
   const addProjectText = projects.isCreating ? 'Working...' : 'Add Project';
+
+  const providers = accountProviders.filter((accountProvider) => accountProvider.is_connected);
 
   return (
     <Modal
@@ -52,8 +55,11 @@ const AddProjectModal = (props) => {
       <div className="form-group">
         <label>Providers</label>
 
-        { accountProviders
-          .filter((accountProvider) => accountProvider.is_connected)
+        { providers.length === 0
+          ? <div>Add an <NavLink to="account">account provider</NavLink></div>
+          : '' }
+
+        { providers
           .map((accountProvider) => (
             <div key={ accountProvider.id }>
               <label className="form-control-label" htmlFor={accountProvider.name}>
