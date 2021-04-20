@@ -11,12 +11,16 @@ class ApiClient extends AbstractApiClient
      */
     public function request($method, $endpoint)
     {
-        $queryAcessToken = empty($this->accessToken) ? '' : '?access_token=' . $this->accessToken;
+        $headers = [
+            'Accept' => 'application/vnd.github.v3+json',
+        ];
 
-        return $this->client->request('GET', $this->getApiUrl() . $endpoint . $queryAcessToken, [
-            'headers' => [
-                'Accept' => 'application/vnd.github.v3+json',
-            ],
+        if (!empty($this->accessToken)) {
+            $headers['Authorization'] = 'Bearer ' . $this->accessToken;
+        }
+
+        return $this->client->request('GET', $this->getApiUrl() . $endpoint, [
+            'headers' => $headers,
         ]);
     }
 }
