@@ -310,7 +310,31 @@ class ProjectActionPage extends React.Component<any, any> {
       result.destination
     );
 
-    console.log(results);
+    let beforeItems = results.before.map((result, index) => ({
+        id: result.id,
+        position: 1,
+        order: index,
+      }))
+      .reduce((hooks, hook) => (hooks[hook.id] = hook, hooks), {});
+
+    let afterItems = results.after.map((result, index) => ({
+        id: result.id,
+        position: 2,
+        order: index,
+      }))
+      .reduce((hooks, hook) => (hooks[hook.id] = hook, hooks), {});
+
+    const { project_id, action_id } = this.props.match.params;
+    const projectActionHookService = new ProjectActionService;
+
+    projectActionHookService
+      .updateHookOrder(project_id, action_id, {
+        hooks: {...beforeItems,...afterItems},
+      })
+      .then(
+        (response) => {},
+        (error) => {}
+      );
 
     this.setState({ hooks: results });
   }
