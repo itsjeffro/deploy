@@ -1,47 +1,58 @@
 import * as React from 'react';
+import { Droppable } from 'react-beautiful-dnd';
+import PanelHeading from "../../../components/PanelHeading";
+import Button from "../../../components/Button";
+import Icon from "../../../components/Icon";
+import PanelTitle from "../../../components/PanelTitle";
+import Panel from "../../../components/Panel";
+import HooksTableRow from "./HooksTableRow";
 
-import Button from '../../../components/Button';
-
-const HooksTable = props => {
+const HooksTable = (props) => {
   const {
+    droppableId,
+    label,
+    hookPosition,
     hooks,
-    onHandleEditClick,
-    onHandleRemoveClick
+    handleAddModalClick,
+    handleEditModalClick,
+    handleRemoveModalClick,
   } = props;
 
-  if (hooks.length === 0) {
-    return (
-      <div className="panel-body text-center">
-        No hooks added yet
-      </div>
-    )
-  }
-
   return (
-    <div className="table-responsive hooks-table">
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {hooks.map((hook) =>
-            <tr key={hook.id}>
-              <td>
-                { hook.name }
-              </td>
-              <td className="text-right">
-                <Button onClick={() => onHandleEditClick(hook)}>Edit</Button>{' '}
-                <Button onClick={() => onHandleRemoveClick(hook)}>Remove</Button>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+    <Panel>
+      <PanelHeading>
+        <div className="pull-right">
+          <Button
+            onClick={ () => handleAddModalClick(hookPosition) }
+          ><Icon iconName="plus" /> Add Hook</Button>
+        </div>
+        <PanelTitle><Icon iconName="code" /> { label }</PanelTitle>
+      </PanelHeading>
+
+      <Droppable droppableId={ droppableId }>
+        {(provided) => (
+          <div
+            className="hook__container"
+            ref={ provided.innerRef }
+            { ...provided.droppableProps }
+          >
+            { hooks.length === 0 ? <div className="hook__row empty"><div className="hook__row-base">No hooks added yet</div></div> : '' }
+
+            {hooks.map((hook, index) =>
+              <HooksTableRow
+                key={ `${droppableId}-${hook.id}` }
+                hook={ hook }
+                index={ index }
+                handleEditModalClick={ handleEditModalClick }
+                handleRemoveModalClick={ handleRemoveModalClick }
+              />
+            )}
+            { provided.placeholder }
+          </div>
+        )}
+      </Droppable>
+    </Panel>
   )
-};
+}
 
 export default HooksTable;

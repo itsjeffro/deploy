@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import { DragDropContext } from 'react-beautiful-dnd';
 import { createToast } from '../../state/alert/alertActions';
 import { fetchProject } from '../../state/project/actions';
 import ProjectActionService from '../../services/ProjectAction';
@@ -12,8 +12,9 @@ import AddHookModal from './components/AddHookModal';
 import EditHookModal from './components/EditHookModal';
 import RemoveHookModal from './components/RemoveHookModal';
 import Container from '../../components/Container';
-import Loader from '../../components/Loader';
-import Hooks from './components/Hooks';
+import Grid from "../../components/Grid";
+import HooksTable from "./components/HooksTable";
+import {reorderMap} from "../../utils/draggable";
 
 class ProjectActionPage extends React.Component<any, any> {
   state = {
@@ -21,8 +22,10 @@ class ProjectActionPage extends React.Component<any, any> {
     action: {
       id: null,
     },
-    beforeHooks: [],
-    afterHooks: [],
+    hooks: {
+      before: [],
+      after: [],
+    },
     hook: {
       id: null,
       project_id: null,
@@ -51,18 +54,18 @@ class ProjectActionPage extends React.Component<any, any> {
         this.setState({
           isFetching: false,
           action: response.data,
-          beforeHooks: response.data.before_hooks,
-          afterHooks: response.data.after_hooks,
+          hooks: {
+            before: response.data.before_hooks,
+            after: response.data.after_hooks,
+          }
         });
       });
   }
 
   /**
    * Show modal to create hook.
-   *
-   * @param {int} position
    */
-  handleAddModalClick = (position) => {
+  handleAddModalClick = (position: number) => {
     const { project } = this.props;
     const { action } = this.state;
 
@@ -80,16 +83,17 @@ class ProjectActionPage extends React.Component<any, any> {
     });
   };
 
+  /**
+   * Hide modal (add action).
+   */
   handleHideAddHookModal = () => {
     this.setState({ isAddHookModalVisible: false });
   }
 
   /**
    * Show modal to edit hook.
-   *
-   * @param {object} hook
    */
-  handleEditModalClick = (hook) => {
+  handleEditModalClick = (hook: any) => {
     this.setState({
       hook: hook,
       errors: [],
@@ -97,22 +101,26 @@ class ProjectActionPage extends React.Component<any, any> {
     });
   };
 
+  /**
+   * Hide modal (edit action).
+   */
   handleHideEditHookModal = () => {
     this.setState({ isEditHookModalVisible: false });
   }
 
   /**
    * Show modal to confirm hook remove.
-   *
-   * @param {object} hook
    */
-  handleRemoveModalClick = (hook) => {
+  handleRemoveModalClick = (hook: any) => {
     this.setState({
       hook: hook,
       isRemoveHookModalVisible: true,
     });
   };
 
+  /**
+   * Hide modal (remove action).
+   */
   handleHideRemoveHookModal = () => {
     this.setState({ isRemoveHookModalVisible: false });
   }
@@ -133,24 +141,29 @@ class ProjectActionPage extends React.Component<any, any> {
         dispatch(createToast('Hook created successfully.'));
 
         if (hook.position === 1) {
-        	let hooks = this.state.beforeHooks.concat(response.data);
-
-        	this.setState({
-        		beforeHooks: hooks,
+        	this.setState((prevState) => ({
+        		hooks: {
+        		  ...prevState.hooks,
+              before: prevState.hooks.before.concat(response.data)
+            },
             errors: [],
             isAddHookModalVisible: false,
-        	});
-        } else if (hook.position === 2) {
-        	let hooks = this.state.afterHooks.concat(response.data);
+        	}));
+        }
+        else if (hook.position === 2) {
+        	let hooks = this.state.hooks.after.concat(response.data);
 
-        	this.setState({
-        		afterHooks: hooks,
+          this.setState((prevState) => ({
+            hooks: {
+              ...prevState.hooks,
+              after: prevState.hooks.after.concat(response.data)
+            },
             errors: [],
             isAddHookModalVisible: false,
-        	});
+        	}));
         }
       },
-      error => {
+      (error) => {
         let errorResponse = error.response.data;
 
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
@@ -175,18 +188,21 @@ class ProjectActionPage extends React.Component<any, any> {
 
     projectActionHookService
       .update(hook.project_id, hook.action_id, hook.id, data)
-      .then(response => {
-        let hookPosition = hook.position == 1 ? 'beforeHooks' : 'afterHooks';
+      .then((response) => {
+        let hookPosition = hook.position == 1 ? 'before' : 'after';
 
         dispatch(createToast('Hook updated successfully.'));
 
-        this.setState({
+        this.setState((prevState) => ({
         	errors: [],
-          [hookPosition]: this.updateHook(hookPosition, hook.id, response.data),
+          hooks: {
+        	  ...prevState.hooks,
+            [hookPosition]: this.updateHook(hookPosition, hook.id, response.data),
+          },
           isEditHookModalVisible: false,
-        });
+        }));
       },
-      error => {
+      (error) => {
         let errorResponse = error.response.data;
 
         errorResponse = errorResponse.hasOwnProperty('errors') ? errorResponse.errors : errorResponse;
@@ -201,13 +217,9 @@ class ProjectActionPage extends React.Component<any, any> {
 
   /**
    * Update hooks (before or after) state to update hook specified by it's id.
-   *
-   * @param {string} hook_position
-   * @param {int} hook_id
-   * @param {object} updated_hook
    */
-  updateHook = (hook_position, hook_id, updated_hook) => {
-    const hooks = this.state[hook_position];
+  updateHook = (hook_position: string, hook_id: number, updated_hook: any) => {
+    const hooks = this.state.hooks[hook_position];
 
     return hooks.map(hook => {
       if (hook.id === updated_hook.id) {
@@ -228,14 +240,14 @@ class ProjectActionPage extends React.Component<any, any> {
 
     projectActionHookService
       .delete(hook.project_id, hook.action_id, hook.id)
-      .then(response => {
-        let hookPosition = hook.position === 1 ? 'beforeHooks' : 'afterHooks';
+      .then((response) => {
+        const hookPosition = hook.position === 1 ? 'before' : 'after';
 
         dispatch(createToast('Hook removed successfully.'));
 
         this.removeHook(hookPosition, hook.id);
       },
-      error => {
+      (error) => {
         alert('Could not delete hook');
       });
 
@@ -244,26 +256,26 @@ class ProjectActionPage extends React.Component<any, any> {
 
   /**
    * Update hooks (before or after) state to filter out hook specified by it's id.
-   *
-   * @param {string} hook_position
-   * @param {int} hook_id
    */
-  removeHook = (hook_position, hook_id) => {
-    this.setState(state => {
-      const hooks = state[hook_position].filter(hook => {
+  removeHook = (hook_position: string, hook_id: number) => {
+    this.setState((prevState) => {
+      const hooks = prevState.hooks[hook_position].filter((hook) => {
         return hook.id !== hook_id;
       });
 
-      return {[hook_position]: hooks}
+      return {
+        hooks: {
+          ...prevState.hooks,
+          [hook_position]: hooks,
+        }
+      }
 	   });
   };
 
   /**
    * Handle input name change for hook.
-   *
-   * @param {object} event
    */
-  handleInputNameChange = (event) => {
+  handleInputNameChange = (event: any) => {
     const value = event.target.value;
 
     this.setState(state => {
@@ -277,10 +289,8 @@ class ProjectActionPage extends React.Component<any, any> {
 
   /**
    * Handle script change for hook.
-   *
-   * @param {string} value
    */
-  handleScriptChange = (value) => {
+  handleScriptChange = (value: string) => {
     this.setState(state => {
       let hook = Object.assign({}, state.hook, {
         script: value
@@ -290,12 +300,26 @@ class ProjectActionPage extends React.Component<any, any> {
     });
   };
 
+  /**
+   * Handle re-order hooks.
+   */
+  handleReorder = (result) => {
+    const results = reorderMap(
+      this.state.hooks,
+      result.source,
+      result.destination
+    );
+
+    console.log(results);
+
+    this.setState({ hooks: results });
+  }
+
   render() {
     const { project } = this.props;
+
     const {
-      isFetching,
-      beforeHooks,
-      afterHooks,
+      hooks,
       errors,
       hook,
       isAddHookModalVisible,
@@ -312,17 +336,35 @@ class ProjectActionPage extends React.Component<any, any> {
             <Link to={'/projects/' + project.item.id + '/deployment-hooks'}>Back to Deployment Hooks</Link>
           </div>
 
-          <Container fluid>
-            {isFetching ?
-              <Loader /> :
-              <Hooks 
-                beforeHooks={ beforeHooks }
-                afterHooks={ afterHooks }
-                onAddModalClick={ this.handleAddModalClick }
-                onEditModalClick={ this.handleEditModalClick }
-                onRemoveModalClick={ this.handleRemoveModalClick }
-              />}
-          </Container>
+          <DragDropContext onDragEnd={ (data) => this.handleReorder(data) }>
+            <Container fluid>
+              <div className="row">
+                <Grid xs={ 12 } sm={ 6 }>
+                  <HooksTable
+                    droppableId={ "before" }
+                    label="Before This Action"
+                    hookPosition={ 1 }
+                    hooks={ hooks.before }
+                    handleAddModalClick={ this.handleAddModalClick }
+                    handleEditModalClick={ this.handleEditModalClick }
+                    handleRemoveModalClick={ this.handleRemoveModalClick }
+                  />
+                </Grid>
+
+                <Grid xs={ 12 } sm={ 6 }>
+                  <HooksTable
+                    droppableId={ "after" }
+                    label="After This Action"
+                    hookPosition={ 2 }
+                    hooks={ hooks.after }
+                    handleAddModalClick={ this.handleAddModalClick }
+                    handleEditModalClick={ this.handleEditModalClick }
+                    handleRemoveModalClick={ this.handleRemoveModalClick }
+                  />
+                </Grid>
+              </div>
+            </Container>
+          </DragDropContext>
         </div>
 
         <AddHookModal

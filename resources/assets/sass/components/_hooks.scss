@@ -1,0 +1,28 @@
+.hook {
+  &__container {
+    background: #ddd;
+    padding: .5rem;
+  }
+  &__row {
+    padding: .5rem;
+  }
+  &__row-base {
+    align-items: center;
+    display: flex;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+  }
+  &__actions {
+    margin-left: auto;
+  }
+}
+
+.empty {
+  .hook__row-base {
+    background: rgba(0,0,0,.05);
+    box-shadow: 0 0 0;
+    border: 2px dashed rgba(0,0,0,.12);
+  }
+}
