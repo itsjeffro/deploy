@@ -26,9 +26,9 @@ class Action extends Model
     /**
      * Fillable table column.
      *
-     * @var array
+     * @var string[]
      */
-    public $fillable = [
+    protected $fillable = [
         'name',
         'order',
     ];
@@ -59,10 +59,14 @@ class Action extends Model
     {
         return $this->with([
             'beforeHooks' => function($query) use ($project) {
-                $query->where('project_id', $project->id);
+                $query
+                    ->where('project_id', $project->id)
+                    ->orderBy('order', 'asc');
             },
             'afterHooks' => function($query) use ($project) {
-                $query->where('project_id', $project->id);
+                $query
+                    ->where('project_id', $project->id)
+                    ->orderBy('order', 'asc');
             }
         ]);
     }
