@@ -24,6 +24,7 @@ Route::group(['prefix' => 'api'], function() {
     // Project's actions
     Route::get('projects/{project}/actions', 'ProjectActionsController@index')->name('project-actions.index');
     Route::get('projects/{project}/actions/{action}', 'ProjectActionsController@show')->name('project-actions.show');
+    Route::put('projects/{project}/actions/{action}/hook-order', 'ProjectActionsController@updateHookOrder')->name('project-actions.update-hook-order');
 
     // Project action's hooks
     Route::get('projects/{project}/actions/{action}/hooks/{hook}', 'ProjectActionHooksController@show')->name('project-action-hooks.show');
