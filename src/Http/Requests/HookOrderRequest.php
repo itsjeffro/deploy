@@ -23,6 +23,10 @@ class HookOrderRequest extends FormRequest
             'hooks' => [
                 'array'
             ],
+            'hooks.*.id' => [
+                'numeric',
+                'required'
+            ],
             'hooks.*.position' => [
                 'numeric',
                 'required'
