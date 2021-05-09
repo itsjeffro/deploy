@@ -4,6 +4,7 @@ namespace Deploy\Tests\Feature;
 
 use Deploy\Models\Action;
 use Deploy\Models\Project;
+use Deploy\Models\User;
 use Deploy\Tests\TestCase;
 
 class ProjectActionsTest extends TestCase
@@ -11,7 +12,7 @@ class ProjectActionsTest extends TestCase
     /**
      * @group actions
      */
-    public function test_user_can_view_project_actions()
+    public function test_user_can_view_actions()
     {
         $project = factory(Project::class)->create();
 
@@ -44,7 +45,23 @@ class ProjectActionsTest extends TestCase
     /**
      * @group actions
      */
-    public function test_user_can_view_one_of_project_actions()
+    public function test_user_cannot_view_another_users_actions()
+    {
+        $anotherProject = factory(Project::class)->create();
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)
+            ->json('GET', route('project-actions.index', [
+                'project' => $anotherProject->id,
+            ]));
+
+        $response->assertStatus(403);
+    }
+
+    /**
+     * @group actions
+     */
+    public function test_user_can_view_action()
     {
         $action = Action::firstOrFail();
         $project = factory(Project::class)->create();
@@ -62,5 +79,64 @@ class ProjectActionsTest extends TestCase
                 'before_hooks' => [],
                 'after_hooks' => [],
             ]);
+    }
+
+    /**
+     * @group actions
+     */
+    public function test_user_cannot_view_another_users_action()
+    {
+        $action = Action::firstOrFail();
+        $anotherProject = factory(Project::class)->create();
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)
+            ->json('GET', route('project-actions.show', [
+                'project' => $anotherProject->id,
+                'action' => $action->id,
+            ]));
+
+        $response->assertStatus(403);
+    }
+
+    /**
+     * @group actions
+     */
+    public function test_user_can_reorder_action_hooks()
+    {
+        $action = Action::firstOrFail();
+        $project = factory(Project::class)->create();
+
+        $response = $this->actingAs($project->user)
+            ->json('PUT', route('project-actions.update-hook-order', [
+                'project' => $project->id,
+                'action' => $action->id,
+            ]), [
+                'hooks' => [
+                    //
+                ],
+            ]);
+
+        $response->assertStatus(204);
+    }
+
+    /**
+     * @group actions
+     */
+    public function test_user_cannot_reorder_another_users_action_hooks()
+    {
+        $action = Action::firstOrFail();
+        $project = factory(Project::class)->create();
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)
+            ->json('PUT', route('project-actions.update-hook-order', [
+                'project' => $project->id,
+                'action' => $action->id,
+            ]), [
+                'hooks' => [],
+            ]);
+
+        $response->assertStatus(403);
     }
 }
