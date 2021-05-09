@@ -10,6 +10,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class ProjectActionsController extends Controller
 {
@@ -43,9 +44,27 @@ class ProjectActionsController extends Controller
     }
 
     /**
+     * List hooks belonging to specified project's actions.
+     *
+     * @throws AuthorizationException
+     */
+    public function show(Project $project, Action $action): JsonResponse
+    {
+        $this->authorize('view', $project);
+
+        $action = $action
+            ->getHooksByProject($project)
+            ->where('id', $action->id)
+            ->first();
+
+        return response()->json($action);
+    }
+
+    /**
      * Bulk update the order of the hooks.
      *
      * @throws AuthorizationException
+     * @throws \Throwable
      */
     public function updateHookOrder(HookOrderRequest $request, Project $project, Action $action): JsonResponse
     {
@@ -61,32 +80,29 @@ class ProjectActionsController extends Controller
 
         // Loop through the queried project hooks. Using the mapped position,
         // order values from the request payload, update the project hooks.
-        foreach ($projectHooks as $projectHook) {
-            if ($hookOrder = Arr::get($hookOrders, $projectHook->id)) {
-                $projectHook->update([
-                    'position' => Arr::get($hookOrder, 'position'),
-                    'order' => Arr::get($hookOrder, 'order'),
-                ]);
+        DB::beginTransaction();
+
+        try {
+            foreach ($projectHooks as $projectHook) {
+                $hookOrder = Arr::first($hookOrders, function ($value) use ($projectHook) {
+                    return $value['id'] === $projectHook->id;
+                });
+
+                if ($hookOrder) {
+                    $projectHook->update([
+                        'position' => Arr::get($hookOrder, 'position'),
+                        'order' => Arr::get($hookOrder, 'order'),
+                    ]);
+                }
             }
+
+            DB::commit();
+
+            return response()->json(null, 204);
+        } catch (\Throwable $throwable) {
+            DB::rollBack();
+
+            throw $throwable;
         }
-
-        return response()->json(null, 204);
-    }
-
-    /**
-     * List hooks belonging to specified project's actions.
-     *
-     * @throws AuthorizationException
-     */
-    public function show(Project $project, Action $action): JsonResponse
-    {
-        $this->authorize('view', $project);
-
-        $action = $action
-            ->getHooksByProject($project)
-            ->where('id', $action->id)
-            ->first();
-
-        return response()->json($action);
     }
 }
