@@ -12,7 +12,7 @@ class NotificationTest extends TestCase
      */
     public function test_user_can_view_notifications()
     {
-        $notification = factory(Notification::class)->create([
+        $notification = Notification::factory()->create([
             'model_type' => '\App\Class',
             'model_id' => '1',
             'reason' => 'REASON_FOR_NOTIFICATION',
@@ -45,7 +45,7 @@ class NotificationTest extends TestCase
      */
     public function test_user_can_view_one_notification()
     {
-        $notification = factory(Notification::class)->create([
+        $notification = Notification::factory()->create([
             'model_type' => '\App\Class',
             'model_id' => '1',
             'reason' => 'REASON_FOR_NOTIFICATION',

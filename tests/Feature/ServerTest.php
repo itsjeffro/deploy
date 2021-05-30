@@ -18,9 +18,9 @@ class ServerTest extends TestCase
      */
     public function test_user_can_view_servers()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->servers()->createMany(
-            factory(Server::class, 1)->make()->toArray()
+            Server::factory()->count(1)->make()->toArray()
         );
 
         $response = $this->actingAs($user)
@@ -46,8 +46,8 @@ class ServerTest extends TestCase
      */
     public function test_user_can_view_one_server()
     {
-        $user = factory(User::class)->create();
-        $server = factory(Server::class)->create([
+        $user = User::factory()->create();
+        $server = Server::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -74,7 +74,7 @@ class ServerTest extends TestCase
     {
         Bus::fake();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->json('POST', route('servers.create'), [
@@ -108,7 +108,7 @@ class ServerTest extends TestCase
     {
         Bus::fake();
 
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $response = $this->actingAs($project->user)
             ->json('POST', route('servers.create'), [
@@ -156,9 +156,9 @@ class ServerTest extends TestCase
      */
     public function test_user_can_update_server()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $server = factory(Server::class)->create([
+        $server = Server::factory()->create([
             'user_id' => $user->id
         ]);
 
@@ -190,8 +190,8 @@ class ServerTest extends TestCase
     {
         Queue::fake();
 
-        $user = factory(User::class)->create();
-        $server = factory(Server::class)->create([
+        $user = User::factory()->create();
+        $server = Server::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -214,9 +214,9 @@ class ServerTest extends TestCase
     {
         Queue::fake();
 
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
-        $server = factory(Server::class)->create([
+        $server = Server::factory()->create([
             'user_id' => $project->user->id
         ]);
 

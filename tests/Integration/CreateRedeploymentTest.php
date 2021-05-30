@@ -10,7 +10,7 @@ class CreateRedeploymentTest extends TestCase
 {
     public function test_successfully_created_redeployment()
     {
-        $deployment = factory(Deployment::class)->create();
+        $deployment = Deployment::factory()->create();
 
         $deploymentManager = new RedeploymentManager($deployment);
 

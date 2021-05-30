@@ -10,10 +10,10 @@ class FolderTest extends TestCase
 {
     public function test_successfully_list_folders()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $user = $project->user;
         $project->folders()->createMany(
-            factory(Folder::class, 1)->make()->toArray()
+            Folder::factory()->count(1)->make()->toArray()
         );
 
         $route = route('project-folders.index', $project);
@@ -26,7 +26,7 @@ class FolderTest extends TestCase
 
     public function test_successfully_create_folder()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $user = $project->user;
 
         $route = route('project-folders.store', $project);
@@ -47,8 +47,8 @@ class FolderTest extends TestCase
 
     public function test_successfully_delete_folder()
     {
-        $project = factory(Project::class)->create();
-        $folder = factory(Folder::class)->create([
+        $project = Project::factory()->create();
+        $folder = Folder::factory()->create([
             'project_id' => $project->id,
         ]);
         $user = $project->user;

@@ -16,7 +16,7 @@ class ServerTestConnectionTest extends TestCase
     {
         Queue::fake();
 
-        $server = factory(Server::class)->create();
+        $server = Server::factory()->create();
 
         $response = $this->actingAs($server->user)
             ->json('GET', route('server-test-connection.show', [

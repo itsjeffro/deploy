@@ -32,23 +32,23 @@ class ProjectDeploymentProcessTest extends TestCase
 
     protected function createTestProcess(): Process
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         // Assign a server to project
         $project->servers()->createMany(
-            factory(Server::class, 1)->make()->toArray()
+            Server::factory()->count(1)->make()->toArray()
         );
 
         $projectServer = ProjectServer::where('project_id', $project->id)
             ->firstOrFail();
 
         // Create a deployment
-        $deployment = factory(Deployment::class)->create([
+        $deployment = Deployment::factory()->create([
             'project_id' => $project->id,
         ]);
 
         // Create a process against the project's deployment
-        return factory(Process::class)->create([
+        return Process::factory()->create([
             'name' => 'Clone new release',
             'project_id' => $project->id,
             'deployment_id' => $deployment->id,

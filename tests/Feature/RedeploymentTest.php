@@ -16,7 +16,7 @@ class RedeploymentTest extends TestCase
     {
         Queue::fake();
 
-        $deployment = factory(Deployment::class)->create([
+        $deployment = Deployment::factory()->create([
             'commit' => 'OLD_COMMIT',
         ]);
 

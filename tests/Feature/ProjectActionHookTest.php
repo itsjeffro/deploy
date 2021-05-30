@@ -37,7 +37,7 @@ class ProjectActionHookTest extends TestCase
     public function test_user_can_create_hook_under_action()
     {
         $action = Action::firstOrFail();
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $response = $this->actingAs($project->user)
             ->json('POST', route('project-action-hooks.store', [
@@ -108,7 +108,7 @@ class ProjectActionHookTest extends TestCase
     {
         $action = Action::firstOrFail();
 
-        return factory(Hook::class)->create([
+        return Hook::factory()->create([
             'action_id' => $action->id,
         ]);
     }

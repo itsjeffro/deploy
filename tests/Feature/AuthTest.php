@@ -12,7 +12,7 @@ class AuthTest extends TestCase
      */
     public function test_user_can_their_details()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this
             ->actingAs($user)

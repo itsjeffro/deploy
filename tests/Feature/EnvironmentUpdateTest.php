@@ -26,11 +26,11 @@ class EnvironmentUpdateTest extends TestCase
         Crypt::swap($mock);
         Queue::fake();
 
-        $environment = factory(Environment::class)->create();
+        $environment = Environment::factory()->create();
 
         $user = $environment->project->user;
 
-        $server = factory(Server::class)->create([
+        $server = Server::factory()->create([
             'user_id' => $user->id,
         ]);
 

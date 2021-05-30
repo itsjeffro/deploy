@@ -20,7 +20,7 @@ class BitbucketOauthTest extends TestCase
         $this->expectException(Exception::class);
 
         $provider = \Mockery::mock(BitbucketOauth::class)->makePartial();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $providerOauthManager = new ProviderOauthManager;
         $providerOauthManager->setProvider($provider);
@@ -29,7 +29,7 @@ class BitbucketOauthTest extends TestCase
         $providerOauthManager->getAccessToken();
     }
 
-    public function test_successfuly_request_new_token()
+    public function test_successfully_request_new_token()
     {
         $token = $this->mockProviderOauthWithAccessToken('bitbucket_requested_access_token_value');
 
@@ -37,7 +37,7 @@ class BitbucketOauthTest extends TestCase
         $provider->shouldReceive('requestAccessToken')->andReturn($token);
         $provider->shouldReceive('refreshAccessToken')->andReturn($token);
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $providerOauthManager = new ProviderOauthManager;
         $providerOauthManager->setProvider($provider);
@@ -60,9 +60,9 @@ class BitbucketOauthTest extends TestCase
         $provider->shouldReceive('requestAccessToken')->andReturn($token);
         $provider->shouldReceive('refreshAccessToken')->andReturn($token);
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $oldAccessToken = factory(DeployAccessToken::class)->create([
+        $oldAccessToken = DeployAccessToken::factory()->create([
             'id' => 'bitbucket_old_access_token_value',
             'provider_id' => 1,
             'user_id' => $user,
@@ -70,7 +70,7 @@ class BitbucketOauthTest extends TestCase
             'expires_at' => $expirationDate,
         ]);
 
-        $refreshToken = factory(DeployRefreshToken::class)->create([
+        $refreshToken = DeployRefreshToken::factory()->create([
             'id' => 'bitbucket_refresh_token_value',
             'deploy_access_token_id' => 'bitbucket_old_access_token_value',
             'revoked' => 0,
@@ -89,7 +89,7 @@ class BitbucketOauthTest extends TestCase
     public function test_get_authorizatoin_url()
     {
         $provider = \Mockery::mock(BitbucketOauth::class)->makePartial();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $providerOauthManager = new ProviderOauthManager;
         $providerOauthManager->setProvider($provider);

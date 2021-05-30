@@ -12,7 +12,7 @@ class EnvironmentResetKeyTest extends TestCase
      */
     public function test_existing_environment_is_cleared_after_key_reset()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         // Setup initial environment
         $setupResponse = $this
@@ -46,7 +46,7 @@ class EnvironmentResetKeyTest extends TestCase
      */
     public function test_nonexistent_environment_is_created_with_new_key()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         // If the user is trying to reset a key for an environment that does not
         // exist, then a new environment will be created with the desired key.

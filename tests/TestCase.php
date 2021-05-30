@@ -14,8 +14,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/../database/factories');
-
         $this->loadLaravelMigrations(['--database' => 'testing']);
         
         $this->artisan('migrate', ['--database' => 'testing']);

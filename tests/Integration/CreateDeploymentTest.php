@@ -11,7 +11,7 @@ class CreateDeploymentTest extends TestCase
 {
     public function test_successfully_created_deployment()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $reference = new Reference(Reference::BRANCH_TYPE, 'master');
 

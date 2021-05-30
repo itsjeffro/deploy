@@ -9,7 +9,7 @@ class ProjectKeyTest extends TestCase
 {
     public function test_owner_can_update_their_projects_key()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $user = $project->user;
 
         $response = $this->actingAs($user)

@@ -13,7 +13,7 @@ class DeploymentTest extends TestCase
      */
     public function test_user_can_view_deployments()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $response = $this->actingAs($project->user)
             ->json('GET', route('project-deployments.index', $project));
@@ -26,9 +26,9 @@ class DeploymentTest extends TestCase
      */
     public function test_user_can_view_one_deployment()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
-        $deployment = factory(Deployment::class)->create([
+        $deployment = Deployment::factory()->create([
             'project_id' => $project->id,
         ]);
 

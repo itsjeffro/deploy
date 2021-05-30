@@ -12,7 +12,7 @@ class ProjectTest extends TestCase
      */
     public function test_owner_can_view_their_projects()
     {
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'name' => 'My first project',
         ]);
 
@@ -32,7 +32,7 @@ class ProjectTest extends TestCase
      */
     public function test_owner_can_view_their_own_project()
     {
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'name' => 'My first project',
         ]);
 
@@ -53,7 +53,7 @@ class ProjectTest extends TestCase
      */
     public function test_owner_can_update_their_project()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $user = $project->user;
 
         $response = $this->actingAs($user)
@@ -81,7 +81,7 @@ class ProjectTest extends TestCase
      */
     public function test_owner_can_delete_their_project()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $user = $project->user;
 
         $response = $this->actingAs($user)

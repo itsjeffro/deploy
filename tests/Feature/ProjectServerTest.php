@@ -15,12 +15,10 @@ class ProjectServerTest extends TestCase
      */
     public function test_user_can_view_project_servers()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $project->servers()->createMany(
-            factory(Server::class, 3)
-                ->make()
-                ->toArray()
+            Server::factory()->count(3)->make()->toArray()
         );
 
         $response = $this
@@ -52,12 +50,10 @@ class ProjectServerTest extends TestCase
      */
     public function test_user_can_view_one_project_server()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $project->servers()->createMany(
-            factory(Server::class, 3)
-                ->make()
-                ->toArray()
+            Server::factory()->count(3)->make()->toArray()
         );
 
         $projectServer = ProjectServer::where('project_id', $project->id)->firstOrFail();
@@ -78,12 +74,10 @@ class ProjectServerTest extends TestCase
      */
     public function test_user_can_update_project_server()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $project->servers()->createMany(
-            factory(Server::class, 3)
-                ->make()
-                ->toArray()
+            Server::factory()->count(3)->make()->toArray()
         );
 
         $projectServer = ProjectServer::where('project_id', $project->id)->firstOrFail();
@@ -113,12 +107,10 @@ class ProjectServerTest extends TestCase
      */
     public function test_user_can_delete_project_server()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $project->servers()->createMany(
-            factory(Server::class, 3)
-                ->make()
-                ->toArray()
+            Server::factory()->count(3)->make()->toArray()
         );
 
         $projectServer = ProjectServer::where('project_id', $project->id)->firstOrFail();

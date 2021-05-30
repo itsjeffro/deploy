@@ -14,7 +14,7 @@ class ProjectActionsTest extends TestCase
      */
     public function test_user_can_view_actions()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $response = $this->actingAs($project->user)
             ->json('GET', route('project-actions.index', [
@@ -47,8 +47,8 @@ class ProjectActionsTest extends TestCase
      */
     public function test_user_cannot_view_another_users_actions()
     {
-        $anotherProject = factory(Project::class)->create();
-        $user = factory(User::class)->create();
+        $anotherProject = Project::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->json('GET', route('project-actions.index', [
@@ -64,7 +64,7 @@ class ProjectActionsTest extends TestCase
     public function test_user_can_view_action()
     {
         $action = Action::firstOrFail();
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $response = $this->actingAs($project->user)
             ->json('GET', route('project-actions.show', [
@@ -87,8 +87,8 @@ class ProjectActionsTest extends TestCase
     public function test_user_cannot_view_another_users_action()
     {
         $action = Action::firstOrFail();
-        $anotherProject = factory(Project::class)->create();
-        $user = factory(User::class)->create();
+        $anotherProject = Project::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->json('GET', route('project-actions.show', [
@@ -105,7 +105,7 @@ class ProjectActionsTest extends TestCase
     public function test_user_can_reorder_action_hooks()
     {
         $action = Action::firstOrFail();
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $response = $this->actingAs($project->user)
             ->json('PUT', route('project-actions.update-hook-order', [
@@ -126,8 +126,8 @@ class ProjectActionsTest extends TestCase
     public function test_user_cannot_reorder_another_users_action_hooks()
     {
         $action = Action::firstOrFail();
-        $project = factory(Project::class)->create();
-        $user = factory(User::class)->create();
+        $project = Project::factory()->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->json('PUT', route('project-actions.update-hook-order', [

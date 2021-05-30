@@ -12,7 +12,7 @@ class EnvironmentUnlockTest extends TestCase
      */
     public function test_validation_error_is_returned_using_invalid_key()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $user = $project->user;
         $route = route('project-environment-unlock.store', $project);
 
@@ -41,7 +41,7 @@ class EnvironmentUnlockTest extends TestCase
      */
     public function test_successfully_unlock_existing_environment()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
         $user = $project->user;
         $route = route('project-environment-unlock.store', $project);
 

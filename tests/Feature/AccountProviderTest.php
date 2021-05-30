@@ -15,7 +15,7 @@ class AccountProviderTest extends TestCase
      */
     public function test_user_can_their_provider_accounts()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this
             ->actingAs($user)
@@ -44,7 +44,7 @@ class AccountProviderTest extends TestCase
      */
     public function test_user_is_connected_to_provider_account()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $bitbucket = Provider::where('friendly_name', Provider::BITBUCKET_PROVIDER)->firstOrFail();
 

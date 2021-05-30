@@ -16,7 +16,7 @@ class DeploymentWebHookTest extends TestCase
     {
         Queue::fake();
 
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'repository' => 'REPOSITORY_URL',
             'branch' => 'BRANCH_NAME',
             'deploy_on_push' => 1,
@@ -48,7 +48,7 @@ class DeploymentWebHookTest extends TestCase
     {
         Queue::fake();
 
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'deploy_on_push' => 0,
             'key' => 'RANDOM_KEY_2',
         ]);
@@ -69,7 +69,7 @@ class DeploymentWebHookTest extends TestCase
     {
         Queue::fake();
 
-        $project = factory(Project::class)->create([
+        $project = Project::factory()->create([
             'deploy_on_push' => 1,
             'key' => 'RANDOM_KEY_3',
         ]);

@@ -16,7 +16,7 @@ class GithubOauthTest extends TestCase
         $this->expectException(Exception::class);
 
         $provider = \Mockery::mock(GithubOauth::class)->makePartial();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $providerOauthManager = new ProviderOauthManager;
         $providerOauthManager->setProvider($provider);
@@ -37,7 +37,7 @@ class GithubOauthTest extends TestCase
         $provider = \Mockery::mock(GithubOauth::class)->makePartial();
         $provider->shouldReceive('requestAccessToken')->andReturn($token);
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $providerOauthManager = new ProviderOauthManager;
         $providerOauthManager->setProvider($provider);
@@ -52,7 +52,7 @@ class GithubOauthTest extends TestCase
     public function test_get_authorizatoin_url()
     {
         $provider = \Mockery::mock(GithubOauth::class)->makePartial();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $providerOauthManager = new ProviderOauthManager;
         $providerOauthManager->setProvider($provider);
