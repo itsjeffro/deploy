@@ -1,13 +1,29 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use Deploy\Models\Notification;
 use Deploy\Models\User;
-use Faker\Generator;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Notification::class, function (Generator $faker) {
-    return [
-        'user_id' => factory(User::class),
-    ];
-});
+class NotificationFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Notification::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'user_id' => User::factory(),
+        ];
+    }
+}

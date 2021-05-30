@@ -1,20 +1,36 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use Deploy\Models\Deployment;
 use Deploy\Models\Project;
-use Faker\Generator;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Deployment::class, function (Generator $faker) {
-    return [
-        'project_id' => factory(Project::class),
-        'committer' => $faker->userName,
-        'committer_avatar' => 'https://path/to/image.jpg',
-        'repository' => 'https://github.com/itsjeffro/deploy.git',
-        'reference' => 'branch',
-        'branch' => 'master',
-        'commit' => $faker->sha1,
-        'commit_url' => 'https://path/to/commit',
-    ];
-});
+class DeploymentFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Deployment::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'project_id' => Project::factory(),
+            'committer' => $this->faker->userName,
+            'committer_avatar' => 'https://path/to/image.jpg',
+            'repository' => 'https://github.com/itsjeffro/deploy.git',
+            'reference' => 'branch',
+            'branch' => 'master',
+            'commit' => $this->faker->sha1,
+            'commit_url' => 'https://path/to/commit',
+        ];
+    }
+}
