@@ -2,11 +2,14 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Process extends Model
 {
+    use HasFactory;
+
     /**
      * @param integer
      */
@@ -39,10 +42,21 @@ class Process extends Model
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'deployment_id',
         'server_id',
     ];
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\ProcessFactory::new();
+    }
 
     /**
      * Deployment step progress has one server.

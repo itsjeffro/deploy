@@ -2,13 +2,14 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Notification extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     /** @var string */
     const INFO_TYPE = 'info';
@@ -22,6 +23,17 @@ class Notification extends Model
      * @var string
      */
     protected $table = 'deploy_notifications';
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\NotificationFactory::new();
+    }
 
     /**
      * Belongs to one project.

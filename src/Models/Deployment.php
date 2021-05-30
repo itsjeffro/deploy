@@ -2,10 +2,13 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Deployment extends Model
 {
+    use HasFactory;
+
     /**
      * @param integer
      */
@@ -38,7 +41,7 @@ class Deployment extends Model
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'project_id',
         'status',
         'committer',
@@ -58,9 +61,20 @@ class Deployment extends Model
      *
      * @var array
      */
-    public $dates = [
+    protected $dates = [
         'started_at',
     ];
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\DeploymentFactory::new();
+    }
 
     /**
      * Deployment belongs to one project.

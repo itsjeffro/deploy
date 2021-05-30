@@ -2,16 +2,16 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Server extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     /**
      * The table associated with the model.
@@ -23,7 +23,7 @@ class Server extends Model
     /**
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'project_id',
         'user_id',
         'name',
@@ -33,6 +33,17 @@ class Server extends Model
         'project_path',
         'public_key',
     ];
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\ServerFactory::new();
+    }
     
     /**
      * Belongs to one project.

@@ -2,10 +2,13 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DeployRefreshToken extends Model
 {
+    use HasFactory;
+
     /**
      * The table associated with the model.
      *
@@ -21,7 +24,7 @@ class DeployRefreshToken extends Model
     /**
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'id', 
         'deploy_access_token_id',
         'revoked',
@@ -34,5 +37,17 @@ class DeployRefreshToken extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\DeployRefreshTokenFactory::new();
+    }
+
 }
 

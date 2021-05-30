@@ -2,10 +2,13 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Environment extends Model
 {
+    use HasFactory;
+
     /**
      * When a environment is syncing.
      *
@@ -39,10 +42,21 @@ class Environment extends Model
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'project_id',
         'contents',
     ];
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\EnvironmentFactory::new();
+    }
 
     /**
      * Belongs to one project.

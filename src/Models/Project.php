@@ -2,6 +2,7 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Project extends Model
 {
+    use HasFactory;
+
     /**
      * @var string
      */
@@ -52,7 +55,7 @@ class Project extends Model
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'key',
         'user_id',
         'name',
@@ -62,6 +65,17 @@ class Project extends Model
         'deploy_on_push',
         'releases',
     ];
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\ProjectFactory::new();
+    }
 
     /**
      * Get project environment servers.

@@ -2,10 +2,13 @@
 
 namespace Deploy\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DeployAccessToken extends Model
 {
+    use HasFactory;
+
     /**
      * The table associated with the model.
      *
@@ -19,9 +22,16 @@ class DeployAccessToken extends Model
     public $incrementing = false;
 
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'id',
         'user_id',
         'provider_id',
@@ -30,6 +40,17 @@ class DeployAccessToken extends Model
         'expires_at',
         'token_type',
     ];
+
+    /**
+     * Get a new factory instance for the model.
+     *
+     * @param  mixed  $parameters
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \Database\Factories\DeployAccessTokenFactory::new();
+    }
 
     /**
      * Return deploy access token data for Bitbucket.
