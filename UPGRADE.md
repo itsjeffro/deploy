@@ -14,7 +14,7 @@ php artisan migrate
 php artisan queue:restart
 ```
 
-## Upgrading To 2.0 From 1.x
+## Upgrading To 3.0 From 2.x
 
 ### Minimum PHP Version
 
@@ -22,4 +22,4 @@ PHP 7.3 is now the minimum required version.
 
 ### Minimum Laravel Version
 
-Laravel 7.0 is now the minimum required version.
+Laravel 8.0 is now the minimum required version.
