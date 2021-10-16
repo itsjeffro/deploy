@@ -21,6 +21,8 @@ class DeployRefreshTokenFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        return [
+            'revoked' => 0,
+        ];
     }
 }

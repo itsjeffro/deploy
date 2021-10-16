@@ -21,6 +21,9 @@ class DeployAccessTokenFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        return [
+            'token_type' => 'bearer',
+            'revoked' => 0,
+        ];
     }
 }
