@@ -1,4 +1,8 @@
 {
     "/app.js": "/app.js",
-    "/app.css": "/app.css"
+    "/app.css": "/app.css",
+    "/public/vendor/deploy/app.css": "/public/vendor/deploy/app.css",
+    "/public/vendor/deploy/app.js": "/public/vendor/deploy/app.js",
+    "/public/vendor/deploy/app.js.LICENSE.txt": "/public/vendor/deploy/app.js.LICENSE.txt",
+    "/public/vendor/deploy/mix-manifest.json": "/public/vendor/deploy/mix-manifest.json"
 }
