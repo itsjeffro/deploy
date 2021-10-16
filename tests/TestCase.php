@@ -5,18 +5,17 @@ namespace Deploy\Tests;
 use Deploy\DeployServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Routing\Router;
+use Orchestra\Testbench\Concerns\WithLaravelMigrations;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
-    use RefreshDatabase;
+    use WithLaravelMigrations, RefreshDatabase;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->loadLaravelMigrations(['--database' => 'testing']);
-        
-        $this->artisan('migrate', ['--database' => 'testing']);
+        $this->migrateDb();
     }
 
     protected function getPackageProviders($app): array
@@ -24,6 +23,16 @@ class TestCase extends \Orchestra\Testbench\TestCase
         return [
             DeployServiceProvider::class,
         ];
+    }
+
+    protected function migrateDb(): void
+    {
+        $migrationsPath = realpath(__DIR__ . '/database/migrations');
+        $migrationsPath = str_replace('\\', '/', $migrationsPath);
+
+        $this
+            ->artisan("migrate --database=testing --path={$migrationsPath} --realpath")
+            ->assertExitCode(0);
     }
 
     protected function getEnvironmentSetUp($app)
