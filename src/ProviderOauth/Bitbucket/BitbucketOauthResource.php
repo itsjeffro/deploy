@@ -3,61 +3,62 @@
 namespace Deploy\ProviderOauth\Bitbucket;
 
 use Deploy\Contracts\ProviderOauth\ProviderOauthResourceInterface;
+use Illuminate\Support\Arr;
 
 class BitbucketOauthResource implements ProviderOauthResourceInterface
 {
     /**
-     * @var object
+     * The bitbucket token data from when we requested an access token.
+     *
+     * @var array
      */
     private $token;
 
     /**
-     * Instantiate OauthResponse.
-     *
-     * @param object $token
+     * BitbucketOauthResource constructor.
      */
-    public function __construct($token)
+    public function __construct(array $token)
     {
         $this->token = $token;
     }
 
     /**
-     * @return string
+     * Returns token type.
      */
-    public function getTokenType()
+    public function getTokenType(): string
     {
-        return isset($this->token->token_type) ? $this->token->token_type : '';
+        return Arr::get($this->token, 'token_type', '');
     }
 
     /**
-     * @return string
+     * Returns access token.
      */
-    public function getAccessToken()
+    public function getAccessToken(): string
     {
-        return isset($this->token->access_token) ? $this->token->access_token : '';
+        return Arr::get($this->token, 'access_token', '');
     }
 
     /**
-     * @return string
+     * Returns refresh token.
      */
-    public function getRefreshToken()
+    public function getRefreshToken(): string
     {
-        return isset($this->token->refresh_token) ? $this->token->refresh_token : '';
+        return Arr::get($this->token, 'refresh_token', '');
     }
 
     /**
-     * @return string
+     * Returns scopes.
      */
-    public function getScopes()
+    public function getScopes(): string
     {
-        return isset($this->token->scopes) ? $this->token->scopes : '';
+        return Arr::get($this->token, 'scopes', '');
     }
 
     /**
-     * @return integer
+     * Returns expiration date.
      */
-    public function getExpiration()
+    public function getExpiration(): int
     {
-        return isset($this->token->expires_in) ? $this->token->expires_in : 0;
+        return (int) Arr::get($this->token, 'expires_in', 0);
     }
 }
