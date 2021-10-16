@@ -15,18 +15,4 @@ mix
   .setPublicPath('public')
   .ts('resources/assets/js/app.ts', 'public')
   .sass('resources/assets/sass/app.scss', 'public')
-  .copy('public', '../public/vendor/deploy')
-  .webpackConfig({
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          loader: "ts-loader",
-          exclude: /node_modules/
-        }
-      ]
-    },
-    resolve: {
-      extensions: ["*", ".js", ".jsx", ".vue", ".ts", ".tsx"]
-    }
-  });
+  .copy('public', '../public/vendor/deploy');
