@@ -59,7 +59,7 @@ class BitbucketOauth extends AbstractProviderOauth implements ProviderOauthInter
             ]
         ]);
 
-        return new BitbucketOauthResource(json_decode($response->getBody()));
+        return new BitbucketOauthResource(json_decode($response->getBody(), true));
     }
 
     /**
@@ -80,6 +80,6 @@ class BitbucketOauth extends AbstractProviderOauth implements ProviderOauthInter
             ]
         ]);
 
-        return new BitbucketOauthResource(json_decode($response->getBody()));
+        return new BitbucketOauthResource(json_decode($response->getBody(), true));
     }
 }
