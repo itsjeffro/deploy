@@ -18,6 +18,7 @@ class Deploy
             'url' => config('app.url'),
             'path' => config('deploy.path'),
             'timezone' => config('app.timezone'),
+            'auth' => auth()->user(),
             'broadcasting' => [
                 'is_enabled' => config('broadcasting.default') !== 'log',
                 'key' => config('broadcasting.connections.pusher.key'),
