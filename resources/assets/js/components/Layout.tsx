@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { NavLink } from "react-router-dom";
 import Drawer from "./Drawer";
-import {NavLink} from "react-router-dom";
+import Deploy  from "../config";
 
 class Layout extends React.Component<any> {
   render() {
@@ -11,7 +12,9 @@ class Layout extends React.Component<any> {
             <div className="header__branding"><h1>Deploy</h1></div>
   
             <div className="header__account">
-              <NavLink to={ '/account' } activeClassName="active">My Account</NavLink>
+              <NavLink to={ '/account' } activeClassName="active">
+                { Deploy.auth ? `Welcome, ${Deploy.auth.name}` : 'My Account'}
+              </NavLink>
             </div>
           </div>
         </header>

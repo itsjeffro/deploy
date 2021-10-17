@@ -9,7 +9,7 @@ import {
   projectDeploymentDeploying,
   projectDeploymentDeployed
 } from "../../state/projectDeployments/actions";
-import { Deploy } from '../../config';
+import Deploy from '../../config';
 import { fetchProject } from '../../state/project/actions';
 import { updateProjectKey } from '../../state/project/actions';
 import Icon from '../../components/Icon';

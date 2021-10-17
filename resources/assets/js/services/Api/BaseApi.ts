@@ -1,4 +1,4 @@
-import { Deploy } from '../../config';
+import Deploy from '../../config';
 
 class BaseApi {
   private axios: any;

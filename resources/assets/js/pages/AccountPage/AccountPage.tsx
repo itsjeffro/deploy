@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Deploy } from '../../config';
+import Deploy from '../../config';
 import Container from '../../components/Container';
 import Grid from '../../components/Grid';
 import Icon from '../../components/Icon';

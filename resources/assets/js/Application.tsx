@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Deploy } from './config';
+import Deploy from './config';
 import Alert from "./containers/Alert";
 import DashboardPage from './pages/DashboardPage';
 import ProjectPage from './pages/ProjectPage';
