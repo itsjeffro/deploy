@@ -28,7 +28,7 @@
     "php": "^7.3|^8.0",
     "symfony/process": "^5.0",
     "phpseclib/phpseclib": "^2.0",
-    "laravel/framework": "^8.0",
+    "laravel/framework": "^8.0|^9.0",
     "guzzlehttp/guzzle": "^7.0.1"
   },
   "require-dev": {
