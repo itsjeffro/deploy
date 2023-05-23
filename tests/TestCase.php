@@ -4,7 +4,6 @@ namespace Deploy\Tests;
 
 use Deploy\DeployServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Routing\Router;
 use Orchestra\Testbench\Concerns\WithLaravelMigrations;
 
 class TestCase extends \Orchestra\Testbench\TestCase
