@@ -28,7 +28,7 @@ class DeployMessagesTest extends TestCase
         $this->assertSame($expectedMessages, $warnings);
     }
 
-    public function messages_provider()
+    public static function messages_provider()
     {
         $config1 = Mockery::mock(Repository::class);
         $config1->shouldReceive('get')->with('broadcasting.default')->andReturn('log');
