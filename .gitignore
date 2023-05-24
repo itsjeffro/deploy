@@ -1,9 +1,11 @@
-.phpunit.result.cache
 /.idea
 /.vscode
 /node_modules
 /vendor
 /coverage
+
+.phpunit.result.cache
+.phpunit.cache
 npm-debug.log
 composer.lock
 phpunit.xml
