@@ -4,6 +4,7 @@ namespace Deploy\Tests;
 
 use Deploy\DeployServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use Orchestra\Testbench\Concerns\WithLaravelMigrations;
 
 class TestCase extends \Orchestra\Testbench\TestCase
@@ -36,7 +37,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        config(['deploy.middleware' => 'bindings']);
+        config(['deploy.middleware' => SubstituteBindings::class]);
 
         config(['database.default' => 'testing']);
 
