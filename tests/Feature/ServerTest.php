@@ -2,6 +2,7 @@
 
 namespace Deploy\Tests\Feature;
 
+use Deploy\Jobs\CreateServerKeysJob;
 use Deploy\Jobs\DeleteServerKeysJob;
 use Deploy\Models\Project;
 use Deploy\Models\ProjectServer;
@@ -98,6 +99,10 @@ class ServerTest extends TestCase
         $publicKey = explode(' ', $json['public_key']);
 
         $this->assertSame('ssh-rsa', $publicKey[0]);
+
+        Bus::assertDispatched(function (CreateServerKeysJob $job) {
+            return $job->getServer()->port === '22';
+        });
     }
 
     /**
