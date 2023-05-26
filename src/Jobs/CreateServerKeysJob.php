@@ -44,10 +44,15 @@ class CreateServerKeysJob implements ShouldQueue
         } catch (Exception $exception) {
             event(new ProcessorErrorEvent(
                 'Server private key issue',
-                $this->server->project_id,
+                $this->server->user_id,
                 $this->server,
                 $exception
             ));
         }
+    }
+
+    public function getServer(): Server
+    {
+        return $this->server;
     }
 }
