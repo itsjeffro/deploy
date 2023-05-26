@@ -2,35 +2,35 @@
 
 namespace Deploy\Ssh;
 
-use phpseclib\Crypt\RSA;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\RSA\PrivateKey;
 
 class Key
 {
-    /**
-     * @var integer
-     */
-    const PRIVATE_KEY_CHMOD = 0600;
+    /** @var int */
+    public const PRIVATE_KEY_CHMOD = 0600;
 
-    /**
-     * Generate key pair contents and return as an array the following associative keys:
-     *
-     * - publickey
-     * - privatekey
-     *
-     * @param string $keyName
-     * @param string $comment
-     * @param integer $bit
-     * @return array
-     */
-    public function generate($keyName = 'id_rsa', $comment = null, $bit = 4096)
+    public function __construct(private PrivateKey $key)
+    {}
+
+    public static function make(?string $comment = null, int $bit = 4096): self
     {
-        $rsa = new RSA;
-        $rsa->setPublicKeyFormat(RSA::PUBLIC_FORMAT_OPENSSH);
+        $rsa = RSA::createKey($bit);
 
         if ($comment) {
-            $rsa->setComment($comment);
+            $rsa->withLabel($comment);
         }
         
-        return $rsa->createKey($bit);
+        return new static($rsa);
+    }
+
+    public function publicKey(): string
+    {
+        return $this->key->getPublicKey()->toString('OpenSSH');
+    }
+
+    public function privateKey(): string
+    {
+        return $this->key->toString('PKCS1');
     }
 }
