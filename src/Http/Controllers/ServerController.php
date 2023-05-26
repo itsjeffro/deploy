@@ -15,17 +15,6 @@ use Exception;
 
 class ServerController extends Controller
 {
-    /** @var \Deploy\Ssh\Key */
-    private $sshKey;
-
-    /**
-     * ServerController constructor.
-     */
-    public function __construct(Key $sshKey)
-    {
-        $this->sshKey = $sshKey;
-    }
-
     /**
      * Get servers.
      */
@@ -142,15 +131,14 @@ class ServerController extends Controller
      */
     protected function createKeys(Server $server): Server
     {
-        $sshKeys = $this->sshKey
-            ->generate('id_rsa', config('deploy.ssh_key.comment'));
+        $rsa = Key::make('id_rsa', config('deploy.ssh_key.comment'));
 
         // Store public key contents.
-        $server->public_key = $sshKeys['publickey'];
+        $server->public_key = $rsa->getPublicKey();
         $server->save();
 
         // Queue job to create the private key associated with the stored public key.
-        dispatch(new CreateServerKeysJob($server, $sshKeys));
+        dispatch(new CreateServerKeysJob($server, $rsa));
 
         return $server;
     }
