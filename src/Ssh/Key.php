@@ -33,6 +33,6 @@ class Key
 
     public function getPrivateKey(): string
     {
-        return $this->key->toString('PKCS1');
+        return $this->key->toString('pkcs1');
     }
 }
