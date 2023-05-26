@@ -131,9 +131,8 @@ class ServerController extends Controller
      */
     protected function createKeys(Server $server): Server
     {
-        $rsa = Key::make('id_rsa', config('deploy.ssh_key.comment'));
+        $rsa = Key::make(config('deploy.ssh_key.comment'));
 
-        // Store public key contents.
         $server->public_key = $rsa->getPublicKey();
         $server->save();
 
