@@ -1,6 +1,6 @@
 <?php
 
-namespace Deploy\Tests\Unit\ProviderRepository;
+namespace Deploy\Tests\Unit\Ssh;
 
 use Deploy\Ssh\Host;
 use PHPUnit\Framework\TestCase;

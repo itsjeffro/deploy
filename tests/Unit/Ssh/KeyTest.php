@@ -11,8 +11,8 @@ class KeyTest extends TestCase
     {
         $rsa = Key::make('key-comment');
 
-        $publicKey = $rsa->publicKey();
-        $privateKey = $rsa->privateKey();
+        $publicKey = $rsa->getPublicKey();
+        $privateKey = $rsa->getPrivateKey();
 
         $this->assertStringContainsString('ssh-rsa' , $publicKey);
         $this->assertStringContainsString('-----BEGIN RSA PRIVATE KEY-----' , $privateKey);
