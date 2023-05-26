@@ -10,23 +10,25 @@ class Key
     /** @var int */
     public const PRIVATE_KEY_CHMOD = 0600;
 
-    public function __construct(private PrivateKey $key)
+    public function __construct(private PrivateKey $key, private ?string $comment)
     {}
 
     public static function make(?string $comment = null, int $bit = 4096): self
     {
         $rsa = RSA::createKey($bit);
-
-        if ($comment) {
-            $rsa->withLabel($comment);
-        }
         
-        return new static($rsa);
+        return new static($rsa, $comment);
     }
 
     public function getPublicKey(): string
     {
-        return $this->key->getPublicKey()->toString('OpenSSH');
+        $options = [];
+
+        if ($this->comment) {
+            $options['comment'] = $this->comment;
+        }
+
+        return $this->key->getPublicKey()->toString('OpenSSH', $options);
     }
 
     public function getPrivateKey(): string
