@@ -24,12 +24,12 @@ class Key
         return new static($rsa);
     }
 
-    public function publicKey(): string
+    public function getPublicKey(): string
     {
         return $this->key->getPublicKey()->toString('OpenSSH');
     }
 
-    public function privateKey(): string
+    public function getPrivateKey(): string
     {
         return $this->key->toString('PKCS1');
     }
